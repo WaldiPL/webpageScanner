@@ -1,0 +1,29 @@
+body{
+	width:200px;
+}
+
+button{
+	background: #fbfbfb;
+	color:#000;
+	border: 1px solid #b1b1b1;
+	padding: 4px 10px 6px;
+	font-size:14px;
+	line-height:18px;
+	text-align: center;
+	font-family:'Segoe UI', sans-serif;
+	cursor: pointer;
+	border-radius:0;
+	width:100%;
+}
+
+button:hover{
+	background:#ebebeb;
+}
+
+button:active{
+	background: #e0e0e0;
+}
+
+#addThis,#scanNow{
+	margin-bottom:8px;
+}

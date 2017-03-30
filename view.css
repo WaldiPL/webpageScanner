@@ -1,0 +1,359 @@
+body{
+	margin:61px 0 0 0!important;
+	padding:0 !important;
+}
+
+#header10153{
+	background:#eee !important;
+	border:0 !important;
+	border-bottom:1px solid #0ba0f9 !important;
+	border-radius:0 !important;
+	box-shadow: 0px 0px 10px #b1b1b1 !important;
+	box-sizing: initial !important;
+	color:#000 !important;
+	display:block !important;
+	float:none !important;
+	font-family:'Segoe UI', sans-serif !important;
+	font-size:14px !important;
+	font-style:normal !important;
+	font-weight:400 !important;
+	height:40px !important;
+	left: 0 !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	min-height:40px !important;
+	min-width:calc(100% - 20px) !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:10px !important;
+	position: fixed !important;
+	top: 0 !important;
+	text-align: left !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:calc(100% - 20px) !important;
+	z-index:2147483647 !important;
+}
+
+#icon10153{
+	background: transparent !important;
+	border:0 !important;
+	border-radius:0 !important;
+	display:block !important;
+	float:left !important;
+	height:48px !important;
+	margin:-4px 5px 0 -5px !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	position: static !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:48px !important;
+}
+
+#title10153,#deletingSite10153 b,#editingSite10153 b{
+	background:transparent !important;
+	border:0 !important;
+	color:#000 !important;
+	display:inline !important;
+	float:none !important;
+	font-family:'Segoe UI', sans-serif !important;
+	font-size:14px !important;
+	font-style:normal !important;
+	font-weight:800 !important;
+	height:auto !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	position: static !important;
+	text-align: left !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+#set10153{
+	background:transparent !important;
+	border:0 !important;
+	display:inline-block !important;
+	float:none !important;
+	height:auto !important;
+	line-height: 20px !important;
+	left: 15px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	position: relative !important;
+	transform: none !important;
+	top: -2px !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+#header10153 div  button, .footer10153 button{
+	border-radius:0 !important;
+	box-shadow:none !important;
+	box-sizing: border-box !important;
+	cursor: pointer !important;
+	display: inline-block !important;
+	font-family:'Segoe UI', sans-serif !important;
+	font-size:12px !important;
+	font-style:normal !important;
+	font-weight:400 !important;
+	height:auto !important;
+	line-height:18px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	position: static !important;
+	text-align: center !important;
+	text-shadow: none !important;
+	text-transform:none !important;
+	visibility: visible !important;
+	width:auto !important;
+	white-space: normal !important;
+}
+
+#tabs10153  button{
+	color:#000 !important;
+	background: #fbfbfb !important;
+	border: 1px solid #b1b1b1 !important;
+	padding: 4px 8px 6px !important;
+}
+#tabs10153 button:hover{
+	background:#ebebeb !important;
+}
+#tabs10153  button:active, #tabs10153  button.active10153{
+	background: #0ba0f9 !important;
+	border-color: #258ad6 !important;
+	color:#fff !important;
+}
+#tabs10153   button.active10153:hover{
+	background:#0670cc !important;
+}
+
+.footer10153 button{
+	padding: 4px 8px 6px !important;
+}
+
+#set10153  button{
+	padding: 2px 8px 3px !important;
+}
+
+.neutral{
+	border: 1px solid #b1b1b1 !important;
+	color:#000 !important;
+	background: #fbfbfb !important;
+}
+.neutral:hover{
+	background:#ebebeb !important;
+}
+
+.negative{
+	border: 1px solid #d94141 !important;
+	background:#d94141 !important;
+	color:#fff !important;
+}
+.negative:hover,#header10153 #delete10153:hover{
+	background:#c34242 !important;
+	border-color:#c34242 !important;
+}
+
+.positive{
+	border: 1px solid #258ad6 !important;
+	background:#0ba0f9 !important;
+	color:#fff !important;
+}
+.positive:hover{
+	background:#059df0 !important;
+}
+
+#lastScan10153{
+	border-radius:0 !important;
+	background:transparent !important;
+	color:#888 !important;
+	border:0 !important;
+	display:block !important;
+	float:none !important;
+	font-family:'Segoe UI', sans-serif !important;
+	font-size:12px !important;
+	font-style:normal !important;
+	font-weight:400 !important;
+	height:auto !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	position: static !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+#tabs10153{
+	background: transparent !important;
+	border:0 !important;
+	display:inline-block !important;
+	float:none !important;
+	height:auto !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	position: absolute !important;
+	right: 10px !important;
+	transform: none !important;
+	top: 15px !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+#editingSite10153, #deletingSite10153{
+	border-radius:0 !important;
+	background:#eee !important;
+	border:1px solid #b1b1b1 !important;
+	box-shadow: 0px 0px 10px #b1b1b1 !important;
+	float:none !important;
+	font-family:'Segoe UI', sans-serif !important;
+	font-size:14px !important;
+	font-style:normal !important;
+	font-weight:400 !important;
+	height:auto !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:10px !important;
+	position:fixed !important;
+	left:calc(50% - 161px) !important;
+	top:200px !important;
+	transform: none !important;
+	width:300px !important;
+	visibility: visible !important;
+	z-index:2147483647 !important;
+	display:block;
+}
+
+#deleteTitle10153{
+	border-radius:0 !important;
+	background:transparent !important;
+	color:#000 !important;
+	border:0 !important;
+	display:block !important;
+	float:none !important;
+	font-family:'Segoe UI', sans-serif !important;
+	font-size:14px !important;
+	font-style:normal !important;
+	font-weight:400 !important;
+	height:auto !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	position: static !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+.footer10153{
+	background:transparent !important;
+	border:0 !important;
+	display:inline-block !important;
+	float: right !important;
+	height:auto !important;
+	line-height: 20px !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	padding-top:7px !important;
+	position: static !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+#editingSite10153 table{
+	border-collapse: initial !important;
+	background:transparent !important;
+	border:0 !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	height:auto !important;
+	line-height: 20px !important;
+	padding-top:7px !important;
+	position: static !important;
+	transform: none !important;
+	visibility: visible !important;
+	width:auto !important;
+}
+
+#editingSite10153 table td{
+	border-collapse: initial !important;
+	background:transparent !important;
+	border:0 !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	height:auto !important;
+	padding:2px !important;
+	width:auto !important;
+}
+
+#editingSite10153 table select,#editingSite10153 table input{
+	border-radius:0 !important;
+	height:auto !important;
+	width:calc(100% - 4px) !important;
+	padding:3px !important;
+	border: 1px solid #b1b1b1 !important;
+	outline: none !important;
+	font-size:14px !important;
+	font-family:'Segoe UI', sans-serif !important;
+	line-height:initial !important;
+	-moz-appearance:none !important;
+	box-sizing:content-box !important;
+	background:#fbfbfb !important;
+	opacity:1 !important;
+	overflow:visible !important;
+}
+
+#editingSite10153 table select:focus,#editingSite10153 table input:focus{
+	border: 1px solid #0ba0f9 !important;
+}
+ 
+.hidden{
+	display: none !important;
+}
+
+.changes10153{
+	background:yellow !important;
+	color:#000 !important;
+	border: 0 !important;
+	padding:0 !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline: none !important;
+}

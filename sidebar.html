@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+<body>
+	<div id="navPanel">
+		<input id="scanSite" type="image" src="icons/scan.png" title="__MSG_scanWebpage__">
+		<input id="openSite" type="image" src="icons/open.png" title="__MSG_openWebpage__">
+		<input id="showAdd"  type="image" src="icons/add.png"  title="__MSG_addWebpage__">
+	</div>
+	<div id="addingSite" class="hidden">
+		<b>__MSG_addWebpage__</b> 
+		<table>
+			<tr><td>__MSG_address__</td><td style="width: 100%;"><input id="aUrl" type="text"></td></tr>
+			<tr><td>__MSG_title__</td><td style="width: 100%;"><input id="aTitle" type="text"></td></tr>
+			<tr><td>__MSG_scanFreq__</td><td style="width: 100%;">
+			<select id="aFreq">
+			  <option value="1">__MSG_1Hour__</option>
+			  <option value="4">__MSG_4Hours__</option>
+			  <option value="8">__MSG_8Hours__</option>
+			  <option value="12">__MSG_12Hours__</option>
+			  <option value="24">__MSG_24Hours__</option>
+			 </select> 
+			</td></tr>
+			<tr><td>__MSG_modeTitle__</td><td style="width: 100%;">
+			 <select id="aMode">
+			  <option value="m0">__MSG_modeM0__</option>
+			  <option value="m3">__MSG_modeM3__</option>
+			  <option value="m4">__MSG_modeM4__</option>
+			  <option value="m1">__MSG_modeM1__</option>
+			  <option value="m2">__MSG_modeM2__</option>
+			 </select> 
+			</td></tr>
+		</table>
+		<div class="footer">
+			<button id="addCancel" class="addingSite" type="button">__MSG_cancel__</button>
+			<button id="addSite" class="positive" type="button">__MSG_add__</button>
+		</div>	
+	</div>	
+	<div id="editingSite" class="hidden">
+		<b>__MSG_editWebpage__</b> 
+		<table>
+			<tr><td>__MSG_address__</td><td style="width: 100%;"><input id="eUrl" type="text"></td></tr>
+			<tr><td>__MSG_title__</td><td style="width: 100%;"><input id="eTitle" type="text"></td></tr>
+			<tr><td>__MSG_charset__</td><td style="width: 100%;"><input id="eCharset" type="text"></td></tr>
+			<tr><td>__MSG_scanFreq__</td><td style="width: 100%;">
+			<select id="eFreq">
+			  <option value="1">__MSG_1Hour__</option>
+			  <option value="4">__MSG_4Hours__</option>
+			  <option value="8">__MSG_8Hours__</option>
+			  <option value="12">__MSG_12Hours__</option>
+			  <option value="24">__MSG_24Hours__</option>
+			 </select> 
+			</td></tr>
+			<tr><td>__MSG_modeTitle__</td><td style="width: 100%;">
+			 <select id="eMode">
+			  <option value="m0">__MSG_modeM0__</option>
+			  <option value="m3">__MSG_modeM3__</option>
+			  <option value="m4">__MSG_modeM4__</option>
+			  <option value="m1">__MSG_modeM1__</option>
+			  <option value="m2">__MSG_modeM2__</option>
+			 </select> 
+			</td></tr>
+		</table>
+		<div class="footer">
+			<button id="editCancel" class="editingSite" type="button">__MSG_cancel__</button>
+			<button id="editSite" class="positive" type="button">__MSG_save__</button>
+		</div>
+	</div>
+	<div id="deletingSite" class="hidden">
+		<b>__MSG_deleteWebpage__</b>
+		<div id="deleteTitle"></div>
+		<div id="deleteUrl"></div>
+		<div class="footer">
+			<button id="deleteCancel" class="deletingSite" type="button">__MSG_cancel__</button>
+			<button id="deleteSite" class="negative" type="button">__MSG_delete__</button>
+		</div>
+	</div>
+	<ul id="lista">
+	</ul>
+	<div id="statusbar"></div>
+	<script src="i18n.js"></script>
+	<script src="md5.js"></script>
+	<script src="shared.js"></script>
+	<script src="sidebar.js"></script>
+</body>
+</html>

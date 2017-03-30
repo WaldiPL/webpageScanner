@@ -1,0 +1,140 @@
+{
+  "extensionName": {
+    "message": "Skaner stron"
+  },
+  "extensionDescription": {
+    "message": "Skanuj strony w poszukiwaniu zmian."
+  },
+  
+  "scanWebpage": {
+    "message": "Skanuj"
+  },
+  "openWebpage": {
+    "message": "Otwórz zmienione strony w nowych kartach"
+  },
+  "addWebpage": {
+    "message": "Dodaj nową stronę"
+ },
+  "add": {
+    "message": "Dodaj"
+  },
+  "address": {
+    "message": "Adres:"
+  },
+  "title": {
+    "message": "Tytuł:"
+  },
+  "scanFreq": {
+    "message": "Skanuj&nbsp;co:"
+  },
+  "1Hour": {
+    "message": "godzinę"
+  },
+  "4Hours": {
+    "message": "4 godziny"
+  },
+  "8Hours": {
+    "message": "8 godzin"
+  },
+  "12Hours": {
+    "message": "12 godzin"
+  },
+  "24Hours": {
+    "message": "24 godziny"
+  },
+  "modeTitle": {
+    "message": "Tryb:"
+  },
+  "modeM0": {
+    "message": "Zmiana długości powyżej 10 znaków"
+  },
+  "modeM1": {
+    "message": "Zmiana długości"
+  },
+  "modeM2": {
+    "message": "Każda zmiana"
+  },
+  "modeM3": {
+    "message": "Zmiana długości powyżej 50 znaków"
+  },
+  "modeM4": {
+    "message": "Zmiana długości powyżej 250 znaków"
+  },
+  "cancel": {
+    "message": "Anuluj"
+  },
+  "editWebpage": {
+    "message": "Edytuj stronę"
+  },
+  "save": {
+    "message": "Zapisz"
+  },
+  "deleteWebpage": {
+    "message": "Chcesz usunąć tę stronę?"
+  },
+  "delete": {
+    "message": "Usuń"
+  },
+  "edit": {
+    "message": "Edytuj"
+  },
+  "addedWebpage": {
+    "message": "Dodano $1"
+  },
+  "addedWebpageError": {
+    "message": "Wystąpił problem z pobraniem strony"
+  },
+  "savedWebpage": {
+    "message": "Zapisano $1"
+  },
+  "deletedWebpage": {
+    "message": "Usunięto $1"
+  },
+  "scanCompleted": {
+    "message": "Zakończono skanowanie"
+  },
+  "oneDetected": {
+    "message": "Wykryto zmiany na jednej stronie"
+  },
+  "moreDetected": {
+    "message": "Wykryto zmiany na $1 stronach"
+  },
+  
+  "oldVersion": {
+    "message": "Stara wersja"
+  },
+  "newVersion": {
+    "message": "Nowa wersja"
+  },
+  "newElements": {
+    "message": "Nowe elementy"
+  },
+  "highlight": {
+    "message": "Podświetl zmiany"
+  },
+  "currentWebpage": {
+    "message": "Bieżąca strona"
+  },
+  "lastScan": {
+    "message": "Ostatnie skanowanie: $1 o $2"
+  },
+  "monthList": {
+   "message": ",stycznia,lutego,marca,kwietnia,maja,czerwca,lipca,sierpnia,września,października,listopada,grudnia"
+  },
+  
+  "addThis": {
+    "message": "Dodaj do listy skanowania"
+  }, 
+  "scanNow": {
+    "message": "Skanuj teraz"
+  },
+  "showList": {
+    "message": "Pokaż listę skanowania"
+  }, 
+  "errorAdding": {
+    "message": "Problem z dodaniem strony $1"
+  },
+  "charset": {
+    "message": "Kodowanie"
+  }
+}

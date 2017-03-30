@@ -1,0 +1,140 @@
+{
+  "extensionName": {
+    "message": "Web pages scanner"
+  },
+  "extensionDescription": {
+    "message": "Scan web pages for updates."
+  },
+  
+  "scanWebpage": {
+    "message": "Scan"
+  },
+  "openWebpage": {
+    "message": "Open changed pages in new tabs"
+  },
+  "addWebpage": {
+    "message": "Add new page"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "address": {
+    "message": "Address:"
+  },
+  "title": {
+    "message": "Title:"
+  },
+  "scanFreq": {
+    "message": "Scan&nbsp;every:"
+  },
+  "1Hour": {
+    "message": "hour"
+  },
+  "4Hours": {
+    "message": "4 hours"
+  },
+  "8Hours": {
+    "message": "8 hours"
+  },
+  "12Hours": {
+    "message": "12 hours"
+  },
+  "24Hours": {
+    "message": "24 hours"
+  },
+  "modeTitle": {
+    "message": "Mode:"
+  },
+  "modeM0": {
+    "message": "Change in length more than 10 characters"
+  },
+  "modeM1": {
+    "message": "Change in length"
+  },
+  "modeM2": {
+    "message": "Every change"
+  },
+  "modeM3": {
+    "message": "Change in length more than 50 characters"
+  },
+  "modeM4": {
+    "message": "Change in length more than 250 characters"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "editWebpage": {
+    "message": "Edit page"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "deleteWebpage": {
+    "message": "Are you want to delete this page?"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "edit": {
+    "message": "Edit"
+  },
+  "addedWebpage": {
+    "message": "Added $1"
+  },
+  "addedWebpageError": {
+    "message": "Error getting page"
+  },
+  "savedWebpage": {
+    "message": "Saved $1"
+  },
+  "deletedWebpage": {
+    "message": "Deleted $1"
+  },
+  "scanCompleted": {
+    "message": "Scanned completed"
+  },
+  "oneDetected": {
+    "message": "One page has been updated"
+  },
+  "moreDetected": {
+    "message": "$1 pages have been updated"
+  },
+  
+  "oldVersion": {
+    "message": "Old version"
+  },
+  "newVersion": {
+    "message": "New version"
+  },
+  "newElements": {
+    "message": "New elements"
+  },
+  "highlight": {
+    "message": "Highlight changes"
+  },
+  "currentWebpage": {
+    "message": "Current page"
+  },
+  "lastScan": {
+    "message": "Last scan: $1 at $2"
+  },
+  "monthList": {
+   "message": ",January,February,March,April,May,June,July,August,September,October,November,December"
+  },
+  
+  "addThis": {
+    "message": "Add to scan list"
+  }, 
+  "scanNow": {
+    "message": "Scan now"
+  },
+  "showList": {
+    "message": "Show scan list"
+  }, 
+  "errorAdding": {
+    "message": "Problem with adding page $1"
+  },
+  "charset": {
+    "message": "Charset"
+  }
+}
