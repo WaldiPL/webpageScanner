@@ -1,4 +1,7 @@
 (function(){
+	document.getElementById("addThis").textContent=i18n("addThis");
+	document.getElementById("scanNow").textContent=i18n("scanNow");
+	document.getElementById("showList").textContent=i18n("showList");
 	document.getElementById("addThis").addEventListener("click",addThis);
 	document.getElementById("scanNow").addEventListener("click",scanNow);
 	document.getElementById("showList").addEventListener("click",showList);
@@ -23,4 +26,8 @@ function showList(){
 		url:`sidebar.html`,
 		active:true
 	});
+}
+
+function i18n(e){
+	return browser.i18n.getMessage(e);
 }

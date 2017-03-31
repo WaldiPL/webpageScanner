@@ -9,58 +9,57 @@
 		<img id="icon10153" src="icons/icon.svg"/>
 		<b id="title10153"></b>
 		<div id="set10153">
-			<button id='edit10153' class="neutral" type='button'>__MSG_edit__</button>
-			<button id='delete10153' class='negative' type='button'>__MSG_delete__</button>
+			<button id='edit10153' class="neutral" type='button'></button>
+			<button id='delete10153' class='negative' type='button'></button>
 		</div>
 		<div id="lastScan10153"></div>
 		<div id="tabs10153">
-			<button id='oldHtml10153' type='button'>__MSG_oldVersion__</button>
-			<button id='newHtml10153' type='button'>__MSG_newVersion__</button>
-			<button id='news10153' type='button'>__MSG_newElements__</button>
-			<button id='light10153' type='button'>__MSG_highlight__</button>
-			<button id='active10153' type='button'>__MSG_currentWebpage__</button>
+			<button id='oldHtml10153' type='button'></button>
+			<button id='newHtml10153' type='button'></button>
+			<button id='news10153' type='button'></button>
+			<button id='light10153' type='button'></button>
+			<button id='active10153' type='button'></button>
 		</div>
 	</div>
 	<div id="content10153"></div>
 	<div id="deletingSite10153" class="hidden">
-		<b>__MSG_deleteWebpage__</b>
+		<b id="deleteB10153"></b>
 		<div id="deleteTitle10153"></div>
 		<div class="footer10153">
-			<button id="deleteCancel10153" class="neutral" type="button">__MSG_cancel__</button>
-			<button id="deleteSite10153" class="negative" type="button">__MSG_delete__</button>
+			<button id="deleteCancel10153" class="neutral" type="button"></button>
+			<button id="deleteSite10153" class="negative" type="button"></button>
 		</div>
 	</div>
 	<div id="editingSite10153" class="hidden">
-		<b>__MSG_editWebpage__</b> 
+		<b id="editB10153"></b> 
 		<table>
-			<tr><td>__MSG_address__</td><td style="width: 100%;"><input id="eUrl10153" type="text"></td></tr>
-			<tr><td>__MSG_title__</td><td style="width: 100%;"><input id="eTitle10153" type="text"></td></tr>
-			<tr><td>__MSG_charset__</td><td style="width: 100%;"><input id="eCharset10153" type="text"></td></tr>
-			<tr><td>__MSG_scanFreq__</td><td style="width: 100%;">
+			<tr><td id="address10153"></td><td style="width: 100%;"><input id="eUrl10153" type="text"></td></tr>
+			<tr><td id="titleE10153"></td><td style="width: 100%;"><input id="eTitle10153" type="text"></td></tr>
+			<tr><td id="charset10153"></td><td style="width: 100%;"><input id="eCharset10153" type="text"></td></tr>
+			<tr><td id="scanFreq10153"></td><td style="width: 100%;">
 			<select id="eFreq10153">
-			  <option value="1">__MSG_1Hour__</option>
-			  <option value="4">__MSG_4Hours__</option>
-			  <option value="8">__MSG_8Hours__</option>
-			  <option value="12">__MSG_12Hours__</option>
-			  <option value="24">__MSG_24Hours__</option>
-			 </select> 
+			  <option value="1"></option>
+			  <option value="4"></option>
+			  <option value="8"></option>
+			  <option value="12"></option>
+			  <option value="24"></option>
+			 </select>
 			</td></tr>
-			<tr><td>__MSG_modeTitle__</td><td style="width: 100%;">
+			<tr><td id="modeTitle10153"></td><td style="width: 100%;">
 			 <select id="eMode10153">
-			  <option value="m0">__MSG_modeM0__</option>
-			  <option value="m3">__MSG_modeM3__</option>
-			  <option value="m4">__MSG_modeM4__</option>
-			  <option value="m1">__MSG_modeM1__</option>
-			  <option value="m2">__MSG_modeM2__</option>
+			  <option value="m0"></option>
+			  <option value="m3"></option>
+			  <option value="m4"></option>
+			  <option value="m1"></option>
+			  <option value="m2"></option>
 			 </select> 
 			</td></tr>
 		</table>
 		<div class="footer10153">
-			<button id="editCancel10153" class="neutral" type="button">__MSG_cancel__</button>
-			<button id="editSite10153" class="positive" type="button">__MSG_save__</button>
+			<button id="editCancel10153" class="neutral" type="button"></button>
+			<button id="editSite10153" class="positive" type="button"></button>
 		</div>
 	</div>
-	<script src="i18n.js"></script>
 	<script src="diff.js"></script>
 	<script src="view.js"></script>
 </body>

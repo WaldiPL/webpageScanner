@@ -1,5 +1,6 @@
 (function(){
 	if(!document.getElementById("scanSite"))return;
+	translate();
 	document.getElementById("scanSite").addEventListener("click",scanSite);
 	document.getElementById("addSite").addEventListener("click",addSite);
 	document.getElementById("openSite").addEventListener("click",openSite);
@@ -34,7 +35,7 @@ function context(e){
 
 function listSite(){
 	browser.storage.local.get('sites').then(result=>{
-		document.getElementById("lista").innerHTML="";
+		document.getElementById("lista").textContent="";
 		const sites=result.sites;
 		const list = document.getElementById("lista");
 		sites.forEach((value,i)=>{
@@ -95,8 +96,8 @@ function showDelete(e){
 		const table=result.sites;
 		document.getElementById("deleteSite").addEventListener("click",()=>{deleteSite(e);});
 		document.getElementById("deletingSite").classList.remove("hidden");
-		document.getElementById("deleteTitle").innerHTML=table[e].title;
-		document.getElementById("deleteUrl").innerHTML=table[e].url;
+		document.getElementById("deleteTitle").textContent=table[e].title;
+		document.getElementById("deleteUrl").textContent=table[e].url;
 	});
 }
 
@@ -154,19 +155,67 @@ function hideAll(e){
 	}
 	if(e!="delete"){
 		document.getElementById("deletingSite").classList.add("hidden");
-		document.getElementById("deleteTitle").innerHTML="";
-		document.getElementById("deleteUrl").innerHTML="";
+		document.getElementById("deleteTitle").textContent="";
+		document.getElementById("deleteUrl").textContent="";
 	}
 }
 
 function statusbar(e,aHide){
 	document.getElementById("statusbar").innerHTML=e;
 	if(!aHide){
-		setTimeout(()=>{document.getElementById("statusbar").innerHTML="";},5000);
+		setTimeout(()=>{document.getElementById("statusbar").textContent="";},5000);
 	}
 }
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
   if(m.listSite)listSite();
+}
+
+function translate(){
+	document.getElementById("addCancel").textContent=i18n("cancel");
+	document.getElementById("addSite").textContent=i18n("add");
+	document.getElementById("editCancel").textContent=i18n("cancel");
+	document.getElementById("editSite").textContent=i18n("save");
+	document.getElementById("deleteCancel").textContent=i18n("cancel");
+	document.getElementById("deleteSite").textContent=i18n("delete");
+	document.getElementById("scanSite").title=i18n("scanWebpage");
+	document.getElementById("openSite").title=i18n("openWebpage");
+	document.getElementById("showAdd").title=i18n("addWebpage");
+	document.getElementById("addWebpage").textContent=i18n("addWebpage");
+	document.getElementById("addressA").textContent=i18n("address");
+	document.getElementById("titleA").textContent=i18n("title");
+	document.getElementById("scanFreqA").textContent=i18n("scanFreq");
+	document.getElementById("addressE").textContent=i18n("address");
+	document.getElementById("titleE").textContent=i18n("title");
+	document.getElementById("scanFreqE").textContent=i18n("scanFreq");
+	document.getElementById("charsetE").textContent=i18n("charset");
+	document.getElementById("editWebpage").textContent=i18n("editWebpage");
+	document.getElementById("modeTitleA").textContent=i18n("modeTitle");
+	document.getElementById("modeTitleE").textContent=i18n("modeTitle");
+	document.getElementById("deleteWebpage").textContent=i18n("deleteWebpage");
+	let selectFreqA=document.getElementById("aFreq").options;
+	selectFreqA[0].text=i18n("1Hour");
+	selectFreqA[1].text=i18n("4Hours");
+	selectFreqA[2].text=i18n("8Hours");
+	selectFreqA[3].text=i18n("12Hours");
+	selectFreqA[4].text=i18n("24Hours");
+	let selectModeA=document.getElementById("aMode").options;
+	selectModeA[0].text=i18n("modeM0");
+	selectModeA[1].text=i18n("modeM3");
+	selectModeA[2].text=i18n("modeM4");
+	selectModeA[3].text=i18n("modeM1");
+	selectModeA[4].text=i18n("modeM2");
+	let selectFreqE=document.getElementById("eFreq").options;
+	selectFreqE[0].text=i18n("1Hour");
+	selectFreqE[1].text=i18n("4Hours");
+	selectFreqE[2].text=i18n("8Hours");
+	selectFreqE[3].text=i18n("12Hours");
+	selectFreqE[4].text=i18n("24Hours");
+	let selectModeE=document.getElementById("eMode").options;
+	selectModeE[0].text=i18n("modeM0");
+	selectModeE[1].text=i18n("modeM3");
+	selectModeE[2].text=i18n("modeM4");
+	selectModeE[3].text=i18n("modeM1");
+	selectModeE[4].text=i18n("modeM2");
 }

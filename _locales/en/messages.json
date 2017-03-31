@@ -25,7 +25,7 @@
     "message": "Title:"
   },
   "scanFreq": {
-    "message": "Scan&nbsp;every:"
+    "message": "Scan_every:"
   },
   "1Hour": {
     "message": "hour"

@@ -324,6 +324,7 @@ body{
 
 #editingSite10153 table select,#editingSite10153 table input{
 	border-radius:0 !important;
+	color:#000 !important;
 	height:auto !important;
 	width:calc(100% - 4px) !important;
 	padding:3px !important;
