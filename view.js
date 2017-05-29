@@ -1,4 +1,4 @@
- var localId;
+var localId;
  
 (function(){
 	const urlString = window.location.search;
