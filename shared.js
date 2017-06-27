@@ -113,7 +113,7 @@ function scanSite(ev,auto=false,force=false){
 		if(!auto)statusbar(i18n("scanCompleted"));
 	}).then((s)=>{
 		if(count){
-			let audio=new Audio('notification.mp3');
+			let audio=new Audio('notification.opus');
 			audio.play();
 			browser.notifications.create(
 				`webpagesScanner${auto}`,{

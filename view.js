@@ -85,7 +85,7 @@ function load(siteId,type){
 		const light = cId?diffString2(oldHtml,newHtml).n:newHtml;
 		const news = cId?diffString2(oldHtml,newHtml).c:"";
 		const url = sId.url.split("/");
-		const url2 = url[0]+"//"+url[2];
+		const url2 = url[0]+"//"+url[2]+"/";
 		document.getElementById("title10153").textContent=sId.title;
 		document.getElementById("lastScan10153").textContent=i18n("lastScan",[realDate(sId.date),realTime(sId.time)]);
 		switch(type){
@@ -107,16 +107,24 @@ function load(siteId,type){
 		}
 		const a=document.getElementsByTagName("a");
 		const img=document.getElementsByTagName("img");
-		const css=document.getElementsByTagName("link");
+		const meta=document.getElementsByTagName("link");
 		setTimeout(function(){
+			const extUrl=browser.extension.getURL("");
 			[...a].forEach(value=>{
-				if(value.href.substring(0,16)=="moz-extension://")value.href=value.href.replace(this.location.origin,url2);
+				if(value.href.includes(extUrl))value.href=value.href.replace(extUrl,url2);
+				if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
 			});
 			[...img].forEach(value=>{
-				if(value.id != "icon10153" && value.src.substring(0,16)=="moz-extension://")value.src=value.src.replace(this.location.origin,url2);
+				if(value.id != "icon10153"){
+					if(value.src.includes(extUrl))value.src=value.src.replace(extUrl,url2);
+					if(value.src.includes("moz-extension://"))value.src=value.src.replace("moz-extension://","http://");
+				}
 			});
-			[...css].forEach(value=>{
-				if(value.id != "diff10153" && value.href.substring(0,16)=="moz-extension://")value.href=value.href.replace(this.location.origin,url2);
+			[...meta].forEach(value=>{
+				if(value.id != "diff10153"){
+					if(value.href.includes(extUrl))value.href=value.href.replace(extUrl,url2);
+					if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
+				}
 			});
 		},50);
 	});

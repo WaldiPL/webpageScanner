@@ -1,3 +1,5 @@
+const extURL=browser.extension.getURL("");
+
 (function(){
 	if(!document.getElementById("scanSite"))return;
 	translate();
@@ -41,7 +43,7 @@ function listSite(){
 		sites.forEach((value,i)=>{
 			let changed=value.changed;
 			let changeds=changed?"class='changed'":"";
-			list.innerHTML+=`<li id='item${i}' ${changeds}><a href='view.html?${i}' target='_blank'><img class='favicon' src='${value.favicon}'/>${value.title}</a></li>`;
+			list.innerHTML+=`<li id='item${i}' ${changeds}><a href='${extURL}view.html?${i}' target='_blank'><img class='favicon' src='${value.favicon}'/>${value.title}</a></li>`;
 		});
 	}).then(()=>{
 		const aElm=document.getElementsByTagName("a");
