@@ -114,7 +114,10 @@ function scanSite(ev,auto=false,force=false){
 	}).then((s)=>{
 		if(count){
 			let audio=new Audio('notification.opus');
-			audio.play();
+			browser.storage.local.get('settings').then(result=>{
+				audio.volume=result.settings.notificationVolume?result.settings.notificationVolume:0.6;
+				audio.play();
+			});
 			browser.notifications.create(
 				`webpagesScanner${auto}`,{
 					"type": "basic",

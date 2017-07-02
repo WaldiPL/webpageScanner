@@ -1,51 +1,54 @@
 {
-  "applications": {
-    "gecko": {
-      "id": "webpageScanner@waldemar.b",
-      "strict_min_version": "48.0a1"
-    }
-  },
-  "permissions": [
-	  "tabs",
-	  "storage",
-	  "alarms",
-	  "<all_urls>",
-	  "notifications",
-	  "contextMenus"
-  ],
-  "sidebar_action": {
-    "browser_style": false,
-	"default_title": "__MSG_extensionName__",
-	"default_panel": "sidebar.html",
-	"default_icon": "icons/icon2.svg"
-  }, 
-  "browser_action": {
-    "browser_style": false,
-	"default_title": "__MSG_extensionName__",
-	"default_popup": "popup.html",
-	"default_icon": {
-       "19": "icons/icon2.svg",
-       "38": "icons/icon.svg"
-    }
-  },
-  "background": {
-    "page": "bg.html"
-  },
-  "commands": {
-	  "_execute_sidebar_action": {
-		"suggested_key": {
-		  "default": "Alt+Q"
+	"applications": {
+		"gecko": {
+			"id": "webpageScanner@waldemar.b",
+			"strict_min_version": "48.0a1"
 		}
-	  }
-  },
-  "content_security_policy": "script-src 'self' 'unsafe-inline'; object-src 'self'",
-  "description": "__MSG_extensionDescription__",
-  "manifest_version": 2,
-  "default_locale": "en",
-  "name": "__MSG_extensionName__",
-  "version": "1.0.5",
-  "icons": {
-    "48": "icons/icon.svg",
-    "24": "icons/icon2.svg"
-  }
+	},
+	"permissions": [
+		"tabs",
+		"storage",
+		"alarms",
+		"<all_urls>",
+		"notifications",
+		"contextMenus"
+	],
+	"sidebar_action": {
+		"browser_style": false,
+		"default_title": "__MSG_extensionName__",
+		"default_panel": "sidebar.html",
+		"default_icon": "icons/icon2.svg"
+	},
+	"browser_action": {
+		"browser_style": false,
+		"default_title": "__MSG_extensionName__",
+		"default_popup": "popup.html",
+		"default_icon": {
+			"19": "icons/icon2.svg",
+			"38": "icons/icon.svg"
+		}
+	},
+	"background": {
+		"page": "bg.html"
+	},
+	"commands": {
+		"_execute_sidebar_action": {
+		"suggested_key": {
+				"default": "Alt+Q"
+			}
+		}
+	},
+	"options_ui": {
+		"page": "options.html"
+	},
+	"content_security_policy": "script-src 'self'; object-src 'self'",
+	"description": "__MSG_extensionDescription__",
+	"manifest_version": 2,
+	"default_locale": "en",
+	"name": "__MSG_extensionName__",
+	"version": "1.0.6",
+	"icons": {
+		"48": "icons/icon.svg",
+		"24": "icons/icon2.svg"
+	}
 }

@@ -1,7 +1,7 @@
 (function(){
 	browser.storage.local.get('sites').then(result=>{
 		if(result.sites===undefined){
-		  browser.storage.local.set({sites:[],changes:[]});
+		  browser.storage.local.set({sites:[],changes:[],settings:[]});
 		}
 	});
 	scanLater(3);

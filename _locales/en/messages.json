@@ -136,5 +136,14 @@
   },
   "charset": {
     "message": "Charset"
+  },
+  "options": {
+    "message": "Options"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "volume": {
+    "message": "Notification volume"
   }
 }

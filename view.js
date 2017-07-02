@@ -1,5 +1,5 @@
 var localId;
- 
+
 (function(){
 	const urlString = window.location.search;
 	localId = parseInt(urlString.substr(1));
@@ -58,19 +58,28 @@ function editSite(e){
 	browser.storage.local.get('sites').then(result=>{
 		let sites=result.sites;
 		let obj={
-			title:  document.getElementById("eTitle10153").value,
-			url:    document.getElementById("eUrl10153").value,
-			mode:   document.getElementById("eMode10153").value,
+			title:	document.getElementById("eTitle10153").value,
+			url:	document.getElementById("eUrl10153").value,
+			mode:	document.getElementById("eMode10153").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl10153").value,
-			freq:   parseInt(document.getElementById("eFreq10153").value),
+			freq:	parseInt(document.getElementById("eFreq10153").value),
 			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:"utf-8"
 		}
 		document.getElementById("title10153").textContent=obj.title;
 		sites[e] = Object.assign(sites[e],obj);
 		browser.storage.local.set({sites});
 	}).then(()=>{
-		  browser.runtime.sendMessage({"listSite": true});
+		browser.runtime.sendMessage({"listSite": true});
 	});
+}
+
+function setTitle(){
+	const metaTitles=document.getElementsByTagName("title");
+	const metaTitle=metaTitles[metaTitles.length-1];
+	const userTitle=document.getElementById("title10153").textContent;
+	const docTitle=document.title;
+	if(docTitle=="")document.title=userTitle;
+	else if(docTitle!=metaTitle.textContent)document.title=metaTitle.textContent;
 }
 
 function load(siteId,type){
@@ -105,6 +114,7 @@ function load(siteId,type){
 				window.location=sId.url;
 				break;
 		}
+		setTitle();
 		const a=document.getElementsByTagName("a");
 		const img=document.getElementsByTagName("img");
 		const meta=document.getElementsByTagName("link");
@@ -162,14 +172,14 @@ function i18n(e,s1){
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
-  if(m.deletedSite){
-	  let dId=parseInt(m.id);
-	  if(dId===localId){
-		  browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});
-	  }else if(dId<localId){
-		  window.location=browser.runtime.getURL("view.html")+"?"+(localId-1);
-	  }
-  }
+	if(m.deletedSite){
+		let dId=parseInt(m.id);
+		if(dId===localId){
+			browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});
+		}else if(dId<localId){
+			window.location=browser.runtime.getURL("view.html")+"?"+(localId-1);
+		}
+	}
 }
 
 function translate(){

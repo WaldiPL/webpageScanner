@@ -136,5 +136,14 @@
   },
   "charset": {
     "message": "Kodowanie"
+  },
+  "options": {
+    "message": "Opcje"
+  },
+  "save": {
+    "message": "Zapisz"
+  },
+  "volume": {
+    "message": "Głośność powiadomienia"
   }
 }
