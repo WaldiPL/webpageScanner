@@ -140,8 +140,26 @@
   "options": {
     "message": "Opcje"
   },
+  "general": {
+    "message": "Ogólne"
+  },
+  "notifications": {
+    "message": "Powiadomienia"
+  },
   "save": {
     "message": "Zapisz"
+  },
+  "autoOpen": {
+    "message": "Automatycznie otwieraj zmienione strony"
+  },
+  "defaultView": {
+    "message": "Domyślny widok"
+  },
+  "showNotification": {
+    "message": "Pokazuj powiadomienie o zmianach"
+  },
+  "notificationTime": {
+    "message": "Czas wyświetlania powiadomienia"
   },
   "volume": {
     "message": "Głośność powiadomienia"

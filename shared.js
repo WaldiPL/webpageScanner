@@ -114,25 +114,30 @@ function scanSite(ev,auto=false,force=false){
 	}).then((s)=>{
 		if(count){
 			let audio=new Audio('notification.opus');
-			browser.storage.local.get('settings').then(result=>{
-				audio.volume=result.settings.notificationVolume?result.settings.notificationVolume:0.6;
+			getSettings().then(s=>{
+				audio.volume=(s.notificationVolume/100);
 				audio.play();
-			});
-			browser.notifications.create(
-				`webpagesScanner${auto}`,{
-					"type": "basic",
-					"iconUrl": "icons/icon.svg",
-					"title": i18n("extensionName"),
-					"message": count==1?i18n("oneDetected"):i18n("moreDetected",count)
+				if(s.autoOpen)openSite(`webpagesScanner${auto}`);
+				if(s.showNotification){
+					browser.notifications.create(
+						`webpagesScanner${auto}`,{
+							"type": "basic",
+							"iconUrl": "icons/icon.svg",
+							"title": i18n("extensionName"),
+							"message": count==1?i18n("oneDetected"):i18n("moreDetected",count)
+						}
+					).then(()=>{
+						if(!s.autoOpen){
+							browser.notifications.onClicked.removeListener(openSite);
+							browser.notifications.onClicked.addListener(openSite);	 
+						}
+					});
+					setTimeout(()=>{
+						browser.notifications.clear(`webpagesScanner${auto}`);
+						if(!s.autoOpen)browser.notifications.onClicked.removeListener(openSite);
+					},s.notificationTime);
 				}
-			).then(()=>{
-				browser.notifications.onClicked.removeListener(openSite);
-				browser.notifications.onClicked.addListener(openSite);	 
 			});
-			setTimeout(()=>{
-				browser.notifications.clear(`webpagesScanner${auto}`);
-				browser.notifications.onClicked.removeListener(openSite);
-			},5000);
 		}
 	});
 }
@@ -227,4 +232,10 @@ function date(){
 
 function i18n(e,s1){
 	return browser.i18n.getMessage(e,s1);
+}
+
+function getSettings(name){
+	return browser.storage.local.get('settings').then(result=>{
+		return name?result.settings[name]:result.settings;
+	});
 }

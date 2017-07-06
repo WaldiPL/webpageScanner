@@ -31,6 +31,11 @@ input[type="image"]{
 	width:16px !important;
 }
 
+#options{
+	float:right;
+	margin-right:5px;
+}
+
 input[type="image"]:hover{
 	background:#ebebeb;
 }

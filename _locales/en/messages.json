@@ -140,8 +140,26 @@
   "options": {
     "message": "Options"
   },
+  "general": {
+    "message": "General"
+  },
+  "notifications": {
+    "message": "Notifications"
+  },
   "save": {
     "message": "Save"
+  },
+  "autoOpen": {
+    "message": "Automatically open the changed pages"
+  },
+  "defaultView": {
+    "message": "Default view"
+  },
+  "showNotification": {
+    "message": "Show notification of changes"
+  },
+  "notificationTime": {
+    "message": "Notification display time"
   },
   "volume": {
     "message": "Notification volume"

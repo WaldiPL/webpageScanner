@@ -2,12 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8">
+	<link rel="stylesheet" href="options.css"/>
   </head>
 <body>
-  <form>
-		<h3 id="h3options"></h3>
+  <form id="optionsForm">
+		<h2 id="h2options"></h2>
 		<table>
-		<tr><td><label id="volumeLabel"></label></td><td><input type="range"  min="0" max="1" step="0.1" id="notificationVolume"></td></tr>
+		<tr><th id="thGeneral"></th></tr>
+		<tr><td colspan="2"><input type="checkbox" id="autoOpen"><label id="labelAutoOpen" for="autoOpen"></label></td></tr>
+		<tr><td><label id="labelDefaultView"></label></td><td>
+			<select id="defaultView">
+				<option value="light"></option>
+				<option value="news"></option>
+				<option value="newHtml"></option>
+				<option value="oldHtml"></option>
+			</select>
+		</td></tr>
+		<tr><th id="thNotifications"></th></tr>
+		<tr><td colspan="2"><input type="checkbox" id="showNotification"><label id="labelShow" for="showNotification"></label></td></tr>
+		<tr id="trTime"><td><label id="timeLabel"></label></td><td><input type="range" min="5000" max="20000" step="1000" id="notificationTime"><output id="oTime" for="notificationTime"></output> s</td></tr>
+		<tr><td><label id="volumeLabel"></label></td><td><input type="range" min="0" max="100" step="5" id="notificationVolume"><output id="oVolume" for="notificationVolume"></output>%</td></tr>
 		<tr><td colspan="2"><button type="submit" id="submitSave"></button></td></tr>
 		</table>
   </form>

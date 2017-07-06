@@ -1,7 +1,18 @@
 (function(){
 	browser.storage.local.get('sites').then(result=>{
 		if(result.sites===undefined){
-		  browser.storage.local.set({sites:[],changes:[],settings:[]});
+		  browser.storage.local.set({sites:[],changes:[]});
+		}
+	});
+	browser.storage.local.get('settings').then(result=>{
+		if(result.settings===undefined){
+			browser.storage.local.set({settings:{
+				"notificationVolume":60,
+				"notificationTime":10000,
+				"showNotification":true,
+				"autoOpen":false,
+				"defaultView":"light"
+			}});
 		}
 	});
 	scanLater(3);

@@ -10,6 +10,7 @@ const extURL=browser.extension.getURL("");
 	document.getElementById("editCancel").addEventListener("click",hideAll);
 	document.getElementById("addCancel").addEventListener("click",hideAll);
 	document.getElementById("deleteCancel").addEventListener("click",hideAll);
+	document.getElementById("options").addEventListener("click",()=>{browser.runtime.openOptionsPage();});
 	window.addEventListener('contextmenu', function(e){
 		context(e);
 		e.preventDefault();
@@ -19,19 +20,30 @@ const extURL=browser.extension.getURL("");
 
 function context(e){
 	const a=e.target.parentElement;
-	const id=a.getAttribute("id");
-	const b=`<input class='editSite' id='edit${id}' type='image' src='icons/edit.png' title='${i18n("edit")}'><input class='deleteSite' id='delete${id}' type='image' src='icons/delete.png' title='${i18n("delete")}'>`;
-	const c=document.getElementById("edit"+id);
-	const d=e.target.toString().substr(0, 13)
-	if(!c&&d=="moz-extension"){a.innerHTML=b+a.innerHTML;
-		document.getElementById("edit"+id).addEventListener('click',function(){
-			const j=this.getAttribute("id").substr(8);
-			showEdit(j);
-		});
-		document.getElementById("delete"+id).addEventListener('click',function(){
-			const k=this.getAttribute("id").substr(10);
-			showDelete(k);
-		});
+	const id=parseInt(a.getAttribute("id").substr(4));
+	const c=document.getElementById(`edititem${id}`);
+	const d=e.target.toString().substr(0, 13);
+	if(!c&&d=="moz-extension"){
+		let eInput=document.createElement('input');
+			eInput.className="editSite";
+			eInput.id=`edititem${id}`;
+			eInput.type="image";
+			eInput.src="icons/edit.png";
+			eInput.title=i18n("edit");
+			eInput.addEventListener('click',()=>{
+				showEdit(id);
+			});
+		let dInput=document.createElement('input');
+			dInput.className="deleteSite";
+			dInput.id=`deleteitem${id}`;
+			dInput.type="image";
+			dInput.src="icons/delete.png";
+			dInput.title=i18n("delete");
+			dInput.addEventListener('click',()=>{
+				showDelete(id);
+			});
+		a.insertBefore(dInput,a.firstChild);
+		a.insertBefore(eInput,dInput);
 	}
 }
 
@@ -41,20 +53,31 @@ function listSite(){
 		const sites=result.sites;
 		const list = document.getElementById("lista");
 		sites.forEach((value,i)=>{
-			let changed=value.changed;
-			let changeds=changed?"class='changed'":"";
-			list.innerHTML+=`<li id='item${i}' ${changeds}><a href='${extURL}view.html?${i}' target='_blank'><img class='favicon' src='${value.favicon}'/>${value.title}</a></li>`;
-		});
-	}).then(()=>{
-		const aElm=document.getElementsByTagName("a");
-		[...aElm].forEach(value=>{
-		  value.addEventListener('mouseup',e=>{
-			  if(e.button===2)return;
-			  let elm=e.target.parentElement;
-			  let id=elm.id.substr(4);
-			  unchange([id]);
-			  elm.classList.remove("changed");
-		  });
+			let iLi=document.createElement('li');
+				iLi.id=`item${i}`;
+				if(value.changed)iLi.className="changed";
+			let iA=document.createElement('a');
+				iA.href=`${extURL}view.html?${i}`;
+				iA.target="_blank";
+				iA.textContent=value.title;
+				iA.addEventListener('mouseup',e=>{
+					if(e.button===2)return;
+					//Workaround for Firefox bug
+					if(e.button===1||(e.button===0&&e.ctrlKey===true)){
+						browser.tabs.create({
+							url:`${extURL}view.html?${i}`,
+							active:false
+						});
+					}//End
+					unchange([i]);
+					iLi.classList.remove("changed");
+				});
+			let iImg=document.createElement('img');
+				iImg.className="favicon";
+				iImg.src=value.favicon;
+			iA.insertBefore(iImg,iA.firstChild);
+			iLi.appendChild(iA);
+			list.appendChild(iLi);
 		});
 	});
 }
@@ -184,6 +207,7 @@ function translate(){
 	document.getElementById("scanSite").title=i18n("scanWebpage");
 	document.getElementById("openSite").title=i18n("openWebpage");
 	document.getElementById("showAdd").title=i18n("addWebpage");
+	document.getElementById("options").title=i18n("options");
 	document.getElementById("addWebpage").textContent=i18n("addWebpage");
 	document.getElementById("addressA").textContent=i18n("address");
 	document.getElementById("titleA").textContent=i18n("title");

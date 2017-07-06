@@ -13,7 +13,9 @@ var localId;
 	document.getElementById("deleteCancel10153").addEventListener("click",(e)=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("edit10153").addEventListener("click",()=>{showEdit(localId);});
 	document.getElementById("editCancel10153").addEventListener("click",(e)=>{e.target.offsetParent.classList.add("hidden");});
-	load(localId,"light");
+	getSettings("defaultView").then(s=>{
+		load(localId,s);
+	});
 })();
 
 function showDelete(e){
@@ -213,4 +215,11 @@ function translate(){
 	selectMode[2].text=i18n("modeM4");
 	selectMode[3].text=i18n("modeM1");
 	selectMode[4].text=i18n("modeM2");
+}
+
+function getSettings(name){
+	return browser.storage.local.get('settings').then(result=>{
+		return name?result.settings[name]:result.settings;
+	});
+
 }

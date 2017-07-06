@@ -1,0 +1,21 @@
+h2{
+	margin-bottom:0;
+}
+
+th{
+	text-align:left;
+	padding:10px 0 5px;
+	font-size:120%;
+}
+
+td{
+	padding:2px 5px;
+}
+
+#submitSave{
+	padding:5px 10px;
+}
+
+#trTime.false{
+	opacity:.4;
+}
