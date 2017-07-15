@@ -349,7 +349,7 @@ body{
 }
 
 .changes10153{
-	background:yellow !important;
+	background:#ff0 !important;
 	color:#000 !important;
 	border: 0 !important;
 	padding:0 !important;
@@ -357,4 +357,13 @@ body{
 	opacity:1 !important;
 	overflow:visible !important;
 	outline: none !important;
+}
+
+a .changes10153{
+	color:#006abc !important;
+}
+
+a .changes10153:hover{
+	color:#00f !important;
+	background:#ffe100 !important;
 }

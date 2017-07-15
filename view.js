@@ -10,9 +10,9 @@ var localId;
 	document.getElementById("light10153").addEventListener("click",()=>{load(localId,"light");});
 	document.getElementById("active10153").addEventListener("click",()=>{load(localId,"active");});
 	document.getElementById("delete10153").addEventListener("click",()=>{showDelete(localId);});
-	document.getElementById("deleteCancel10153").addEventListener("click",(e)=>{e.target.offsetParent.classList.add("hidden");});
+	document.getElementById("deleteCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("edit10153").addEventListener("click",()=>{showEdit(localId);});
-	document.getElementById("editCancel10153").addEventListener("click",(e)=>{e.target.offsetParent.classList.add("hidden");});
+	document.getElementById("editCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	getSettings("defaultView").then(s=>{
 		load(localId,s);
 	});
@@ -93,8 +93,9 @@ function load(siteId,type){
 		const cId = changes[siteId];
 		const newHtml = cId.html;
 		const oldHtml = cId?cId.oldHtml:"";
-		const light = cId?diffString2(oldHtml,newHtml).n:newHtml;
-		const news = cId?diffString2(oldHtml,newHtml).c:"";
+		const diffString = diffString2(oldHtml,newHtml);
+		const light = cId?diffString.n:newHtml;
+		const news = cId?diffString.c:"";
 		const url = sId.url.split("/");
 		const url2 = url[0]+"//"+url[2]+"/";
 		document.getElementById("title10153").textContent=sId.title;

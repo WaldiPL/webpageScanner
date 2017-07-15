@@ -134,8 +134,8 @@ select{
 
 ul{
     list-style-type: none;
-    margin: 0;
-    padding: 31px 0 30px;
+    margin: 0 0 30px;
+    padding: 31px 0 0;
 }
 
 ul li{

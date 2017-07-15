@@ -11,10 +11,8 @@ const extURL=browser.extension.getURL("");
 	document.getElementById("addCancel").addEventListener("click",hideAll);
 	document.getElementById("deleteCancel").addEventListener("click",hideAll);
 	document.getElementById("options").addEventListener("click",()=>{browser.runtime.openOptionsPage();});
-	window.addEventListener('contextmenu', function(e){
-		context(e);
-		e.preventDefault();
-	});
+	window.addEventListener('contextmenu',e=>{e.preventDefault();});
+	document.getElementById("lista").addEventListener('contextmenu',e=>{context(e);});
 	listSite();
 })();
 
@@ -22,8 +20,7 @@ function context(e){
 	const a=e.target.parentElement;
 	const id=parseInt(a.getAttribute("id").substr(4));
 	const c=document.getElementById(`edititem${id}`);
-	const d=e.target.toString().substr(0, 13);
-	if(!c&&d=="moz-extension"){
+	if(!c){
 		let eInput=document.createElement('input');
 			eInput.className="editSite";
 			eInput.id=`edititem${id}`;
@@ -57,18 +54,14 @@ function listSite(){
 				iLi.id=`item${i}`;
 				if(value.changed)iLi.className="changed";
 			let iA=document.createElement('a');
-				iA.href=`${extURL}view.html?${i}`;
-				iA.target="_blank";
 				iA.textContent=value.title;
 				iA.addEventListener('mouseup',e=>{
-					if(e.button===2)return;
-					//Workaround for Firefox bug
-					if(e.button===1||(e.button===0&&e.ctrlKey===true)){
+					if(e.button!=2){
 						browser.tabs.create({
 							url:`${extURL}view.html?${i}`,
-							active:false
+							active:(e.button===1||(e.button===0&&e.ctrlKey===true))?false:true
 						});
-					}//End
+					}
 					unchange([i]);
 					iLi.classList.remove("changed");
 				});
@@ -198,6 +191,7 @@ function run(m){
 }
 
 function translate(){
+	document.title=i18n("extensionName");
 	document.getElementById("addCancel").textContent=i18n("cancel");
 	document.getElementById("addSite").textContent=i18n("add");
 	document.getElementById("editCancel").textContent=i18n("cancel");
