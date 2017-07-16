@@ -2,23 +2,23 @@ body{
 	width:100%;
 	font-size:14px;
 	font-family:'Segoe UI', sans-serif;
-	background: #FBFBFB;
+	background:#FBFBFB;
 	margin:0;
 }
 
 #navPanel{
-	background: #eee;
-	width: 100%;
-	height: 24px;
-	padding: 3px;
-	position: fixed;
-	border-bottom: 1px solid #b1b1b1;
-	box-shadow: 0px 0px 10px #b1b1b1;
+	background:#f0f0f0;
+	width:100%;
+	height:24px;
+	padding:3px;
+	position:fixed;
+	border-bottom:1px solid #b1b1b1;
+	box-shadow:0px 0px 10px #b1b1b1;
 	z-index:2147483647;
 }
 
 input[type="image"]{
-	-moz-appearance: none;
+	-moz-appearance:none;
 	width:16px;
 	height:16px;
 	padding:3px 6px;
@@ -43,7 +43,7 @@ input[type="image"].open{
 }
 
 input[type="text"]{
-	-moz-appearance: none;
+	-moz-appearance:none;
 	border:1px solid #b1b1b1;
 	height:23px;
 	width:calc(100% - 12px);
@@ -61,21 +61,21 @@ button:focus,button:hover,ul li:hover a{
 
 #addingSite, #editingSite, #deletingSite{
 	transition-property:opacity;
-	transition-duration: 200ms;
+	transition-duration:200ms;
 	width:calc(100% - 10px);
 	opacity:1;
 	background:#eee;
 	border-bottom:1px solid #b1b1b1;
 	position:fixed;
 	padding:5px;
-	top: 31px;
-	box-shadow: 0px 10px 10px -10px #b1b1b1;
+	top:31px;
+	box-shadow:0px 10px 10px -10px #b1b1b1;
 	z-index:2147483647;
 }
 
 .footer{
 	padding:5px 3px 3px;
-	float: right;
+	float:right;
 }
 
 .negative{
@@ -99,24 +99,24 @@ button:focus,button:hover,ul li:hover a{
 }
 
 button{
-	background: #fbfbfb;
+	background:#fbfbfb;
 	color:#000;
-	border: 1px solid #b1b1b1;
-	padding: 4px 10px 6px;
+	border:1px solid #b1b1b1;
+	padding:4px 10px 6px;
 	font-size:14px;
 	line-height:18px;
-	text-align: center;
+	text-align:center;
 	font-family:'Segoe UI', sans-serif;
-	cursor: pointer;
+	cursor:pointer;
 	border-radius:0;
 }
 
 select{
-	-moz-appearance: none;
-	background: #fbfbfb;
+	-moz-appearance:none;
+	background:#fbfbfb;
 	color:#000;
-	border: 1px solid #b1b1b1;
-	padding: 2px;
+	border:1px solid #b1b1b1;
+	padding:2px;
 	font-size:13px;
 	line-height:18px;
 	font-family:'Segoe UI', sans-serif;
@@ -129,28 +129,28 @@ select{
 }
 
 ul{
-    list-style-type: none;
-    margin: 0 0 30px;
-    padding: 31px 0 0;
+    list-style-type:none;
+    margin:0 0 30px;
+    padding:31px 0 0;
 }
 
 ul li{
-	line-height: 0;
+	line-height:0;
 }
 
 ul li a{
-	display: inline-block;
-	height: 16px;
-	background: #fbfbfb;
+	display:inline-block;
+	height:16px;
+	background:#fbfbfb;
 	border-bottom:1px solid #e0e0e0;
-	padding: 7px 6px;
-	margin: 0;
-	line-height: 14px;
-	text-decoration: none;
+	padding:7px 6px;
+	margin:0;
+	line-height:14px;
+	text-decoration:none;
 	color:inherit;
-	white-space: nowrap;
+	white-space:nowrap;
 	overflow:hidden;
-	width: calc(100% - 12px);
+	width:calc(100% - 12px);
 }
 
 ul li input+a{
@@ -158,10 +158,10 @@ ul li input+a{
 }
 
 ul li input{
-	float: right;
-	padding: 7px !important;
+	float:right;
+	padding:7px !important;
 	border:none !important;
-	border-bottom: 1px solid #e0e0e0 !important;
+	border-bottom:1px solid #e0e0e0 !important;
 }
 
 ul li:hover input{
@@ -181,48 +181,48 @@ ul li .editSite:hover{
 
 ul li.scanned a{
 	border-left:3px solid #3bdb00;
-	padding-left: 3px !important;
+	padding-left:3px !important;
 }
 
 ul li.changed a{
-	border-left: 3px solid #0ba0f9;
-	background: #0ba0f9;
+	border-left:3px solid #0ba0f9;
+	background:#0ba0f9;
 	color:#fff;
-	padding-left: 3px !important;
+	padding-left:3px !important;
 }
 
 ul li.opened a{
 	border-left:none !important;
-	background: #fbfbfb !important;
+	background:#fbfbfb !important;
 	color:#000 !important;
-	padding-left: 6px !important;
+	padding-left:6px !important;
 }
 
 ul li.opened:hover a{
-	background: #ebebeb !important;
+	background:#ebebeb !important;
 }
 
 ul li.error a{
 	border-left:3px solid #d94141;
 	background:#ffafaf;
-	padding-left: 3px !important;
+	padding-left:3px !important;
 }
 
 #statusbar{
-	position: fixed;
-	bottom: 0;
-	background: #eee;
-	border-top: 1px solid #b1b1b1;
-	box-shadow: 0px 0px 10px #b1b1b1;
-	width: 100%;
+	position:fixed;
+	bottom:0;
+	background:#eee;
+	border-top:1px solid #b1b1b1;
+	box-shadow:0px 0px 10px #b1b1b1;
+	width:100%;
 	height:20px;
-	padding: 3px;
+	padding:3px;
 	z-index:2147483647;
 }
 
 .favicon{
-    vertical-align: top;
-	padding-right: 5px;
+    vertical-align:top;
+	padding-right:5px;
 	height:16px;
 	width:16px;
 	max-height:16px;

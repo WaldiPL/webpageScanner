@@ -11,6 +11,7 @@
 				"notificationTime":10000,
 				"showNotification":true,
 				"autoOpen":false,
+				"hideHeader":false,
 				"defaultView":"light"
 			}});
 		}

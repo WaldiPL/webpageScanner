@@ -17,6 +17,7 @@ function saveOptions(e){
 		notificationTime:	parseInt(document.getElementById("notificationTime").value),
 		showNotification:	document.getElementById("showNotification").checked,
 		autoOpen:			document.getElementById("autoOpen").checked,
+		hideHeader:			document.getElementById("hideHeader").checked,
 		defaultView:		document.getElementById("defaultView").value
 	};
 	browser.storage.local.set({settings:settings});
@@ -33,6 +34,7 @@ function restoreOptions(){
 		document.getElementById("notificationTime").value=notificationTime;
 		document.getElementById("oTime").value=parseInt(notificationTime/1000);
 		document.getElementById("autoOpen").checked=s.autoOpen;
+		document.getElementById("hideHeader").checked=s.hideHeader;
 		document.getElementById("showNotification").checked=s.showNotification;
 		document.getElementById("defaultView").value=s.defaultView;
 		document.getElementById("trTime").className=s.showNotification;
@@ -44,6 +46,7 @@ function translate(){
 	document.getElementById("h2options").textContent=i18n("options");
 	document.getElementById("thGeneral").textContent=i18n("general");
 	document.getElementById("labelAutoOpen").textContent=i18n("autoOpen");
+	document.getElementById("labelHideHeader").textContent=i18n("hideHeader");
 	document.getElementById("labelDefaultView").textContent=i18n("defaultView");
 	let defaultViewSelect=document.getElementById("defaultView").options;
 		defaultViewSelect[0].text=i18n("highlight");

@@ -158,6 +158,9 @@
   "autoOpen": {
     "message": "Automatycznie otwieraj zmienione strony"
   },
+  "hideHeader": {
+    "message": "Ukryj interfejs"
+  },
   "defaultView": {
     "message": "Domyślny widok"
   },

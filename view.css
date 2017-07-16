@@ -17,11 +17,11 @@ body.hiddenHeader10153{
 	box-shadow:0px 0px 10px #b1b1b1 !important;
 	box-sizing:initial !important;
 	color:#000 !important;
-	display:grid;
-	grid-template-columns:48px 220px minmax(max-content, auto) max-content;
-	grid-template-rows:50% 50%;
-	grid-template-areas:"icon title title tabs"
-						"icon last set tabs";
+	display:grid !important;
+	grid-template-columns:48px minmax(100px,max-content) minmax(max-content,auto) max-content;
+	grid-template-rows:60% 40%;
+	grid-template-areas:"icon title set tabs"
+						"icon last last tabs";
 	float:none !important;
 	font-family:'Segoe UI', sans-serif !important;
 	font-size:14px !important;
@@ -44,12 +44,16 @@ body.hiddenHeader10153{
 	visibility:visible !important;
 	width:calc(100% - 20px) !important;
 	z-index:2147483647 !important;
-	transition:top 300ms;
+	transition:top 300ms !important;
 }
 
 .hiddenHeader10153 #header10153{
 	top:-61px !important;
-	transition:top 300ms;
+	transition:top 300ms !important;
+}
+
+.hiddenHeader10153.autoHidden10153 #header10153{
+	transition:none !important;
 }
 
 #icon10153{
@@ -102,7 +106,7 @@ body.hiddenHeader10153{
 
 #set10153{
 	grid-area:set;
-	background:transparent !important;
+	background:#eee !important;
 	border:0 !important;
 	display:block !important;
 	float:none !important;
@@ -112,14 +116,14 @@ body.hiddenHeader10153{
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
-	padding:0 !important;
+	padding:0 5px !important;
 	position:static !important;
 	transform:none !important;
 	visibility:visible !important;
 	width:auto !important;
 }
 
-#header10153 div  button, .footer10153 button{
+#header10153 div button, .footer10153 button{
 	border-radius:0 !important;
 	box-shadow:none !important;
 	box-sizing:border-box !important;
@@ -153,7 +157,7 @@ body.hiddenHeader10153{
 #tabs10153 button:hover{
 	background:#ebebeb !important;
 }
-#tabs10153 button:active, #tabs10153  button.active10153{
+#tabs10153 button:active, #tabs10153 button.active10153{
 	background:#0ba0f9 !important;
 	border-color:#258ad6 !important;
 	color:#fff !important;
@@ -225,7 +229,7 @@ body.hiddenHeader10153{
 
 #tabs10153{
 	grid-area:tabs;
-	background:transparent !important;
+	background:#eee !important;
 	border:0 !important;
 	display:block !important;
 	float:none !important;
@@ -418,7 +422,7 @@ a .changes10153:hover{
 	top:-2px !important;
 	margin:0 !important;
 	opacity:.9 !important;
-	transition:margin 200ms 350ms;
+	transition:margin 200ms 350ms !important;
 }
 
 #toogleHeader10153:hover{

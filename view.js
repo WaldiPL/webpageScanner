@@ -1,4 +1,5 @@
 var localId;
+const extURL=browser.extension.getURL("");
 
 (function(){
 	const urlString = window.location.search;
@@ -13,23 +14,11 @@ var localId;
 	document.getElementById("deleteCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("edit10153").addEventListener("click",()=>{showEdit(localId);});
 	document.getElementById("editCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
-	getSettings("defaultView").then(s=>{
-		load(localId,s);
+	getSettings().then(s=>{
+		load(localId,s.defaultView);
+		if(s.hideHeader)toogleHeader(true);
 	});
-	document.getElementById("toogleHeader10153").addEventListener("click",()=>{
-		let body=document.body,
-			arrow=document.getElementById("toogleHeader10153"),
-			hidd=body.classList.contains("hiddenHeader10153");
-		if(!hidd){
-			body.className="hiddenHeader10153";
-			arrow.src=browser.extension.getURL("")+"icons/toogle.svg#d";
-			arrow.title=i18n("showInterface");
-		}else{
-			body.className="";
-			arrow.src=browser.extension.getURL("")+"icons/toogle.svg#t";
-			arrow.title=i18n("hideInterface");
-		}	
-	});
+	document.getElementById("toogleHeader10153").addEventListener("click",()=>{toogleHeader();});
 })();
 
 function showDelete(e){
@@ -237,5 +226,19 @@ function getSettings(name){
 	return browser.storage.local.get('settings').then(result=>{
 		return name?result.settings[name]:result.settings;
 	});
+}
 
+function toogleHeader(auto){
+	let body=document.body,
+		arrow=document.getElementById("toogleHeader10153"),
+		hidd=body.classList.contains("hiddenHeader10153");
+	if(!hidd||auto){
+		body.className=auto?"hiddenHeader10153 autoHidden10153":"hiddenHeader10153";
+		arrow.src=`${extURL}icons/toogle.svg#d`;
+		arrow.title=i18n("showInterface");
+	}else{
+		body.className="";
+		arrow.src=`${extURL}icons/toogle.svg#t`;
+		arrow.title=i18n("hideInterface");
+	}
 }

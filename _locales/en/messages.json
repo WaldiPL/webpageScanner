@@ -158,6 +158,9 @@
   "autoOpen": {
     "message": "Automatically open the changed pages"
   },
+  "hideHeader": {
+    "message": "Hide interface"
+  },
   "defaultView": {
     "message": "Default view"
   },
