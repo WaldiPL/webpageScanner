@@ -179,9 +179,23 @@ function hideAll(e){
 }
 
 function statusbar(e,aHide){
-	document.getElementById("statusbar").innerHTML=e;
+	let statusbar=document.getElementById("statusbar");
+	if(typeof(e)==="string"){
+		statusbar.textContent=e;
+	}else{
+		let progress;
+		if(e[0]===0){
+			statusbar.textContent="";
+			progress=document.createElement('progress');
+			progress.max=e[1];
+			statusbar.appendChild(progress);
+		}else{
+			progress=document.getElementsByTagName("progress")[0];
+		}
+		progress.value=e[0];
+	}
 	if(!aHide){
-		setTimeout(()=>{document.getElementById("statusbar").textContent="";},5000);
+		setTimeout(()=>{statusbar.textContent="";},5000);
 	}
 }
 

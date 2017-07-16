@@ -108,7 +108,7 @@ function scanSite(ev,auto=false,force=false){
 			}catch(e){
 				console.warn(e);				
 			}
-			if(!auto)statusbar(`<progress value='${ix}' max='${len}'></progress>`,true);
+			if(!auto)statusbar([ix,len],true);
 		});
 		if(!auto)statusbar(i18n("scanCompleted"));
 	}).then((s)=>{

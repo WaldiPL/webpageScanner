@@ -152,9 +152,6 @@
   "notifications": {
     "message": "Powiadomienia"
   },
-  "save": {
-    "message": "Zapisz"
-  },
   "autoOpen": {
     "message": "Automatycznie otwieraj zmienione strony"
   },

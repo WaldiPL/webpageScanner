@@ -152,9 +152,6 @@
   "notifications": {
     "message": "Notifications"
   },
-  "save": {
-    "message": "Save"
-  },
   "autoOpen": {
     "message": "Automatically open the changed pages"
   },
