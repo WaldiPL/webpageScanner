@@ -25,7 +25,7 @@ function context(e){
 			eInput.className="editSite";
 			eInput.id=`edititem${id}`;
 			eInput.type="image";
-			eInput.src="icons/edit.png";
+			eInput.src="icons/edit.svg";
 			eInput.title=i18n("edit");
 			eInput.addEventListener('click',()=>{
 				showEdit(id);
@@ -34,7 +34,7 @@ function context(e){
 			dInput.className="deleteSite";
 			dInput.id=`deleteitem${id}`;
 			dInput.type="image";
-			dInput.src="icons/delete.png";
+			dInput.src="icons/delete.svg";
 			dInput.title=i18n("delete");
 			dInput.addEventListener('click',()=>{
 				showDelete(id);

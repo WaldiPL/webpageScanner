@@ -121,6 +121,12 @@
   "monthList": {
    "message": ",January,February,March,April,May,June,July,August,September,October,November,December"
   },
+  "hideInterface": {
+    "message": "Hide interface"
+  },
+  "showInterface": {
+    "message": "Show interface"
+  },
   
   "addThis": {
     "message": "Add to scan list"

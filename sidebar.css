@@ -19,16 +19,12 @@ body{
 
 input[type="image"]{
 	-moz-appearance: none;
-	width:17px;
+	width:16px;
 	height:16px;
 	padding:3px 6px;
 	background:#fbfbfb;
 	border:1px solid #b1b1b1;
 	color:transparent;
-}
-
-#showAdd,.editSite{
-	width:16px !important;
 }
 
 #options{
@@ -158,7 +154,7 @@ ul li a{
 }
 
 ul li input+a{
-	width:calc(100% - 73px);
+	width:calc(100% - 72px);
 }
 
 ul li input{

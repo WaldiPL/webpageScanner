@@ -1,5 +1,11 @@
 body{
-	margin:61px 0 0 0!important;
+	margin:61px 0 0 0 !important;
+	padding:0 !important;
+	transition:margin 300ms !important;
+}
+
+body.hiddenHeader10153{
+	margin:0 !important;
 	padding:0 !important;
 }
 
@@ -8,18 +14,22 @@ body{
 	border:0 !important;
 	border-bottom:1px solid #0ba0f9 !important;
 	border-radius:0 !important;
-	box-shadow: 0px 0px 10px #b1b1b1 !important;
-	box-sizing: initial !important;
+	box-shadow:0px 0px 10px #b1b1b1 !important;
+	box-sizing:initial !important;
 	color:#000 !important;
-	display:block !important;
+	display:grid;
+	grid-template-columns:48px 220px minmax(max-content, auto) max-content;
+	grid-template-rows:50% 50%;
+	grid-template-areas:"icon title title tabs"
+						"icon last set tabs";
 	float:none !important;
 	font-family:'Segoe UI', sans-serif !important;
 	font-size:14px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
 	height:40px !important;
-	left: 0 !important;
-	line-height: 20px !important;
+	left:0 !important;
+	line-height:20px !important;
 	margin:0 !important;
 	min-height:40px !important;
 	min-width:calc(100% - 20px) !important;
@@ -27,17 +37,24 @@ body{
 	overflow:visible !important;
 	outline:0 !important;
 	padding:10px !important;
-	position: fixed !important;
-	top: 0 !important;
-	text-align: left !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:fixed !important;
+	top:0 !important;
+	text-align:left !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:calc(100% - 20px) !important;
 	z-index:2147483647 !important;
+	transition:top 300ms;
+}
+
+.hiddenHeader10153 #header10153{
+	top:-61px !important;
+	transition:top 300ms;
 }
 
 #icon10153{
-	background: transparent !important;
+	grid-area:icon;
+	background:transparent !important;
 	border:0 !important;
 	border-radius:0 !important;
 	display:block !important;
@@ -48,10 +65,14 @@ body{
 	overflow:visible !important;
 	outline:0 !important;
 	padding:0 !important;
-	position: static !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:48px !important;
+}
+
+#title10153{
+	grid-area:title;
 }
 
 #title10153,#deletingSite10153 b,#editingSite10153 b{
@@ -65,45 +86,45 @@ body{
 	font-style:normal !important;
 	font-weight:800 !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
 	padding:0 !important;
-	position: static !important;
-	text-align: left !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:static !important;
+	text-align:left !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
+	white-space:nowrap !important;
 }
 
 #set10153{
+	grid-area:set;
 	background:transparent !important;
 	border:0 !important;
-	display:inline-block !important;
+	display:block !important;
 	float:none !important;
 	height:auto !important;
-	line-height: 20px !important;
-	left: 15px !important;
-	margin:0 !important;
+	line-height:20px !important;
+	margin:-2px 0 0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
 	padding:0 !important;
-	position: relative !important;
-	transform: none !important;
-	top: -2px !important;
-	visibility: visible !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
 }
 
 #header10153 div  button, .footer10153 button{
 	border-radius:0 !important;
 	box-shadow:none !important;
-	box-sizing: border-box !important;
-	cursor: pointer !important;
-	display: inline-block !important;
+	box-sizing:border-box !important;
+	cursor:pointer !important;
+	display:inline-block !important;
 	font-family:'Segoe UI', sans-serif !important;
 	font-size:12px !important;
 	font-style:normal !important;
@@ -114,52 +135,52 @@ body{
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
-	position: static !important;
-	text-align: center !important;
-	text-shadow: none !important;
+	position:static !important;
+	text-align:center !important;
+	text-shadow:none !important;
 	text-transform:none !important;
-	visibility: visible !important;
+	visibility:visible !important;
 	width:auto !important;
-	white-space: normal !important;
+	white-space:normal !important;
 }
 
-#tabs10153  button{
+#tabs10153 button{
 	color:#000 !important;
-	background: #fbfbfb !important;
-	border: 1px solid #b1b1b1 !important;
-	padding: 4px 8px 6px !important;
+	background:#fbfbfb !important;
+	border:1px solid #b1b1b1 !important;
+	padding:4px 8px 6px !important;
 }
 #tabs10153 button:hover{
 	background:#ebebeb !important;
 }
-#tabs10153  button:active, #tabs10153  button.active10153{
-	background: #0ba0f9 !important;
-	border-color: #258ad6 !important;
+#tabs10153 button:active, #tabs10153  button.active10153{
+	background:#0ba0f9 !important;
+	border-color:#258ad6 !important;
 	color:#fff !important;
 }
-#tabs10153   button.active10153:hover{
+#tabs10153 button.active10153:hover{
 	background:#0670cc !important;
 }
 
 .footer10153 button{
-	padding: 4px 8px 6px !important;
+	padding:4px 8px 6px !important;
 }
 
-#set10153  button{
-	padding: 2px 8px 3px !important;
+#set10153 button{
+	padding:2px 8px 3px !important;
 }
 
 .neutral{
-	border: 1px solid #b1b1b1 !important;
+	border:1px solid #b1b1b1 !important;
 	color:#000 !important;
-	background: #fbfbfb !important;
+	background:#fbfbfb !important;
 }
 .neutral:hover{
 	background:#ebebeb !important;
 }
 
 .negative{
-	border: 1px solid #d94141 !important;
+	border:1px solid #d94141 !important;
 	background:#d94141 !important;
 	color:#fff !important;
 }
@@ -169,7 +190,7 @@ body{
 }
 
 .positive{
-	border: 1px solid #258ad6 !important;
+	border:1px solid #258ad6 !important;
 	background:#0ba0f9 !important;
 	color:#fff !important;
 }
@@ -178,6 +199,7 @@ body{
 }
 
 #lastScan10153{
+	 grid-area:last;
 	border-radius:0 !important;
 	background:transparent !important;
 	color:#888 !important;
@@ -189,35 +211,34 @@ body{
 	font-style:normal !important;
 	font-weight:400 !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
 	padding:0 !important;
-	position: static !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
 }
 
 #tabs10153{
-	background: transparent !important;
+	grid-area:tabs;
+	background:transparent !important;
 	border:0 !important;
-	display:inline-block !important;
+	display:block !important;
 	float:none !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
-	padding:0 !important;
-	position: absolute !important;
-	right: 10px !important;
-	transform: none !important;
-	top: 15px !important;
-	visibility: visible !important;
+	padding:5px 0 !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
 }
 
@@ -225,14 +246,14 @@ body{
 	border-radius:0 !important;
 	background:#eee !important;
 	border:1px solid #b1b1b1 !important;
-	box-shadow: 0px 0px 10px #b1b1b1 !important;
+	box-shadow:0px 0px 10px #b1b1b1 !important;
 	float:none !important;
 	font-family:'Segoe UI', sans-serif !important;
 	font-size:14px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
@@ -241,9 +262,9 @@ body{
 	position:fixed !important;
 	left:calc(50% - 161px) !important;
 	top:200px !important;
-	transform: none !important;
+	transform:none !important;
 	width:300px !important;
-	visibility: visible !important;
+	visibility:visible !important;
 	z-index:2147483647 !important;
 	display:block;
 }
@@ -260,15 +281,15 @@ body{
 	font-style:normal !important;
 	font-weight:400 !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
 	padding:0 !important;
-	position: static !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
 }
 
@@ -276,23 +297,23 @@ body{
 	background:transparent !important;
 	border:0 !important;
 	display:inline-block !important;
-	float: right !important;
+	float:right !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
 	padding:0 !important;
 	padding-top:7px !important;
-	position: static !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
 }
 
 #editingSite10153 table{
-	border-collapse: initial !important;
+	border-collapse:initial !important;
 	background:transparent !important;
 	border:0 !important;
 	margin:0 !important;
@@ -301,16 +322,16 @@ body{
 	outline:0 !important;
 	padding:0 !important;
 	height:auto !important;
-	line-height: 20px !important;
+	line-height:20px !important;
 	padding-top:7px !important;
-	position: static !important;
-	transform: none !important;
-	visibility: visible !important;
+	position:static !important;
+	transform:none !important;
+	visibility:visible !important;
 	width:auto !important;
 }
 
 #editingSite10153 table td{
-	border-collapse: initial !important;
+	border-collapse:initial !important;
 	background:transparent !important;
 	border:0 !important;
 	margin:0 !important;
@@ -328,8 +349,8 @@ body{
 	height:auto !important;
 	width:calc(100% - 4px) !important;
 	padding:3px !important;
-	border: 1px solid #b1b1b1 !important;
-	outline: none !important;
+	border:1px solid #b1b1b1 !important;
+	outline:none !important;
 	font-size:14px !important;
 	font-family:'Segoe UI', sans-serif !important;
 	line-height:initial !important;
@@ -341,22 +362,22 @@ body{
 }
 
 #editingSite10153 table select:focus,#editingSite10153 table input:focus{
-	border: 1px solid #0ba0f9 !important;
+	border:1px solid #0ba0f9 !important;
 }
  
 .hidden{
-	display: none !important;
+	display:none !important;
 }
 
 .changes10153{
 	background:#ff0 !important;
 	color:#000 !important;
-	border: 0 !important;
+	border:0 !important;
 	padding:0 !important;
 	margin:0 !important;
 	opacity:1 !important;
 	overflow:visible !important;
-	outline: none !important;
+	outline:none !important;
 }
 
 a .changes10153{
@@ -366,4 +387,46 @@ a .changes10153{
 a .changes10153:hover{
 	color:#00f !important;
 	background:#ffe100 !important;
+}
+
+#toogleHeader10153{
+	position:absolute !important;
+	right:50% !important;
+	top:65px !important;
+	margin:-22px 0 0 !important;
+	background:none !important;
+	border:0 !important;
+	border-radius:0 !important;
+	box-sizing:initial !important;
+	display:block !important;
+	float:none !important;
+	height:22px !important;
+	min-height:22px !important;
+	min-width:64px !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:0 !important;
+	padding:0 !important;
+	transform:none !important;
+	visibility:visible !important;
+	width:64px !important;
+	z-index:2147483647 !important;
+}
+
+.hiddenHeader10153 #toogleHeader10153{
+	position:fixed !important;
+	top:-2px !important;
+	margin:0 !important;
+	opacity:.9 !important;
+	transition:margin 200ms 350ms;
+}
+
+#toogleHeader10153:hover{
+	top:63px !important;
+}
+
+.hiddenHeader10153 #toogleHeader10153:hover{
+	position:fixed !important;
+	top:0px !important;
+	opacity:1 !important;
 }

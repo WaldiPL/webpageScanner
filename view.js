@@ -16,6 +16,20 @@ var localId;
 	getSettings("defaultView").then(s=>{
 		load(localId,s);
 	});
+	document.getElementById("toogleHeader10153").addEventListener("click",()=>{
+		let body=document.body,
+			arrow=document.getElementById("toogleHeader10153"),
+			hidd=body.classList.contains("hiddenHeader10153");
+		if(!hidd){
+			body.className="hiddenHeader10153";
+			arrow.src=browser.extension.getURL("")+"icons/toogle.svg#d";
+			arrow.title=i18n("showInterface");
+		}else{
+			body.className="";
+			arrow.src=browser.extension.getURL("")+"icons/toogle.svg#t";
+			arrow.title=i18n("hideInterface");
+		}	
+	});
 })();
 
 function showDelete(e){
@@ -128,13 +142,13 @@ function load(siteId,type){
 				if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
 			});
 			[...img].forEach(value=>{
-				if(value.id != "icon10153"){
+				if(value.id!="icon10153"&&value.id!="toogleHeader10153"){
 					if(value.src.includes(extUrl))value.src=value.src.replace(extUrl,url2);
 					if(value.src.includes("moz-extension://"))value.src=value.src.replace("moz-extension://","http://");
 				}
 			});
 			[...meta].forEach(value=>{
-				if(value.id != "diff10153"){
+				if(value.id!="diff10153"){
 					if(value.href.includes(extUrl))value.href=value.href.replace(extUrl,url2);
 					if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
 				}
@@ -216,6 +230,7 @@ function translate(){
 	selectMode[2].text=i18n("modeM4");
 	selectMode[3].text=i18n("modeM1");
 	selectMode[4].text=i18n("modeM2");
+	document.getElementById("toogleHeader10153").title=i18n("hideInterface");
 }
 
 function getSettings(name){

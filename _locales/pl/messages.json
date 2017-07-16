@@ -121,6 +121,12 @@
   "monthList": {
    "message": ",stycznia,lutego,marca,kwietnia,maja,czerwca,lipca,sierpnia,września,października,listopada,grudnia"
   },
+  "hideInterface": {
+    "message": "Ukryj interfejs"
+  },
+  "showInterface": {
+    "message": "Pokaż interfejs"
+  },
   
   "addThis": {
     "message": "Dodaj do listy skanowania"
