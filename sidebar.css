@@ -151,6 +151,7 @@ ul li a{
 	white-space:nowrap;
 	overflow:hidden;
 	width:calc(100% - 12px);
+	cursor:pointer;
 }
 
 ul li input+a{
