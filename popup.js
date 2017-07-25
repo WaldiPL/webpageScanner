@@ -18,7 +18,7 @@ function addThis(){
 }
 
 function scanNow(){
-	browser.runtime.sendMessage({"scanSite":true});
+	browser.runtime.sendMessage({"scanSites":true});
 }
 
 function showList(){

@@ -21,13 +21,13 @@
 
 browser.alarms.onAlarm.addListener((alarm)=>{
   scanLater(60);
-  scanSite(0,true);
+  scanSites(0,true);
 });
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
   if(m.addThis)rqstAdd(m.url,m.title,"m0",8,true,m.favicon);
-  if(m.scanSite)scanSite(0,true,true);
+  if(m.scanSites)scanSites(0,true,true);
 }
 
 browser.contextMenus.create({

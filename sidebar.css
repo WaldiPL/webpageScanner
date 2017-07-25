@@ -155,7 +155,7 @@ ul li a{
 }
 
 ul li input+a{
-	width:calc(100% - 72px);
+	width:calc(100% - 102px);
 }
 
 ul li input{
@@ -175,7 +175,7 @@ ul li .deleteSite:hover{
 	filter:invert(100%);
 }
 
-ul li .editSite:hover{
+ul li .editSite:hover,ul li .scanPage:hover{
 	background:#d2d2d2;
 	border-color:#d2d2d2 !important;
 }

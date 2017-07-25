@@ -1,4 +1,17 @@
 {
+	"manifest_version": 2,
+	"name": "__MSG_extensionName__",
+	"description": "__MSG_extensionDescription__",
+	"version": "1.1.2",
+	"default_locale": "en",
+	"icons": {
+		"48": "icons/icon.svg",
+		"24": "icons/icon2.svg"
+	},
+	"developer": {
+		"name": "WaldiPL",
+		"url": "https://github.com/WaldiPL/webpageScanner"
+	},
 	"applications": {
 		"gecko": {
 			"id": "webpageScanner@waldemar.b",
@@ -13,6 +26,9 @@
 		"notifications",
 		"contextMenus"
 	],
+	"background": {
+		"page": "bg.html"
+	},
 	"sidebar_action": {
 		"browser_style": false,
 		"default_title": "__MSG_extensionName__",
@@ -28,9 +44,6 @@
 			"38": "icons/icon.svg"
 		}
 	},
-	"background": {
-		"page": "bg.html"
-	},
 	"commands": {
 		"_execute_sidebar_action": {
 		"suggested_key": {
@@ -41,14 +54,5 @@
 	"options_ui": {
 		"page": "options.html"
 	},
-	"content_security_policy": "script-src 'self'; object-src 'self'",
-	"description": "__MSG_extensionDescription__",
-	"manifest_version": 2,
-	"default_locale": "en",
-	"name": "__MSG_extensionName__",
-	"version": "1.1.1",
-	"icons": {
-		"48": "icons/icon.svg",
-		"24": "icons/icon2.svg"
-	}
+	"content_security_policy": "script-src 'self'; object-src 'self'"
 }

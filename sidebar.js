@@ -1,9 +1,9 @@
 const extURL=browser.extension.getURL("");
 
 (function(){
-	if(!document.getElementById("scanSite"))return;
+	if(!document.getElementById("scanSites"))return;
 	translate();
-	document.getElementById("scanSite").addEventListener("click",scanSite);
+	document.getElementById("scanSites").addEventListener("click",scanSites);
 	document.getElementById("addSite").addEventListener("click",addSite);
 	document.getElementById("openSite").addEventListener("click",openSite);
 	document.getElementById("showAdd").addEventListener("click",showAdd);
@@ -39,8 +39,21 @@ function context(e){
 			dInput.addEventListener('click',()=>{
 				showDelete(id);
 			});
+		let sInput=document.createElement('input');
+			sInput.className="scanPage";
+			sInput.id=`scanitem${id}`;
+			sInput.type="image";
+			sInput.src="icons/scan2.svg";
+			sInput.title=i18n("scanWebpage");
+			browser.storage.local.get('sites').then(result=>{
+				let local=result.sites[id];
+				sInput.addEventListener('click',()=>{
+					scanPage(local,id);
+				});
+			});
 		a.insertBefore(dInput,a.firstChild);
 		a.insertBefore(eInput,dInput);
+		a.insertBefore(sInput,eInput);
 	}
 }
 
@@ -212,7 +225,7 @@ function translate(){
 	document.getElementById("editSite").textContent=i18n("save");
 	document.getElementById("deleteCancel").textContent=i18n("cancel");
 	document.getElementById("deleteSite").textContent=i18n("delete");
-	document.getElementById("scanSite").title=i18n("scanWebpage");
+	document.getElementById("scanSites").title=i18n("scanWebpage");
 	document.getElementById("openSite").title=i18n("openWebpage");
 	document.getElementById("showAdd").title=i18n("addWebpage");
 	document.getElementById("options").title=i18n("options");
