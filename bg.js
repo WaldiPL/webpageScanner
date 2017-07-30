@@ -1,7 +1,7 @@
 (function(){
 	browser.storage.local.get('sites').then(result=>{
 		if(result.sites===undefined){
-		  browser.storage.local.set({sites:[],changes:[]});
+			browser.storage.local.set({sites:[],changes:[]});
 		}
 	});
 	browser.storage.local.get('settings').then(result=>{
@@ -20,24 +20,24 @@
 })();
 
 browser.alarms.onAlarm.addListener(alarm=>{
-  scanLater(62);
-  scanSites(0,true);
+	scanLater(62);
+	scanSites(0,true);
 });
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
-  if(m.addThis)rqstAdd(m.url,m.title,"m0",8,true,m.favicon);
-  if(m.scanSites)scanSites(0,true,true);
+	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,true,m.favicon);
+	if(m.scanSites)scanSites(0,true,true);
 }
 
 browser.contextMenus.create({
-  id: "addThis",
-  title: browser.i18n.getMessage("addThis"),
-  contexts: ["page"]
+	id:			"addThis",
+	title:		browser.i18n.getMessage("addThis"),
+	contexts:	["page"]
 });
 
 browser.contextMenus.onClicked.addListener((info,tab)=>{
-  if(info.menuItemId=="addThis"){
-	rqstAdd(tab.url,tab.title,"m0",8,true,tab.favicon);
-  }
+	if(info.menuItemId=="addThis"){
+		rqstAdd(tab.url,tab.title,"m0",8,true,tab.favicon);
+	}
 });

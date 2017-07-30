@@ -3,15 +3,15 @@ body{
 }
 
 button{
-	background: #fbfbfb;
+	background:#fbfbfb;
 	color:#000;
-	border: 1px solid #b1b1b1;
-	padding: 4px 10px 6px;
+	border:1px solid #b1b1b1;
+	padding:4px 10px 6px;
 	font-size:14px;
 	line-height:18px;
-	text-align: center;
+	text-align:center;
 	font-family:'Segoe UI', sans-serif;
-	cursor: pointer;
+	cursor:pointer;
 	border-radius:0;
 	width:100%;
 }
@@ -21,7 +21,7 @@ button:hover{
 }
 
 button:active{
-	background: #e0e0e0;
+	background:#e0e0e0;
 }
 
 #addThis,#scanNow{

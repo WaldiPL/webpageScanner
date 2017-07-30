@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-	<link id="diff10153" rel="stylesheet" href="view.css"/>
-  </head>
-<body>
-	<div id='header10153'>
-		<img id="icon10153" src="icons/icon.svg"/>
-		<b id="title10153"></b>
-		<div id="set10153">
-			<button id='edit10153' class="neutral" type='button'></button>
-			<button id='delete10153' class='negative' type='button'></button>
+	<head>
+		<meta charset="utf-8">
+		<link id="diff10153" rel="stylesheet" href="view.css"/>
+	</head>
+	<body>
+		<div id='header10153'>
+			<img id="icon10153" src="icons/icon.svg"/>
+			<b id="title10153"></b>
+			<div id="set10153">
+				<button id='edit10153' class="neutral" type='button'></button>
+				<button id='delete10153' class='negative' type='button'></button>
+			</div>
+			<div id="lastScan10153"></div>
+			<div id="tabs10153">
+				<button id='oldHtml10153' type='button'></button>
+				<button id='newHtml10153' type='button'></button>
+				<button id='news10153' type='button'></button>
+				<button id='light10153' type='button'></button>
+				<button id='active10153' type='button'></button>
+			</div>
+			<img id='toogleHeader10153' src="icons/toogle.svg#t"/>
 		</div>
-		<div id="lastScan10153"></div>
-		<div id="tabs10153">
-			<button id='oldHtml10153' type='button'></button>
-			<button id='newHtml10153' type='button'></button>
-			<button id='news10153' type='button'></button>
-			<button id='light10153' type='button'></button>
-			<button id='active10153' type='button'></button>
+		<div id="content10153"></div>
+		<div id="deletingSite10153" class="hidden">
+			<b id="deleteB10153"></b>
+			<div id="deleteTitle10153"></div>
+			<div class="footer10153">
+				<button id="deleteCancel10153" class="neutral" type="button"></button>
+				<button id="deleteSite10153" class="negative" type="button"></button>
+			</div>
 		</div>
-		<img id='toogleHeader10153' src="icons/toogle.svg#t"/>
-	</div>
-	<div id="content10153"></div>
-	<div id="deletingSite10153" class="hidden">
-		<b id="deleteB10153"></b>
-		<div id="deleteTitle10153"></div>
-		<div class="footer10153">
-			<button id="deleteCancel10153" class="neutral" type="button"></button>
-			<button id="deleteSite10153" class="negative" type="button"></button>
+		<div id="editingSite10153" class="hidden">
+			<b id="editB10153"></b> 
+			<table>
+				<tr><td id="address10153"></td><td style="width:100%;"><input id="eUrl10153" type="text"></td></tr>
+				<tr><td id="titleE10153"></td><td style="width:100%;"><input id="eTitle10153" type="text"></td></tr>
+				<tr><td id="charset10153"></td><td style="width:100%;"><input id="eCharset10153" type="text"></td></tr>
+				<tr><td id="scanFreq10153"></td><td style="width:100%;">
+				<select id="eFreq10153">
+					<option value="1"></option>
+					<option value="4"></option>
+					<option value="8"></option>
+					<option value="12"></option>
+					<option value="24"></option>
+				 </select>
+				</td></tr>
+				<tr><td id="modeTitle10153"></td><td style="width:100%;">
+				 <select id="eMode10153">
+					<option value="m0"></option>
+					<option value="m3"></option>
+					<option value="m4"></option>
+					<option value="m1"></option>
+					<option value="m2"></option>
+				 </select>
+				</td></tr>
+			</table>
+			<div class="footer10153">
+				<button id="editCancel10153" class="neutral" type="button"></button>
+				<button id="editSite10153" class="positive" type="button"></button>
+			</div>
 		</div>
-	</div>
-	<div id="editingSite10153" class="hidden">
-		<b id="editB10153"></b> 
-		<table>
-			<tr><td id="address10153"></td><td style="width: 100%;"><input id="eUrl10153" type="text"></td></tr>
-			<tr><td id="titleE10153"></td><td style="width: 100%;"><input id="eTitle10153" type="text"></td></tr>
-			<tr><td id="charset10153"></td><td style="width: 100%;"><input id="eCharset10153" type="text"></td></tr>
-			<tr><td id="scanFreq10153"></td><td style="width: 100%;">
-			<select id="eFreq10153">
-			  <option value="1"></option>
-			  <option value="4"></option>
-			  <option value="8"></option>
-			  <option value="12"></option>
-			  <option value="24"></option>
-			 </select>
-			</td></tr>
-			<tr><td id="modeTitle10153"></td><td style="width: 100%;">
-			 <select id="eMode10153">
-			  <option value="m0"></option>
-			  <option value="m3"></option>
-			  <option value="m4"></option>
-			  <option value="m1"></option>
-			  <option value="m2"></option>
-			 </select> 
-			</td></tr>
-		</table>
-		<div class="footer10153">
-			<button id="editCancel10153" class="neutral" type="button"></button>
-			<button id="editSite10153" class="positive" type="button"></button>
-		</div>
-	</div>
-	<script src="diff.js"></script>
-	<script src="view.js"></script>
-</body>
+		<script src="diff.js"></script>
+		<script src="view.js"></script>
+	</body>
 </html>

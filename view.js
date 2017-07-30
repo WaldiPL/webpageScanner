@@ -2,8 +2,8 @@ var localId;
 const extURL=browser.extension.getURL("");
 
 (function(){
-	const urlString = window.location.search;
-	localId = parseInt(urlString.substr(1));
+	const urlString=window.location.search;
+	localId=parseInt(urlString.substr(1));
 	translate();
 	document.getElementById("oldHtml10153").addEventListener("click",()=>{load(localId,"oldHtml");});
 	document.getElementById("newHtml10153").addEventListener("click",()=>{load(localId,"newHtml");});
@@ -33,13 +33,13 @@ function showDelete(e){
 
 function deleteSite(e){
 	browser.storage.local.get(['sites','changes']).then(result=>{
-		let sites=result.sites;
-		let changes=result.changes;
+		let sites=result.sites,
+			changes=result.changes;
 		sites.splice(e,1);
 		changes.splice(e,1);
 		browser.storage.local.set({sites:sites,changes:changes});
 	}).then(()=>{
-		browser.runtime.sendMessage({"listSite": true,"deletedSite":true,"id":e});
+		browser.runtime.sendMessage({"listSite":true,"deletedSite":true,"id":e});
 		browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});
 	});
 }
@@ -71,18 +71,18 @@ function editSite(e){
 			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:"utf-8"
 		}
 		document.getElementById("title10153").textContent=obj.title;
-		sites[e] = Object.assign(sites[e],obj);
+		sites[e]=Object.assign(sites[e],obj);
 		browser.storage.local.set({sites});
 	}).then(()=>{
-		browser.runtime.sendMessage({"listSite": true});
+		browser.runtime.sendMessage({"listSite":true});
 	});
 }
 
 function setTitle(){
-	const metaTitles=document.getElementsByTagName("title");
-	const metaTitle=metaTitles[metaTitles.length-1];
-	const userTitle=document.getElementById("title10153").textContent;
-	const docTitle=document.title;
+	const metaTitles=document.getElementsByTagName("title"),
+		  metaTitle=metaTitles[metaTitles.length-1],
+		  userTitle=document.getElementById("title10153").textContent,
+		  docTitle=document.title;
 	if(docTitle=="")document.title=userTitle;
 	else if(docTitle!=metaTitle.textContent)document.title=metaTitle.textContent;
 }
@@ -90,17 +90,17 @@ function setTitle(){
 function load(siteId,type){
 	btnActive(type);
 	browser.storage.local.get(['sites','changes']).then(result=>{
-		const sites = result.sites;
-		const changes = result.changes;
-		const sId = sites[siteId];
-		const cId = changes[siteId];
-		const newHtml = cId.html;
-		const oldHtml = cId?cId.oldHtml:"";
-		const diffString = diffString2(oldHtml,newHtml);
-		const light = cId?diffString.n:newHtml;
-		const news = cId?diffString.c:"";
-		const url = sId.url.split("/");
-		const url2 = url[0]+"//"+url[2]+"/";
+		const sites=result.sites,
+			  changes=result.changes,
+			  sId=sites[siteId],
+			  cId=changes[siteId],
+			  newHtml=cId.html,
+			  oldHtml=cId?cId.oldHtml:"",
+			  diffString=diffString2(oldHtml,newHtml),
+			  light=cId?diffString.n:newHtml,
+			  news=cId?diffString.c:"",
+			  url=sId.url.split("/"),
+			  url2=url[0]+"//"+url[2]+"/";
 		document.getElementById("title10153").textContent=sId.title;
 		document.getElementById("lastScan10153").textContent=i18n("lastScan",[realDate(sId.date),realTime(sId.time)]);
 		switch(type){
@@ -121,9 +121,9 @@ function load(siteId,type){
 				break;
 		}
 		setTitle();
-		const a=document.getElementsByTagName("a");
-		const img=document.getElementsByTagName("img");
-		const meta=document.getElementsByTagName("link");
+		const a=document.getElementsByTagName("a"),
+			  img=document.getElementsByTagName("img"),
+			  meta=document.getElementsByTagName("link");
 		setTimeout(function(){
 			const extUrl=browser.extension.getURL("");
 			[...a].forEach(value=>{
@@ -156,16 +156,16 @@ function btnActive(type){
 }
 
 function realDate(e){
-	const m=parseInt(e);
-	const month=i18n("monthList").split(",");
-	const d=parseInt((e-m)*100);
+	const m=parseInt(e),
+		  month=i18n("monthList").split(","),
+		  d=parseInt((e-m)*100);
 	return `${d} ${month[m]}`;
 }
 
 function realTime(e){
 	e+="";
-	let h=e.split(".")[0];
-	let m=e.split(".")[1];
+	let h=e.split(".")[0],
+		m=e.split(".")[1];
 	m=m?m:"00";
 	h=h.length===1?"0"+h:h;
 	m=m.length===1?m+"0":m.substr(0,2);
@@ -208,17 +208,17 @@ function translate(){
 	document.getElementById("scanFreq10153").textContent=i18n("scanFreq");
 	document.getElementById("modeTitle10153").textContent=i18n("modeTitle");
 	let selectFreq=document.getElementById("eFreq10153").options;
-	selectFreq[0].text=i18n("1Hour");
-	selectFreq[1].text=i18n("4Hours");
-	selectFreq[2].text=i18n("8Hours");
-	selectFreq[3].text=i18n("12Hours");
-	selectFreq[4].text=i18n("24Hours");
+		selectFreq[0].text=i18n("1Hour");
+		selectFreq[1].text=i18n("4Hours");
+		selectFreq[2].text=i18n("8Hours");
+		selectFreq[3].text=i18n("12Hours");
+		selectFreq[4].text=i18n("24Hours");
 	let selectMode=document.getElementById("eMode10153").options;
-	selectMode[0].text=i18n("modeM0");
-	selectMode[1].text=i18n("modeM3");
-	selectMode[2].text=i18n("modeM4");
-	selectMode[3].text=i18n("modeM1");
-	selectMode[4].text=i18n("modeM2");
+		selectMode[0].text=i18n("modeM0");
+		selectMode[1].text=i18n("modeM3");
+		selectMode[2].text=i18n("modeM4");
+		selectMode[3].text=i18n("modeM1");
+		selectMode[4].text=i18n("modeM2");
 	document.getElementById("toogleHeader10153").title=i18n("hideInterface");
 }
 

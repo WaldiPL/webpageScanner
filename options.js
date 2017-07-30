@@ -26,9 +26,9 @@ function saveOptions(e){
 
 function restoreOptions(){
 	browser.storage.local.get('settings').then(result=>{
-		let s=result.settings;
-		let notificationVolume=s.notificationVolume;
-		let notificationTime=s.notificationTime;
+		let s=result.settings,
+			notificationVolume=s.notificationVolume,
+			notificationTime=s.notificationTime;
 		document.getElementById("notificationVolume").value=notificationVolume;
 		document.getElementById("oVolume").value=notificationVolume;
 		document.getElementById("notificationTime").value=notificationTime;

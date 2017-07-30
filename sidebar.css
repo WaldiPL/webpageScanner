@@ -129,9 +129,9 @@ select{
 }
 
 ul{
-    list-style-type:none;
-    margin:0 0 30px;
-    padding:31px 0 0;
+	list-style-type:none;
+	margin:0 0 30px;
+	padding:31px 0 0;
 }
 
 ul li{
@@ -231,7 +231,7 @@ ul li.warn a{
 }
 
 .favicon{
-    vertical-align:top;
+	vertical-align:top;
 	padding-right:5px;
 	height:16px;
 	width:16px;

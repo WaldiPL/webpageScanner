@@ -8,7 +8,7 @@
 })();
 
 function addThis(){
-	browser.tabs.query({currentWindow: true, active: true}).then(tabs=>{
+	browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
 		let tab=tabs[0];
 		browser.runtime.sendMessage({"addThis":true,"url":tab.url,"title":tab.title,"favicon":tab.favIconUrl});
 	});

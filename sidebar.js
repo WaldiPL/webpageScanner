@@ -19,9 +19,9 @@ var prevContext;
 
 function context(e){
 	hideAll();
-	const a=e.target.parentElement;
-	const id=parseInt(a.getAttribute("id").substr(4));
-	const c=document.getElementById(`edititem${id}`);
+	const a=e.target.parentElement,
+		  id=parseInt(a.getAttribute("id").substr(4)),
+		  c=document.getElementById(`edititem${id}`);
 	if(!c){
 		removeContext(id);
 		let eInput=document.createElement('input');
@@ -77,8 +77,8 @@ function listSite(){
 	browser.storage.local.get('sites').then(result=>{
 		prevContext=undefined;
 		document.getElementById("lista").textContent="";
-		const sites=result.sites;
-		const list = document.getElementById("lista");
+		const sites=result.sites,
+			  list=document.getElementById("lista");
 		sites.forEach((value,i)=>{
 			let iLi=document.createElement('li');
 				iLi.id=`item${i}`;
@@ -124,14 +124,14 @@ function editSite(e){
 	browser.storage.local.get('sites').then(result=>{
 		let sites=result.sites;
 		let obj={
-			title:  document.getElementById("eTitle").value,
-			url:    document.getElementById("eUrl").value,
-			mode:   document.getElementById("eMode").value,
+			title:	document.getElementById("eTitle").value,
+			url:	document.getElementById("eUrl").value,
+			mode:	document.getElementById("eMode").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl").value,
-			freq:   parseInt(document.getElementById("eFreq").value),
+			freq:	parseInt(document.getElementById("eFreq").value),
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:"utf-8"
 		}
-		sites[e] = Object.assign(sites[e],obj);
+		sites[e]=Object.assign(sites[e],obj);
 		browser.storage.local.set({sites});
 		statusbar(i18n("savedWebpage",sites[e].title));
 		listSite();
@@ -152,8 +152,8 @@ function showDelete(e){
 function deleteSite(e){
 	document.getElementById("deletingSite").classList.add("hidden");
 	browser.storage.local.get(['sites','changes']).then(result=>{
-		let sites=result.sites;
-		let changes=result.changes;
+		let sites=result.sites,
+			changes=result.changes;
 		statusbar(i18n("deletedWebpage",sites[e].title));
 		sites.splice(e,1);
 		changes.splice(e,1);
@@ -175,10 +175,10 @@ function showAdd(){
 }
 
 function addSite(){
-	const url=document.getElementById("aUrl").value;
-	const title=document.getElementById("aTitle").value;
-	const mode=document.getElementById("aMode").value;
-	const freq=parseInt(document.getElementById("aFreq").value);
+	const url=document.getElementById("aUrl").value,
+		  title=document.getElementById("aTitle").value,
+		  mode=document.getElementById("aMode").value,
+		  freq=parseInt(document.getElementById("aFreq").value);
 	rqstAdd(url,title,mode,freq);
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
@@ -216,7 +216,7 @@ function statusbar(e){
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
-  if(m.listSite)listSite();
+	if(m.listSite)listSite();
 }
 
 function translate(){
@@ -244,27 +244,27 @@ function translate(){
 	document.getElementById("modeTitleE").textContent=i18n("modeTitle");
 	document.getElementById("deleteWebpage").textContent=i18n("deleteWebpage");
 	let selectFreqA=document.getElementById("aFreq").options;
-	selectFreqA[0].text=i18n("1Hour");
-	selectFreqA[1].text=i18n("4Hours");
-	selectFreqA[2].text=i18n("8Hours");
-	selectFreqA[3].text=i18n("12Hours");
-	selectFreqA[4].text=i18n("24Hours");
+		selectFreqA[0].text=i18n("1Hour");
+		selectFreqA[1].text=i18n("4Hours");
+		selectFreqA[2].text=i18n("8Hours");
+		selectFreqA[3].text=i18n("12Hours");
+		selectFreqA[4].text=i18n("24Hours");
 	let selectModeA=document.getElementById("aMode").options;
-	selectModeA[0].text=i18n("modeM0");
-	selectModeA[1].text=i18n("modeM3");
-	selectModeA[2].text=i18n("modeM4");
-	selectModeA[3].text=i18n("modeM1");
-	selectModeA[4].text=i18n("modeM2");
+		selectModeA[0].text=i18n("modeM0");
+		selectModeA[1].text=i18n("modeM3");
+		selectModeA[2].text=i18n("modeM4");
+		selectModeA[3].text=i18n("modeM1");
+		selectModeA[4].text=i18n("modeM2");
 	let selectFreqE=document.getElementById("eFreq").options;
-	selectFreqE[0].text=i18n("1Hour");
-	selectFreqE[1].text=i18n("4Hours");
-	selectFreqE[2].text=i18n("8Hours");
-	selectFreqE[3].text=i18n("12Hours");
-	selectFreqE[4].text=i18n("24Hours");
+		selectFreqE[0].text=i18n("1Hour");
+		selectFreqE[1].text=i18n("4Hours");
+		selectFreqE[2].text=i18n("8Hours");
+		selectFreqE[3].text=i18n("12Hours");
+		selectFreqE[4].text=i18n("24Hours");
 	let selectModeE=document.getElementById("eMode").options;
-	selectModeE[0].text=i18n("modeM0");
-	selectModeE[1].text=i18n("modeM3");
-	selectModeE[2].text=i18n("modeM4");
-	selectModeE[3].text=i18n("modeM1");
-	selectModeE[4].text=i18n("modeM2");
+		selectModeE[0].text=i18n("modeM0");
+		selectModeE[1].text=i18n("modeM3");
+		selectModeE[2].text=i18n("modeM4");
+		selectModeE[3].text=i18n("modeM1");
+		selectModeE[4].text=i18n("modeM2");
 }

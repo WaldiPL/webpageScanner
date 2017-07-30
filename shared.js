@@ -1,32 +1,32 @@
 function rqstAdd(url,title,mode,freq,btn=false,icon){
 	if(!url)return;
-	if(!title)title = url;
-	let xhr = new XMLHttpRequest();
-	xhr.open("GET", url);
+	if(!title)title=url;
+	let xhr=new XMLHttpRequest();
+	xhr.open("GET",url);
 	xhr.timeout=10000;
 	xhr.overrideMimeType('text/html; charset=utf-8');
 	xhr.onload=function(){
-		const html_data = this.responseText;
+		const html_data=this.responseText;
 		const site={
-			title:  title,
-			url:    url,
-			date:   date(),
-			time:   time(),
-			length: html_data.length,
-			md5: 	md5(html_data),
-			mode:   mode,
+			title:	title,
+			url:	url,
+			date:	date(),
+			time:	time(),
+			length:	html_data.length,
+			md5:	md5(html_data),
+			mode:	mode,
 			changed:false,
 			favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
 			freq:	freq,
 			charset:"utf-8"
 		};
 		browser.storage.local.get(['sites','changes']).then(result=>{
-			let sites = result.sites;
-			sites[sites.length] = site;
-			let changes = result.changes;
+			let sites=result.sites,
+				changes=result.changes;
+			sites[sites.length]=site;
 			changes[changes.length]={
-				oldHtml: "",
-				html: html_data
+				oldHtml:"",
+				html:	html_data
 			};
 			browser.storage.local.set({sites:sites,changes:changes});
 			if(!btn){
@@ -38,10 +38,10 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 		});
 		if(btn){
 			browser.notifications.create(`webpagesScannerAdded`,{
-				"type": "basic",
-				"iconUrl": site.favicon,
-				"title": i18n("extensionName"),
-				"message": i18n("addedWebpage",title)
+				"type":		"basic",
+				"iconUrl":	site.favicon,
+				"title":	i18n("extensionName"),
+				"message":	i18n("addedWebpage",title)
 			});
 			setTimeout(()=>{
 				browser.notifications.clear(`webpagesScannerAdded`);
@@ -51,10 +51,10 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 	let error=function(){
 		if(btn){
 			browser.notifications.create(`webpagesScannerError`,{
-				"type": "basic",
-				"iconUrl": "icons/warn.svg",
-				"title": i18n("extensionName"),
-				"message": i18n("errorAdding",title)
+				"type":		"basic",
+				"iconUrl":	"icons/warn.svg",
+				"title":	i18n("extensionName"),
+				"message":	i18n("errorAdding",title)
 			});
 			setTimeout(()=>{
 				browser.notifications.clear(`webpagesScannerError`);
@@ -79,8 +79,8 @@ function scanCompleted(sitesLength,auto){
 		updateBase(tempChanges,tempTimes);
 		if(!auto)statusbar(i18n("scanCompleted"));
 		if(count){
-			let audio=new Audio('notification.opus');
-			let count2=count;
+			let audio=new Audio('notification.opus'),
+				count2=count;
 			getSettings().then(s=>{
 				audio.volume=(s.notificationVolume/100);
 				audio.play();
@@ -88,10 +88,10 @@ function scanCompleted(sitesLength,auto){
 				if(s.showNotification){
 					browser.notifications.create(
 						`webpagesScanner${auto}`,{
-							"type": "basic",
-							"iconUrl": "icons/icon.svg",
-							"title": i18n("extensionName"),
-							"message": count2==1?i18n("oneDetected"):i18n("moreDetected",count2)
+							"type":		"basic",
+							"iconUrl":	"icons/icon.svg",
+							"title":	i18n("extensionName"),
+							"message":	count2==1?i18n("oneDetected"):i18n("moreDetected",count2)
 						}
 					).then(()=>{
 						if(!s.autoOpen){
@@ -124,7 +124,7 @@ function scanPage(local,id,auto,sitesLength){
 			const html_data=this.responseText;
 			const scanned={
 				length:	html_data.length,
-				md5: 	md5(html_data)
+				md5:	md5(html_data)
 			};
 			if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
 				if(!auto){
@@ -160,8 +160,8 @@ function scanPage(local,id,auto,sitesLength){
 function scanSites(ev,auto=false,force=false){
 	if(!auto)hideAll();
 	browser.storage.local.get('sites').then(result=>{
-		const sites=result.sites;
-		const len=sites.length;
+		const sites=result.sites,
+			  len=sites.length;
 		sites.forEach((local,ix)=>{
 			if(local.changed){
 				numberScanned++;
@@ -179,28 +179,28 @@ function scanSites(ev,auto=false,force=false){
 
 function updateBase(changesArray,timesArray){
 	browser.storage.local.get(['sites','changes']).then(result=>{
-		let changes=result.changes;
-		let sites=result.sites;
+		let changes=result.changes,
+			sites=result.sites;
 		let currentTime={
-			date:   date(),
-			time:   time()
+			date:date(),
+			time:time()
 		};
 		changesArray.forEach((value,id)=>{
 			changes[id]={
-				oldHtml: changes[id].html,
-				html:    value[0]
+				oldHtml:changes[id].html,
+				html:	value[0]
 			};
 			let obj={
-				date:   date(),
-				time:   time(),
-				length: value[2],
-				md5: 	value[1],
+				date:	date(),
+				time:	time(),
+				length:	value[2],
+				md5:	value[1],
 				changed:true
 			};
 			sites[id]=Object.assign(sites[id],obj);
 		});
 		timesArray.forEach((value,id)=>{
-			sites[id] = Object.assign(sites[id],currentTime);
+			sites[id]=Object.assign(sites[id],currentTime);
 		});
 		browser.storage.local.set({sites:sites,changes:changes});
 	});
@@ -234,31 +234,31 @@ function unchange(ixo){
 			let obj={
 				changed:false
 			}
-			sites[value] = Object.assign(sites[value],obj);
+			sites[value]=Object.assign(sites[value],obj);
 		});
 		browser.storage.local.set({sites});
 	});
 }
 
 function scanLater(x){
-	let d=new Date();
-	let a=Date.parse(d);
-	let b=a+x*60*1000;
+	let d=new Date(),
+		a=Date.parse(d),
+		b=a+x*60*1000;
 	browser.alarms.clearAll();
-	browser.alarms.create("webpageScanner",{when: b});
+	browser.alarms.create("webpageScanner",{when:b});
 }
 
 function time(){
-	let d = new Date();
-	let h = d.getHours(); 
-	let m = d.getMinutes()/100;
+	let d=new Date(),
+		h=d.getHours(),
+		m=d.getMinutes()/100;
 	return h+m;
 }
 
 function date(){
-	let d = new Date();
-	let mo = d.getMonth()+1;
-	let da = d.getDate()/100; 
+	let d=new Date(),
+		mo=d.getMonth()+1,
+		da=d.getDate()/100; 
 	return mo+da;
 };
 

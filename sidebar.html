@@ -1,89 +1,88 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="sidebar.css"/>
-  </head>
-<body>
-	<div id="navPanel">
-		<input id="scanSites" type="image" src="icons/scan.svg">
-		<input id="openSite" type="image" src="icons/open.svg">
-		<input id="showAdd"  type="image" src="icons/add.svg">
-		<input id="options"  type="image" src="icons/options.svg">
-	</div>
-	<div id="addingSite" class="hidden">
-		<b id="addWebpage"></b> 
-		<table>
-			<tr><td id="addressA"></td><td style="width: 100%;"><input id="aUrl" type="text"></td></tr>
-			<tr><td id="titleA"></td><td style="width: 100%;"><input id="aTitle" type="text"></td></tr>
-			<tr><td id="scanFreqA"></td><td style="width: 100%;">
-			<select id="aFreq">
-			  <option value="1"></option>
-			  <option value="4"></option>
-			  <option value="8"></option>
-			  <option value="12"></option>
-			  <option value="24"></option>
-			 </select> 
-			</td></tr>
-			<tr><td id="modeTitleA"></td><td style="width: 100%;">
-			 <select id="aMode">
-			  <option value="m0"></option>
-			  <option value="m3"></option>
-			  <option value="m4"></option>
-			  <option value="m1"></option>
-			  <option value="m2"></option>
-			 </select> 
-			</td></tr>
-		</table>
-		<div class="footer">
-			<button id="addCancel" class="addingSite" type="button"></button>
-			<button id="addSite" class="positive" type="button"></button>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="sidebar.css"/>
+	</head>
+	<body>
+		<div id="navPanel">
+			<input id="scanSites" type="image" src="icons/scan.svg">
+			<input id="openSite" type="image" src="icons/open.svg">
+			<input id="showAdd"	type="image" src="icons/add.svg">
+			<input id="options"	type="image" src="icons/options.svg">
+		</div>
+		<div id="addingSite" class="hidden">
+			<b id="addWebpage"></b> 
+			<table>
+				<tr><td id="addressA"></td><td style="width:100%;"><input id="aUrl" type="text"></td></tr>
+				<tr><td id="titleA"></td><td style="width:100%;"><input id="aTitle" type="text"></td></tr>
+				<tr><td id="scanFreqA"></td><td style="width:100%;">
+				<select id="aFreq">
+					<option value="1"></option>
+					<option value="4"></option>
+					<option value="8"></option>
+					<option value="12"></option>
+					<option value="24"></option>
+				</select>
+				</td></tr>
+				<tr><td id="modeTitleA"></td><td style="width:100%;">
+				<select id="aMode">
+					<option value="m0"></option>
+					<option value="m3"></option>
+					<option value="m4"></option>
+					<option value="m1"></option>
+					<option value="m2"></option>
+				</select>
+				</td></tr>
+			</table>
+			<div class="footer">
+				<button id="addCancel" class="addingSite" type="button"></button>
+				<button id="addSite" class="positive" type="button"></button>
+			</div>	
 		</div>	
-	</div>	
-	<div id="editingSite" class="hidden">
-		<b id="editWebpage"></b> 
-		<table>
-			<tr><td id="addressE"></td><td style="width: 100%;"><input id="eUrl" type="text"></td></tr>
-			<tr><td id="titleE"></td><td style="width: 100%;"><input id="eTitle" type="text"></td></tr>
-			<tr><td id="charsetE"></td><td style="width: 100%;"><input id="eCharset" type="text"></td></tr>
-			<tr><td id="scanFreqE"></td><td style="width: 100%;">
-			<select id="eFreq">
-			  <option value="1"></option>
-			  <option value="4"></option>
-			  <option value="8"></option>
-			  <option value="12"></option>
-			  <option value="24"></option>
-			 </select> 
-			</td></tr>
-			<tr><td id="modeTitleE"></td><td style="width: 100%;">
-			 <select id="eMode">
-			  <option value="m0"></option>
-			  <option value="m3"></option>
-			  <option value="m4"></option>
-			  <option value="m1"></option>
-			  <option value="m2"></option>
-			 </select> 
-			</td></tr>
-		</table>
-		<div class="footer">
-			<button id="editCancel" class="editingSite" type="button"></button>
-			<button id="editSite" class="positive" type="button"></button>
+		<div id="editingSite" class="hidden">
+			<b id="editWebpage"></b> 
+			<table>
+				<tr><td id="addressE"></td><td style="width:100%;"><input id="eUrl" type="text"></td></tr>
+				<tr><td id="titleE"></td><td style="width:100%;"><input id="eTitle" type="text"></td></tr>
+				<tr><td id="charsetE"></td><td style="width:100%;"><input id="eCharset" type="text"></td></tr>
+				<tr><td id="scanFreqE"></td><td style="width:100%;">
+					<select id="eFreq">
+						<option value="1"></option>
+						<option value="4"></option>
+						<option value="8"></option>
+						<option value="12"></option>
+						<option value="24"></option>
+					</select>
+				</td></tr>
+				<tr><td id="modeTitleE"></td><td style="width:100%;">
+					<select id="eMode">
+						<option value="m0"></option>
+						<option value="m3"></option>
+						<option value="m4"></option>
+						<option value="m1"></option>
+						<option value="m2"></option>
+					</select>
+				</td></tr>
+			</table>
+			<div class="footer">
+				<button id="editCancel" class="editingSite" type="button"></button>
+				<button id="editSite" class="positive" type="button"></button>
+			</div>
 		</div>
-	</div>
-	<div id="deletingSite" class="hidden">
-		<b id="deleteWebpage"></b>
-		<div id="deleteTitle"></div>
-		<div id="deleteUrl"></div>
-		<div class="footer">
-			<button id="deleteCancel" class="deletingSite" type="button"></button>
-			<button id="deleteSite" class="negative" type="button"></button>
+		<div id="deletingSite" class="hidden">
+			<b id="deleteWebpage"></b>
+			<div id="deleteTitle"></div>
+			<div id="deleteUrl"></div>
+			<div class="footer">
+				<button id="deleteCancel" class="deletingSite" type="button"></button>
+				<button id="deleteSite" class="negative" type="button"></button>
+			</div>
 		</div>
-	</div>
-	<ul id="lista">
-	</ul>
-	<div id="statusbar"></div>
-	<script src="md5.js"></script>
-	<script src="shared.js"></script>
-	<script src="sidebar.js"></script>
-</body>
+		<ul id="lista"></ul>
+		<div id="statusbar"></div>
+		<script src="md5.js"></script>
+		<script src="shared.js"></script>
+		<script src="sidebar.js"></script>
+	</body>
 </html>
