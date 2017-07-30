@@ -32,7 +32,7 @@ function showDelete(e){
 }
 
 function deleteSite(e){
-	browser.storage.local.get().then(result=>{
+	browser.storage.local.get(['sites','changes']).then(result=>{
 		let sites=result.sites;
 		let changes=result.changes;
 		sites.splice(e,1);
@@ -89,7 +89,7 @@ function setTitle(){
 
 function load(siteId,type){
 	btnActive(type);
-	browser.storage.local.get().then(result=>{
+	browser.storage.local.get(['sites','changes']).then(result=>{
 		const sites = result.sites;
 		const changes = result.changes;
 		const sId = sites[siteId];

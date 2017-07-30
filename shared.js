@@ -3,8 +3,9 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 	if(!title)title = url;
 	let xhr = new XMLHttpRequest();
 	xhr.open("GET", url);
+	xhr.timeout=10000;
 	xhr.overrideMimeType('text/html; charset=utf-8');
-	xhr.onload = function (){
+	xhr.onload=function(){
 		const html_data = this.responseText;
 		const site={
 			title:  title,
@@ -19,7 +20,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 			freq:	freq,
 			charset:"utf-8"
 		};
-		browser.storage.local.get().then(result=>{
+		browser.storage.local.get(['sites','changes']).then(result=>{
 			let sites = result.sites;
 			sites[sites.length] = site;
 			let changes = result.changes;
@@ -31,6 +32,8 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 			if(!btn){
 				listSite();
 				statusbar(i18n("addedWebpage",title));
+			}else{
+				browser.runtime.sendMessage({"listSite":true});
 			}
 		});
 		if(btn){
@@ -45,8 +48,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 			},5000);
 		}
 	};
-	xhr.onerror = function (){
-		if(!btn)statusbar(i18n("addedWebpageError"));
+	let error=function(){
 		if(btn){
 			browser.notifications.create(`webpagesScannerError`,{
 				"type": "basic",
@@ -57,68 +59,28 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 			setTimeout(()=>{
 				browser.notifications.clear(`webpagesScannerError`);
 			},5000);
+		}else{
+			statusbar(i18n("addedWebpageError"));
 		}
-	}
+	};
+	xhr.onerror=error;
+	xhr.ontimeout=error;
 	xhr.send(null);
 }
 
-function scanPage(local,id,auto=false,count=0){
-	const charset=local.charset?local.charset:"uft-8";
-	let xhr=new XMLHttpRequest();
-	xhr.open("GET", local.url,false);
-	xhr.overrideMimeType('text/html; charset='+charset);
-	xhr.onload=function (){
-		const html_data = this.responseText;
-		const scanned={
-			length:	html_data.length,
-			md5: 	md5(html_data)
-		};
-		if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
-			if(!auto){
-				document.getElementById("item"+id).classList.add("changed","scanned");
-			}
-				count++;
-				updateBase(id,html_data,scanned.md5,scanned.length);
-		}else{
-			updateTime(id);
-			if(!auto)document.getElementById("item"+id).classList.add("scanned");
-		}
-	};
-	xhr.onerror=function (){
-		if(!auto)document.getElementById("item"+id).classList.add("error");
-	};	
-	try{
-		xhr.send(null);
-	}catch(e){
-		console.warn(e);
-	}
-	return count;
-}
-
-function scanSites(ev,auto=false,force=false){
-	if(!auto){
-		scanLater(60);
-		hideAll();
-	}
-	let count=0;
-	browser.storage.local.get('sites').then(result=>{
-		const sites=result.sites;
-		const len=sites.length;
-		sites.forEach((local,ix)=>{
-			if(local.changed){
-				count++;
-				return;
-			}
-			if(!force&&auto&&((date()==local.date&&time()<local.time+local.freq)||(date()>local.date&&24-local.time+time()<local.freq))){
-				return;
-			}
-			count=scanPage(local,ix,auto,count);
-			if(!auto)statusbar([ix,len],true);
-		});
+var tempChanges=[],
+	tempTimes=[],
+	numberScanned=0,
+	count=0;
+	
+function scanCompleted(sitesLength,auto){
+	numberScanned++;
+	if(numberScanned===sitesLength||sitesLength===true){
+		updateBase(tempChanges,tempTimes);
 		if(!auto)statusbar(i18n("scanCompleted"));
-	}).then(s=>{
 		if(count){
 			let audio=new Audio('notification.opus');
+			let count2=count;
 			getSettings().then(s=>{
 				audio.volume=(s.notificationVolume/100);
 				audio.play();
@@ -129,7 +91,7 @@ function scanSites(ev,auto=false,force=false){
 							"type": "basic",
 							"iconUrl": "icons/icon.svg",
 							"title": i18n("extensionName"),
-							"message": count==1?i18n("oneDetected"):i18n("moreDetected",count)
+							"message": count2==1?i18n("oneDetected"):i18n("moreDetected",count2)
 						}
 					).then(()=>{
 						if(!s.autoOpen){
@@ -144,38 +106,103 @@ function scanSites(ev,auto=false,force=false){
 				}
 			});
 		}
-	});
+	tempChanges=[];
+	tempTimes=[];
+	numberScanned=0;
+	count=0;
+	}
+}
+	
+function scanPage(local,id,auto,sitesLength){
+	const charset=local.charset?local.charset:"uft-8";
+	let xhr=new XMLHttpRequest();
+	xhr.open("GET",local.url);
+	xhr.timeout=10000;
+	xhr.overrideMimeType('text/html; charset='+charset);
+	xhr.onload=function(){
+		if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+			const html_data=this.responseText;
+			const scanned={
+				length:	html_data.length,
+				md5: 	md5(html_data)
+			};
+			if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
+				if(!auto){
+					document.getElementById("item"+id).classList.add("changed","scanned");
+				}
+				count++;
+				tempChanges[id]=[html_data,scanned.md5,scanned.length];
+			}else{
+				tempTimes[id]=true;
+				if(!auto){
+					if(this.status<400)document.getElementById("item"+id).classList.add("scanned");
+					else document.getElementById("item"+id).classList.add("warn");
+				}
+			}
+		}else{
+			if(!auto)document.getElementById("item"+id).classList.add("error");
+		}
+		scanCompleted(sitesLength,auto);
+	};
+	let error=function(){
+		scanCompleted(sitesLength,auto);
+		if(!auto)document.getElementById("item"+id).classList.add("error");
+	};
+	xhr.onerror=error;
+	xhr.ontimeout=error;
+	try{
+		xhr.send(null);
+	}catch(e){
+		console.warn(e);
+	}
 }
 
-function updateBase(id,newHtml,md5,len){
-	browser.storage.local.get().then(result=>{
-		let changes = result.changes;
-		changes[id]={
-			oldHtml: changes[id].html,
-			html:    newHtml
-		};
-		let sites = result.sites;
-		let obj={
-			date:   date(),
-			time:   time(),
-			length: len,
-			md5: 	md5,
-			changed:true
-		};
-		sites[id] = Object.assign(sites[id],obj);
-		browser.storage.local.set({sites:sites,changes:changes});
-	});
-}
-
-function updateTime(id){
+function scanSites(ev,auto=false,force=false){
+	if(!auto)hideAll();
 	browser.storage.local.get('sites').then(result=>{
-		let sites = result.sites;
-		let obj={
+		const sites=result.sites;
+		const len=sites.length;
+		sites.forEach((local,ix)=>{
+			if(local.changed){
+				numberScanned++;
+				count++;
+				return;
+			}
+			if(!force&&auto&&((date()==local.date&&time()<local.time+local.freq)||(date()>local.date&&24-local.time+time()<local.freq))){
+				numberScanned++;
+				return;
+			}
+			scanPage(local,ix,auto,len);
+		});
+	});
+}
+
+function updateBase(changesArray,timesArray){
+	browser.storage.local.get(['sites','changes']).then(result=>{
+		let changes=result.changes;
+		let sites=result.sites;
+		let currentTime={
 			date:   date(),
 			time:   time()
 		};
-		sites[id] = Object.assign(sites[id],obj);
-		browser.storage.local.set({sites});
+		changesArray.forEach((value,id)=>{
+			changes[id]={
+				oldHtml: changes[id].html,
+				html:    value[0]
+			};
+			let obj={
+				date:   date(),
+				time:   time(),
+				length: value[2],
+				md5: 	value[1],
+				changed:true
+			};
+			sites[id]=Object.assign(sites[id],obj);
+		});
+		timesArray.forEach((value,id)=>{
+			sites[id] = Object.assign(sites[id],currentTime);
+		});
+		browser.storage.local.set({sites:sites,changes:changes});
 	});
 }
 

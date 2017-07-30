@@ -16,11 +16,11 @@
 			}});
 		}
 	});
-	scanLater(3);
+	scanLater(1);
 })();
 
-browser.alarms.onAlarm.addListener((alarm)=>{
-  scanLater(60);
+browser.alarms.onAlarm.addListener(alarm=>{
+  scanLater(62);
   scanSites(0,true);
 });
 
@@ -39,8 +39,5 @@ browser.contextMenus.create({
 browser.contextMenus.onClicked.addListener((info,tab)=>{
   if(info.menuItemId=="addThis"){
 	rqstAdd(tab.url,tab.title,"m0",8,true,tab.favicon);
-	setTimeout(()=>{
-		browser.runtime.sendMessage({"listSite":true});
-	},7000);
   }
 });

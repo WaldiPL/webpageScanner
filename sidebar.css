@@ -187,7 +187,7 @@ ul li.scanned a{
 
 ul li.changed a{
 	border-left:3px solid #0ba0f9;
-	background:#0ba0f9;
+	background-color:#0ba0f9;
 	color:#fff;
 	padding-left:3px !important;
 }
@@ -205,7 +205,16 @@ ul li.opened:hover a{
 
 ul li.error a{
 	border-left:3px solid #d94141;
-	background:#ffafaf;
+	background-color:#ffafaf;
+	padding-left:3px !important;
+}
+
+ul li.warn a{
+	border-left:3px solid #fb3;
+	background-image:linear-gradient(135deg, transparent 30%, #fb3 30%,#fb3 70%, transparent 70%);
+	background-size:25px 4px;
+	background-repeat:repeat-x;
+	background-position-y:bottom;
 	padding-left:3px !important;
 }
 
@@ -229,10 +238,6 @@ ul li.error a{
 	max-height:16px;
 	max-width:16px;
 	min-width:16px;
-}
-
-progress{
-	width:calc(100% - 8px);
 }
 
 #deleteTitle{

@@ -1,4 +1,5 @@
 const extURL=browser.extension.getURL("");
+var prevContext;
 
 (function(){
 	if(!document.getElementById("scanSites"))return;
@@ -17,10 +18,12 @@ const extURL=browser.extension.getURL("");
 })();
 
 function context(e){
+	hideAll();
 	const a=e.target.parentElement;
 	const id=parseInt(a.getAttribute("id").substr(4));
 	const c=document.getElementById(`edititem${id}`);
 	if(!c){
+		removeContext(id);
 		let eInput=document.createElement('input');
 			eInput.className="editSite";
 			eInput.id=`edititem${id}`;
@@ -48,17 +51,31 @@ function context(e){
 			browser.storage.local.get('sites').then(result=>{
 				let local=result.sites[id];
 				sInput.addEventListener('click',()=>{
-					scanPage(local,id);
+					scanPage(local,id,false,true);
 				});
 			});
 		a.insertBefore(dInput,a.firstChild);
 		a.insertBefore(eInput,dInput);
 		a.insertBefore(sInput,eInput);
+		prevContext=id;
+	}
+}
+
+function removeContext(id){
+	if(prevContext!=undefined){
+		let aParent=document.getElementById(`item${prevContext}`),
+			e1=document.getElementById(`edititem${prevContext}`),
+			e2=document.getElementById(`deleteitem${prevContext}`),
+			e3=document.getElementById(`scanitem${prevContext}`);
+		aParent.removeChild(e1);
+		aParent.removeChild(e2);
+		aParent.removeChild(e3);
 	}
 }
 
 function listSite(){
 	browser.storage.local.get('sites').then(result=>{
+		prevContext=undefined;
 		document.getElementById("lista").textContent="";
 		const sites=result.sites;
 		const list = document.getElementById("lista");
@@ -134,7 +151,7 @@ function showDelete(e){
 
 function deleteSite(e){
 	document.getElementById("deletingSite").classList.add("hidden");
-	browser.storage.local.get().then(result=>{
+	browser.storage.local.get(['sites','changes']).then(result=>{
 		let sites=result.sites;
 		let changes=result.changes;
 		statusbar(i18n("deletedWebpage",sites[e].title));
@@ -191,25 +208,10 @@ function hideAll(e){
 	}
 }
 
-function statusbar(e,aHide){
+function statusbar(e){
 	let statusbar=document.getElementById("statusbar");
-	if(typeof(e)==="string"){
-		statusbar.textContent=e;
-	}else{
-		let progress;
-		if(e[0]===0){
-			statusbar.textContent="";
-			progress=document.createElement('progress');
-			progress.max=e[1];
-			statusbar.appendChild(progress);
-		}else{
-			progress=document.getElementsByTagName("progress")[0];
-		}
-		progress.value=e[0];
-	}
-	if(!aHide){
-		setTimeout(()=>{statusbar.textContent="";},5000);
-	}
+	statusbar.textContent=e;
+	setTimeout(()=>{statusbar.textContent="";},5000);
 }
 
 browser.runtime.onMessage.addListener(run);
