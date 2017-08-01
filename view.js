@@ -156,9 +156,9 @@ function btnActive(type){
 }
 
 function realDate(e){
-	const m=parseInt(e),
+	const m=Math.trunc(e),
 		  month=i18n("monthList").split(","),
-		  d=parseInt((e-m)*100);
+		  d=Math.round((e-m)*100);
 	return `${d} ${month[m]}`;
 }
 
