@@ -12,10 +12,10 @@ td{
 	padding:2px 5px;
 }
 
-#submitSave{
-	padding:5px 10px;
+.false{
+	opacity:.4;
 }
 
-#trTime.false{
-	opacity:.4;
+#openWindowMore{
+	margin-left:15px;
 }

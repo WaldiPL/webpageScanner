@@ -109,6 +109,9 @@
   "newElements": {
     "message": "Nowe elementy"
   },
+  "deletedElements": {
+    "message": "Usunięte elementy"
+  },
   "highlight": {
     "message": "Podświetl zmiany"
   },
@@ -153,7 +156,7 @@
     "message": "Powiadomienia"
   },
   "autoOpen": {
-    "message": "Automatycznie otwieraj zmienione strony"
+    "message": "Otwieraj automatycznie"
   },
   "hideHeader": {
     "message": "Ukryj interfejs"
@@ -169,5 +172,17 @@
   },
   "volume": {
     "message": "Głośność powiadomienia"
+  },
+  "maxRequestTime": {
+    "message": "Maksymalny czas zapytania [s]"
+  },
+  "changedPages": {
+    "message": "Zmienione strony"
+  },
+  "openNewWindow": {
+    "message": "Otwieraj w nowym oknie"
+  },
+  "openNewWindowMore": {
+    "message": "Tylko, jeśli wykryto co najmniej 2 zmiany"
   }
 }

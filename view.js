@@ -8,6 +8,7 @@ const extURL=browser.extension.getURL("");
 	document.getElementById("oldHtml10153").addEventListener("click",()=>{load(localId,"oldHtml");});
 	document.getElementById("newHtml10153").addEventListener("click",()=>{load(localId,"newHtml");});
 	document.getElementById("news10153").addEventListener("click",()=>{load(localId,"news");});
+	document.getElementById("deleted10153").addEventListener("click",()=>{load(localId,"deleted");});
 	document.getElementById("light10153").addEventListener("click",()=>{load(localId,"light");});
 	document.getElementById("active10153").addEventListener("click",()=>{load(localId,"active");});
 	document.getElementById("delete10153").addEventListener("click",()=>{showDelete(localId);});
@@ -99,6 +100,7 @@ function load(siteId,type){
 			  diffString=diffString2(oldHtml,newHtml),
 			  light=cId?diffString.n:newHtml,
 			  news=cId?diffString.c:"",
+			  deleted=cId?diffString.o:"",
 			  url=sId.url.split("/"),
 			  url2=url[0]+"//"+url[2]+"/";
 		document.getElementById("title10153").textContent=sId.title;
@@ -109,6 +111,9 @@ function load(siteId,type){
 				break;
 			case "news":
 				document.getElementById("content10153").innerHTML=news;
+				break;
+			case "deleted":
+				document.getElementById("content10153").innerHTML=deleted;
 				break;
 			case "newHtml":
 				document.getElementById("content10153").innerHTML=newHtml;
@@ -151,6 +156,7 @@ function btnActive(type){
 	document.getElementById("oldHtml10153").classList.remove("active10153");
 	document.getElementById("newHtml10153").classList.remove("active10153");
 	document.getElementById("news10153").classList.remove("active10153");
+	document.getElementById("deleted10153").classList.remove("active10153");
 	document.getElementById("light10153").classList.remove("active10153");
 	document.getElementById(type+"10153").classList.add("active10153");
 }
@@ -194,6 +200,7 @@ function translate(){
 	document.getElementById("oldHtml10153").textContent=i18n("oldVersion");
 	document.getElementById("newHtml10153").textContent=i18n("newVersion");
 	document.getElementById("news10153").textContent=i18n("newElements");
+	document.getElementById("deleted10153").textContent=i18n("deletedElements");
 	document.getElementById("light10153").textContent=i18n("highlight");
 	document.getElementById("active10153").textContent=i18n("currentWebpage");
 	document.getElementById("deleteCancel10153").textContent=i18n("cancel");

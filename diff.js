@@ -16,15 +16,11 @@ function diffString2(o,n){
 		os="",
 		ns="",
 		cs="";
-	/* *** UNUSED ***
 	out.o.forEach(v=>{
-		if(v.text!=null){
-			os+=v.text;
-		}else{
+		if(v.text==null){
 			os+=`<del>${v}</del>`;
 		}
 	});
-	*/
 	out.n.forEach(v=>{
 		if(v.text!=null){
 			ns+=v.text;

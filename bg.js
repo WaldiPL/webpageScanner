@@ -12,8 +12,18 @@
 				"showNotification":true,
 				"autoOpen":false,
 				"hideHeader":false,
-				"defaultView":"light"
+				"defaultView":"light",
+				"openWindow":false,
+				"openWindowMore":1,
+				"requestTime":10000
 			}});
+		}else if(result.settings.openWindow===undefined){
+			result.settings=Object.assign(result.settings,{
+				"openWindow":false,
+				"openWindowMore":true,
+				"requestTime":10000
+			});
+			browser.storage.local.set({settings:result.settings});
 		}
 	});
 	scanLater(1);

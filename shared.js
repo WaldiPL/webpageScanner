@@ -1,71 +1,75 @@
+const extURL=browser.extension.getURL("");
+
 function rqstAdd(url,title,mode,freq,btn=false,icon){
 	if(!url)return;
 	if(!title)title=url;
-	let xhr=new XMLHttpRequest();
-	xhr.open("GET",url);
-	xhr.timeout=10000;
-	xhr.overrideMimeType('text/html; charset=utf-8');
-	xhr.onload=function(){
-		const html_data=this.responseText;
-		const site={
-			title:	title,
-			url:	url,
-			date:	date(),
-			time:	time(),
-			length:	html_data.length,
-			md5:	md5(html_data),
-			mode:	mode,
-			changed:false,
-			favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
-			freq:	freq,
-			charset:"utf-8"
-		};
-		browser.storage.local.get(['sites','changes']).then(result=>{
-			let sites=result.sites,
-				changes=result.changes;
-			sites[sites.length]=site;
-			changes[changes.length]={
-				oldHtml:"",
-				html:	html_data
+	getSettings("requestTime").then(requestTime=>{
+		let xhr=new XMLHttpRequest();
+		xhr.open("GET",url);
+		xhr.timeout=requestTime?requestTime:10000;
+		xhr.overrideMimeType('text/html; charset=utf-8');
+		xhr.onload=function(){
+			const html_data=this.responseText;
+			const site={
+				title:	title,
+				url:	url,
+				date:	date(),
+				time:	time(),
+				length:	html_data.length,
+				md5:	md5(html_data),
+				mode:	mode,
+				changed:false,
+				favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
+				freq:	freq,
+				charset:"utf-8"
 			};
-			browser.storage.local.set({sites:sites,changes:changes});
-			if(!btn){
-				listSite();
-				statusbar(i18n("addedWebpage",title));
-			}else{
-				browser.runtime.sendMessage({"listSite":true});
+			browser.storage.local.get(['sites','changes']).then(result=>{
+				let sites=result.sites,
+					changes=result.changes;
+				sites[sites.length]=site;
+				changes[changes.length]={
+					oldHtml:"",
+					html:	html_data
+				};
+				browser.storage.local.set({sites:sites,changes:changes});
+				if(!btn){
+					listSite();
+					statusbar(i18n("addedWebpage",title));
+				}else{
+					browser.runtime.sendMessage({"listSite":true});
+				}
+			});
+			if(btn){
+				browser.notifications.create(`webpagesScannerAdded`,{
+					"type":		"basic",
+					"iconUrl":	site.favicon,
+					"title":	i18n("extensionName"),
+					"message":	i18n("addedWebpage",title)
+				});
+				setTimeout(()=>{
+					browser.notifications.clear(`webpagesScannerAdded`);
+				},5000);
 			}
-		});
-		if(btn){
-			browser.notifications.create(`webpagesScannerAdded`,{
-				"type":		"basic",
-				"iconUrl":	site.favicon,
-				"title":	i18n("extensionName"),
-				"message":	i18n("addedWebpage",title)
-			});
-			setTimeout(()=>{
-				browser.notifications.clear(`webpagesScannerAdded`);
-			},5000);
-		}
-	};
-	let error=function(){
-		if(btn){
-			browser.notifications.create(`webpagesScannerError`,{
-				"type":		"basic",
-				"iconUrl":	"icons/warn.svg",
-				"title":	i18n("extensionName"),
-				"message":	i18n("errorAdding",title)
-			});
-			setTimeout(()=>{
-				browser.notifications.clear(`webpagesScannerError`);
-			},5000);
-		}else{
-			statusbar(i18n("addedWebpageError"));
-		}
-	};
-	xhr.onerror=error;
-	xhr.ontimeout=error;
-	xhr.send(null);
+		};
+		let error=function(){
+			if(btn){
+				browser.notifications.create(`webpagesScannerError`,{
+					"type":		"basic",
+					"iconUrl":	"icons/warn.svg",
+					"title":	i18n("extensionName"),
+					"message":	i18n("errorAdding",title)
+				});
+				setTimeout(()=>{
+					browser.notifications.clear(`webpagesScannerError`);
+				},5000);
+			}else{
+				statusbar(i18n("addedWebpageError"));
+			}
+		};
+		xhr.onerror=error;
+		xhr.ontimeout=error;
+		xhr.send(null);
+	});
 }
 
 var tempChanges=[],
@@ -115,46 +119,48 @@ function scanCompleted(sitesLength,auto){
 	
 function scanPage(local,id,auto,sitesLength){
 	const charset=local.charset?local.charset:"uft-8";
-	let xhr=new XMLHttpRequest();
-	xhr.open("GET",local.url);
-	xhr.timeout=10000;
-	xhr.overrideMimeType('text/html; charset='+charset);
-	xhr.onload=function(){
-		if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-			const html_data=this.responseText;
-			const scanned={
-				length:	html_data.length,
-				md5:	md5(html_data)
-			};
-			if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
-				if(!auto){
-					document.getElementById("item"+id).classList.add("changed","scanned");
+	getSettings("requestTime").then(requestTime=>{
+		let xhr=new XMLHttpRequest();
+		xhr.open("GET",local.url);
+		xhr.timeout=requestTime?requestTime:10000;
+		xhr.overrideMimeType('text/html; charset='+charset);
+		xhr.onload=function(){
+			if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+				const html_data=this.responseText;
+				const scanned={
+					length:	html_data.length,
+					md5:	md5(html_data)
+				};
+				if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
+					if(!auto){
+						document.getElementById("item"+id).classList.add("changed","scanned");
+					}
+					count++;
+					tempChanges[id]=[html_data,scanned.md5,scanned.length];
+				}else{
+					tempTimes[id]=true;
+					if(!auto){
+						if(this.status<400)document.getElementById("item"+id).classList.add("scanned");
+						else document.getElementById("item"+id).classList.add("warn");
+					}
 				}
-				count++;
-				tempChanges[id]=[html_data,scanned.md5,scanned.length];
 			}else{
-				tempTimes[id]=true;
-				if(!auto){
-					if(this.status<400)document.getElementById("item"+id).classList.add("scanned");
-					else document.getElementById("item"+id).classList.add("warn");
-				}
+				if(!auto)document.getElementById("item"+id).classList.add("error");
 			}
-		}else{
+			scanCompleted(sitesLength,auto);
+		};
+		let error=function(){
+			scanCompleted(sitesLength,auto);
 			if(!auto)document.getElementById("item"+id).classList.add("error");
+		};
+		xhr.onerror=error;
+		xhr.ontimeout=error;
+		try{
+			xhr.send(null);
+		}catch(e){
+			console.warn(e);
 		}
-		scanCompleted(sitesLength,auto);
-	};
-	let error=function(){
-		scanCompleted(sitesLength,auto);
-		if(!auto)document.getElementById("item"+id).classList.add("error");
-	};
-	xhr.onerror=error;
-	xhr.ontimeout=error;
-	try{
-		xhr.send(null);
-	}catch(e){
-		console.warn(e);
-	}
+	});
 }
 
 function scanSites(ev,auto=false,force=false){
@@ -208,29 +214,42 @@ function updateBase(changesArray,timesArray){
 
 function openSite(ev){
 	const auto=(ev==="webpagesScannertrue")?true:false;
-	let ixs=[];
-	browser.storage.local.get('sites').then(result=>{
-		const sites=result.sites;
+	let ixs=[],
+		links=[];
+	browser.storage.local.get(['sites','settings']).then(result=>{
+		const sites=result.sites,
+			  settings=result.settings;
 		sites.forEach((value,i)=>{
 			if(value.changed===true){
 				ixs.push(i);
-				browser.tabs.create({
-					url:`view.html?${i}`,
-					active:false
-				});
+				links.push(`${extURL}view.html?${i}`);
 				if(!auto){
 					document.getElementsByTagName("li")[i].classList.remove("changed");
 				}
 			}
 		});
-		unchange(ixs);
+		if(ixs.length){
+			if(settings.openWindow&&ixs.length>settings.openWindowMore){
+				browser.windows.create({
+					url: links
+				});
+			}else{
+				links.forEach(value=>{
+					browser.tabs.create({
+						url:value,
+						active:false
+					});
+				});
+			}
+			unchange(ixs);
+		}
 	});
 }
 
 function unchange(ixo){
 	browser.storage.local.get('sites').then(result=>{
 		let sites=result.sites;
-		ixo.forEach(function(value){
+		ixo.forEach(value=>{
 			let obj={
 				changed:false
 			}

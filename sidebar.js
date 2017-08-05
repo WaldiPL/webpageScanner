@@ -1,4 +1,3 @@
-const extURL=browser.extension.getURL("");
 var prevContext;
 
 (function(){

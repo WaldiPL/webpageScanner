@@ -109,6 +109,9 @@
   "newElements": {
     "message": "New elements"
   },
+  "deletedElements": {
+    "message": "Deleted elements"
+  },
   "highlight": {
     "message": "Highlight changes"
   },
@@ -153,7 +156,7 @@
     "message": "Notifications"
   },
   "autoOpen": {
-    "message": "Automatically open the changed pages"
+    "message": "Open automatically"
   },
   "hideHeader": {
     "message": "Hide interface"
@@ -169,5 +172,17 @@
   },
   "volume": {
     "message": "Notification volume"
+  },
+  "maxRequestTime": {
+    "message": "Maximum query time [s]"
+  },
+  "changedPages": {
+    "message": "Changed pages"
+  },
+  "openNewWindow": {
+    "message": "Open in new window"
+  },
+  "openNewWindowMore": {
+    "message": "Only if detected at least 2 changes"
   }
 }
