@@ -184,5 +184,8 @@
   },
   "openNewWindowMore": {
     "message": "Only if detected at least 2 changes"
+  },
+  "diffOld": {
+    "message": "Use old comparing script (faster but less accurate)"
   }
 }

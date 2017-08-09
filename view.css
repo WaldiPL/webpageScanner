@@ -154,16 +154,30 @@ body.hiddenHeader10153{
 	border:1px solid #b1b1b1 !important;
 	padding:4px 8px 6px !important;
 }
+
 #tabs10153 button:hover{
 	background:#ebebeb !important;
 }
+
 #tabs10153 button:active, #tabs10153 button.active10153{
 	background:#0ba0f9 !important;
 	border-color:#258ad6 !important;
 	color:#fff !important;
 }
+
 #tabs10153 button.active10153:hover{
 	background:#0670cc !important;
+}
+
+#tabs10153 button[disabled]{
+	opacity:.4 !important;
+}
+
+#tabs10153 button[disabled]:hover,
+#tabs10153 button[disabled]:active{
+	color:#000 !important;
+	background:#fbfbfb !important;
+	border:1px solid #b1b1b1 !important;
 }
 
 .footer10153 button{
@@ -373,6 +387,10 @@ body.hiddenHeader10153{
 	display:none !important;
 }
 
+.changes10153 a{
+	background:#ffa !important;
+}
+
 .changes10153{
 	background:#ff0 !important;
 	color:#000 !important;
@@ -384,10 +402,12 @@ body.hiddenHeader10153{
 	outline:none !important;
 }
 
+.changes10153 a,
 a .changes10153{
 	color:#006abc !important;
 }
 
+.changes10153:hover a,
 a .changes10153:hover{
 	color:#00f !important;
 	background:#ffe100 !important;

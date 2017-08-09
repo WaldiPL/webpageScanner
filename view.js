@@ -15,7 +15,11 @@ const extURL=browser.extension.getURL("");
 	document.getElementById("deleteCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("edit10153").addEventListener("click",()=>{showEdit(localId);});
 	document.getElementById("editCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
+	let js=document.createElement("script");
 	getSettings().then(s=>{
+		if(s.diffOld)js.src="diffOld.js";
+		else js.src="diff.js";
+		document.body.appendChild(js);
 		load(localId,s.defaultView);
 		if(s.hideHeader)toogleHeader(true);
 	});
@@ -103,6 +107,9 @@ function load(siteId,type){
 			  deleted=cId?diffString.o:"",
 			  url=sId.url.split("/"),
 			  url2=url[0]+"//"+url[2]+"/";
+		if(oldHtml)enableBtn("oldHtml10153");
+		if(news)enableBtn("news10153");
+		if(deleted)enableBtn("deleted10153");
 		document.getElementById("title10153").textContent=sId.title;
 		document.getElementById("lastScan10153").textContent=i18n("lastScan",[realDate(sId.date),realTime(sId.time)]);
 		switch(type){
@@ -248,4 +255,8 @@ function toogleHeader(auto){
 		arrow.src=`${extURL}icons/toogle.svg#t`;
 		arrow.title=i18n("hideInterface");
 	}
+}
+
+function enableBtn(name){
+	document.getElementById(name).disabled=false;
 }

@@ -12,35 +12,10 @@
 
 function diffString2(o,n){
 	if(!n)return{o:o,n:"",c:""};
-	let reg=[/[\n\f\r\u0020\u0009]*(<[^>]*>)[\n\f\r\u0020\u0009]*/,
-			 /[<>{}]/,
-			 /( )/,
-			 /<\/a>/,
-			 /<[^>]*>/,
-			 /<[^>]*>|\s/,
-			 /<a.*>/,
-			 /<\/a>/],
-		aN=[],
-		aO=[],
-		iN=n.split(reg[0]).filter(v=>{if(v)return v;}),
-		iO=o.split(reg[0]).filter(v=>{if(v)return v;});
-		iN.forEach(v=>{
-			if(!reg[1].test(v)){
-				v.split(reg[2]).forEach(w=>{
-					aN.push(w);
-				});
-			}else
-				aN.push(v);
-		});
-		iO.forEach(v=>{
-			if(!reg[1].test(v)){
-				v.split(reg[2]).forEach(w=>{
-					aO.push(w);
-				});
-			}else
-				aO.push(v);
-		});
-	let out=diff(aO,aN),
+	let reg=/[\n\f\r\u0020\u0009]*(<[^>]*>)[\n\f\r\u0020\u0009]*/,
+		aN=n.split(reg).filter(v=>{if(v)return v;}),
+		aO=o.split(reg).filter(v=>{if(v)return v;}),
+		out=diff(aO,aN),
 		os="",
 		ns="",
 		cs="";
@@ -49,41 +24,11 @@ function diffString2(o,n){
 			os+=`<del>${v}</del>`;
 		}
 	});
-	let openSpan=false,
-		openA=false;
 	out.n.forEach(v=>{
 		if(v.text!=null){
-			if(openSpan)
-				ns+="</span>";
-			openSpan=false;
 			ns+=v.text;
-			if(openA&&reg[3].test(v.text)){
-				ns+="</span>";
-				openA=false;
-			}
 		}else{
-			if(!reg[5].test(v)){
-				if(!openSpan)
-					ns+="<span class='changes10153'>";
-				openSpan=true;
-			}else if(reg[6].test(v)){
-				if(openSpan)
-					ns+="</span>";
-				openSpan=false;
-				if(!openA)
-					ns+="<span class='changes10153'>";
-				openA=true;
-			}else if(reg[4].test(v)){
-				if(openSpan)
-					ns+="</span>";
-				openSpan=false;
-			}
-			ns+=v;
-			if(reg[7].test(v)){
-				if(openA)
-					ns+="</span>";
-				openA=false;
-			}
+			ns+=`<span class="changes10153">${v}</span>`;
 			cs+=v;
 		}
 	});

@@ -15,7 +15,8 @@
 				"defaultView":"light",
 				"openWindow":false,
 				"openWindowMore":1,
-				"requestTime":10000
+				"requestTime":10000,
+				"diffOld":false
 			}});
 		}else if(result.settings.openWindow===undefined){
 			result.settings=Object.assign(result.settings,{

@@ -130,7 +130,7 @@ select{
 
 ul{
 	list-style-type:none;
-	margin:0 0 30px;
+	margin:0;
 	padding:31px 0 0;
 }
 
@@ -220,7 +220,8 @@ ul li.warn a{
 
 #statusbar{
 	position:fixed;
-	bottom:0;
+	bottom:-27px;
+	opacity:0;
 	background:#eee;
 	border-top:1px solid #b1b1b1;
 	box-shadow:0px 0px 10px #b1b1b1;
@@ -228,6 +229,13 @@ ul li.warn a{
 	height:20px;
 	padding:3px;
 	z-index:2147483647;
+	transition:bottom 250ms, opacity 250ms;
+}
+
+#statusbar.visible{
+	bottom:0;
+	opacity:1;
+	transition:bottom 250ms, opacity 250ms;
 }
 
 .favicon{

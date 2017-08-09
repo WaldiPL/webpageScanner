@@ -29,7 +29,8 @@ function saveOptions(){
 		defaultView:		document.getElementById("defaultView").value,
 		openWindow:			document.getElementById("openWindow").checked,
 		openWindowMore:		document.getElementById("openWindowMore").checked?1:0,
-		requestTime:		parseInt(document.getElementById("requestTime").value*1000)
+		requestTime:		parseInt(document.getElementById("requestTime").value*1000),
+		diffOld:			document.getElementById("diffOld").checked,
 	};
 	browser.storage.local.set({settings:settings});
 }
@@ -53,6 +54,7 @@ function restoreOptions(){
 		document.getElementById("openWindowMore").disabled=!s.openWindow;
 		document.getElementById("openWindowMore").className=s.openWindow;
 		document.getElementById("requestTime").value=parseInt(s.requestTime/1000);
+		document.getElementById("diffOld").checked=s.diffOld;
 	});
 }
 
@@ -76,6 +78,7 @@ function translate(){
 	document.getElementById("thChangedPages").textContent=i18n("changedPages");
 	document.getElementById("labelOpenWindow").textContent=i18n("openNewWindow");
 	document.getElementById("labelOpenWindowMore").textContent=i18n("openNewWindowMore");
+	document.getElementById("labelDiffOld").textContent=i18n("diffOld");
 }
 
 function i18n(e,s1){

@@ -210,7 +210,8 @@ function hideAll(e){
 function statusbar(e){
 	let statusbar=document.getElementById("statusbar");
 	statusbar.textContent=e;
-	setTimeout(()=>{statusbar.textContent="";},5000);
+	statusbar.className="visible"
+	setTimeout(()=>{if(statusbar.textContent===e)statusbar.removeAttribute("class");},5000);
 }
 
 browser.runtime.onMessage.addListener(run);
