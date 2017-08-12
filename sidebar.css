@@ -1,7 +1,7 @@
 body{
 	width:100%;
 	font-size:14px;
-	font-family:'Segoe UI', sans-serif;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	background:#FBFBFB;
 	margin:0;
 }
@@ -126,6 +126,10 @@ select{
 .hidden{
 	opacity:0 !important;
 	visibility:hidden;
+}
+
+.none{
+	display:none !important;
 }
 
 ul{

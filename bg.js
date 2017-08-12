@@ -39,6 +39,7 @@ browser.runtime.onMessage.addListener(run);
 function run(m){
 	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,true,m.favicon);
 	if(m.scanSites)scanSites(0,true,true);
+	if(m.openSites)openSite("webpagesScannertrue");
 }
 
 browser.contextMenus.create({

@@ -89,6 +89,7 @@ function scanCompleted(sitesLength,auto){
 				audio.volume=(s.notificationVolume/100);
 				audio.play();
 				if(s.autoOpen)openSite(`webpagesScanner${auto}`);
+				else updateBadge(count2,sitesLength);
 				if(s.showNotification){
 					browser.notifications.create(
 						`webpagesScanner${auto}`,{
@@ -172,13 +173,13 @@ function scanSites(ev,auto=false,force=false){
 			if(local.changed){
 				numberScanned++;
 				count++;
-				return;
-			}
-			if(!force&&auto&&((date()==local.date&&time()<local.time+local.freq)||(date()>local.date&&24-local.time+time()<local.freq))){
+				scanCompleted(len,auto);
+			}else if(auto&&!force&&((date()==local.date&&time()<local.time+local.freq)||(date()>local.date&&24-local.time+time()<local.freq))){
 				numberScanned++;
-				return;
+				scanCompleted(len,auto);
+			}else{
+				scanPage(local,ix,auto,len);
 			}
-			scanPage(local,ix,auto,len);
 		});
 	});
 }
@@ -241,6 +242,7 @@ function openSite(ev){
 					});
 				});
 			}
+			updateBadge();
 			unchange(ixs);
 		}
 	});
@@ -289,4 +291,26 @@ function getSettings(name){
 	return browser.storage.local.get('settings').then(result=>{
 		return name?result.settings[name]:result.settings;
 	});
+}
+
+function updateBadge(count=0,singleScan){
+	if(singleScan===true){
+		browser.browserAction.getBadgeText({}).then(e=>{
+			let count2=parseInt(e?e:0)+1;
+			browser.browserAction.setBadgeText({
+				text:count2?count2+"":""
+			});
+		});
+	}else if(count<0){
+		browser.browserAction.getBadgeText({}).then(e=>{
+			let count2=parseInt(e)-1;
+			browser.browserAction.setBadgeText({
+				text:count2?count2+"":""
+			});
+		});
+	}else{
+		browser.browserAction.setBadgeText({
+			text:count?count+"":""
+		});
+	}
 }

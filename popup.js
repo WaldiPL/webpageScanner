@@ -5,6 +5,15 @@
 	document.getElementById("addThis").addEventListener("click",addThis);
 	document.getElementById("scanNow").addEventListener("click",scanNow);
 	document.getElementById("showList").addEventListener("click",showList);
+	getSettings("autoOpen").then(autoOpen=>{
+		let openSitesBtn=document.getElementById("openSites");
+		if(autoOpen){
+			openSitesBtn.className="none";
+		}else{
+			openSitesBtn.textContent=i18n("openWebpage");
+			openSitesBtn.addEventListener("click",openSites);
+		}
+	});
 })();
 
 function addThis(){
@@ -18,6 +27,10 @@ function scanNow(){
 	browser.runtime.sendMessage({"scanSites":true});
 }
 
+function openSites(){
+	browser.runtime.sendMessage({"openSites":true});
+}
+
 function showList(){
 	browser.tabs.create({
 		url:`sidebar.html`,
@@ -27,4 +40,10 @@ function showList(){
 
 function i18n(e){
 	return browser.i18n.getMessage(e);
+}
+
+function getSettings(name){
+	return browser.storage.local.get('settings').then(result=>{
+		return name?result.settings[name]:result.settings;
+	});
 }

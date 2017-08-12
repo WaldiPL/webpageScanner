@@ -5,7 +5,13 @@ var prevContext;
 	translate();
 	document.getElementById("scanSites").addEventListener("click",scanSites);
 	document.getElementById("addSite").addEventListener("click",addSite);
-	document.getElementById("openSite").addEventListener("click",openSite);
+	getSettings("autoOpen").then(autoOpen=>{
+		let openSiteBtn=document.getElementById("openSite");
+		if(!autoOpen){
+			openSiteBtn.removeAttribute("class");
+			openSiteBtn.addEventListener("click",openSite);
+		}
+	});
 	document.getElementById("showAdd").addEventListener("click",showAdd);
 	document.getElementById("editCancel").addEventListener("click",hideAll);
 	document.getElementById("addCancel").addEventListener("click",hideAll);
@@ -86,13 +92,14 @@ function listSite(){
 				iA.textContent=value.title;
 				iA.addEventListener('mouseup',e=>{
 					if(e.button!=2){
+						if(e.target.parentNode.classList.contains("changed"))updateBadge(-1);
 						browser.tabs.create({
 							url:`${extURL}view.html?${i}`,
 							active:(e.button===1||(e.button===0&&e.ctrlKey===true))?false:true
 						});
+						unchange([i]);
+						iLi.classList.remove("changed");
 					}
-					unchange([i]);
-					iLi.classList.remove("changed");
 				});
 			let iImg=document.createElement('img');
 				iImg.className="favicon";
