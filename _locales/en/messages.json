@@ -187,5 +187,8 @@
   },
   "diffOld": {
     "message": "Use old comparing script (faster but less accurate)"
+  },
+  "popupList": {
+    "message": "Show the scan list in the popup"
   }
 }

@@ -31,8 +31,10 @@ function saveOptions(){
 		openWindowMore:		document.getElementById("openWindowMore").checked?1:0,
 		requestTime:		parseInt(document.getElementById("requestTime").value*1000),
 		diffOld:			document.getElementById("diffOld").checked,
+		popupList:			document.getElementById("popupList").checked
 	};
 	browser.storage.local.set({settings:settings});
+	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
 }
 
 function restoreOptions(){
@@ -55,6 +57,7 @@ function restoreOptions(){
 		document.getElementById("openWindowMore").className=s.openWindow;
 		document.getElementById("requestTime").value=parseInt(s.requestTime/1000);
 		document.getElementById("diffOld").checked=s.diffOld;
+		document.getElementById("popupList").checked=s.popupList;
 	});
 }
 
@@ -79,6 +82,7 @@ function translate(){
 	document.getElementById("labelOpenWindow").textContent=i18n("openNewWindow");
 	document.getElementById("labelOpenWindowMore").textContent=i18n("openNewWindowMore");
 	document.getElementById("labelDiffOld").textContent=i18n("diffOld");
+	document.getElementById("labelPopupList").textContent=i18n("popupList");	
 }
 
 function i18n(e,s1){

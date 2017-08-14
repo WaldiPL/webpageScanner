@@ -5,9 +5,11 @@
 	document.getElementById("addThis").addEventListener("click",addThis);
 	document.getElementById("scanNow").addEventListener("click",scanNow);
 	document.getElementById("showList").addEventListener("click",showList);
-	getSettings("autoOpen").then(autoOpen=>{
+	getSettings().then(s=>{
+		if(s.popupList)
+			browser.browserAction.setPopup({popup:"/sidebar.html"});
 		let openSitesBtn=document.getElementById("openSites");
-		if(autoOpen){
+		if(s.autoOpen){
 			openSitesBtn.className="none";
 		}else{
 			openSitesBtn.textContent=i18n("openWebpage");

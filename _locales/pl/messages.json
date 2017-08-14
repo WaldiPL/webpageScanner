@@ -187,5 +187,8 @@
   },
   "diffOld": {
     "message": "Używaj starego skryptu porównującego (szybszy, ale mniej dokładny)"
+  },
+  "popupList": {
+    "message": "Pokazuj listę skanowania w wyskującym okienku"
   }
 }
