@@ -18,6 +18,9 @@
   "add": {
     "message": "Dodaj"
   },
+   "fillForm": {
+    "message": "Uzupełnij"
+  },
   "address": {
     "message": "Adres:"
   },

@@ -20,6 +20,7 @@ var prevContext;
 	window.addEventListener('contextmenu',disableEvent);
 	document.getElementById("lista").addEventListener('contextmenu',context);
 	document.getElementById("lista").addEventListener('selectstart',disableEvent);
+	document.getElementById("fillForm").addEventListener("click",fillForm);
 	listSite();
 })();
 
@@ -191,6 +192,14 @@ function addSite(){
 	document.getElementById("showAdd").classList.remove("open");
 }
 
+function fillForm(){
+	browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
+		let tab=tabs[0];
+		document.getElementById("aUrl").value=tab.url;
+		document.getElementById("aTitle").value=tab.title;
+	});
+}
+
 function hideAll(e){
 	if(e!="add"){
 		document.getElementById("addingSite").classList.add("hidden");
@@ -235,6 +244,7 @@ function translate(){
 	document.title=i18n("extensionName");
 	document.getElementById("addCancel").textContent=i18n("cancel");
 	document.getElementById("addSite").textContent=i18n("add");
+	document.getElementById("fillForm").textContent=i18n("fillForm");
 	document.getElementById("editCancel").textContent=i18n("cancel");
 	document.getElementById("editSite").textContent=i18n("save");
 	document.getElementById("deleteCancel").textContent=i18n("cancel");
