@@ -27,6 +27,8 @@
 			});
 			browser.storage.local.set({settings:result.settings});
 		}
+		if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
+		else browser.browserAction.setPopup({popup:"/sidebar.html"});
 	});
 	scanLater(1);
 })();

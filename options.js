@@ -35,6 +35,7 @@ function saveOptions(){
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
+	else browser.browserAction.setPopup({popup:"/sidebar.html"});
 }
 
 function restoreOptions(){

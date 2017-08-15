@@ -21,6 +21,7 @@ var prevContext;
 	document.getElementById("lista").addEventListener('contextmenu',context);
 	document.getElementById("lista").addEventListener('selectstart',disableEvent);
 	document.getElementById("fillForm").addEventListener("click",fillForm);
+	document.getElementById("statusbar").addEventListener("mousemove",e=>{e.target.removeAttribute("class");});
 	listSite();
 })();
 

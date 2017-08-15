@@ -6,8 +6,6 @@
 	document.getElementById("scanNow").addEventListener("click",scanNow);
 	document.getElementById("showList").addEventListener("click",showList);
 	getSettings().then(s=>{
-		if(s.popupList)
-			browser.browserAction.setPopup({popup:"/sidebar.html"});
 		let openSitesBtn=document.getElementById("openSites");
 		if(s.autoOpen){
 			openSitesBtn.className="none";
