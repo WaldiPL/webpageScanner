@@ -17,8 +17,9 @@ var prevContext;
 	document.getElementById("addCancel").addEventListener("click",hideAll);
 	document.getElementById("deleteCancel").addEventListener("click",hideAll);
 	document.getElementById("options").addEventListener("click",()=>{browser.runtime.openOptionsPage();});
-	window.addEventListener('contextmenu',e=>{e.preventDefault();});
-	document.getElementById("lista").addEventListener('contextmenu',e=>{context(e);});
+	window.addEventListener('contextmenu',disableEvent);
+	document.getElementById("lista").addEventListener('contextmenu',context);
+	document.getElementById("lista").addEventListener('selectstart',disableEvent);
 	listSite();
 })();
 
@@ -219,6 +220,10 @@ function statusbar(e){
 	statusbar.textContent=e;
 	statusbar.className="visible"
 	setTimeout(()=>{if(statusbar.textContent===e)statusbar.removeAttribute("class");},5000);
+}
+
+function disableEvent(e){
+	e.preventDefault();
 }
 
 browser.runtime.onMessage.addListener(run);
