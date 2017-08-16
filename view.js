@@ -107,6 +107,12 @@ function load(siteId,type){
 			  deleted=cId?diffString.o:"",
 			  url=sId.url.split("/"),
 			  url2=url[0]+"//"+url[2]+"/";
+		if(type==="active"){
+			window.location=sId.url;
+			return;
+		}
+		let parser=new DOMParser(),
+			doc;
 		if(oldHtml)enableBtn("oldHtml10153");
 		if(news)enableBtn("news10153");
 		if(deleted)enableBtn("deleted10153");
@@ -114,24 +120,23 @@ function load(siteId,type){
 		document.getElementById("lastScan10153").textContent=i18n("lastScan",[realDate(sId.date),realTime(sId.time)]);
 		switch(type){
 			case "light":
-				document.getElementById("content10153").innerHTML=light;
+				doc=parser.parseFromString(light,"text/html");
 				break;
 			case "news":
-				document.getElementById("content10153").innerHTML=news;
+				doc=parser.parseFromString(news,"text/html");
 				break;
 			case "deleted":
-				document.getElementById("content10153").innerHTML=deleted;
+				doc=parser.parseFromString(deleted,"text/html");
 				break;
 			case "newHtml":
-				document.getElementById("content10153").innerHTML=newHtml;
+				doc=parser.parseFromString(newHtml,"text/html");
 				break;
 			case "oldHtml":
-				document.getElementById("content10153").innerHTML=oldHtml;
-				break;
-			case "active":
-				window.location=sId.url;
+				doc=parser.parseFromString(oldHtml,"text/html");
 				break;
 		}
+		document.getElementById("content10153").textContent="";
+		document.getElementById("content10153").appendChild(doc.children[0]);
 		setTitle();
 		const a=document.getElementsByTagName("a"),
 			  img=document.getElementsByTagName("img"),
