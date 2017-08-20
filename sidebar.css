@@ -1,11 +1,5 @@
-html{
-	height:calc(100% - 31px);
-	padding-top: 31px;
-}
-
 body{
 	width:100%;
-	height:100%;
 	font-size:14px;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	background:#FBFBFB;
@@ -18,7 +12,6 @@ body{
 	height:24px;
 	padding:3px;
 	position:fixed;
-	top:0;
 	border-bottom:1px solid #b1b1b1;
 	box-shadow:0px 0px 10px #b1b1b1;
 	z-index:2147483647;
@@ -66,7 +59,7 @@ button:focus,button:hover,ul li:hover a{
 	background:#ebebeb;
 }
 
-#addingSite, #editingSite, #deletingSite, #editingFolder, #deletingFolder{
+#addingSite, #editingSite, #deletingSite{
 	transition-property:opacity;
 	transition-duration:200ms;
 	width:calc(100% - 10px);
@@ -139,28 +132,17 @@ select{
 	display:none !important;
 }
 
-ul#lista{
+ul{
 	list-style-type:none;
 	margin:0;
-	padding:0 0 30px 0;
-	min-height:calc(100% - 31px);
-}
-
-ul#lista ul{
-	list-style-type:none;
-	margin:0;
-	padding:0;
-	line-height:0;
-	width:100%;
+	padding:31px 0 0;
 }
 
 ul li{
 	line-height:0;
-	width:100%;
 }
 
-ul li a,
-.folder a{
+ul li a{
 	display:inline-block;
 	height:16px;
 	background:#fbfbfb;
@@ -177,7 +159,7 @@ ul li a,
 }
 
 ul li input+a{
-	width:calc(100% - 102px) !important;
+	width:calc(100% - 102px);
 }
 
 ul li input{
@@ -260,8 +242,7 @@ ul li.warn a{
 	transition:bottom 250ms, opacity 250ms;
 }
 
-.favicon,
-.folderIcon{
+.favicon{
 	vertical-align:top;
 	padding-right:5px;
 	height:16px;
@@ -271,71 +252,10 @@ ul li.warn a{
 	min-width:16px;
 }
 
-#deleteTitle,
-#deleteFolderName{
+#deleteTitle{
 	padding:7px 0;
 }
 
-#deleteUrl,
-#deleteFolderDesc{
+#deleteUrl{
 	font-size:75%;
-}
-
-#dragIndicator{
-	background:#08f;
-	height:3px;
-	margin-top:-2px;
-	width:100px;
-	position:absolute;
-}
-
-.folder>a{
-	background:#fff5d1;
-}
-
-.folder>a:hover{
-	background:#ffeba3;
-}
-
-.folder .favicon{
-	padding-left: 25px;
-}
-
-.folder.collapsed{
-	height:31px;
-	overflow:hidden;
-}
-
-.folder .folderIcon{
-	background:url("icons/folder-opened.svg") no-repeat;
-}
-
-.folder.collapsed .folderIcon{
-	background:url("icons/folder-closed.svg") no-repeat;
-}
-
-.deleteFolder{
-    position: absolute;
-	right:30px;
-    padding: 7px;
-    margin-top: -7px;
-	background: inherit;
-}
-
-.editFolder{
-    position: absolute;
-	right:0;
-    padding: 7px;
-    margin-top: -7px;
-	background: inherit;
-}
-
-.deleteFolder:hover{
-	background:#26bebe;
-	border-color:#26bebe !important;
-	filter:invert(100%);
-}
-
-.editFolder:hover{
-	background:#f0d38e;
 }

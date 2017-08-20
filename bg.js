@@ -1,7 +1,7 @@
 (function(){
 	browser.storage.local.get('sites').then(result=>{
 		if(result.sites===undefined){
-			browser.storage.local.set({sites:[],changes:[],sort:[]});
+			browser.storage.local.set({sites:[],changes:[]});
 		}
 	});
 	browser.storage.local.get('settings').then(result=>{
@@ -29,15 +29,6 @@
 		}
 		if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
 		else browser.browserAction.setPopup({popup:"/sidebar.html"});
-	});
-	browser.storage.local.get(['sites','sort']).then(result=>{
-		if(result.sort===undefined){
-			let sort=[];
-			result.sites.forEach((value,i)=>{
-				sort.push([`item${i}`,"root","item","",false]);
-			});
-			browser.storage.local.set({sort:sort});
-		}
 	});
 	scanLater(1);
 })();

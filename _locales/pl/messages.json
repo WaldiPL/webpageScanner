@@ -102,24 +102,6 @@
   "moreDetected": {
     "message": "Wykryto zmiany na $1 stronach"
   },
-  "editFolder": {
-    "message": "Edytuj folder"
-  },
-  "name": {
-    "message": "Nazwa:"
-  },
-  "deleteFolder": {
-    "message": "Czy chcesz usunąć ten folder?"
-  },
-  "deleteFolderDesc": {
-    "message": "Wszystkie strony zostaną przeniesione do folderu głównego."
-  },
-  "addFolder": {
-    "message": "Dodaj nowy folder"
-  },
-  "newFolder": {
-    "message": "Nowy folder"
-  },
   
   "oldVersion": {
     "message": "Stara wersja"

@@ -9,7 +9,6 @@
 			<input id="scanSites" type="image" src="icons/scan.svg">
 			<input id="openSite" type="image" src="icons/open.svg" class="none">
 			<input id="showAdd"	type="image" src="icons/add.svg">
-			<input id="addFolder"	type="image" src="icons/folder-add.svg">
 			<input id="options"	type="image" src="icons/options.svg">
 		</div>
 		<div id="addingSite" class="hidden">
@@ -81,31 +80,10 @@
 				<button id="deleteSite" class="negative" type="button"></button>
 			</div>
 		</div>
-		<div id="editingFolder" class="hidden">
-			<b id="editFolder"></b> 
-			<table>
-				<tr><td id="nFolder"></td><td style="width:100%;"><input id="nameFolder" type="text"></td></tr>
-			</table>
-			<div class="footer">
-				<button id="editCancelF" class="editingSite" type="button"></button>
-				<button id="editSaveF" class="positive" type="button"></button>
-			</div>
-		</div>
-		<div id="deletingFolder" class="hidden">
-			<b id="deleteFolder"></b>
-			<div id="deleteFolderName"></div>
-			<div id="deleteFolderDesc"></div>
-			<div class="footer">
-				<button id="deleteCancelF" class="deletingSite" type="button"></button>
-				<button id="deleteSaveF" class="negative" type="button"></button>
-			</div>
-		</div>
-		<div id="dragIndicator" class="none"></div>
 		<ul id="lista"></ul>
 		<div id="statusbar"></div>
 		<script src="md5.js"></script>
 		<script src="shared.js"></script>
-		<script src="sortable.js"></script>
 		<script src="sidebar.js"></script>
 	</body>
 </html>
