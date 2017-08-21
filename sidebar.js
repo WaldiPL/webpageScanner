@@ -254,7 +254,6 @@ function showEdit(e){
 }
 
 function editSite(e){
-	console.log(e);
 	document.getElementById("editingSite").classList.add("hidden");
 	browser.storage.local.get('sites').then(result=>{
 		let sites=result.sites;
