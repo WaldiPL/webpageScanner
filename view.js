@@ -37,12 +37,22 @@ function showDelete(e){
 }
 
 function deleteSite(e){
-	browser.storage.local.get(['sites','changes']).then(result=>{
+	browser.storage.local.get(['sites','changes','sort']).then(result=>{
 		let sites=result.sites,
-			changes=result.changes;
+			changes=result.changes,
+			sort=result.sort,
+			sSort;
 		sites.splice(e,1);
 		changes.splice(e,1);
-		browser.storage.local.set({sites:sites,changes:changes});
+		if(sort){
+			sort.forEach((value,i)=>{
+				id=parseInt(value[0].substr(4));
+				if(id===e)sSort=i;
+				else if(id>e)sort[i][0]=`item${id-1}`;
+			});
+			sort.splice(sSort,1);
+		}
+		browser.storage.local.set({sites:sites,changes:changes,sort:sort});
 	}).then(()=>{
 		browser.runtime.sendMessage({"listSite":true,"deletedSite":true,"id":e});
 		browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});

@@ -23,15 +23,17 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				freq:	freq,
 				charset:"utf-8"
 			};
-			browser.storage.local.get(['sites','changes']).then(result=>{
+			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
-					changes=result.changes;
+					changes=result.changes,
+					sort=result.sort;
 				sites[sites.length]=site;
 				changes[changes.length]={
 					oldHtml:"",
 					html:	html_data
 				};
-				browser.storage.local.set({sites:sites,changes:changes});
+				sort[sort.length]=[`item${sites.length-1}`,"root","item","",false];
+				browser.storage.local.set({sites:sites,changes:changes,sort:sort});
 				if(!btn){
 					listSite();
 					statusbar(i18n("addedWebpage",title));
@@ -225,7 +227,7 @@ function openSite(ev){
 				ixs.push(i);
 				links.push(`${extURL}view.html?${i}`);
 				if(!auto){
-					document.getElementsByTagName("li")[i].classList.remove("changed");
+					document.getElementById(`item${i}`).classList.remove("changed");
 				}
 			}
 		});
