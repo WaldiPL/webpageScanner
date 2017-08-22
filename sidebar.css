@@ -285,12 +285,16 @@ ul li.warn a{
 	background:#08f;
 	height:3px;
 	margin-top:-2px;
-	width:100px;
+	width:50px;
 	position:absolute;
 }
 
 .folder>a{
 	background:#fff5d1;
+}
+
+.folder>a.indicator{
+	background:#8cf !important;
 }
 
 .folder>a:hover{

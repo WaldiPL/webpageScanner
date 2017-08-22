@@ -2,7 +2,8 @@ let startY,
 	enter,
 	dragged,
 	folderId,
-	frag;
+	frag,
+	hlFolder;
 
 (function(){
 	let list=document.getElementById("lista");
@@ -11,6 +12,7 @@ let startY,
 	list.addEventListener('dragover',dragOver);
 	list.addEventListener('dragenter',dragEnter);
 	list.addEventListener('dragend',dragEnd);
+	list.addEventListener('dragexit',dragExit);
 	nav.addEventListener('drop',drop);
 	nav.addEventListener('dragover',dragOver);
 	nav.addEventListener('dragenter',dragEnter);
@@ -27,6 +29,11 @@ function dragStart(e){
 
 function dragOver(e){
 	if(e.preventDefault)e.preventDefault();
+}
+
+function dragExit(e){
+	if(enter.firstElementChild.className==="indicator"||enter.parentElement.firstElementChild.className==="indicator")
+		hlFolder.removeAttribute("class");
 }
 
 function dragEnter(e){
@@ -58,14 +65,18 @@ function dragEnter(e){
 		if(toTop)document.getElementById("dragIndicator").style.top=enter.offsetTop+"px";
 		else document.getElementById("dragIndicator").style.top=enter.offsetTop+31+"px";
 		document.getElementById("dragIndicator").style.left="20px";
-	}else if(enter.className==="folder"){
-		folderId=enter.id;
-		document.getElementById("dragIndicator").style.top=enter.lastElementChild.offsetTop+31+"px";
-		document.getElementById("dragIndicator").style.left="20px";
+		hlFolder=enter.parentElement.firstElementChild;
+		hlFolder.className="indicator";
 	}else if(enter.classList.contains("folder")){
 		folderId=enter.id;
-		document.getElementById("dragIndicator").style.top=enter.offsetTop+31+"px";
+		if(enter.className==="folder"){
+			document.getElementById("dragIndicator").style.top=enter.lastElementChild.offsetTop+31+"px";
+		}else{
+			document.getElementById("dragIndicator").style.top=enter.offsetTop+31+"px";
+		}
 		document.getElementById("dragIndicator").style.left="20px";
+		hlFolder=enter.firstElementChild;
+		hlFolder.className="indicator";
 	}else{
 		if(toTop)document.getElementById("dragIndicator").style.top=enter.offsetTop+"px";
 		else document.getElementById("dragIndicator").style.top=enter.offsetTop+31+"px";
@@ -110,6 +121,7 @@ function drop(e){
 
 function dragEnd(e){
 	document.getElementById("dragIndicator").className="none";
+	if(hlFolder)hlFolder.removeAttribute("class");
 	startY=0;
 	enter=false;
 	dragged=false;

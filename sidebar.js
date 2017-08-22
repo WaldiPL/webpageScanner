@@ -26,7 +26,7 @@ var prevContext;
 	document.getElementById("fillForm").addEventListener("click",fillForm);
 	document.getElementById("statusbar").addEventListener("mousemove",e=>{e.target.removeAttribute("class");});
 	document.getElementById("editSite").addEventListener("click",e=>{editSite(e.target.dataset.id);});
-	document.getElementById("deleteSite").addEventListener("click",e=>{deleteSite(e.target.dataset.id);});
+	document.getElementById("deleteSite").addEventListener("click",e=>{deleteSite(parseInt(e.target.dataset.id));});
 	document.getElementById("editSaveF").addEventListener("click",e=>{editFolder(e.target.dataset.id);});
 	document.getElementById("deleteSaveF").addEventListener("click",e=>{deleteFolder(e.target.dataset.id);});
 	listSite();
