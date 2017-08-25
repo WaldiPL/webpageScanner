@@ -173,11 +173,9 @@ function scanSites(ev,auto=false,force=false){
 			  len=sites.length;
 		sites.forEach((local,ix)=>{
 			if(local.changed){
-				numberScanned++;
 				count++;
 				scanCompleted(len,auto);
 			}else if(auto&&!force&&((date()==local.date&&time()<local.time+local.freq)||(date()>local.date&&24-local.time+time()<local.freq))){
-				numberScanned++;
 				scanCompleted(len,auto);
 			}else{
 				scanPage(local,ix,auto,len);
