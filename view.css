@@ -383,6 +383,17 @@ body.hiddenHeader10153{
 	border:1px solid #0ba0f9 !important;
 }
  
+#editingSite10153 #eFreq10153{
+	width:50% !important;
+}
+
+#editingSite10153 #eMulti10153{
+	width:calc(50% - 11px) !important;
+	padding:2px 3px !important;
+	margin-right:-4px !important;
+	border-left:none !important;
+}
+ 
 .hidden{
 	display:none !important;
 }

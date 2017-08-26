@@ -57,7 +57,7 @@ function run(m){
 browser.contextMenus.create({
 	id:			"addThis",
 	title:		browser.i18n.getMessage("addThis"),
-	contexts:	["page"]
+	contexts:	["page","tab"]
 });
 
 browser.contextMenus.onClicked.addListener((info,tab)=>{

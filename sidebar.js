@@ -250,9 +250,7 @@ function showEdit(e){
 		document.getElementById("eCharset").value=table[e].charset?table[e].charset:"utf-8";
 		const freq=table[e].freq;
 		let multi;
-		if(freq>=720)
-			multi=720;
-		else if(freq>=168)
+		if(freq>=168)
 			multi=168;
 		else if(freq>=24)
 			multi=24;
@@ -432,7 +430,6 @@ function translate(){
 		selectMultiA[0].text=i18n("hours");
 		selectMultiA[1].text=i18n("days");
 		selectMultiA[2].text=i18n("weeks");
-		selectMultiA[3].text=i18n("months");
 	let selectModeA=document.getElementById("aMode").options;
 		selectModeA[0].text=i18n("modeM0");
 		selectModeA[1].text=i18n("modeM3");
@@ -443,7 +440,6 @@ function translate(){
 		selectMultiE[0].text=i18n("hours");
 		selectMultiE[1].text=i18n("days");
 		selectMultiE[2].text=i18n("weeks");
-		selectMultiE[3].text=i18n("months");
 	let selectModeE=document.getElementById("eMode").options;
 		selectModeE[0].text=i18n("modeM0");
 		selectModeE[1].text=i18n("modeM3");

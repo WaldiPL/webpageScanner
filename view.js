@@ -68,7 +68,16 @@ function showEdit(e){
 		document.getElementById("eUrl10153").value=sites[e].url;
 		document.getElementById("eTitle10153").value=sites[e].title;
 		document.getElementById("eCharset10153").value=sites[e].charset?sites[e].charset:"uft-8";
-		document.getElementById("eFreq10153").value=sites[e].freq;
+		const freq=sites[e].freq;
+		let multi;
+		if(freq>=168)
+			multi=168;
+		else if(freq>=24)
+			multi=24;
+		else
+			multi=1;
+		document.getElementById("eFreq10153").value=parseInt(freq/multi);
+		document.getElementById("eMulti10153").value=multi;
 		document.getElementById("eMode10153").value=sites[e].mode;
 	});
 }
@@ -82,7 +91,7 @@ function editSite(e){
 			url:	document.getElementById("eUrl10153").value,
 			mode:	document.getElementById("eMode10153").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl10153").value,
-			freq:	parseInt(document.getElementById("eFreq10153").value),
+			freq:	document.getElementById("eFreq10153").value!=="0"?parseInt(document.getElementById("eFreq10153").value)*parseInt(document.getElementById("eMulti10153").value):8,
 			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:"utf-8"
 		}
 		document.getElementById("title10153").textContent=obj.title;
@@ -236,12 +245,10 @@ function translate(){
 	document.getElementById("charset10153").textContent=i18n("charset");
 	document.getElementById("scanFreq10153").textContent=i18n("scanFreq");
 	document.getElementById("modeTitle10153").textContent=i18n("modeTitle");
-	let selectFreq=document.getElementById("eFreq10153").options;
-		selectFreq[0].text=i18n("1Hour");
-		selectFreq[1].text=i18n("4Hours");
-		selectFreq[2].text=i18n("8Hours");
-		selectFreq[3].text=i18n("12Hours");
-		selectFreq[4].text=i18n("24Hours");
+	let selectFreq=document.getElementById("eMulti10153").options;
+		selectFreq[0].text=i18n("hours");
+		selectFreq[1].text=i18n("days");
+		selectFreq[2].text=i18n("weeks");
 	let selectMode=document.getElementById("eMode10153").options;
 		selectMode[0].text=i18n("modeM0");
 		selectMode[1].text=i18n("modeM3");
