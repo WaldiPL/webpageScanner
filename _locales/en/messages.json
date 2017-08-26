@@ -28,22 +28,19 @@
     "message": "Title:"
   },
   "scanFreq": {
-    "message": "Scan_every:"
+    "message": "Scan every:"
   },
-  "1Hour": {
-    "message": "hour"
+  "hours": {
+    "message": "Hours"
   },
-  "4Hours": {
-    "message": "4 hours"
+  "days": {
+    "message": "Days"
   },
-  "8Hours": {
-    "message": "8 hours"
+  "weeks": {
+    "message": "Weeks"
   },
-  "12Hours": {
-    "message": "12 hours"
-  },
-  "24Hours": {
-    "message": "24 hours"
+  "months": {
+    "message": "Months"
   },
   "modeTitle": {
     "message": "Mode:"

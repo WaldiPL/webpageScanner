@@ -20,8 +20,8 @@ var prevContext;
 	document.getElementById("editCancelF").addEventListener("click",hideAll);
 	document.getElementById("deleteCancelF").addEventListener("click",hideAll);
 	document.getElementById("options").addEventListener("click",()=>{browser.runtime.openOptionsPage();});
-	window.addEventListener('contextmenu',e=>{if(!(e.target.tagName==="INPUT"&&e.target.type==="text"))e.preventDefault();});
-	document.addEventListener('selectstart',e=>{if(!(e.target.tagName==="INPUT"&&e.target.type==="text"))e.preventDefault();});
+	window.addEventListener('contextmenu',e=>{if(!(e.target.tagName==="INPUT"&&(e.target.type==="text"||e.target.type==="number")))e.preventDefault();});
+	document.addEventListener('selectstart',e=>{if(!(e.target.tagName==="INPUT"&&(e.target.type==="text"||e.target.type==="number")))e.preventDefault();});
 	document.getElementById("lista").addEventListener('contextmenu',context);
 	document.getElementById("fillForm").addEventListener("click",fillForm);
 	document.getElementById("statusbar").addEventListener("mousemove",e=>{e.target.removeAttribute("class");});
@@ -248,7 +248,18 @@ function showEdit(e){
 		document.getElementById("eUrl").value=table[e].url;
 		document.getElementById("eTitle").value=table[e].title;
 		document.getElementById("eCharset").value=table[e].charset?table[e].charset:"utf-8";
-		document.getElementById("eFreq").value=table[e].freq;
+		const freq=table[e].freq;
+		let multi;
+		if(freq>=720)
+			multi=720;
+		else if(freq>=168)
+			multi=168;
+		else if(freq>=24)
+			multi=24;
+		else
+			multi=1;
+		document.getElementById("eFreq").value=parseInt(freq/multi);
+		document.getElementById("eMulti").value=multi;		
 		document.getElementById("eMode").value=table[e].mode;
 	});
 }
@@ -262,7 +273,7 @@ function editSite(e){
 			url:	document.getElementById("eUrl").value,
 			mode:	document.getElementById("eMode").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl").value,
-			freq:	parseInt(document.getElementById("eFreq").value),
+			freq:	document.getElementById("eFreq").value!=="0"?parseInt(document.getElementById("eFreq").value)*parseInt(document.getElementById("eMulti").value):8,
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:"utf-8"
 		}
 		sites[e]=Object.assign(sites[e],obj);
@@ -314,7 +325,8 @@ function showAdd(){
 	document.getElementById("showAdd").classList.toggle("open");
 	document.getElementById("aUrl").value="";
 	document.getElementById("aTitle").value="";
-	document.getElementById("aFreq").value="8";
+	document.getElementById("aFreq").value=8;
+	document.getElementById("aMulti").value=1;
 	document.getElementById("aMode").value="m0";
 }
 
@@ -322,7 +334,7 @@ function addSite(){
 	const url=document.getElementById("aUrl").value,
 		  title=document.getElementById("aTitle").value,
 		  mode=document.getElementById("aMode").value,
-		  freq=parseInt(document.getElementById("aFreq").value);
+		  freq=parseInt(document.getElementById("aFreq").value)*parseInt(document.getElementById("aMulti").value);
 	rqstAdd(url,title,mode,freq);
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
@@ -341,7 +353,8 @@ function hideAll(e){
 		document.getElementById("addingSite").classList.add("hidden");
 		document.getElementById("aUrl").value="";
 		document.getElementById("aTitle").value="";
-		document.getElementById("aFreq").value="8";
+		document.getElementById("aFreq").value=8;
+		document.getElementById("aMulti").value=1;
 		document.getElementById("aMode").value="m0";
 		document.getElementById("showAdd").classList.remove("open");
 	}
@@ -350,7 +363,8 @@ function hideAll(e){
 		document.getElementById("eUrl").value="";
 		document.getElementById("eTitle").value="";
 		document.getElementById("eCharset").value="";
-		document.getElementById("eFreq").value="8";
+		document.getElementById("eFreq").value=8;
+		document.getElementById("eMulti").value=1;
 		document.getElementById("eMode").value="m0";
 	}
 	if(e!="delete"){
@@ -414,24 +428,22 @@ function translate(){
 	document.getElementById("deleteFolderDesc").textContent=i18n("deleteFolderDesc");
 	document.getElementById("deleteCancelF").textContent=i18n("cancel");
 	document.getElementById("deleteSaveF").textContent=i18n("delete");
-	let selectFreqA=document.getElementById("aFreq").options;
-		selectFreqA[0].text=i18n("1Hour");
-		selectFreqA[1].text=i18n("4Hours");
-		selectFreqA[2].text=i18n("8Hours");
-		selectFreqA[3].text=i18n("12Hours");
-		selectFreqA[4].text=i18n("24Hours");
+	let selectMultiA=document.getElementById("aMulti").options;
+		selectMultiA[0].text=i18n("hours");
+		selectMultiA[1].text=i18n("days");
+		selectMultiA[2].text=i18n("weeks");
+		selectMultiA[3].text=i18n("months");
 	let selectModeA=document.getElementById("aMode").options;
 		selectModeA[0].text=i18n("modeM0");
 		selectModeA[1].text=i18n("modeM3");
 		selectModeA[2].text=i18n("modeM4");
 		selectModeA[3].text=i18n("modeM1");
 		selectModeA[4].text=i18n("modeM2");
-	let selectFreqE=document.getElementById("eFreq").options;
-		selectFreqE[0].text=i18n("1Hour");
-		selectFreqE[1].text=i18n("4Hours");
-		selectFreqE[2].text=i18n("8Hours");
-		selectFreqE[3].text=i18n("12Hours");
-		selectFreqE[4].text=i18n("24Hours");
+	let selectMultiE=document.getElementById("eMulti").options;
+		selectMultiE[0].text=i18n("hours");
+		selectMultiE[1].text=i18n("days");
+		selectMultiE[2].text=i18n("weeks");
+		selectMultiE[3].text=i18n("months");
 	let selectModeE=document.getElementById("eMode").options;
 		selectModeE[0].text=i18n("modeM0");
 		selectModeE[1].text=i18n("modeM3");

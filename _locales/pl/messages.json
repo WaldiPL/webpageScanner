@@ -28,22 +28,19 @@
     "message": "Tytuł:"
   },
   "scanFreq": {
-    "message": "Skanuj_co:"
+    "message": "Skanuj co:"
   },
-  "1Hour": {
-    "message": "godzinę"
+  "hours": {
+    "message": "Godzin/y"
   },
-  "4Hours": {
-    "message": "4 godziny"
+  "days": {
+    "message": "Dni"
   },
-  "8Hours": {
-    "message": "8 godzin"
+  "weeks": {
+    "message": "Tygodni/e"
   },
-  "12Hours": {
-    "message": "12 godzin"
-  },
-  "24Hours": {
-    "message": "24 godziny"
+  "months": {
+    "message": "Miesiąc/e"
   },
   "modeTitle": {
     "message": "Tryb:"

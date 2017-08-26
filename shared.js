@@ -20,7 +20,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				mode:	mode,
 				changed:false,
 				favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
-				freq:	freq,
+				freq:	freq?freq:8,
 				charset:"utf-8"
 			};
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
@@ -175,13 +175,24 @@ function scanSites(ev,auto=false,force=false){
 			if(local.changed){
 				count++;
 				scanCompleted(len,auto);
-			}else if(auto&&!force&&((date()==local.date&&time()<local.time+local.freq)||(date()>local.date&&24-local.time+time()<local.freq))){
+			}else if(auto&&!force&&deltaTime(local.date,local.time)<local.freq){
 				scanCompleted(len,auto);
 			}else{
 				scanPage(local,ix,auto,len);
 			}
 		});
 	});
+}
+
+function deltaTime(oldDate,oldTime){
+	const oMonth=Math.trunc(oldDate),
+		  oDay=Math.round((oldDate-oMonth)*100),
+		  oHour=Math.trunc(oldTime),
+		  oMinute=Math.round((oldTime-oHour)*100),
+		  year=new Date().getFullYear();
+	let delta=Date.now()-Date.parse(`${year}-${oMonth}-${oDay} ${oHour}:${oMinute}`);
+		delta=delta>0?delta:Date.now()-Date.parse(`${year-1}-${oMonth}-${oDay} ${oHour}:${oMinute}`);
+	return delta/60/60/1000;
 }
 
 function updateBase(changesArray,timesArray){
