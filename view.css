@@ -1,20 +1,19 @@
-body{
+body#body10153{
 	margin:61px 0 0 0 !important;
 	padding:0 !important;
-	transition:margin 300ms !important;
 }
 
-body.hiddenHeader10153{
+body#body10153.hiddenHeader10153{
 	margin:0 !important;
 	padding:0 !important;
 }
 
 #header10153{
-	background:#eee !important;
+	background:#f5f6f7 !important;
 	border:0 !important;
-	border-bottom:1px solid #0ba0f9 !important;
+	border-bottom:1px solid #0078d7 !important;
 	border-radius:0 !important;
-	box-shadow:0px 0px 10px #b1b1b1 !important;
+	box-shadow:0px 0px 10px #888 !important;
 	box-sizing:initial !important;
 	color:#000 !important;
 	display:grid !important;
@@ -23,7 +22,7 @@ body.hiddenHeader10153{
 	grid-template-areas:"icon title set tabs"
 						"icon last last tabs";
 	float:none !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	font-size:14px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
@@ -85,7 +84,7 @@ body.hiddenHeader10153{
 	color:#000 !important;
 	display:inline !important;
 	float:none !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	font-size:14px !important;
 	font-style:normal !important;
 	font-weight:800 !important;
@@ -106,7 +105,7 @@ body.hiddenHeader10153{
 
 #set10153{
 	grid-area:set;
-	background:#eee !important;
+	background:#f5f6f7 !important;
 	border:0 !important;
 	display:block !important;
 	float:none !important;
@@ -124,12 +123,12 @@ body.hiddenHeader10153{
 }
 
 #header10153 div button, .footer10153 button{
-	border-radius:0 !important;
+	border-radius:2px !important;
 	box-shadow:none !important;
 	box-sizing:border-box !important;
 	cursor:pointer !important;
 	display:inline-block !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	font-size:12px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
@@ -150,23 +149,23 @@ body.hiddenHeader10153{
 
 #tabs10153 button{
 	color:#000 !important;
-	background:#fbfbfb !important;
-	border:1px solid #b1b1b1 !important;
+	background:#f9f9fa !important;
+	border:1px solid #ccc !important;
 	padding:4px 8px 6px !important;
 }
 
 #tabs10153 button:hover{
-	background:#ebebeb !important;
+	background:#0c0c0d1a !important;
 }
 
 #tabs10153 button:active, #tabs10153 button.active10153{
-	background:#0ba0f9 !important;
-	border-color:#258ad6 !important;
+	background:#0078d7 !important;
+	border-color:#0060df !important;
 	color:#fff !important;
 }
 
 #tabs10153 button.active10153:hover{
-	background:#0670cc !important;
+	background:#0060df !important;
 }
 
 #tabs10153 button[disabled]{
@@ -176,8 +175,8 @@ body.hiddenHeader10153{
 #tabs10153 button[disabled]:hover,
 #tabs10153 button[disabled]:active{
 	color:#000 !important;
-	background:#fbfbfb !important;
-	border:1px solid #b1b1b1 !important;
+	background:#f9f9fa !important;
+	border:1px solid #ccc !important;
 }
 
 .footer10153 button{
@@ -189,31 +188,31 @@ body.hiddenHeader10153{
 }
 
 .neutral{
-	border:1px solid #b1b1b1 !important;
+	border:1px solid #ccc !important;
 	color:#000 !important;
-	background:#fbfbfb !important;
+	background:#f9f9fa !important;
 }
 .neutral:hover{
-	background:#ebebeb !important;
+	background:#0c0c0d1a !important;
 }
 
 .negative{
-	border:1px solid #d94141 !important;
-	background:#d94141 !important;
+	border:1px solid #d70022 !important;
+	background:#ff0039 !important;
 	color:#fff !important;
 }
 .negative:hover,#header10153 #delete10153:hover{
-	background:#c34242 !important;
-	border-color:#c34242 !important;
+	background:#d70022 !important;
+	border-color:#d70022 !important;
 }
 
 .positive{
-	border:1px solid #258ad6 !important;
-	background:#0ba0f9 !important;
+	border:1px solid #0060df !important;
+	background:#0078d7 !important;
 	color:#fff !important;
 }
 .positive:hover{
-	background:#059df0 !important;
+	background:#0060df !important;
 }
 
 #lastScan10153{
@@ -224,7 +223,7 @@ body.hiddenHeader10153{
 	border:0 !important;
 	display:block !important;
 	float:none !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	font-size:12px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
@@ -243,7 +242,7 @@ body.hiddenHeader10153{
 
 #tabs10153{
 	grid-area:tabs;
-	background:#eee !important;
+	background:#f5f6f7 !important;
 	border:0 !important;
 	display:block !important;
 	float:none !important;
@@ -262,11 +261,11 @@ body.hiddenHeader10153{
 
 #editingSite10153, #deletingSite10153{
 	border-radius:0 !important;
-	background:#eee !important;
-	border:1px solid #b1b1b1 !important;
-	box-shadow:0px 0px 10px #b1b1b1 !important;
+	background:#f5f6f7 !important;
+	border:1px solid #ccc !important;
+	box-shadow:0px 0px 10px #888 !important;
 	float:none !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	font-size:14px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
@@ -294,7 +293,7 @@ body.hiddenHeader10153{
 	border:0 !important;
 	display:block !important;
 	float:none !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	font-size:14px !important;
 	font-style:normal !important;
 	font-weight:400 !important;
@@ -362,36 +361,50 @@ body.hiddenHeader10153{
 }
 
 #editingSite10153 table select,#editingSite10153 table input{
-	border-radius:0 !important;
+	border-radius:2px !important;
 	color:#000 !important;
 	height:auto !important;
 	width:calc(100% - 4px) !important;
 	padding:3px !important;
-	border:1px solid #b1b1b1 !important;
+	border:1px solid #ccc !important;
 	outline:none !important;
 	font-size:14px !important;
-	font-family:'Segoe UI', sans-serif !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 	line-height:initial !important;
 	-moz-appearance:none !important;
 	box-sizing:content-box !important;
-	background:#fbfbfb !important;
+	background:#fff !important;
 	opacity:1 !important;
 	overflow:visible !important;
 }
 
 #editingSite10153 table select:focus,#editingSite10153 table input:focus{
-	border:1px solid #0ba0f9 !important;
+	border:1px solid #0078d7 !important;
 }
  
+#editingSite10153 table select{
+	padding:0 3px !important;
+	background:#fff !important;
+}
+
+#editingSite10153 table select:hover{
+	background:#fff url("icons/dropdown.svg") no-repeat 100% 50% !important;
+}
+
+#editingSite10153 table select option{
+	padding:2px !important;
+}
+
 #editingSite10153 #eFreq10153{
 	width:50% !important;
+	border-radius:2px 0 0 2px !important;
 }
 
 #editingSite10153 #eMulti10153{
 	width:calc(50% - 11px) !important;
-	padding:2px 3px !important;
 	margin-right:-4px !important;
 	border-left:none !important;
+	border-radius:0 2px 2px 0 !important;
 }
  
 .hidden{
