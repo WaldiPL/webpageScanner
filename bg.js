@@ -19,7 +19,8 @@ function handleInstalled(details) {
 					"openWindowMore":1,
 					"requestTime":10000,
 					"diffOld":false,
-					"popupList":false
+					"popupList":false,
+					"theme":"light"
 				}});
 			}else if(result.settings.openWindow===undefined){
 				result.settings=Object.assign(result.settings,{

@@ -206,6 +206,15 @@
   "popupList": {
     "message": "Show the scan list in the popup"
   },
+  "theme": {
+    "message": "Theme"
+  },
+  "lightTheme": {
+    "message": "Light"
+  },
+  "darkTheme": {
+    "message": "Dark"
+  },
   "backup": {
     "message": "Create a backup"
   }

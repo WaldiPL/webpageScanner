@@ -376,3 +376,162 @@ a .deleteFolder:hover{
 a .editFolder:hover{
 	background:#0c0c0d33;
 }
+
+
+html.dark{
+	background:#38383D;
+	color:#fff;
+}
+
+.dark #navPanel{
+	background:#323234;
+	border-bottom:1px solid #0c0c0d;
+	box-shadow:0px 0px 10px #0c0c0d;
+}
+
+.dark #navPanel input{
+	filter:invert(80%);
+}
+
+.dark #navPanel input:hover{
+	background:#bbbbb8;
+}
+
+.dark #navPanel input.open{
+	background:#8f8f8e;
+}
+
+.dark input[type="text"],.dark input[type="number"]{
+	background:#474749;
+	color:#fff;
+	border:1px solid #262627;
+}
+
+.dark select{
+	background:#474749;
+	color:#fff;
+	border:1px solid #262627;
+}
+
+.dark select:hover{
+	background:#474749 url("icons/dropdown.svg") no-repeat 100% 50%;
+}
+
+.dark input[type="text"]:focus,.dark input[type="number"]:focus,.dark select:focus{
+	border:1px solid #0078d7;
+}
+
+.dark .negative{
+	background:#d70022;
+	border-color:#ff0039;
+	color:#f9f9fa;
+}
+
+.dark .negative:hover{
+	background:#ff0039;
+}
+
+.dark .positive{
+	background:#0060df;
+	border-color:#0a84ff;
+	color:#f9f9fa;
+}
+
+.dark .positive:hover{
+	background:#0a84ff;
+}
+
+.dark button{
+	background:#38383D;
+	color:#fff;
+	border:1px solid #262627;
+}
+
+.dark button:focus,.dark  button:hover,.dark ul li:hover a{
+	background:#4a4a4f;
+}
+
+.dark #addingSite,.dark #editingSite,.dark #deletingSite,.dark #editingFolder,.dark #deletingFolder{
+	background:#323234;
+	border-bottom:1px solid #0c0c0d;
+	box-shadow:0px 10px 10px -10px #0c0c0d;
+}
+
+.dark ul li a,
+.dark .folder a{
+	background:#38383D;
+	border-bottom:1px solid #323234;
+	color:#fff;
+}
+
+.dark ul li input{
+	border-bottom:1px solid #cdcdcb !important;
+	filter:invert(100%);
+}
+
+.dark ul li:hover input{
+	background:#b5b5b0;
+}
+
+.dark ul li .deleteSite:hover{
+	background:#00ffc6;
+	border-color:#cdcdcb !important;
+}
+
+.dark ul li .editSite:hover,.dark ul li .scanPage:hover{
+	background:#a4a4a2;
+}
+
+.dark ul li.opened a{
+	background:#38383D !important;
+	color:#fff !important;
+}
+
+.dark ul li.opened:hover a{
+	background:#4a4a4f !important;
+}
+
+.dark ul li.error a{
+	border-left:3px solid #d70022;
+	background-color:#d7002266;
+}
+
+.dark #statusbar{
+	background:#323234;
+	border-top:1px solid #0c0c0d;
+	box-shadow:0px 0px 10px #0c0c0d;
+}
+
+.dark .folder>a{
+	background:#0f1126;
+}
+
+.dark .folder>a.indicator{
+	background:#0a84ff !important;
+}
+
+.dark .folder>a:hover{
+	background:#202340;
+}
+
+.dark .folder .folderIcon,.dark .folder.collapsed .folderIcon{
+	filter:invert(100%);
+}
+
+.dark .deleteFolder,.dark .editFolder{
+	filter:invert(100%);
+	background:#f0eed9;
+}
+
+.dark a:hover .deleteFolder,.dark a:hover .editFolder{
+	background:#dfdcbf;
+}
+
+.dark a .deleteFolder:hover{
+	background:#00ffc6;
+	filter:invert(100%);
+}
+
+.dark a .editFolder:hover{
+	background:#d1ceb7;
+}

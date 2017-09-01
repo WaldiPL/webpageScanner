@@ -5,12 +5,13 @@ var prevContext;
 	translate();
 	document.getElementById("scanSites").addEventListener("click",scanSites);
 	document.getElementById("addSite").addEventListener("click",addSite);
-	getSettings("autoOpen").then(autoOpen=>{
+	getSettings().then(s=>{
 		let openSiteBtn=document.getElementById("openSite");
-		if(!autoOpen){
+		if(!s.autoOpen){
 			openSiteBtn.removeAttribute("class");
 			openSiteBtn.addEventListener("click",openSite);
 		}
+		if(s.theme==="dark")document.documentElement.className="dark";
 	});
 	document.getElementById("showAdd").addEventListener("click",showAdd);
 	document.getElementById("addFolder").addEventListener("click",addFolder);

@@ -32,7 +32,8 @@ function saveOptions(){
 		openWindowMore:		document.getElementById("openWindowMore").checked?1:0,
 		requestTime:		parseInt(document.getElementById("requestTime").value*1000),
 		diffOld:			document.getElementById("diffOld").checked,
-		popupList:			document.getElementById("popupList").checked
+		popupList:			document.getElementById("popupList").checked,
+		theme:				document.getElementById("theme").value
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -60,6 +61,7 @@ function restoreOptions(){
 		document.getElementById("requestTime").value=parseInt(s.requestTime/1000);
 		document.getElementById("diffOld").checked=s.diffOld;
 		document.getElementById("popupList").checked=s.popupList;
+		document.getElementById("theme").value=s.theme?s.theme:"light";
 	});
 }
 
@@ -102,7 +104,11 @@ function translate(){
 	document.getElementById("labelOpenWindowMore").textContent=i18n("openNewWindowMore");
 	document.getElementById("labelDiffOld").textContent=i18n("diffOld");
 	document.getElementById("labelPopupList").textContent=i18n("popupList");	
-	document.getElementById("backup").value=i18n("backup");	
+	document.getElementById("labelTheme").textContent=i18n("theme");
+	let theme=document.getElementById("theme").options;
+		theme[0].text=i18n("lightTheme");
+		theme[1].text=i18n("darkTheme");
+	document.getElementById("backup").value=i18n("backup");
 }
 
 function i18n(e,s1){
