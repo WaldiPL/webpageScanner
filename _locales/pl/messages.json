@@ -205,5 +205,8 @@
   },
   "popupList": {
     "message": "Pokazuj listę skanowania w wyskującym okienku"
+  },
+  "backup": {
+    "message": "Utwórz kopię zapasową"
   }
 }

@@ -205,5 +205,8 @@
   },
   "popupList": {
     "message": "Show the scan list in the popup"
+  },
+  "backup": {
+    "message": "Create a backup"
   }
 }

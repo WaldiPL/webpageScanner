@@ -17,6 +17,7 @@
 	});
 	document.addEventListener("DOMContentLoaded",restoreOptions);
 	document.getElementById("optionsForm").addEventListener("change",saveOptions);
+	document.getElementById("backup").addEventListener("click",createBackup);
 })();
 
 function saveOptions(){
@@ -62,6 +63,23 @@ function restoreOptions(){
 	});
 }
 
+function createBackup(){
+	browser.storage.local.get().then(result=>{
+		let a=document.createElement("a");
+		document.body.appendChild(a);
+		let json=JSON.stringify(result),
+			blob=new Blob([json],{type:"octet/stream"}),
+			url=window.URL.createObjectURL(blob),
+			d=new Date(),
+			date=`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+		a.href=url;
+		a.download=`Web Pages Scanner - ${date}.js`;
+		a.style.display="none";
+		a.click();
+		window.URL.revokeObjectURL(url);
+	});
+}
+
 function translate(){
 	document.getElementById("h2options").textContent=i18n("options");
 	document.getElementById("thGeneral").textContent=i18n("general");
@@ -84,6 +102,7 @@ function translate(){
 	document.getElementById("labelOpenWindowMore").textContent=i18n("openNewWindowMore");
 	document.getElementById("labelDiffOld").textContent=i18n("diffOld");
 	document.getElementById("labelPopupList").textContent=i18n("popupList");	
+	document.getElementById("backup").value=i18n("backup");	
 }
 
 function i18n(e,s1){
