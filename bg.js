@@ -6,7 +6,7 @@ function handleInstalled(details) {
 				browser.storage.local.set({sites:[],changes:[],sort:[]});
 			}
 		});
-		browser.storage.local.get().then(result=>{
+		browser.storage.local.get('settings').then(result=>{
 			if(result.settings===undefined){
 				browser.storage.local.set({settings:{
 					"notificationVolume":60,

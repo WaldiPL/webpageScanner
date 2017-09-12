@@ -127,9 +127,10 @@ function dragEnd(e){
 	dragged=false;
 }
 
-function addFolder(){
-	let list=document.getElementById("lista");
-	let lastChild=document.getElementById("lista").lastElementChild,
+function addFolder(name){
+	name=name?name:i18n("newFolder");
+	let list=document.getElementById("lista"),
+		lastChild=list.lastElementChild,
 		lastId=lastChild.dataset.row.substr(1);
 	if(lastChild.classList.contains("folder")&&lastChild.childElementCount>1)
 		lastId=lastChild.lastElementChild.dataset.row.substr(1);
@@ -141,7 +142,7 @@ function addFolder(){
 		iLi.addEventListener('dragstart',dragStart);
 		iLi.className="folder";
 	let iA=document.createElement('a');
-		iA.textContent=i18n("newFolder");
+		iA.textContent=name;
 	let iImg=document.createElement('img');
 		iImg.className="folderIcon";
 		iImg.src="icons/blank.svg";
@@ -158,7 +159,7 @@ function addFolder(){
 	iLi.appendChild(iA);
 	list.appendChild(iLi);
 	saveSort();
-	statusbar(i18n("addedWebpage",i18n("newFolder")));
+	statusbar(i18n("addedWebpage",name));
 }
 
 function saveSort(){

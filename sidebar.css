@@ -110,7 +110,7 @@ input,select,button{
 	border-radius:0 2px 2px 0;
 }
 
-#addingSite, #editingSite, #deletingSite, #editingFolder, #deletingFolder{
+#addingSite, #editingSite, #deletingSite, #addingFolder, #editingFolder, #deletingFolder{
 	transition-property:opacity;
 	transition-duration:200ms;
 	width:calc(100% - 10px);
@@ -451,7 +451,7 @@ html.dark{
 	background:#4a4a4f;
 }
 
-.dark #addingSite,.dark #editingSite,.dark #deletingSite,.dark #editingFolder,.dark #deletingFolder{
+.dark #addingSite,.dark #editingSite,.dark #deletingSite,.dark #addingFolder,.dark #editingFolder,.dark #deletingFolder{
 	background:#323234;
 	border-bottom:1px solid #0c0c0d;
 	box-shadow:0px 10px 10px -10px #0c0c0d;

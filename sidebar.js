@@ -14,7 +14,8 @@ var prevContext;
 		if(s.theme==="dark")document.documentElement.className="dark";
 	});
 	document.getElementById("showAdd").addEventListener("click",showAdd);
-	document.getElementById("addFolder").addEventListener("click",addFolder);
+	document.getElementById("addFolder").addEventListener("click",showAddFolder);
+	document.getElementById("addSaveF").addEventListener("click",e=>{addFolder(document.getElementById("nameFolderA").value);document.getElementById("addingFolder").classList.add("hidden");});
 	document.getElementById("editCancel").addEventListener("click",hideAll);
 	document.getElementById("addCancel").addEventListener("click",hideAll);
 	document.getElementById("deleteCancel").addEventListener("click",hideAll);
@@ -199,6 +200,13 @@ function listSite(send){
 	});
 }
 
+function showAddFolder(){
+	hideAll("addFolder");
+	document.getElementById("addFolderTitle").textContent=i18n("addFolder");
+	document.getElementById("nameFolderA").value="";
+	document.getElementById("addingFolder").classList.remove("hidden");
+}
+
 function showEditFolder(id,name){
 	hideAll("editFolder");
 	document.getElementById("editSaveF").dataset.id=id;
@@ -208,6 +216,7 @@ function showEditFolder(id,name){
 
 function editFolder(id){
 	let newName=document.getElementById("nameFolder").value;
+	newName=newName?newName:i18n("newFolder");
 	document.getElementById("editingFolder").classList.add("hidden");
 	document.getElementById(id).firstElementChild.childNodes[1].textContent=newName;
 	saveSort();
@@ -371,6 +380,10 @@ function hideAll(e){
 		document.getElementById("deleteTitle").textContent="";
 		document.getElementById("deleteUrl").textContent="";
 	}
+	if(e!="addFolder"){
+		document.getElementById("addingFolder").classList.add("hidden");
+		document.getElementById("nameFolderA").value="";
+	}
 	if(e!="editFolder"){
 		document.getElementById("editingFolder").classList.add("hidden");
 		document.getElementById("nameFolder").value="";
@@ -397,6 +410,7 @@ function translate(){
 	document.title=i18n("extensionName");
 	document.getElementById("addCancel").textContent=i18n("cancel");
 	document.getElementById("addSite").textContent=i18n("add");
+	document.getElementById("addSaveF").textContent=i18n("add");
 	document.getElementById("fillForm").textContent=i18n("fillForm");
 	document.getElementById("editCancel").textContent=i18n("cancel");
 	document.getElementById("editSite").textContent=i18n("save");
@@ -421,6 +435,8 @@ function translate(){
 	document.getElementById("deleteWebpage").textContent=i18n("deleteWebpage");
 	document.getElementById("editFolder").textContent=i18n("editFolder");
 	document.getElementById("nFolder").textContent=i18n("name");
+	document.getElementById("nFolderA").textContent=i18n("name");
+	document.getElementById("addCancelF").textContent=i18n("cancel");
 	document.getElementById("editCancelF").textContent=i18n("cancel");
 	document.getElementById("editSaveF").textContent=i18n("save");
 	document.getElementById("deleteFolder").textContent=i18n("deleteFolder");
