@@ -85,13 +85,14 @@ function showEdit(e){
 function editSite(e){
 	document.getElementById("editingSite10153").classList.add("hidden");
 	browser.storage.local.get('sites').then(result=>{
-		let sites=result.sites;
+		let sites=result.sites,
+			freq=parseInt(document.getElementById("eFreq10153").value);
 		let obj={
 			title:	document.getElementById("eTitle10153").value,
 			url:	document.getElementById("eUrl10153").value,
 			mode:	document.getElementById("eMode10153").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl10153").value,
-			freq:	document.getElementById("eFreq10153").value!=="0"?parseInt(document.getElementById("eFreq10153").value)*parseInt(document.getElementById("eMulti10153").value):8,
+			freq:	freq>0?freq*parseInt(document.getElementById("eMulti10153").value):8,
 			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:"utf-8"
 		}
 		document.getElementById("title10153").textContent=obj.title;

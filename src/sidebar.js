@@ -18,6 +18,7 @@ var prevContext;
 	document.getElementById("addSaveF").addEventListener("click",e=>{addFolder(document.getElementById("nameFolderA").value);document.getElementById("addingFolder").classList.add("hidden");});
 	document.getElementById("editCancel").addEventListener("click",hideAll);
 	document.getElementById("addCancel").addEventListener("click",hideAll);
+	document.getElementById("addCancelF").addEventListener("click",hideAll);
 	document.getElementById("deleteCancel").addEventListener("click",hideAll);
 	document.getElementById("editCancelF").addEventListener("click",hideAll);
 	document.getElementById("deleteCancelF").addEventListener("click",hideAll);
@@ -275,13 +276,14 @@ function showEdit(e){
 function editSite(e){
 	document.getElementById("editingSite").classList.add("hidden");
 	browser.storage.local.get('sites').then(result=>{
-		let sites=result.sites;
+		let sites=result.sites,
+			freq=parseInt(document.getElementById("eFreq").value);
 		let obj={
 			title:	document.getElementById("eTitle").value,
 			url:	document.getElementById("eUrl").value,
 			mode:	document.getElementById("eMode").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl").value,
-			freq:	document.getElementById("eFreq").value!=="0"?parseInt(document.getElementById("eFreq").value)*parseInt(document.getElementById("eMulti").value):8,
+			freq:	freq>0?freq*parseInt(document.getElementById("eMulti").value):8,
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:"utf-8"
 		}
 		sites[e]=Object.assign(sites[e],obj);
@@ -342,7 +344,8 @@ function addSite(){
 	const url=document.getElementById("aUrl").value,
 		  title=document.getElementById("aTitle").value,
 		  mode=document.getElementById("aMode").value,
-		  freq=parseInt(document.getElementById("aFreq").value)*parseInt(document.getElementById("aMulti").value);
+		  aFreq=parseInt(document.getElementById("aFreq").value);
+		  freq=aFreq>0?aFreq*parseInt(document.getElementById("aMulti").value):8;
 	rqstAdd(url,title,mode,freq);
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
