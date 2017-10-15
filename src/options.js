@@ -6,14 +6,27 @@
 		let checked=e.target.checked,
 			more=document.getElementById("openWindowMore"),
 			moreLabel=document.getElementById("labelOpenWindowMore");
-			more.className=checked;
-			more.disabled=!checked;
-			moreLabel.className=checked;
+		more.className=checked+" sub";
+		more.disabled=!checked;
+		moreLabel.className=checked;
 	});
 	document.getElementById("showNotification").addEventListener("change",e=>{
 		let checked=e.target.checked;
 		document.getElementById("trTime").className=checked;
 		document.getElementById("notificationTime").disabled=!checked;
+	});
+	document.getElementById("showNextPrev").addEventListener("change",e=>{
+		let checked=e.target.checked,
+			autoScroll=document.getElementById("scrollToFirstChange"),
+			autoScrollLabel=document.getElementById("labelScrollToFirstChange"),
+			skip=document.getElementById("skipMinorChanges"),
+			skipLabel=document.getElementById("labelSkipMinorChanges");
+		autoScroll.className=checked+" sub";
+		autoScroll.disabled=!checked;
+		autoScrollLabel.className=checked;
+		skip.className=checked+" sub";
+		skip.disabled=!checked;
+		skipLabel.className=checked;
 	});
 	document.addEventListener("DOMContentLoaded",restoreOptions);
 	document.getElementById("optionsForm").addEventListener("change",saveOptions);
@@ -33,7 +46,10 @@ function saveOptions(){
 		requestTime:		parseInt(document.getElementById("requestTime").value*1000),
 		diffOld:			document.getElementById("diffOld").checked,
 		popupList:			document.getElementById("popupList").checked,
-		theme:				document.getElementById("theme").value
+		theme:				document.getElementById("theme").value,
+		showNextPrev:		document.getElementById("showNextPrev").checked,
+		scrollToFirstChange:document.getElementById("scrollToFirstChange").checked,
+		skipMinorChanges:	document.getElementById("skipMinorChanges").checked
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -57,11 +73,21 @@ function restoreOptions(){
 		document.getElementById("openWindow").checked=s.openWindow;
 		document.getElementById("openWindowMore").checked=openWindowMore;
 		document.getElementById("openWindowMore").disabled=!s.openWindow;
-		document.getElementById("openWindowMore").className=s.openWindow;
+		document.getElementById("openWindowMore").className=s.openWindow+" sub";
+		document.getElementById("labelOpenWindowMore").className=s.openWindow;
 		document.getElementById("requestTime").value=parseInt(s.requestTime/1000);
 		document.getElementById("diffOld").checked=s.diffOld;
 		document.getElementById("popupList").checked=s.popupList;
 		document.getElementById("theme").value=s.theme?s.theme:"light";
+		document.getElementById("showNextPrev").checked=s.showNextPrev;
+		document.getElementById("scrollToFirstChange").checked=s.scrollToFirstChange;
+		document.getElementById("skipMinorChanges").checked=s.skipMinorChanges;
+		document.getElementById("scrollToFirstChange").className=s.showNextPrev+" sub";
+		document.getElementById("skipMinorChanges").className=s.showNextPrev+" sub";
+		document.getElementById("scrollToFirstChange").disabled=!s.showNextPrev;
+		document.getElementById("skipMinorChanges").disabled=!s.showNextPrev;
+		document.getElementById("labelScrollToFirstChange").className=s.showNextPrev;
+		document.getElementById("labelSkipMinorChanges").className=s.showNextPrev;
 	});
 }
 
@@ -109,6 +135,9 @@ function translate(){
 		theme[0].text=i18n("lightTheme");
 		theme[1].text=i18n("darkTheme");
 	document.getElementById("backup").value=i18n("backup");
+	document.getElementById("labelShowNextPrev").textContent=i18n("showNextPrev");
+	document.getElementById("labelScrollToFirstChange").textContent=i18n("scrollToFirstChange");
+	document.getElementById("labelSkipMinorChanges").textContent=i18n("skipMinorChanges");
 }
 
 function i18n(e,s1){

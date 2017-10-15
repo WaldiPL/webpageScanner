@@ -198,7 +198,7 @@
     "message": "Open in new window"
   },
   "openNewWindowMore": {
-    "message": "Only if detected at least 2 changes"
+    "message": "Only if changes were detected on at least 2 pages"
   },
   "diffOld": {
     "message": "Use old comparing script (faster but less accurate)"
@@ -217,5 +217,29 @@
   },
   "backup": {
     "message": "Create a backup"
+  },
+  "showNextPrev": {
+    "message": "Show interface for scrolling changes"
+  },
+  "scrollToFirstChange": {
+    "message": "Automatically scroll to the first change"
+  },
+  "skipMinorChanges": {
+    "message": "Skip minor changes"
+  },
+  "changeOf": {
+    "message": "Change $1 of $2"
+  },
+  "numberOfChanges": {
+    "message": "Number of changes: $1"
+  },
+  "scrollPrev": {
+    "message": "Scroll to the previous change"
+  },
+  "scrollNext": {
+    "message": "Scroll to the next change"
+  },
+  "close": {
+    "message": "Close"
   }
 }

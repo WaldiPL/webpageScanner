@@ -20,18 +20,25 @@ function handleInstalled(details) {
 					"requestTime":10000,
 					"diffOld":false,
 					"popupList":false,
-					"theme":"light"
+					"theme":"light",
+					"showNextPrev":true,
+					"scrollToFirstChange":true,
+					"skipMinorChanges":true
 				}});
-			}else if(result.settings.openWindow===undefined){
-				result.settings=Object.assign(result.settings,{
-					"openWindow":false,
-					"openWindowMore":1,
-					"requestTime":10000
-				});
-				browser.storage.local.set({settings:result.settings});
 			}
 			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
 			else browser.browserAction.setPopup({popup:"/sidebar.html"});
+		});
+	}else if(details.reason==="update"){
+		browser.storage.local.get('settings').then(result=>{
+			if(result.settings.showNextPrev===undefined){
+				result.settings=Object.assign(result.settings,{
+					"showNextPrev":true,
+					"scrollToFirstChange":true,
+					"skipMinorChanges":true
+				});
+				browser.storage.local.set({settings:result.settings});
+			}
 		});
 	}
 }

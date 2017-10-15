@@ -1,4 +1,7 @@
-var localId;
+var localId,
+	highlighted,
+	prevHighlighted,
+	filteredChanges;
 const extURL=browser.extension.getURL("");
 
 (function(){
@@ -20,11 +23,61 @@ const extURL=browser.extension.getURL("");
 		if(s.diffOld)js.src="diffOld.js";
 		else js.src="diff.js";
 		document.body.appendChild(js);
-		load(localId,s.defaultView);
+		js.onload=function(){
+			load(localId,s.defaultView);
+		}
 		if(s.hideHeader)toogleHeader(true);
 	});
 	document.getElementById("toogleHeader10153").addEventListener("click",()=>{toogleHeader();});
+	document.getElementById("prev10153").addEventListener("click",()=>{nextPrev(false);});
+	document.getElementById("next10153").addEventListener("click",()=>{nextPrev(true);});
+	document.getElementById("close10153").addEventListener("click",toggleNextPrev);
 })();
+
+function nextPrev(next){
+	if(!filteredChanges.length||(filteredChanges.length===1&&highlighted===0))return;
+	if(next){
+		if(highlighted<filteredChanges.length-1){
+			prevHighlighted=highlighted;
+			highlighted++;
+		}else{
+			prevHighlighted=highlighted!==undefined?filteredChanges.length-1:undefined;
+			highlighted=0;
+		}
+	}else{
+		if(highlighted>0){
+			prevHighlighted=prevHighlighted!==undefined?highlighted:0;
+			highlighted=highlighted!==undefined?highlighted-1:0;
+		}else{
+			prevHighlighted=0;
+			highlighted=filteredChanges.length-1;
+		}
+	}
+	document.getElementById("xtext10153").textContent=i18n("changeOf",[highlighted+1,filteredChanges.length]);
+	filteredChanges[highlighted].classList.add("hlc");
+	if(prevHighlighted!==undefined)filteredChanges[prevHighlighted].classList.remove("hlc");
+	browser.runtime.getBrowserInfo().then(e=>{
+		let version=+e.version.substr(0,2);
+		if(version<57)
+			filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"end"});
+		else
+			filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"center"});
+	});
+}
+
+function toggleNextPrev(show){
+	if(show===true){
+		getSettings().then(s=>{
+			if(s.showNextPrev){
+				document.getElementById("highlight10153").removeAttribute("class");
+				if(s.scrollToFirstChange)setTimeout(()=>{nextPrev(true);},500);
+			}
+		});
+	}else{
+		document.getElementById("highlight10153").className="hidden";
+		if(show)filteredChanges[highlighted].classList.remove("hlc");
+	}
+}
 
 function showDelete(e){
 	document.getElementById("editingSite10153").classList.add("hidden");
@@ -138,9 +191,13 @@ function load(siteId,type){
 		if(deleted)enableBtn("deleted10153");
 		document.getElementById("title10153").textContent=sId.title;
 		document.getElementById("lastScan10153").textContent=i18n("lastScan",[realDate(sId.date),realTime(sId.time)]);
+		toggleNextPrev();
+		highlighted=undefined;
+		prevHighlighted=undefined;
 		switch(type){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
+				toggleNextPrev(true);
 				break;
 			case "news":
 				doc=parser.parseFromString(news,"text/html");
@@ -157,6 +214,16 @@ function load(siteId,type){
 		}
 		document.getElementById("content10153").textContent="";
 		document.getElementById("content10153").appendChild(doc.children[0]);
+		const allChanges=document.getElementsByClassName("changes10153");
+		getSettings("skipMinorChanges").then(s=>{
+			if(s){
+				filteredChanges=[...allChanges].filter((element,index,array)=>{
+					return (element.childNodes[0].length>1||element.children.length);
+				});
+			}else
+				filteredChanges=allChanges;
+			document.getElementById("xtext10153").textContent=i18n("numberOfChanges",filteredChanges.length);
+		});
 		setTitle();
 		const a=document.getElementsByTagName("a"),
 			  img=document.getElementsByTagName("img"),
@@ -257,6 +324,9 @@ function translate(){
 		selectMode[3].text=i18n("modeM1");
 		selectMode[4].text=i18n("modeM2");
 	document.getElementById("toogleHeader10153").title=i18n("hideInterface");
+	document.getElementById("prev10153").title=i18n("scrollPrev");
+	document.getElementById("next10153").title=i18n("scrollNext");
+	document.getElementById("close10153").title=i18n("close");
 }
 
 function getSettings(name){

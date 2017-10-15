@@ -1,6 +1,10 @@
 body{
-	max-width:260px;
+	max-width:330px;
 	margin-bottom:0px;
+}
+
+div{
+	background:#fff;
 }
 
 button{

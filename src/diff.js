@@ -95,6 +95,8 @@ function diff(o,n){
 		os={},
 		nl=n.length,
 		ol=o.length;
+	Object.setPrototypeOf(ns,null);
+	Object.setPrototypeOf(os,null);
 	n.forEach((v,i)=>{
 		if(ns[v]==null)
 			ns[v]={rows:[],o:null};

@@ -32,10 +32,16 @@ function openSites(){
 }
 
 function showList(){
-	browser.tabs.create({
-		url:`sidebar.html`,
-		active:true
+	browser.runtime.getBrowserInfo().then(e=>{
+		let version=+e.version.substr(0,2);
+		if(version<57){
+			browser.tabs.create({
+				url:`sidebar.html`,
+				active:true
+			});
+		}
 	});
+	browser.sidebarAction.open();
 }
 
 function i18n(e){

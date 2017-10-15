@@ -198,7 +198,7 @@
     "message": "Otwieraj w nowym oknie"
   },
   "openNewWindowMore": {
-    "message": "Tylko, jeśli wykryto co najmniej 2 zmiany"
+    "message": "Tylko, jeśli wykryto zmiany na co najmniej 2 stronach"
   },
   "diffOld": {
     "message": "Używaj starego skryptu porównującego (szybszy, ale mniej dokładny)"
@@ -217,5 +217,29 @@
   },
   "backup": {
     "message": "Utwórz kopię zapasową"
+  },
+  "showNextPrev": {
+    "message": "Pokaż interfejs przewijania zmian"
+  },
+  "scrollToFirstChange": {
+    "message": "Automatycznie przewijaj do pierwszej zmiany"
+  },
+  "skipMinorChanges": {
+    "message": "Pomijaj drobne zmiany"
+  },
+  "changeOf": {
+    "message": "Zmiana $1 z $2"
+  },
+  "numberOfChanges": {
+    "message": "Liczba zmian: $1"
+  },
+  "scrollPrev": {
+    "message": "Przewiń do poprzedniej zmiany"
+  },
+  "scrollNext": {
+    "message": "Przewiń do następnej zmiany"
+  },
+  "close": {
+    "message": "Zamknij"
   }
 }
