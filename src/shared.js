@@ -35,7 +35,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				sort[sort.length]=[`item${sites.length-1}`,"root","item","",false];
 				browser.storage.local.set({sites:sites,changes:changes,sort:sort});
 				if(!btn){
-					listSite();
+					listSite(true);
 					statusbar(i18n("addedWebpage",title));
 				}else{
 					browser.runtime.sendMessage({"listSite":true});

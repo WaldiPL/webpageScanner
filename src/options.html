@@ -2,46 +2,126 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<link rel="icon" type="image/svg-xml" href="icons/icon2.svg">
 		<link rel="stylesheet" href="options.css"/>
 	</head>
 	<body>
-		<form id="optionsForm">
-				<h2 id="h2options"></h2>
-				<table>
-				<tr><th id="thGeneral"></th></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="hideHeader"><label id="labelHideHeader" for="hideHeader"></label></td></tr>
-				  <tr><td><label id="labelDefaultView"></label></td><td>
-					<select id="defaultView">
-						<option value="light"></option>
-						<option value="news"></option>
-						<option value="deleted"></option>
-						<option value="newHtml"></option>
-						<option value="oldHtml"></option>
-					</select>
-				  </td></tr>
-				  <tr><td><label id="labelRequestTime"></label></td><td><input id="requestTime" type="number"></td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="diffOld"><label id="labelDiffOld" for="diffOld"></label></td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="popupList"><label id="labelPopupList" for="popupList"></label></td></tr>
-				  <tr><td><label id="labelTheme"></label></td><td>
-					<select id="theme">
-						<option value="light"></option>
-						<option value="dark"></option>
-					</select>
-				  </td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="showNextPrev"><label id="labelShowNextPrev" for="showNextPrev"></label></td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="scrollToFirstChange" class="sub"><label id="labelScrollToFirstChange" for="scrollToFirstChange"></label></td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="skipMinorChanges" class="sub"><label id="labelSkipMinorChanges" for="skipMinorChanges"></label></td></tr>
-				  <tr><td colspan="2"><input type="button" id="backup"/></td></tr>
-				<tr><th id="thChangedPages"></th></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="autoOpen"><label id="labelAutoOpen" for="autoOpen"></label></td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="openWindow"><label id="labelOpenWindow" for="openWindow"></label></td></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="openWindowMore" class="sub"><label id="labelOpenWindowMore" for="openWindowMore"></label></td></tr>
-				<tr><th id="thNotifications"></th></tr>
-				  <tr><td colspan="2"><input type="checkbox" id="showNotification"><label id="labelShow" for="showNotification"></label></td></tr>
-				  <tr id="trTime"><td><label id="timeLabel"></label></td><td><input type="range" min="5000" max="20000" step="1000" id="notificationTime"><output id="oTime" for="notificationTime"></output> s</td></tr>
-				  <tr><td><label id="volumeLabel"></label></td><td><input type="range" min="0" max="100" step="5" id="notificationVolume"><output id="oVolume" for="notificationVolume"></output>%</td></tr>
-				</table>
-		</form>
+		<nav>
+			<a id="optionsA" href="#options"></a>
+			<a id="changelogA" href="#changelog"></a>
+			<a id="supportA" href="#support"></a>
+		</nav>
+		<section id="options">
+			<h2 id="h2options"></h2>
+			<form id="optionsForm">
+			<h3 id="thGeneral"></h3>
+			
+			<div class="row">
+				<label id="labelRequestTime"></label><input id="requestTime" type="number">
+			</div>
+			<div class="row">
+				<input type="checkbox" id="diffOld"><label id="labelDiffOld" for="diffOld"><span></span></label>
+			</div>	
+			<div class="row">
+				<input type="checkbox" id="popupList"><label id="labelPopupList" for="popupList"><span></span></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="addToContextMenu"><label id="labelAddToContextMenu" for="addToContextMenu"><span></span></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="openChangelog"><label id="labelOpenChangelog" for="openChangelog"><span></span></label>
+			</div>
+			<div class="row">
+				<label id="labelTheme"></label
+				><select id="theme">
+					<option value="light"></option>
+					<option value="dark"></option>
+				</select>
+			</div>
+			<h3 id="h3pageView"></h3>
+			<div class="row">
+				<label id="labelDefaultView"></label
+				><select id="defaultView">
+					<option value="light"></option>
+					<option value="news"></option>
+					<option value="deleted"></option>
+					<option value="newHtml"></option>
+					<option value="oldHtml"></option>
+				</select>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="hideHeader"><label id="labelHideHeader" for="hideHeader"><span></span></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="showNextPrev"><label id="labelShowNextPrev" for="showNextPrev"><span></span></label>
+			</div>
+			<div class="sub">
+				<input type="checkbox" id="scrollToFirstChange"><label id="labelScrollToFirstChange" for="scrollToFirstChange"><span></span></label>
+			</div>
+			<div class="sub">
+				<input type="checkbox" id="skipMinorChanges"><label id="labelSkipMinorChanges" for="skipMinorChanges"><span></span></label>
+			</div>
+			<h3 id="thChangedPages"></h3>
+			<div class="row">
+				<input type="checkbox" id="autoOpen"><label id="labelAutoOpen" for="autoOpen"><span></span></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="openWindow"><label id="labelOpenWindow" for="openWindow"><span></span></label>
+			</div>			
+			<div class="sub">
+				<input type="checkbox" id="openWindowMore"><label id="labelOpenWindowMore" for="openWindowMore"><span></span></label>
+			</div>
+			<h3 id="thNotifications"></h3>
+			<div class="row">
+				<input type="checkbox" id="showNotification"><label id="labelShow" for="showNotification"><span></span></label>
+			</div>
+			<div class="row" id="trTime">
+				<label id="timeLabel"></label
+				><input type="range" min="5000" max="20000" step="1000" id="notificationTime"><output id="oTime" for="notificationTime"></output> s
+			</div>
+			<div class="row">
+				<label id="volumeLabel"></label
+				><input type="range" min="0" max="100" step="5" id="notificationVolume"><output id="oVolume" for="notificationVolume"></output>%
+			</div>
+			<h3 id="thBackup"></h3>
+			<div class="row">
+				<button id="backup"></button
+				><span id="fileInput"
+					><input type="file" id="file" accept=".json,.js"/
+					><span id="fileText"></span>
+				</span>
+			</div>
+			<div id="restoreAlert" class="none">
+				<h4 id="restoreAlertH4"></h4>
+				<p id="restoreAlertP"></p>
+				<button id="restore"></button>
+			</div>
+			<h4 id="restoreError" class="none"></h4>
+			<h4 id="restoreOk" class="none"></h4>
+		</section>
+		<section id="changelog">
+			<h2 id="h2changelog"></h2>
+		</section>
+		<section id="support">
+			<h2 id="h2support"></h2>
+			<article>
+				<h3 id="h3bugReport"></h3>
+				<p><span id="spanBugReport"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank">GitHub</a>.</p>
+			</article>
+			<article>
+				<h3 id="h3translation"></h3>
+				<p><span id="spanTranslation1"></span> <a href="_locales/en/messages.json" target="_blank"><span id="spanTranslation2"></span></a> <span id="spanTranslation3"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank">GitHub</a>.</p>
+			</article>
+			<article>
+				<h3 id="h3share"></h3>
+				<p><span id="spanShare"></span></p>
+				<a class="share" id="twitter" href="https://twitter.com/home?status=Scan%20web%20pages%20for%20updates%20with%20%23WebPagesScanner%20for%20%23Firefox.%20%23WebExtension%0Ahttps%3A//addons.mozilla.org/en-us/firefox/addon/web-pages-scanner?src=external-twitter" target="_blank">Twitter</a
+				><a class="share" id="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//addons.mozilla.org/en-us/firefox/addon/web-pages-scanner?src=external-facebook" target="_blank">Facebook</a
+				><a class="share" id="googleplus" href="https://plus.google.com/share?url=https%3A//addons.mozilla.org/en-us/firefox/addon/web-pages-scanner?src=external-googleplus" target="_blank">Google+</a
+				><a class="share" id="amo" href="https://addons.mozilla.org/firefox/addon/web-pages-scanner/" target="_blank">addons.mozilla.org</a>
+			</article>
+		</section>
+		<script src="changelog.js"></script>
 		<script src="options.js"></script>
 	</body>
 </html>

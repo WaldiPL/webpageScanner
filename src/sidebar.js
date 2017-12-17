@@ -407,6 +407,7 @@ function statusbar(e){
 browser.runtime.onMessage.addListener(run);
 function run(m){
 	if(m.listSite)listSite();
+	if(m.changeTheme)document.documentElement.className=m.changeTheme;
 }
 
 function translate(){

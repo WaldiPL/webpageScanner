@@ -23,7 +23,9 @@ function handleInstalled(details) {
 					"theme":"light",
 					"showNextPrev":true,
 					"scrollToFirstChange":true,
-					"skipMinorChanges":true
+					"skipMinorChanges":true,
+					"addToContextMenu":true,
+					"changelog":true
 				}});
 			}
 			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -35,16 +37,30 @@ function handleInstalled(details) {
 				result.settings=Object.assign(result.settings,{
 					"showNextPrev":true,
 					"scrollToFirstChange":true,
-					"skipMinorChanges":true
+					"skipMinorChanges":true,
+					"addToContextMenu":true,
+					"changelog":true
+				});
+				browser.storage.local.set({settings:result.settings});
+			}else if(result.settings.addToContextMenu===undefined){
+				result.settings=Object.assign(result.settings,{
+					"addToContextMenu":true,
+					"changelog":true
 				});
 				browser.storage.local.set({settings:result.settings});
 			}
 		});
 	}
+	if(!details.temporary&&result.settings.changelog!==false){
+ 			browser.tabs.create({
+ 				url:"options.html#changelog",
+ 				active:true
+ 			});
+	}
 }
 
 (function(){
-	browser.storage.local.get(['sites','sort']).then(result=>{
+	browser.storage.local.get(['sites','sort','settings']).then(result=>{
 		if(result.sort===undefined&&result.sites!==undefined){
 			let sort=[];
 			result.sites.forEach((value,i)=>{
@@ -52,6 +68,7 @@ function handleInstalled(details) {
 			});
 			browser.storage.local.set({sort:sort});
 		}
+		showContext(result.settings.addToContextMenu);
 	});
 	scanLater(1);
 })();
@@ -66,16 +83,27 @@ function run(m){
 	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,true,m.favicon);
 	if(m.scanSites)scanSites(0,true,true);
 	if(m.openSites)openSite("webpagesScannertrue");
+	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);
 }
 
-browser.contextMenus.create({
-	id:			"addThis",
-	title:		browser.i18n.getMessage("addThis"),
-	contexts:	["page","tab"]
-});
+function showContext(e){
+	if(e){
+		browser.contextMenus.create({
+			id:			"addThis",
+			title:		i18n("addThis"),
+			contexts:	["page","tab"],
+			onclick:	contextAdd
+		});
+	}else
+		browser.contextMenus.remove("addThis");
+}
 
-browser.contextMenus.onClicked.addListener((info,tab)=>{
-	if(info.menuItemId=="addThis"){
+function contextAdd(e){
+	browser.tabs.query({
+		url:e.pageUrl,
+		currentWindow:true
+	}).then(tabs=>{
+		const tab=tabs[0];
 		rqstAdd(tab.url,tab.title,"m0",8,true,tab.favicon);
-	}
-});
+	});
+}

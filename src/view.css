@@ -391,7 +391,7 @@ body#body10153.hiddenHeader10153{
 }
 
 #editingSite10153 table select:hover{
-	background:#fff url("icons/dropdown.svg") no-repeat 100% 50% !important;
+	background:#fff url("icons/dropdown.svg#d") no-repeat right 4px center !important;
 	padding-right:16px !important;
 	width: calc(100% - 17px) !important;
 }
@@ -550,7 +550,7 @@ x-highlight x-text{
 }
 
 x-highlight x-button{
-	background:#f5f6f7 url("icons/dropdown.svg") no-repeat calc(50% + 2px) center !important;
+	background:#f5f6f7 url("icons/arrow.svg") no-repeat calc(50% + 2px) center !important;
 	background-size:16px !important;
 	min-height:26x !important;
 	height:26px !important;

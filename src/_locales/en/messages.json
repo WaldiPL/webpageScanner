@@ -241,5 +241,71 @@
   },
   "close": {
     "message": "Close"
+  },
+  "thBackup": {
+    "message": "Backup"
+  },
+  "restoreBackup": {
+    "message": "Restore backup"
+  },
+  "restoreAlertH4": {
+    "message": "Are you sure you want to restore the selected backup?"
+  },
+  "restoreAlertP": {
+    "message": "This operation can not be undone. All current data will be deleted. If you select the wrong or corrupted file, the extension will not work properly."
+  },
+  "restoreButton": {
+    "message": "Restore"
+  },
+  "restoreError": {
+    "message": "A problem occured. Please try again."
+  },
+  "restoreOk": {
+    "message": "The backup has been restored."
+  },
+  "version": {
+    "message": "Version $1"
+  },
+  "changelog": {
+    "message": "Changelog"
+  },
+  "support": {
+    "message": "Support"
+  },
+  "general": {
+    "message": "General"
+  },
+  "bugReport": {
+    "message": "Report a bug"
+  },
+  "spanBugReport": {
+    "message": "You have found a bug, maybe you have an idea how to improve the extension, create a new issue on"
+  },
+  "translation": {
+    "message": "Translation"
+  },
+  "spanTranslation1": {
+    "message": "Do you want the extension to be available in your native language, please translate"
+  },
+  "spanTranslation2": {
+    "message": "this file"
+  },
+  "spanTranslation3": {
+    "message": "and add it in a new issue on"
+  },
+  "share": {
+    "message": "Share"
+  },
+  "spanShare": {
+    "message": "Do you like this extension? Share it or write a review to reach as many people as possible."
+  },
+  "h3pageView": {
+    "message": "Page view"
+  },
+  "addToContextMenu": {
+    "message": "Add item to context menu"
+  },
+  "openChangelog": {
+    "message": "Open the 'Changelog' page after update."
   }
 }

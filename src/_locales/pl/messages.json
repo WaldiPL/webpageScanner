@@ -171,7 +171,7 @@
     "message": "Powiadomienia"
   },
   "autoOpen": {
-    "message": "Otwieraj automatycznie"
+    "message": "Otwórz automatycznie"
   },
   "hideHeader": {
     "message": "Ukryj interfejs"
@@ -180,7 +180,7 @@
     "message": "Domyślny widok"
   },
   "showNotification": {
-    "message": "Pokazuj powiadomienie o zmianach"
+    "message": "Pokaż powiadomienie o zmianach"
   },
   "notificationTime": {
     "message": "Czas wyświetlania powiadomienia"
@@ -195,16 +195,16 @@
     "message": "Zmienione strony"
   },
   "openNewWindow": {
-    "message": "Otwieraj w nowym oknie"
+    "message": "Otwórz w nowym oknie"
   },
   "openNewWindowMore": {
     "message": "Tylko, jeśli wykryto zmiany na co najmniej 2 stronach"
   },
   "diffOld": {
-    "message": "Używaj starego skryptu porównującego (szybszy, ale mniej dokładny)"
+    "message": "Użyj starego skryptu porównującego (szybszy, ale mniej dokładny)"
   },
   "popupList": {
-    "message": "Pokazuj listę skanowania w wyskującym okienku"
+    "message": "Pokaż listę skanowania w wyskującym okienku"
   },
   "theme": {
     "message": "Motyw"
@@ -222,10 +222,10 @@
     "message": "Pokaż interfejs przewijania zmian"
   },
   "scrollToFirstChange": {
-    "message": "Automatycznie przewijaj do pierwszej zmiany"
+    "message": "Automatyczne przewijanie do pierwszej zmiany"
   },
   "skipMinorChanges": {
-    "message": "Pomijaj drobne zmiany"
+    "message": "Pomiń drobne zmiany"
   },
   "changeOf": {
     "message": "Zmiana $1 z $2"
@@ -241,5 +241,71 @@
   },
   "close": {
     "message": "Zamknij"
+  },
+  "thBackup": {
+    "message": "Kopia zapasowa"
+  },
+  "restoreBackup": {
+    "message": "Przywróć kopię zapasową"
+  },
+  "restoreAlertH4": {
+    "message": "Czy na pewno chcesz przywrócić wybraną kopię zapasową?"
+  },
+  "restoreAlertP": {
+    "message": "Tej operacji nie można cofnąć. Wszystkie obecne dane zostaną usunięte. Jeśli wybrano niewłaściwy lub uszkodzony plik rozszerzenie nie będzie działało poprawnie."
+  },
+  "restoreButton": {
+    "message": "Przywróć"
+  },
+  "restoreError": {
+    "message": "Wystąpił problem. Proszę spróbować ponownie."
+  },
+  "restoreOk": {
+    "message": "Kopia zapasowa została przywrócona."
+  },
+  "version": {
+    "message": "Wersja $1"
+  },
+  "changelog": {
+    "message": "Historia zmian"
+  },
+  "support": {
+    "message": "Wsparcie"
+  },
+  "general": {
+    "message": "Ogólne"
+  },
+  "bugReport": {
+    "message": "Zgłoś błąd"
+  },
+  "spanBugReport": {
+    "message": "Znalazłeś błąd, a może masz pomysł jak ulepszyć rozszerzenie, załóź nowy wątek na"
+  },
+  "translation": {
+    "message": "Tłumaczenie"
+  },
+  "spanTranslation1": {
+    "message": "Chcesz aby rozszerzenie było dostępne w twoim ojczystym języku, przetłumacz"
+  },
+  "spanTranslation2": {
+    "message": "ten plik"
+  },
+  "spanTranslation3": {
+    "message": "i dodaj go w nowym wątku na"
+  },
+  "share": {
+    "message": "Podziel się"
+  },
+  "spanShare": {
+    "message": "Lubisz to rozszerzenie? Podziel się nim lub pozostaw opinię, aby dotarło do jak największej liczby osób."
+  },
+  "h3pageView": {
+    "message": "Widok strony"
+  },
+  "addToContextMenu": {
+    "message": "Dodaj element do menu kontekstowego"
+  },
+  "openChangelog": {
+    "message": "Otwórz stronę z 'Historią zmian' po aktualizacji"
   }
 }

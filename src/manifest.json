@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
 	"description": "__MSG_extensionDescription__",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"default_locale": "en",
 	"icons": {
 		"48": "icons/icon.svg",
@@ -52,8 +52,9 @@
 		}
 	},
 	"options_ui": {
-		"browser_style": true,
-		"page": "options.html"
+		"browser_style": false,
+		"page": "options.html#options",
+		"open_in_tab": true
 	},
 	"content_security_policy": "script-src 'self'; object-src 'self'"
 }
