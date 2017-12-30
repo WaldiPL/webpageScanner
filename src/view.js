@@ -114,13 +114,13 @@ function deleteSite(e){
 
 function showEdit(e){
 	document.getElementById("deletingSite10153").classList.add("hidden");
-	browser.storage.local.get('sites').then(result=>{
+	browser.storage.local.get(['sites','settings']).then(result=>{
 		const sites=result.sites;
 		document.getElementById("editSite10153").addEventListener("click",()=>{editSite(e);});
 		document.getElementById("editingSite10153").classList.remove("hidden");
 		document.getElementById("eUrl10153").value=sites[e].url;
 		document.getElementById("eTitle10153").value=sites[e].title;
-		document.getElementById("eCharset10153").value=sites[e].charset?sites[e].charset:"uft-8";
+		document.getElementById("eCharset10153").value=sites[e].charset?sites[e].charset:result.settings.charset;
 		const freq=sites[e].freq;
 		let multi;
 		if(freq>=168)
@@ -137,7 +137,7 @@ function showEdit(e){
 
 function editSite(e){
 	document.getElementById("editingSite10153").classList.add("hidden");
-	browser.storage.local.get('sites').then(result=>{
+	browser.storage.local.get(['sites','settings']).then(result=>{
 		let sites=result.sites,
 			freq=parseInt(document.getElementById("eFreq10153").value);
 		let obj={
@@ -146,7 +146,7 @@ function editSite(e){
 			mode:	document.getElementById("eMode10153").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl10153").value,
 			freq:	freq>0?freq*parseInt(document.getElementById("eMulti10153").value):8,
-			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:"utf-8"
+			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:result.settings.charset
 		}
 		document.getElementById("title10153").textContent=obj.title;
 		sites[e]=Object.assign(sites[e],obj);

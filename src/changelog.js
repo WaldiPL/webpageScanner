@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.5.2",
+		"changes":["Added possibility to change the default charset #18","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość zmiany domyślnego kodowania tekstu #18","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.5.0",
 		"changes":["Reorganized options","Added 'Changelog' and 'Support'","Added possibility to restore a backup","Fixed bugs","Minor changes"],
 		"changesPL":["Przeorganizowano opcje","Dodano 'Historię zmian' oraz 'Wsparcie'","Dodano możliwość przywrócenia kopii zapasowej","Naprawiono błędy","Drobne zmiany"]

@@ -304,5 +304,8 @@
   },
   "openChangelog": {
     "message": "Otwórz stronę z 'Historią zmian' po aktualizacji"
+  },
+  "defaultCharset": {
+    "message": "Domyślne kodowanie tekstu"
   }
 }

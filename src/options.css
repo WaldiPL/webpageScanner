@@ -188,7 +188,7 @@ input[type="range"]{
 	vertical-align:bottom;
 }
 
-input[type="number"]{
+input[type="number"],input[type="text"]{
 	box-sizing:border-box;
 	margin:0 8px;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
@@ -196,13 +196,16 @@ input[type="number"]{
 	padding:4px 4px 4px 10px;
 	-moz-appearance:none;
 	min-height:30px;
-	max-width:80px;
 	border:1px solid #d7d7db;
 	border-radius:2px;
 	background-color:#fff;
 }
 
-input[type="number"]:focus,#h2changelog+article{
+input[type="number"]{
+	max-width:80px;
+}
+
+input[type="number"]:focus,input[type="text"]:focus,#h2changelog+article{
 	border-color:#0a84ff;
 }
 

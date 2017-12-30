@@ -3,11 +3,11 @@ const extURL=browser.extension.getURL("");
 function rqstAdd(url,title,mode,freq,btn=false,icon){
 	if(!url)return;
 	if(!title)title=url;
-	getSettings("requestTime").then(requestTime=>{
+	getSettings().then(s=>{
 		let xhr=new XMLHttpRequest();
 		xhr.open("GET",url);
-		xhr.timeout=requestTime?requestTime:10000;
-		xhr.overrideMimeType('text/html; charset=utf-8');
+		xhr.timeout=s.requestTime?s.requestTime:10000;
+		xhr.overrideMimeType('text/html; charset='+s.charset);
 		xhr.onload=function(){
 			const html_data=this.responseText;
 			const site={
@@ -21,7 +21,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				changed:false,
 				favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
 				freq:	freq?freq:8,
-				charset:"utf-8"
+				charset:s.charset
 			};
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
@@ -121,11 +121,11 @@ function scanCompleted(sitesLength,auto){
 }
 	
 function scanPage(local,id,auto,sitesLength){
-	const charset=local.charset?local.charset:"uft-8";
-	getSettings("requestTime").then(requestTime=>{
+	getSettings().then(s=>{
+		const charset=local.charset?local.charset:s.charset;
 		let xhr=new XMLHttpRequest();
 		xhr.open("GET",local.url);
-		xhr.timeout=requestTime?requestTime:10000;
+		xhr.timeout=s.requestTime?s.requestTime:10000;
 		xhr.overrideMimeType('text/html; charset='+charset);
 		xhr.onload=function(){
 			if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status

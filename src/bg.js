@@ -25,7 +25,8 @@ function handleInstalled(details) {
 					"scrollToFirstChange":true,
 					"skipMinorChanges":true,
 					"addToContextMenu":true,
-					"changelog":true
+					"changelog":true,
+					"charset":"utf-8"
 				}});
 			}
 			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -39,13 +40,20 @@ function handleInstalled(details) {
 					"scrollToFirstChange":true,
 					"skipMinorChanges":true,
 					"addToContextMenu":true,
-					"changelog":true
+					"changelog":true,
+					"charset":"utf-8"
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.addToContextMenu===undefined){
 				result.settings=Object.assign(result.settings,{
 					"addToContextMenu":true,
-					"changelog":true
+					"changelog":true,
+					"charset":"utf-8"
+				});
+				browser.storage.local.set({settings:result.settings});
+			}else if(result.settings.charset===undefined){
+				result.settings=Object.assign(result.settings,{
+					"charset":"utf-8"
 				});
 				browser.storage.local.set({settings:result.settings});
 			}

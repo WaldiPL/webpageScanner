@@ -304,5 +304,8 @@
   },
   "openChangelog": {
     "message": "Open the 'Changelog' page after update."
+  },
+  "defaultCharset": {
+    "message": "Default charset"
   }
 }

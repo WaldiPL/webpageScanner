@@ -42,6 +42,7 @@
 })();
 
 function saveOptions(){
+	const rqstTime=parseInt(document.getElementById("requestTime").value*1000);
 	let settings={
 		notificationVolume:	parseInt(document.getElementById("notificationVolume").value),
 		notificationTime:	parseInt(document.getElementById("notificationTime").value),
@@ -51,7 +52,7 @@ function saveOptions(){
 		defaultView:		document.getElementById("defaultView").value,
 		openWindow:			document.getElementById("openWindow").checked,
 		openWindowMore:		document.getElementById("openWindowMore").checked?1:0,
-		requestTime:		parseInt(document.getElementById("requestTime").value*1000),
+		requestTime:		rqstTime>0?rqstTime:10000,
 		diffOld:			document.getElementById("diffOld").checked,
 		popupList:			document.getElementById("popupList").checked,
 		theme:				document.getElementById("theme").value,
@@ -59,7 +60,8 @@ function saveOptions(){
 		scrollToFirstChange:document.getElementById("scrollToFirstChange").checked,
 		skipMinorChanges:	document.getElementById("skipMinorChanges").checked,
 		addToContextMenu:	document.getElementById("addToContextMenu").checked,
-		changelog:			document.getElementById("openChangelog").checked
+		changelog:			document.getElementById("openChangelog").checked,
+		charset:			document.getElementById("defaultCharset").value?document.getElementById("defaultCharset").value:"utf-8"
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -100,6 +102,7 @@ function restoreOptions(){
 		document.getElementById("labelSkipMinorChanges").className=s.showNextPrev;
 		document.getElementById("addToContextMenu").checked=s.addToContextMenu;
 		document.getElementById("openChangelog").checked=s.changelog;
+		document.getElementById("defaultCharset").value=s.charset;
 	});
 }
 
@@ -174,6 +177,7 @@ function translate(){
 	document.getElementById("spanShare").textContent=i18n("spanShare");
 	document.getElementById("labelAddToContextMenu").textContent=i18n("addToContextMenu");
 	document.getElementById("labelOpenChangelog").textContent=i18n("openChangelog");
+	document.getElementById("labelDefaultCharset").textContent=i18n("defaultCharset");
 }
 
 function i18n(e,s1){

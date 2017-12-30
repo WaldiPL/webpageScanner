@@ -252,13 +252,13 @@ function deleteFolder(id){
 
 function showEdit(e){
 	hideAll("edit");
-	browser.storage.local.get('sites').then(result=>{
+	browser.storage.local.get(['sites','settings']).then(result=>{
 		const table=result.sites;
 		document.getElementById("editSite").dataset.id=e;
 		document.getElementById("editingSite").classList.remove("hidden");
 		document.getElementById("eUrl").value=table[e].url;
 		document.getElementById("eTitle").value=table[e].title;
-		document.getElementById("eCharset").value=table[e].charset?table[e].charset:"utf-8";
+		document.getElementById("eCharset").value=table[e].charset?table[e].charset:result.settings.charset;
 		const freq=table[e].freq;
 		let multi;
 		if(freq>=168)
@@ -275,7 +275,7 @@ function showEdit(e){
 
 function editSite(e){
 	document.getElementById("editingSite").classList.add("hidden");
-	browser.storage.local.get('sites').then(result=>{
+	browser.storage.local.get(['sites','settings']).then(result=>{
 		let sites=result.sites,
 			freq=parseInt(document.getElementById("eFreq").value);
 		let obj={
@@ -284,7 +284,7 @@ function editSite(e){
 			mode:	document.getElementById("eMode").value,
 			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl").value,
 			freq:	freq>0?freq*parseInt(document.getElementById("eMulti").value):8,
-			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:"utf-8"
+			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset
 		}
 		sites[e]=Object.assign(sites[e],obj);
 		browser.storage.local.set({sites});
