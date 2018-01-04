@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.5.5",
+		"changes":["Possibility to import / export pages to a bookmark folder"],
+		"changesPL":["Możliwość importowania / eksportowania stron do folderu zakładek"]
+	},
 	{"version":"1.5.2",
 		"changes":["Added possibility to change the default charset #18","Fixed bugs","Minor changes"],
 		"changesPL":["Dodano możliwość zmiany domyślnego kodowania tekstu #18","Naprawiono błędy","Drobne zmiany"]

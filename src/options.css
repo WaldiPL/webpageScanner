@@ -286,24 +286,24 @@ article:hover{
 	display:none !important;
 }
 
-#restoreAlert,#restoreError,#restoreOk{
+#restoreAlert,#restoreError,#restoreOk,#importAlert,#importAlert2,#importError,#importOK,#exportOK{
 	padding:10px;
 	margin:8px 0;
 }
 
-#restoreAlert{
+#restoreAlert,#importAlert,#importAlert2{
 	background:#ffe90080;
 }
 
-#restoreAlert h4{
+#restoreAlert h4,#importAlert h4,#importAlert2 h4{
 	margin:0;
 }
 
-#restoreError{
+#restoreError,#importError{
 	background:#ff003980;
 }
 
-#restoreOk{
+#restoreOk,#importOK,#exportOK{
 	background:#12bc0080;
 }
 

@@ -88,7 +88,7 @@ browser.alarms.onAlarm.addListener(alarm=>{
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
-	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,true,m.favicon);
+	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,m.btn,m.favicon);
 	if(m.scanSites)scanSites(0,true,true);
 	if(m.openSites)openSite("webpagesScannertrue");
 	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);
@@ -112,6 +112,6 @@ function contextAdd(e){
 		currentWindow:true
 	}).then(tabs=>{
 		const tab=tabs[0];
-		rqstAdd(tab.url,tab.title,"m0",8,true,tab.favicon);
+		rqstAdd(tab.url,tab.title,"m0",8,2,tab.favicon);
 	});
 }

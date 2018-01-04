@@ -39,6 +39,10 @@
 	window.addEventListener("hashchange",e=>{changeActive(e.newURL.split("#")[1]);});
 	document.getElementById("addToContextMenu").addEventListener("change",e=>{browser.runtime.sendMessage({"addToContextMenu":e.target.checked});});
 	document.getElementById("theme").addEventListener("change",e=>{browser.runtime.sendMessage({"changeTheme":e.target.value});});
+	document.getElementById("import").addEventListener("click",importFolder);
+	document.getElementById("export").addEventListener("click",exportFolder);
+	document.getElementById("importContinue").addEventListener("click",e=>{e.preventDefault();importFinish(document.getElementById("folderList").value);});
+	document.getElementById("folderList").addEventListener("change",importBookmarksList);
 })();
 
 function saveOptions(){
@@ -106,7 +110,8 @@ function restoreOptions(){
 	});
 }
 
-function createBackup(){
+function createBackup(e){
+	e.preventDefault();
 	browser.storage.local.get().then(result=>{
 		let a=document.createElement("a");
 		document.body.appendChild(a);
@@ -178,6 +183,14 @@ function translate(){
 	document.getElementById("labelAddToContextMenu").textContent=i18n("addToContextMenu");
 	document.getElementById("labelOpenChangelog").textContent=i18n("openChangelog");
 	document.getElementById("labelDefaultCharset").textContent=i18n("defaultCharset");
+	document.getElementById("thImport").textContent=i18n("importExport");
+	document.getElementById("import").textContent=i18n("importBtn");
+	document.getElementById("importFolder").placeholder=i18n("folderName");
+	document.getElementById("importAlertH4").textContent=i18n("importAlertH4");
+	document.getElementById("importAlertP").textContent=i18n("importAlertP");
+	document.getElementById("importContinue").textContent=i18n("continue");
+	document.getElementById("export").textContent=i18n("exportBtn");
+	document.getElementById("exportOK").textContent=i18n("exportOK");
 }
 
 function i18n(e,s1){
@@ -225,5 +238,200 @@ function restoreBackup(){
 	},()=>{
 		document.getElementById("restoreAlert").className="none";
 		document.getElementById("restoreError").removeAttribute("class");
+	});
+}
+
+function importFolder(e){
+	e.preventDefault();
+	let folderName=document.getElementById("importFolder").value.trim()||i18n("extensionName"),
+		folders=0,
+		folderNum=0,
+		folderList=document.getElementById("folderList");
+		folderList.textContent="";
+		document.getElementById("bookmarksList").textContent="";
+	browser.bookmarks.search({title:folderName}).then(q=>{
+		let empty=document.createElement("option");
+			empty.hidden=true;
+			folderList.add(empty); 
+		q.forEach((v,i)=>{
+			if(v.type==="folder"){
+				folders++;
+				let option=document.createElement("option");
+				option.text=`${folderName} [${i}]`;
+				option.value=v.id;
+				folderList.add(option);
+				folderNum=i;
+			}	
+		});
+		switch(folders){
+			case 0:
+				document.getElementById("importOK").className="none";
+				document.getElementById("importAlert").className="none";
+				document.getElementById("importAlert2").className="none";
+				document.getElementById("importError").removeAttribute("class");
+				document.getElementById("importError").textContent=i18n("importError",folderName);
+				break;
+			case 1:
+				importFinish(q[folderNum].id);
+				break;
+			default:
+				document.getElementById("importError").className="none";
+				document.getElementById("importOK").className="none";
+				document.getElementById("importAlert2").className="none";
+				document.getElementById("importAlert").removeAttribute("class");
+		}
+		document.getElementById("options").scrollIntoView(false);
+	});
+}
+
+function importFinish(folderId){
+	document.getElementById("importError").className="none";
+	document.getElementById("importAlert").className="none";
+	document.getElementById("importAlert2").className="none";
+	browser.bookmarks.getChildren(folderId).then(bookmarks=>{
+		let urlList=[],
+			folderList=[];
+		browser.storage.local.get("sites").then(result=>{
+			let sites=result.sites;
+			sites.forEach(v=>{
+				urlList.push(v.url);
+			});
+			bookmarks.forEach((v,i)=>{
+				if(v.type==="bookmark"){
+					folderList.push({url:v.url,title:v.title});
+					if(urlList.indexOf(v.url)<0)
+						setTimeout(()=>{browser.runtime.sendMessage({"addThis":true,"url":v.url,"title":v.title,"btn":1,"favicon":false});},i*1000);
+					setTimeout(()=>{document.getElementById("importOK").textContent=i18n("importing",[i+1,bookmarks.length,v.title]);},i*1000);
+				}
+			});
+			setTimeout(()=>{document.getElementById("importOK").textContent=i18n("checking");importCheck(folderList);},bookmarks.length*1000+5000);
+			document.getElementById("importOK").removeAttribute("class");
+			document.getElementById("options").scrollIntoView(false);
+		});
+	});
+}
+
+function importBookmarksList(e){
+	document.getElementById("importContinue").removeAttribute("class");
+	browser.bookmarks.getChildren(e.target.value).then(bookmarks=>{
+		let ul=document.getElementById("bookmarksList");
+		document.getElementById("bookmarksList").textContent="";
+		if(!bookmarks.length)document.getElementById("bookmarksList").textContent=i18n("emptyFolder");
+		for(let i=0;(i<bookmarks.length&&i<10);i++){
+			let li=document.createElement("li");
+			li.appendChild(document.createTextNode(bookmarks[i].title));
+			  ul.appendChild(li);
+		}
+	});
+}
+
+function importCheck(folderList){
+	browser.storage.local.get("sites").then(result=>{
+		let sites=result.sites,
+			urlList=[],
+			notAdded=[];
+		sites.forEach(v=>{
+			urlList.push(v.url);
+		});
+		folderList.forEach(v=>{
+			if(urlList.indexOf(v.url)<0)
+				notAdded.push({url:v.url,title:v.title});
+		});
+		if(notAdded.length){
+			notAdded.forEach((v,i)=>{
+				setTimeout(()=>{
+					browser.runtime.sendMessage({"addThis":true,"url":v.url,"title":v.title,"btn":1,"favicon":false});
+					document.getElementById("importOK").textContent=i18n("importing",[i+1,notAdded.length,v.title]);
+				},i*2500);
+			});
+			setTimeout(()=>{document.getElementById("importOK").textContent=i18n("checking");importCheck2(notAdded);},notAdded.length*2500+5000);
+		}else document.getElementById("importOK").textContent=i18n("importOK");
+	});
+}
+
+function importCheck2(notAddedList){
+	browser.storage.local.get("sites").then(result=>{
+		let sites=result.sites,
+			urlList=[],
+			notAdded=[];
+		sites.forEach(v=>{
+			urlList.push(v.url);
+		});
+		notAddedList.forEach(v=>{
+			if(urlList.indexOf(v.url)<0)
+				notAdded.push({url:v.url,title:v.title});
+		});
+		document.getElementById("importOK").textContent=i18n("importOK");
+		if(notAdded.length){
+			document.getElementById("importAlert2H4").textContent=i18n("importAlert2H4",notAdded.length);
+			document.getElementById("importAlert2").removeAttribute("class");
+			let ul=document.getElementById("notAdded");
+			document.getElementById("notAdded").textContent="";
+			notAdded.forEach(v=>{
+				let li=document.createElement("li"),
+					a=document.createElement("a");
+				a.appendChild(document.createTextNode(v.title));
+				a.href=v.url;
+				a.target="_blank";
+				li.appendChild(a);
+				ul.appendChild(li);
+			});
+		}
+		document.getElementById("options").scrollIntoView(false);
+	});
+}
+
+function exportFolder(e){
+	e.preventDefault();
+	browser.bookmarks.search({
+		title:i18n("extensionName")
+	}).then(search=>{
+		if(search.length){
+			let folderId;
+			search.forEach(v=>{
+				if(v.type==="folder")folderId=v.id;
+			});
+			if(!folderId){
+				browser.bookmarks.create({
+					title:i18n("extensionName"),
+					type:"folder",
+					index:0
+				}).then(folder=>{
+					exportAddBookmarks(folder.id);
+				});
+			}else exportAddBookmarks(folderId);
+		}else{
+			browser.bookmarks.create({
+				title:i18n("extensionName"),
+				type:"folder",
+				index:0
+			}).then(folder=>{
+				exportAddBookmarks(folder.id);
+			});
+		}
+	});
+}
+
+function exportAddBookmarks(folderId){
+	browser.storage.local.get("sites").then(result=>{
+		let sites=result.sites,
+			folderList=[];
+		browser.bookmarks.getChildren(folderId).then(bookmarks=>{
+			bookmarks.forEach(v=>{
+				folderList.push(v.url);
+			});
+			sites.forEach(v=>{
+				if(folderList.indexOf(v.url)<0){
+					browser.bookmarks.create({
+						parentId:folderId,
+						title:v.title,
+						url:v.url,
+						index:0
+					});
+				}
+			});
+			document.getElementById("exportOK").removeAttribute("class");
+			document.getElementById("options").scrollIntoView(false);
+		});
 	});
 }

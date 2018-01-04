@@ -307,5 +307,47 @@
   },
   "defaultCharset": {
     "message": "Domyślne kodowanie tekstu"
+  },
+  "importExport": {
+    "message": "Import / Eksport"
+  },
+  "importBtn": {
+    "message": "Importuj strony z folderu zakładek"
+  },
+  "folderName": {
+    "message": "nazwa folderu"
+  },
+  "importAlertH4": {
+    "message": "Znaleziono wiele folderów o takiej nazwie."
+  },
+  "importAlertP": {
+    "message": "Wybierz folder, z którego chcesz importować zakładki."
+  },
+  "continue": {
+    "message": "Kontynuuj"
+  },
+  "exportBtn": {
+    "message": "Eksportuj strony do folderu zakładek"
+  },
+  "exportOK": {
+    "message": "Zakończono eksport stron do folderu zakładek (Skaner Stron)"
+  },
+  "importError": {
+    "message": "Nie odnaleziono folderu o nazwie $1. Sprawdź, czy nazwa jest poprawna. Wielkość liter ma znaczenie."
+  },
+  "importing": {
+    "message": "Importowanie $1/$2 - $3"
+  },
+  "checking": {
+    "message": "Sprawdzanie..."
+  },
+  "emptyFolder": {
+    "message": "Brak zakładek w tym folderze"
+  },
+  "importOK": {
+    "message": "Importowanie zakończone."
+  },
+  "importAlert2H4": {
+    "message": "Strony, które nie zostały dodane ($1)"
   }
 }

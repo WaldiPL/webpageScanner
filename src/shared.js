@@ -41,7 +41,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 					browser.runtime.sendMessage({"listSite":true});
 				}
 			});
-			if(btn){
+			if(btn>1){
 				browser.notifications.create(`webpagesScannerAdded`,{
 					"type":		"basic",
 					"iconUrl":	site.favicon,
@@ -54,7 +54,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 			}
 		};
 		let error=function(){
-			if(btn){
+			if(btn>1){
 				browser.notifications.create(`webpagesScannerError`,{
 					"type":		"basic",
 					"iconUrl":	"icons/warn.svg",
@@ -64,9 +64,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				setTimeout(()=>{
 					browser.notifications.clear(`webpagesScannerError`);
 				},5000);
-			}else{
-				statusbar(i18n("addedWebpageError"));
-			}
+			}else if(!btn)statusbar(i18n("addedWebpageError"));
 		};
 		xhr.onerror=error;
 		xhr.ontimeout=error;

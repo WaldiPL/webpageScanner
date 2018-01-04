@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
 	"description": "__MSG_extensionDescription__",
-	"version": "1.5.2",
+	"version": "1.5.5",
 	"default_locale": "en",
 	"icons": {
 		"48": "icons/icon.svg",
@@ -24,7 +24,8 @@
 		"alarms",
 		"<all_urls>",
 		"notifications",
-		"contextMenus"
+		"contextMenus",
+		"bookmarks"
 	],
 	"background": {
 		"page": "bg.html"

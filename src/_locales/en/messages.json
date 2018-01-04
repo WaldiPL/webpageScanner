@@ -307,5 +307,47 @@
   },
   "defaultCharset": {
     "message": "Default charset"
+  },
+  "importExport": {
+    "message": "Import / Export"
+  },
+  "importBtn": {
+    "message": "Import pages from a bookmark folder"
+  },
+  "folderName": {
+    "message": "folder name"
+  },
+  "importAlertH4": {
+    "message": "Found multiple folders with this name."
+  },
+  "importAlertP": {
+    "message": "Select the folder from which you want to import bookmarks."
+  },
+  "continue": {
+    "message": "Continue"
+  },
+  "exportBtn": {
+    "message": "Export pages to the bookmark folder"
+  },
+  "exportOK": {
+    "message": "Completed export pages to the bookmark folder (Web Pages Scanner)"
+  },
+  "importError": {
+    "message": "Not found a folder called $1. Check that the name is correct. The size of letters is important."
+  },
+  "importing": {
+    "message": "Importing $1/$2 - $3"
+  },
+  "checking": {
+    "message": "Checking..."
+  },
+  "emptyFolder": {
+    "message": "No bookmarks in this folder"
+  },
+  "importOK": {
+    "message": "Importing completed."
+  },
+  "importAlert2H4": {
+    "message": "Pages that have not been added ($1)"
   }
 }

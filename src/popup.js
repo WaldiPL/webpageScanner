@@ -19,7 +19,7 @@
 function addThis(){
 	browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
 		let tab=tabs[0];
-		browser.runtime.sendMessage({"addThis":true,"url":tab.url,"title":tab.title,"favicon":tab.favIconUrl});
+		browser.runtime.sendMessage({"addThis":true,"url":tab.url,"title":tab.title,"btn":2,"favicon":tab.favIconUrl});
 	});
 }
 
