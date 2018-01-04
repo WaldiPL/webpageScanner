@@ -1,4 +1,4 @@
-# Web pages scanner ![](https://img.shields.io/badge/AMO-v.1.4.0-blue.svg)
+# Web pages scanner ![](https://img.shields.io/badge/AMO-v.1.5.5-blue.svg)
 Scan web pages for updates.
 
 Futures:
@@ -24,6 +24,7 @@ and a lot more...
 - Notifications
 - Context menus
 - <all_urls>
+- Bookmarks
 
 ## Download
 https://addons.mozilla.org/firefox/addon/web-pages-scanner?src=external-github
