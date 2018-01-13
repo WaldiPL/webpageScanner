@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.5.6",
+		"changes":["Fixed bugs"],
+		"changesPL":["Naprawiono błędy"]
+	},
 	{"version":"1.5.5",
 		"changes":["Possibility to import / export pages to a bookmark folder"],
 		"changesPL":["Możliwość importowania / eksportowania stron do folderu zakładek"]

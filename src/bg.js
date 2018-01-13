@@ -29,8 +29,12 @@ function handleInstalled(details) {
 					"charset":"utf-8"
 				}});
 			}
-			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
-			else browser.browserAction.setPopup({popup:"/sidebar.html"});
+			if(!details.temporary){
+				browser.tabs.create({
+					url:"options.html#changelog",
+					active:true
+				});
+			}
 		});
 	}else if(details.reason==="update"){
 		browser.storage.local.get('settings').then(result=>{
@@ -57,18 +61,20 @@ function handleInstalled(details) {
 				});
 				browser.storage.local.set({settings:result.settings});
 			}
+			
+			if(!details.temporary&&result.settings.changelog!==false){
+				browser.tabs.create({
+					url:"options.html#changelog",
+					active:true
+				});
+			}
 		});
-	}
-	if(!details.temporary&&result.settings.changelog!==false){
- 			browser.tabs.create({
- 				url:"options.html#changelog",
- 				active:true
- 			});
 	}
 }
 
 (function(){
 	browser.storage.local.get(['sites','sort','settings']).then(result=>{
+		init();
 		if(result.sort===undefined&&result.sites!==undefined){
 			let sort=[];
 			result.sites.forEach((value,i)=>{
@@ -76,10 +82,20 @@ function handleInstalled(details) {
 			});
 			browser.storage.local.set({sort:sort});
 		}
-		showContext(result.settings.addToContextMenu);
 	});
-	scanLater(1);
 })();
+
+function init(){
+	browser.storage.local.get('settings').then(result=>{
+		if(result.settings){
+			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
+			else browser.browserAction.setPopup({popup:"/sidebar.html"});
+			showContext(result.settings.addToContextMenu);
+			scanLater(1);
+		}else
+			setTimeout(init,100);
+	});
+}
 
 browser.alarms.onAlarm.addListener(alarm=>{
 	scanLater(62);

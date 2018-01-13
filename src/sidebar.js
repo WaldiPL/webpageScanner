@@ -64,7 +64,7 @@ function context(e){
 			e.target.appendChild(eInput);
 			prevContext=id;
 		}
-	}else{
+	}else if(a.tagName==="LI"){
 		const id=parseInt(a.getAttribute("id").substr(4)),
 			  c=document.getElementById(`edititem${id}`);
 		if(!c){

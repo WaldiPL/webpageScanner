@@ -131,8 +131,8 @@ function addFolder(name){
 	name=name?name:i18n("newFolder");
 	let list=document.getElementById("lista"),
 		lastChild=list.lastElementChild,
-		lastId=lastChild.dataset.row.substr(1);
-	if(lastChild.classList.contains("folder")&&lastChild.childElementCount>1)
+		lastId=lastChild?lastChild.dataset.row.substr(1):-1;
+	if(lastChild&&lastChild.classList.contains("folder")&&lastChild.childElementCount>1)
 		lastId=lastChild.lastElementChild.dataset.row.substr(1);
 	let iLi=document.createElement('ul');
 		iLi.id=`folder${new Date().getTime()}`;
