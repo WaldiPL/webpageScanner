@@ -21,7 +21,8 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				changed:false,
 				favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
 				freq:	freq?freq:8,
-				charset:s.charset
+				charset:s.charset,
+				broken:	false
 			};
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
@@ -74,13 +75,14 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 
 var tempChanges=[],
 	tempTimes=[],
+	tempBroken=[],
 	numberScanned=0,
 	count=0;
 	
 function scanCompleted(sitesLength,auto){
 	numberScanned++;
 	if(numberScanned===sitesLength||sitesLength===true){
-		updateBase(tempChanges,tempTimes);
+		updateBase(tempChanges,tempTimes,tempBroken);
 		if(!auto)statusbar(i18n("scanCompleted"));
 		if(count){
 			let audio=new Audio('notification.opus'),
@@ -113,6 +115,7 @@ function scanCompleted(sitesLength,auto){
 		}
 	tempChanges=[];
 	tempTimes=[];
+	tempBroken=[];
 	numberScanned=0;
 	count=0;
 	}
@@ -140,17 +143,20 @@ function scanPage(local,id,auto,sitesLength){
 					tempChanges[id]=[html_data,scanned.md5,scanned.length];
 				}else{
 					tempTimes[id]=true;
+					if(this.status>=400)tempBroken[id]=true;
 					if(!auto){
 						if(this.status<400)document.getElementById("item"+id).classList.add("scanned");
 						else document.getElementById("item"+id).classList.add("warn");
 					}
 				}
 			}else{
+				tempBroken[id]=true;
 				if(!auto)document.getElementById("item"+id).classList.add("error");
 			}
 			scanCompleted(sitesLength,auto);
 		};
 		let error=function(){
+			tempBroken[id]=true;
 			scanCompleted(sitesLength,auto);
 			if(!auto)document.getElementById("item"+id).classList.add("error");
 		};
@@ -165,8 +171,8 @@ function scanPage(local,id,auto,sitesLength){
 }
 
 function scanSites(ev,auto=false,force=false){
-	if(!auto)hideAll();
 	browser.storage.local.get('sites').then(result=>{
+	if(!auto)hideAll();
 		const sites=result.sites,
 			  len=sites.length;
 		sites.forEach((local,ix)=>{
@@ -193,13 +199,14 @@ function deltaTime(oldDate,oldTime){
 	return delta/60/60/1000;
 }
 
-function updateBase(changesArray,timesArray){
+function updateBase(changesArray,timesArray,brokenArray){
 	browser.storage.local.get(['sites','changes']).then(result=>{
 		let changes=result.changes,
 			sites=result.sites;
 		let currentTime={
 			date:date(),
-			time:time()
+			time:time(),
+			broken:false
 		};
 		changesArray.forEach((value,id)=>{
 			changes[id]={
@@ -211,12 +218,16 @@ function updateBase(changesArray,timesArray){
 				time:	time(),
 				length:	value[2],
 				md5:	value[1],
-				changed:true
+				changed:true,
+				broken:	false
 			};
 			sites[id]=Object.assign(sites[id],obj);
 		});
 		timesArray.forEach((value,id)=>{
 			sites[id]=Object.assign(sites[id],currentTime);
+		});
+		brokenArray.forEach((value,id)=>{
+			sites[id]=Object.assign(sites[id],{broken:true});
 		});
 		browser.storage.local.set({sites:sites,changes:changes});
 	});
@@ -268,14 +279,6 @@ function unchange(ixo){
 		});
 		browser.storage.local.set({sites});
 	});
-}
-
-function scanLater(x){
-	let d=new Date(),
-		a=Date.parse(d),
-		b=a+x*60*1000;
-	browser.alarms.clearAll();
-	browser.alarms.create("webpageScanner",{when:b});
 }
 
 function time(){

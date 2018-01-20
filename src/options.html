@@ -8,6 +8,7 @@
 	<body>
 		<nav>
 			<a id="optionsA" href="#options"></a>
+			<a id="managementA" href="#management"></a>
 			<a id="changelogA" href="#changelog"></a>
 			<a id="supportA" href="#support"></a>
 		</nav>
@@ -85,6 +86,32 @@
 				<label id="volumeLabel"></label
 				><input type="range" min="0" max="100" step="5" id="notificationVolume"><output id="oVolume" for="notificationVolume"></output>%
 			</div>
+		</section>
+		<section id="management">
+			<h2 id="h2management"></h2>
+			<h3 id="h3management"></h3>
+			<div class="row">
+				<button id="deleteDuplicates"></button>
+			</div>
+			<div id="duplicatesOK" class="none successBox">
+				<h4 id="duplicatesOKH4"></h4>
+			</div>
+			<div id="duplicatesAlert" class="none alertBox">
+				<h4 id="duplicatesAlertH4"></h4>
+				<ul id="deletedDuplicates"></ul>
+				<button id="deleteDuplicatesConfirm"></button>
+			</div>
+			<div class="row">
+				<button id="deleteBroken"></button>
+			</div>
+			<div id="brokenOK" class="none successBox">
+				<h4 id="brokenOKH4"></h4>
+			</div>
+			<div id="brokenAlert" class="none alertBox">
+				<h4 id="brokenAlertH4"></h4>
+				<ul id="deletedBroken"></ul>
+				<button id="deleteBrokenConfirm"></button>
+			</div>
 			<h3 id="thBackup"></h3>
 			<div class="row">
 				<button id="backup"></button
@@ -93,36 +120,36 @@
 					><span id="fileText"></span>
 				</span>
 			</div>
-			<div id="restoreAlert" class="none">
+			<div id="restoreAlert" class="none alertBox">
 				<h4 id="restoreAlertH4"></h4>
 				<p id="restoreAlertP"></p>
 				<button id="restore"></button>
 			</div>
-			<h4 id="restoreError" class="none"></h4>
-			<h4 id="restoreOk" class="none"></h4>
+			<h4 id="restoreError" class="none errorBox"></h4>
+			<h4 id="restoreOk" class="none successBox"></h4>
 			
 			<h3 id="thImport"></h3>
 			<div class="row">
 				<button id="import"></button
 				><input type="text" id="importFolder">
 			</div>
-			<div id="importAlert" class="none">
+			<div id="importAlert" class="none alertBox">
 				<h4 id="importAlertH4"></h4>
 				<label id="importAlertP"></label
 				><select id="folderList"></select
 				><button id="importContinue" class="none"></button>
 				<ul id="bookmarksList"></ul>
 			</div>
-			<div id="importAlert2" class="none">
+			<div id="importAlert2" class="none alertBox">
 				<h4 id="importAlert2H4"></h4>
 				<ul id="notAdded"></ul>
 			</div>
-			<h4 id="importError" class="none"></h4>
-			<h4 id="importOK" class="none"></h4>
+			<h4 id="importError" class="none errorBox"></h4>
+			<h4 id="importOK" class="none successBox"></h4>
 			<div class="row">
 				<button id="export"></button>
 			</div>
-			<h4 id="exportOK" class="none"></h4>
+			<h4 id="exportOK" class="none successBox"></h4>
 		</section>
 		<section id="changelog">
 			<h2 id="h2changelog"></h2>

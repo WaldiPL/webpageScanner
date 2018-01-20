@@ -349,5 +349,29 @@
   },
   "importAlert2H4": {
     "message": "Strony, które nie zostały dodane ($1)"
+  },
+  "management": {
+    "message": "Zarządzanie"
+  },
+  "deleteDuplicates": {
+    "message": "Usuń duplikaty"
+  },
+  "deleteBroken": {
+    "message": "Usuń niedziałające strony"
+  },
+  "deleteAlertH4": {
+    "message": "Czy checesz usunąć z listy skanowania $1 stron/y?"
+  },
+  "noDuplicates": {
+    "message": "Brak duplikatów"
+  },
+  "deleting": {
+    "message": "Usuwanie..."
+  },
+  "noBroken": {
+    "message": "Brak niedziałających stron"
+  },
+  "deletedPages": {
+    "message": "Z listy skanowania usunięto $1 stron/y"
   }
 }

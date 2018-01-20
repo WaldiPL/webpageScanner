@@ -105,10 +105,10 @@ function deleteSite(e){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites:sites,changes:changes,sort:sort});
-	}).then(()=>{
-		browser.runtime.sendMessage({"listSite":true,"deletedSite":true,"id":e});
-		browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});
+		browser.storage.local.set({sites:sites,changes:changes,sort:sort}).then(()=>{
+			browser.runtime.sendMessage({"listSite":true,"deletedSite":true,"id":e});
+			browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});
+		});
 	});
 }
 
@@ -150,9 +150,9 @@ function editSite(e){
 		}
 		document.getElementById("title10153").textContent=obj.title;
 		sites[e]=Object.assign(sites[e],obj);
-		browser.storage.local.set({sites});
-	}).then(()=>{
-		browser.runtime.sendMessage({"listSite":true});
+		browser.storage.local.set({sites}).then(()=>{
+			browser.runtime.sendMessage({"listSite":true});
+		});
 	});
 }
 
@@ -161,7 +161,8 @@ function setTitle(){
 		  metaTitle=metaTitles[metaTitles.length-1],
 		  userTitle=document.getElementById("title10153").textContent,
 		  docTitle=document.title;
-	if(docTitle=="")document.title=userTitle;
+	if(docTitle.includes("<span class='changes10153'>"))document.title=document.title.slice(27, -7);
+	else if(docTitle=="")document.title=userTitle;
 	else if(docTitle!=metaTitle.textContent)document.title=metaTitle.textContent;
 }
 

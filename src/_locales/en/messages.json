@@ -349,5 +349,29 @@
   },
   "importAlert2H4": {
     "message": "Pages that have not been added ($1)"
+  },
+  "management": {
+    "message": "Management"
+  },
+  "deleteDuplicates": {
+    "message": "Delete duplicates"
+  },
+  "deleteBroken": {
+    "message": "Delete broken pages"
+  },
+  "deleteAlertH4": {
+    "message": "Do you want to delete $1 pages from the scan list?"
+  },
+  "noDuplicates": {
+    "message": "No duplicates"
+  },
+  "deleting": {
+    "message": "Deleting..."
+  },
+  "noBroken": {
+    "message": "No broken pages"
+  },
+  "deletedPages": {
+    "message": "From the scan list has been deleted $1 pages"
   }
 }

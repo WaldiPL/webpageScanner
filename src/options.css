@@ -34,6 +34,10 @@ nav{
 	background-image:url("/icons/gear.svg#black");
 }
 
+#managementA{
+	background-image:url("/icons/management.svg#black");
+}
+
 #changelogA{
 	background-image:url("/icons/changelog.svg#black");
 }
@@ -44,6 +48,10 @@ nav{
 
 #optionsA.active{
 	background-image:url("/icons/gear.svg#blue");
+}
+
+#managementA.active{
+	background-image:url("/icons/management.svg#blue");
 }
 
 #changelogA.active{
@@ -286,25 +294,31 @@ article:hover{
 	display:none !important;
 }
 
-#restoreAlert,#restoreError,#restoreOk,#importAlert,#importAlert2,#importError,#importOK,#exportOK{
+.alertBox,.successBox,.errorBox{
 	padding:10px;
 	margin:8px 0;
+	width:800px;
 }
 
-#restoreAlert,#importAlert,#importAlert2{
+.alertBox{
 	background:#ffe90080;
 }
 
-#restoreAlert h4,#importAlert h4,#importAlert2 h4{
+.alertBox h4, .successBox h4{
 	margin:0;
 }
 
-#restoreError,#importError{
+.errorBox{
 	background:#ff003980;
 }
 
-#restoreOk,#importOK,#exportOK{
+.successBox{
 	background:#12bc0080;
+}
+
+.alertBox ul,.successBox ul,.errorBox ul{
+	max-height:210px;
+	overflow-y:auto;
 }
 
 section a{

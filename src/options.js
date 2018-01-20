@@ -43,6 +43,10 @@
 	document.getElementById("export").addEventListener("click",exportFolder);
 	document.getElementById("importContinue").addEventListener("click",e=>{e.preventDefault();importFinish(document.getElementById("folderList").value);});
 	document.getElementById("folderList").addEventListener("change",importBookmarksList);
+	document.getElementById("deleteDuplicates").addEventListener("click",deleteDuplicates);
+	document.getElementById("deleteBroken").addEventListener("click",deleteBroken);
+	document.getElementById("deleteDuplicatesConfirm").addEventListener("click",deleteDuplicatesConfirm);
+	document.getElementById("deleteBrokenConfirm").addEventListener("click",deleteBrokenConfirm);
 })();
 
 function saveOptions(){
@@ -131,6 +135,7 @@ function createBackup(e){
 function translate(){
 	document.title=i18n("extensionName");
 	document.getElementById("optionsA").textContent=i18n("options");
+	document.getElementById("managementA").textContent=i18n("management");
 	document.getElementById("changelogA").textContent=i18n("changelog");
 	document.getElementById("supportA").textContent=i18n("support");
 	document.getElementById("h2options").textContent=i18n("options");
@@ -191,6 +196,12 @@ function translate(){
 	document.getElementById("importContinue").textContent=i18n("continue");
 	document.getElementById("export").textContent=i18n("exportBtn");
 	document.getElementById("exportOK").textContent=i18n("exportOK");
+	document.getElementById("h2management").textContent=i18n("management");
+	document.getElementById("h3management").textContent=i18n("general");
+	document.getElementById("deleteDuplicates").textContent=i18n("deleteDuplicates");
+	document.getElementById("deleteBroken").textContent=i18n("deleteBroken");
+	document.getElementById("deleteDuplicatesConfirm").textContent=i18n("delete");
+	document.getElementById("deleteBrokenConfirm").textContent=i18n("delete");
 }
 
 function i18n(e,s1){
@@ -199,6 +210,7 @@ function i18n(e,s1){
 
 function changeActive(e){
 	document.getElementById("optionsA").removeAttribute("class");
+	document.getElementById("managementA").removeAttribute("class");
 	document.getElementById("changelogA").removeAttribute("class");
 	document.getElementById("supportA").removeAttribute("class");
 	document.getElementById(e+"A").className="active";
@@ -213,18 +225,18 @@ function handleFileSelect(e){
 		reader.onload=function(event){
 			try{
 				uploaded=JSON.parse(event.target.result);
-				document.getElementById("restoreError").className="none";
-				document.getElementById("restoreAlert").removeAttribute("class");
+				document.getElementById("restoreError").classList.add("none");
+				document.getElementById("restoreAlert").classList.remove("none");
 			}catch(e){
-				document.getElementById("restoreAlert").className="none";
-				document.getElementById("restoreError").removeAttribute("class");
+				document.getElementById("restoreAlert").classList.add("none");
+				document.getElementById("restoreError").classList.remove("none");
 			}
-			document.getElementById("restoreOk").className="none";
+			document.getElementById("restoreOk").classList.add("none");
 		};
 		reader.onerror=function(event){
-			document.getElementById("restoreAlert").className="none";
-			document.getElementById("restoreOk").className="none";
-			document.getElementById("restoreError").removeAttribute("class");
+			document.getElementById("restoreAlert").classList.add("none");
+			document.getElementById("restoreOk").classList.add("none");
+			document.getElementById("restoreError").classList.remove("none");
 		}
 		reader.readAsText(file);
 	}
@@ -232,12 +244,12 @@ function handleFileSelect(e){
 
 function restoreBackup(){
 	browser.storage.local.set({sites:uploaded.sites,changes:uploaded.changes,sort:uploaded.sort}).then(()=>{
-		document.getElementById("restoreAlert").className="none";
-		document.getElementById("restoreOk").removeAttribute("class");
+		document.getElementById("restoreAlert").classList.add("none");
+		document.getElementById("restoreOk").classList.remove("none");
 		browser.runtime.sendMessage({"listSite":true});
 	},()=>{
-		document.getElementById("restoreAlert").className="none";
-		document.getElementById("restoreError").removeAttribute("class");
+		document.getElementById("restoreAlert").classList.add("none");
+		document.getElementById("restoreError").classList.remove("none");
 	});
 }
 
@@ -265,29 +277,29 @@ function importFolder(e){
 		});
 		switch(folders){
 			case 0:
-				document.getElementById("importOK").className="none";
-				document.getElementById("importAlert").className="none";
-				document.getElementById("importAlert2").className="none";
-				document.getElementById("importError").removeAttribute("class");
+				document.getElementById("importOK").classList.add("none");
+				document.getElementById("importAlert").classList.add("none");
+				document.getElementById("importAlert2").classList.add("none");
+				document.getElementById("importError").classList.remove("none");
 				document.getElementById("importError").textContent=i18n("importError",folderName);
 				break;
 			case 1:
 				importFinish(q[folderNum].id);
 				break;
 			default:
-				document.getElementById("importError").className="none";
-				document.getElementById("importOK").className="none";
-				document.getElementById("importAlert2").className="none";
-				document.getElementById("importAlert").removeAttribute("class");
+				document.getElementById("importError").classList.add("none");
+				document.getElementById("importOK").classList.add("none");
+				document.getElementById("importAlert2").classList.add("none");
+				document.getElementById("importAlert").classList.remove("none");
 		}
-		document.getElementById("options").scrollIntoView(false);
+		document.getElementById("management").scrollIntoView(false);
 	});
 }
 
 function importFinish(folderId){
-	document.getElementById("importError").className="none";
-	document.getElementById("importAlert").className="none";
-	document.getElementById("importAlert2").className="none";
+	document.getElementById("importError").classList.add("none");
+	document.getElementById("importAlert").classList.add("none");
+	document.getElementById("importAlert2").classList.add("none");
 	browser.bookmarks.getChildren(folderId).then(bookmarks=>{
 		let urlList=[],
 			folderList=[];
@@ -305,14 +317,14 @@ function importFinish(folderId){
 				}
 			});
 			setTimeout(()=>{document.getElementById("importOK").textContent=i18n("checking");importCheck(folderList);},bookmarks.length*1000+5000);
-			document.getElementById("importOK").removeAttribute("class");
-			document.getElementById("options").scrollIntoView(false);
+			document.getElementById("importOK").classList.remove("none");
+			document.getElementById("management").scrollIntoView(false);
 		});
 	});
 }
 
 function importBookmarksList(e){
-	document.getElementById("importContinue").removeAttribute("class");
+	document.getElementById("importContinue").classList.remove("none");
 	browser.bookmarks.getChildren(e.target.value).then(bookmarks=>{
 		let ul=document.getElementById("bookmarksList");
 		document.getElementById("bookmarksList").textContent="";
@@ -364,7 +376,7 @@ function importCheck2(notAddedList){
 		document.getElementById("importOK").textContent=i18n("importOK");
 		if(notAdded.length){
 			document.getElementById("importAlert2H4").textContent=i18n("importAlert2H4",notAdded.length);
-			document.getElementById("importAlert2").removeAttribute("class");
+			document.getElementById("importAlert2").classList.remove("none");
 			let ul=document.getElementById("notAdded");
 			document.getElementById("notAdded").textContent="";
 			notAdded.forEach(v=>{
@@ -377,7 +389,7 @@ function importCheck2(notAddedList){
 				ul.appendChild(li);
 			});
 		}
-		document.getElementById("options").scrollIntoView(false);
+		document.getElementById("management").scrollIntoView(false);
 	});
 }
 
@@ -430,8 +442,129 @@ function exportAddBookmarks(folderId){
 					});
 				}
 			});
-			document.getElementById("exportOK").removeAttribute("class");
-			document.getElementById("options").scrollIntoView(false);
+			document.getElementById("exportOK").classList.remove("none");
+			document.getElementById("management").scrollIntoView(false);
+		});
+	});
+}
+
+let duplicatedSites,
+	brokenSites;
+
+function deleteDuplicates(e){
+	e.preventDefault();
+	browser.storage.local.get("sites").then(result=>{
+		let sites=result.sites,
+			urlList={},
+			ul=document.getElementById("deletedDuplicates");
+		duplicatedSites=[];
+		sites.forEach((v,i)=>{
+			if(urlList[v.url])
+				duplicatedSites.unshift([i,v.url,v.title]);
+			else
+				urlList[v.url]=true;
+		});
+		if(duplicatedSites.length){
+			document.getElementById("duplicatesAlertH4").textContent=i18n("deleteAlertH4",duplicatedSites.length);
+			ul.textContent="";
+			duplicatedSites.forEach(v=>{
+				let li=document.createElement("li"),
+					a=document.createElement("a");
+				a.appendChild(document.createTextNode(v[2]));
+				a.href=v[1];
+				a.target="_blank";
+				li.appendChild(a);
+				ul.appendChild(li);
+			});
+			document.getElementById("duplicatesOK").classList.add("none");
+			document.getElementById("duplicatesAlert").classList.remove("none");
+		}else{
+			document.getElementById("duplicatesOKH4").textContent=i18n("noDuplicates");
+			document.getElementById("duplicatesAlert").classList.add("none");
+			document.getElementById("duplicatesOK").classList.remove("none");
+		}
+	});
+}
+
+function deleteDuplicatesConfirm(e){
+	e.preventDefault();
+	deleteSite(0,"duplicates");
+	document.getElementById("duplicatesOKH4").textContent=i18n("deleting");
+	document.getElementById("duplicatesAlert").classList.add("none");
+	document.getElementById("duplicatesOK").classList.remove("none");
+}
+
+function deleteBroken(e){
+	e.preventDefault();
+	browser.storage.local.get("sites").then(result=>{
+		let sites=result.sites,
+			urlList={},
+			ul=document.getElementById("deletedBroken");
+		brokenSites=[];
+		sites.forEach((v,i)=>{
+			if(v.broken)
+				brokenSites.unshift([i,v.url,v.title]);
+		});
+		if(brokenSites.length){
+			document.getElementById("brokenAlertH4").textContent=i18n("deleteAlertH4",brokenSites.length);
+			ul.textContent="";
+			brokenSites.forEach(v=>{
+				let li=document.createElement("li"),
+					a=document.createElement("a");
+				a.appendChild(document.createTextNode(v[2]));
+				a.href=v[1];
+				a.target="_blank";
+				li.appendChild(a);
+				ul.appendChild(li);
+			});
+			document.getElementById("brokenOK").classList.add("none");
+			document.getElementById("brokenAlert").classList.remove("none");
+		}else{
+			document.getElementById("brokenOKH4").textContent=i18n("noBroken");
+			document.getElementById("brokenAlert").classList.add("none");
+			document.getElementById("brokenOK").classList.remove("none");
+		}
+	});
+}
+
+function deleteBrokenConfirm(e){
+	e.preventDefault();
+	deleteSite(0,"broken");
+	document.getElementById("brokenOKH4").textContent=i18n("deleting");
+	document.getElementById("brokenAlert").classList.add("none");
+	document.getElementById("brokenOK").classList.remove("none");
+}
+
+function deleteSite(j,mode){
+	let e=mode==="duplicates"?duplicatedSites[j][0]:brokenSites[j][0];
+	browser.storage.local.get(['sites','changes','sort']).then(result=>{
+		let sites=result.sites,
+			changes=result.changes,
+			sort=result.sort,
+			sSort;
+		sites.splice(e,1);
+		changes.splice(e,1);
+		if(sort){
+			sort.forEach((value,i)=>{
+				id=parseInt(value[0].substr(4));
+				if(id===e)sSort=i;
+				else if(id>e)sort[i][0]=`item${id-1}`;
+			});
+			sort.splice(sSort,1);
+		}
+		browser.storage.local.set({sites:sites,changes:changes,sort:sort}).then(()=>{
+			browser.runtime.sendMessage({"deletedSite":true,"id":e,"listSite":true});
+			if(mode==="duplicates"){
+				if(j+1<duplicatedSites.length)
+					deleteSite(j+1,mode);
+				else
+					document.getElementById("duplicatesOKH4").textContent=i18n("deletedPages",duplicatedSites.length);
+			}else{
+				if(j+1<brokenSites.length)
+					deleteSite(j+1,mode);
+				else
+					document.getElementById("brokenOKH4").textContent=i18n("deletedPages",brokenSites.length);
+			}
 		});
 	});
 }

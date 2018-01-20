@@ -91,15 +91,14 @@ function init(){
 			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
 			else browser.browserAction.setPopup({popup:"/sidebar.html"});
 			showContext(result.settings.addToContextMenu);
-			scanLater(1);
+			browser.alarms.create("webpageScanner",{delayInMinutes:1,periodInMinutes:61});
 		}else
 			setTimeout(init,100);
 	});
 }
 
 browser.alarms.onAlarm.addListener(alarm=>{
-	scanLater(62);
-	scanSites(0,true);
+	if(alarm.name==="webpageScanner")scanSites(0,true);
 });
 
 browser.runtime.onMessage.addListener(run);

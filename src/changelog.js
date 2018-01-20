@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.6.0",
+		"changes":["Added possibility to delete duplicates","Added possibility to delete broken pages","Broken pages are marked as gray","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano zakładkę 'zarządzanie'","Dodano możliwość usuwania duplikatów","Dodano możliwość usuwania niedziałających stron","Niedziałające strony są oznacznone jako szare","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.5.6",
 		"changes":["Fixed bugs"],
 		"changesPL":["Naprawiono błędy"]

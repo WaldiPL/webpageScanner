@@ -145,7 +145,8 @@ function listSite(send){
 					iLi.dataset.row="a"+i;
 					iLi.dataset.folder=value[1];
 					iLi.draggable=true;
-					if(sites[id].changed)iLi.className="changed";
+					if(sites[id].changed)iLi.classList.add("changed");
+					if(sites[id].broken)iLi.classList.add("gray");
 					iLi.addEventListener('dragstart',dragStart);
 				let iA=document.createElement('a');
 				iA.textContent=sites[id].title;
@@ -322,10 +323,10 @@ function deleteSite(e){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites:sites,changes:changes,sort:sort});
-		listSite(true);
-	}).then(()=>{
-		browser.runtime.sendMessage({"deletedSite":true,"id":e});
+		browser.storage.local.set({sites:sites,changes:changes,sort:sort}).then(()=>{
+			listSite(true);
+			browser.runtime.sendMessage({"deletedSite":true,"id":e});
+		});
 	});
 }
 
