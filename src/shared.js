@@ -22,7 +22,8 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
 				freq:	freq?freq:8,
 				charset:s.charset,
-				broken:	false
+				broken:	false,
+				paused:	false
 			};
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
@@ -179,7 +180,7 @@ function scanSites(ev,auto=false,force=false){
 			if(local.changed){
 				count++;
 				scanCompleted(len,auto);
-			}else if(auto&&!force&&deltaTime(local.date,local.time)<local.freq){
+			}else if((auto&&!force&&deltaTime(local.date,local.time)<local.freq)||local.paused){
 				scanCompleted(len,auto);
 			}else{
 				scanPage(local,ix,auto,len);

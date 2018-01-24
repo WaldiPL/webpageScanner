@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.6.5",
+		"changes":["Added possibility to disable automatic scanning","Added possibility to stop scanning individual pages","Added possibility to change the frequency of automatic scanner startup","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość wyłączenia automatycznego skanowania","Dodano możliwość zatrzymania skanowania poszczególnych stron","Dodano możliwość zmiany częstotliwości automatycznego uruchamiania skanera","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.6.0",
 		"changes":["Added possibility to delete duplicates","Added possibility to delete broken pages","Broken pages are marked as gray","Fixed bugs","Minor changes"],
 		"changesPL":["Dodano zakładkę 'zarządzanie'","Dodano możliwość usuwania duplikatów","Dodano możliwość usuwania niedziałających stron","Niedziałające strony są oznacznone jako szare","Naprawiono błędy","Drobne zmiany"]

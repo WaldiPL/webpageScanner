@@ -26,7 +26,9 @@ function handleInstalled(details) {
 					"skipMinorChanges":true,
 					"addToContextMenu":true,
 					"changelog":true,
-					"charset":"utf-8"
+					"charset":"utf-8",
+					"period":60,
+					"paused":false
 				}});
 			}
 			if(!details.temporary){
@@ -45,19 +47,31 @@ function handleInstalled(details) {
 					"skipMinorChanges":true,
 					"addToContextMenu":true,
 					"changelog":true,
-					"charset":"utf-8"
+					"charset":"utf-8",
+					"period":60,
+					"paused":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.addToContextMenu===undefined){
 				result.settings=Object.assign(result.settings,{
 					"addToContextMenu":true,
 					"changelog":true,
-					"charset":"utf-8"
+					"charset":"utf-8",
+					"period":60,
+					"paused":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.charset===undefined){
 				result.settings=Object.assign(result.settings,{
-					"charset":"utf-8"
+					"charset":"utf-8",
+					"period":60,
+					"paused":false
+				});
+				browser.storage.local.set({settings:result.settings});
+			}else if(result.settings.period===undefined){
+				result.settings=Object.assign(result.settings,{
+					"period":60,
+					"paused":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}
@@ -91,14 +105,18 @@ function init(){
 			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
 			else browser.browserAction.setPopup({popup:"/sidebar.html"});
 			showContext(result.settings.addToContextMenu);
-			browser.alarms.create("webpageScanner",{delayInMinutes:1,periodInMinutes:61});
+			let period=result.settings.period?result.settings.period:60;
+			if(!result.settings.paused){
+				browser.alarms.create("webpageScanner",{periodInMinutes:period+1});
+				browser.alarms.create("webpageScanner2",{delayInMinutes:1});
+			}
 		}else
 			setTimeout(init,100);
 	});
 }
 
 browser.alarms.onAlarm.addListener(alarm=>{
-	if(alarm.name==="webpageScanner")scanSites(0,true);
+	scanSites(0,true);
 });
 
 browser.runtime.onMessage.addListener(run);
@@ -107,6 +125,7 @@ function run(m){
 	if(m.scanSites)scanSites(0,true,true);
 	if(m.openSites)openSite("webpagesScannertrue");
 	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);
+	if(m.period)browser.alarms.create("webpageScanner",{periodInMinutes:m.period});
 }
 
 function showContext(e){

@@ -373,5 +373,26 @@
   },
   "deletedPages": {
     "message": "Z listy skanowania usunięto $1 stron/y"
+  },
+  "labelPeriod": {
+    "message": "Częstotliwość automatycznego uruchamiania skanera [min]"
+  },
+  "sublabelPeriod": {
+    "message": "Zbyt mała wartość może mieć negatywny wpływ na wydajność"
+  },
+  "labelAutoScanPause": {
+    "message": "Wyłącz automatyczne skanowanie stron"
+  },
+  "scanningAlert": {
+    "message": "Automatyczne skanowanie stron jest wyłączone"
+  },
+  "enable": {
+    "message": "Włącz"
+  },
+  "pauseScan": {
+    "message": "Zatrzymaj skanowanie"
+  },
+  "playScan": {
+    "message": "Wznów skanowanie"
   }
 }

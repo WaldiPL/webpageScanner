@@ -47,10 +47,14 @@
 	document.getElementById("deleteBroken").addEventListener("click",deleteBroken);
 	document.getElementById("deleteDuplicatesConfirm").addEventListener("click",deleteDuplicatesConfirm);
 	document.getElementById("deleteBrokenConfirm").addEventListener("click",deleteBrokenConfirm);
+	document.getElementById("period").addEventListener("change",changePeriod);
+	document.getElementById("autoScanPause").addEventListener("change",autoScanPause);
+	document.getElementById("enableAutoScan").addEventListener("click",e=>{e.preventDefault();document.getElementById("autoScanPause").click();});
 })();
 
 function saveOptions(){
-	const rqstTime=parseInt(document.getElementById("requestTime").value*1000);
+	const rqstTime=parseInt(document.getElementById("requestTime").value*1000),
+		  period=parseInt(document.getElementById("period").value);
 	let settings={
 		notificationVolume:	parseInt(document.getElementById("notificationVolume").value),
 		notificationTime:	parseInt(document.getElementById("notificationTime").value),
@@ -69,7 +73,9 @@ function saveOptions(){
 		skipMinorChanges:	document.getElementById("skipMinorChanges").checked,
 		addToContextMenu:	document.getElementById("addToContextMenu").checked,
 		changelog:			document.getElementById("openChangelog").checked,
-		charset:			document.getElementById("defaultCharset").value?document.getElementById("defaultCharset").value:"utf-8"
+		charset:			document.getElementById("defaultCharset").value?document.getElementById("defaultCharset").value:"utf-8",
+		period:				period>5?period<1440?period:1440:5,
+		paused:				document.getElementById("autoScanPause").checked
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -94,7 +100,6 @@ function restoreOptions(){
 		document.getElementById("openWindowMore").checked=openWindowMore;
 		document.getElementById("openWindowMore").disabled=!s.openWindow;
 		document.getElementById("openWindowMore").className=s.openWindow;
-		document.getElementById("labelOpenWindowMore").className=s.openWindow;
 		document.getElementById("requestTime").value=parseInt(s.requestTime/1000);
 		document.getElementById("diffOld").checked=s.diffOld;
 		document.getElementById("popupList").checked=s.popupList;
@@ -106,11 +111,14 @@ function restoreOptions(){
 		document.getElementById("skipMinorChanges").className=s.showNextPrev;
 		document.getElementById("scrollToFirstChange").disabled=!s.showNextPrev;
 		document.getElementById("skipMinorChanges").disabled=!s.showNextPrev;
-		document.getElementById("labelScrollToFirstChange").className=s.showNextPrev;
-		document.getElementById("labelSkipMinorChanges").className=s.showNextPrev;
 		document.getElementById("addToContextMenu").checked=s.addToContextMenu;
 		document.getElementById("openChangelog").checked=s.changelog;
 		document.getElementById("defaultCharset").value=s.charset;
+		document.getElementById("period").value=s.period;
+		document.getElementById("period").disabled=s.paused;
+		document.getElementById("groupPeriod").className="row "+!s.paused;
+		document.getElementById("autoScanPause").checked=s.paused;
+		document.getElementById("alertToolbar").className=s.paused?"":"none";
 	});
 }
 
@@ -202,6 +210,11 @@ function translate(){
 	document.getElementById("deleteBroken").textContent=i18n("deleteBroken");
 	document.getElementById("deleteDuplicatesConfirm").textContent=i18n("delete");
 	document.getElementById("deleteBrokenConfirm").textContent=i18n("delete");
+	document.getElementById("labelPeriod").textContent=i18n("labelPeriod");
+	document.getElementById("sublabelPeriod").textContent=i18n("sublabelPeriod");
+	document.getElementById("labelAutoScanPause").textContent=i18n("labelAutoScanPause");
+	document.getElementById("scanningAlert").textContent=i18n("scanningAlert");
+	document.getElementById("enableAutoScan").textContent=i18n("enable");
 }
 
 function i18n(e,s1){
@@ -567,4 +580,23 @@ function deleteSite(j,mode){
 			}
 		});
 	});
+}
+
+function changePeriod(e){
+	let period=parseInt(e.target.value);
+	period=period>5?period<1440?period:1440:5;
+	browser.runtime.sendMessage({"period":period+1});
+}
+
+function autoScanPause(e){
+	e.preventDefault();
+	let checked=e.target.checked,
+		period=parseInt(document.getElementById("period").value);
+	document.getElementById("period").disabled=checked;
+	document.getElementById("groupPeriod").className="row "+!checked;
+	document.getElementById("alertToolbar").className=checked?"":"none";
+	if(checked)
+		browser.alarms.clearAll();
+	else
+		browser.runtime.sendMessage({"period":period+1});
 }

@@ -41,6 +41,13 @@
 			<div class="row">
 				<label id="labelDefaultCharset"></label><input type="text" id="defaultCharset" placeholder="utf-8">
 			</div>
+			<div class="row" id="groupPeriod">
+				<label id="labelPeriod"></label><input id="period" type="number" min="5" max="1440" placeholder="60">
+				<p id="sublabelPeriod" class="subLabel"></p>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="autoScanPause"><label id="labelAutoScanPause" for="autoScanPause"></label>
+			</div>
 			<h3 id="h3pageView"></h3>
 			<div class="row">
 				<label id="labelDefaultView"></label
@@ -158,11 +165,11 @@
 			<h2 id="h2support"></h2>
 			<article>
 				<h3 id="h3bugReport"></h3>
-				<p><span id="spanBugReport"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank">GitHub</a>.</p>
+				<p><span id="spanBugReport"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank" class="extLink">GitHub</a>.</p>
 			</article>
 			<article>
 				<h3 id="h3translation"></h3>
-				<p><span id="spanTranslation1"></span> <a href="_locales/en/messages.json" target="_blank"><span id="spanTranslation2"></span></a> <span id="spanTranslation3"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank">GitHub</a>.</p>
+				<p><span id="spanTranslation1"></span> <a href="_locales/en/messages.json" target="_blank"><span id="spanTranslation2"></span></a> <span id="spanTranslation3"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank" class="extLink">GitHub</a>.</p>
 			</article>
 			<article>
 				<h3 id="h3share"></h3>
@@ -173,6 +180,7 @@
 				><a class="share" id="amo" href="https://addons.mozilla.org/firefox/addon/web-pages-scanner/" target="_blank">addons.mozilla.org</a>
 			</article>
 		</section>
+		<div id="alertToolbar" class="none"><span id="scanningAlert"></span><button id="enableAutoScan"></button></div>
 		<script src="changelog.js"></script>
 		<script src="options.js"></script>
 	</body>

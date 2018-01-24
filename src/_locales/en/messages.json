@@ -373,5 +373,26 @@
   },
   "deletedPages": {
     "message": "From the scan list has been deleted $1 pages"
+  },
+  "labelPeriod": {
+    "message": "Frequency of automatic scanner startup [min]"
+  },
+  "sublabelPeriod": {
+    "message": "Too low value can have a negative impact on performance"
+  },
+  "labelAutoScanPause": {
+    "message": "Disable automatic page scanning"
+  },
+  "scanningAlert": {
+    "message": "Automatic page scanning is disabled"
+  },
+  "enable": {
+    "message": "Enable"
+  },
+  "pauseScan": {
+    "message": "Stop scanning"
+  },
+  "playScan": {
+    "message": "Resume scanning"
   }
 }

@@ -290,8 +290,25 @@ ul li a,
 	cursor:pointer;
 }
 
+ul li[data-paused="true"] a::before{
+	content:"";
+	position:relative;
+	background-image:url("icons/paused.svg");
+	margin:0 -12px -12px 0;
+	height:12px;
+	width:12px;
+	top:-3px;
+	left:-3px;
+	display:block;
+	filter:var(--invert-filter);
+}
+
+ul ul li[data-paused="true"] a::before{
+	left:22px;
+}
+
 ul li input+a{
-	width:calc(100% - 102px) !important;
+	width:calc(100% - 132px) !important;
 }
 
 ul li input{
@@ -312,7 +329,7 @@ ul li .deleteSite:hover{
 	filter:var(--delete-filter);
 }
 
-ul li .editSite:hover,ul li .scanPage:hover{
+ul li .editSite:hover,ul li .scanPage:hover,ul li .pauseScan:hover,ul li .playScan:hover{
 	background:var(--context-hover);
 }
 

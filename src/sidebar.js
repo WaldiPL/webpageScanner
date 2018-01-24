@@ -100,9 +100,41 @@ function context(e){
 						scanPage(local,id,false,true);
 					});
 				});
+			let pInput=document.createElement('input');
+				pInput.id=`pauseitem${id}`;
+				pInput.type="image";
+				if(a.dataset.paused==="true"){
+					pInput.className="playScan";
+					pInput.src="icons/play.svg";
+					pInput.title=i18n("playScan");
+				}else{
+					pInput.className="pauseScan";
+					pInput.src="icons/pause.svg";
+					pInput.title=i18n("pauseScan");
+				}
+				pInput.addEventListener('click',()=>{
+					browser.storage.local.get('sites').then(result=>{
+						let sites=result.sites,
+							paused=(pInput.className==="pauseScan")?true:false;
+						sites[id]=Object.assign(sites[id],{paused});
+						browser.storage.local.set({sites}).then(()=>{
+							if(paused){
+								pInput.className="playScan";
+								pInput.src="icons/play.svg";
+								pInput.title=i18n("playScan");
+							}else{
+								pInput.className="pauseScan";
+								pInput.src="icons/pause.svg";
+								pInput.title=i18n("pauseScan");
+							}
+							a.dataset.paused=paused;
+						});
+					});
+				});
 			a.insertBefore(dInput,a.firstChild);
 			a.insertBefore(eInput,dInput);
 			a.insertBefore(sInput,eInput);
+			a.insertBefore(pInput,dInput);
 			prevContext=id;
 		}
 	}
@@ -114,10 +146,12 @@ function removeContext(){
 			let aParent=document.getElementById(`item${prevContext}`),
 				e1=document.getElementById(`edititem${prevContext}`),
 				e2=document.getElementById(`deleteitem${prevContext}`),
-				e3=document.getElementById(`scanitem${prevContext}`);
+				e3=document.getElementById(`scanitem${prevContext}`),
+				e4=document.getElementById(`pauseitem${prevContext}`);
 			aParent.removeChild(e1);
 			aParent.removeChild(e2);
 			aParent.removeChild(e3);
+			aParent.removeChild(e4);
 		}else{
 			let aParent=document.getElementById(`folder${prevContext}`).firstElementChild,
 				e1=document.getElementById(`editFolder${prevContext}`),
@@ -147,6 +181,7 @@ function listSite(send){
 					iLi.draggable=true;
 					if(sites[id].changed)iLi.classList.add("changed");
 					if(sites[id].broken)iLi.classList.add("gray");
+					if(sites[id].paused)iLi.dataset.paused=true;
 					iLi.addEventListener('dragstart',dragStart);
 				let iA=document.createElement('a');
 				iA.textContent=sites[id].title;
