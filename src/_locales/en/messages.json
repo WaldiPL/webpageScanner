@@ -394,5 +394,17 @@
   },
   "playScan": {
     "message": "Resume scanning"
+  },
+  "permissionGranted": {
+    "message": "The extension has permission to access the bookmarks"
+  },
+  "permissionRevoked": {
+    "message": "To use these features you have to allow to access the bookmarks"
+  },
+  "grant": {
+    "message": "Grant permission"
+  },
+  "revoke": {
+    "message": "Revoke permission"
   }
 }

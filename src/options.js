@@ -50,6 +50,18 @@
 	document.getElementById("period").addEventListener("change",changePeriod);
 	document.getElementById("autoScanPause").addEventListener("change",autoScanPause);
 	document.getElementById("enableAutoScan").addEventListener("click",e=>{e.preventDefault();document.getElementById("autoScanPause").click();});
+	browser.permissions.contains({permissions:["bookmarks"]}).then(granted=>{
+		if(granted){
+			document.getElementById("permission").textContent=i18n("permissionGranted");
+			document.getElementById("revokePermission").removeAttribute("class");
+			document.getElementById("ieGroup").removeAttribute("class");
+		}else{
+			document.getElementById("permission").textContent=i18n("permissionRevoked");
+			document.getElementById("grantPermission").removeAttribute("class");
+		}
+	});
+	document.getElementById("grantPermission").addEventListener("click",changePermission);
+	document.getElementById("revokePermission").addEventListener("click",changePermission);
 })();
 
 function saveOptions(){
@@ -215,6 +227,8 @@ function translate(){
 	document.getElementById("labelAutoScanPause").textContent=i18n("labelAutoScanPause");
 	document.getElementById("scanningAlert").textContent=i18n("scanningAlert");
 	document.getElementById("enableAutoScan").textContent=i18n("enable");
+	document.getElementById("grantPermission").textContent=i18n("grant");
+	document.getElementById("revokePermission").textContent=i18n("revoke");
 }
 
 function i18n(e,s1){
@@ -599,4 +613,27 @@ function autoScanPause(e){
 		browser.alarms.clearAll();
 	else
 		browser.runtime.sendMessage({"period":period+1});
+}
+
+function changePermission(e){
+	e.preventDefault();
+	if(e.target.id==="grantPermission"){
+		browser.permissions.request({permissions:["bookmarks"]}).then(granted=>{
+			if(granted){
+				document.getElementById("permission").textContent=i18n("permissionGranted");
+				document.getElementById("grantPermission").className="none";
+				document.getElementById("revokePermission").removeAttribute("class");
+				document.getElementById("ieGroup").removeAttribute("class");
+			}
+		});
+	}else{
+		browser.permissions.remove({permissions:["bookmarks"]}).then(revoked=>{
+			if(revoked){
+				document.getElementById("permission").textContent=i18n("permissionRevoked");
+				document.getElementById("revokePermission").className="none";
+				document.getElementById("grantPermission").removeAttribute("class");
+				document.getElementById("ieGroup").className="none";
+			}
+		});
+	}
 }

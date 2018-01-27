@@ -394,5 +394,17 @@
   },
   "playScan": {
     "message": "Wznów skanowanie"
+  },
+  "permissionGranted": {
+    "message": "Rozszerzenie posiada pozwolenie na dostęp do zakładek"
+  },
+  "permissionRevoked": {
+    "message": "Aby korzystać z tych funkcji, musisz zezwolić na dostęp do zakładek"
+  },
+  "grant": {
+    "message": "Przyznaj uprawnienia"
+  },
+  "revoke": {
+    "message": "Cofnij uprawnienia"
   }
 }

@@ -358,6 +358,14 @@ a.extLink::after{
 	background:#ffe900;
 }
 
-#alertToolbar button{
+span+button{
 	margin-left:10px;
+}
+
+#revokePermission{
+	padding:0 7px;
+	margin-left:10px;
+	background-color:none;
+	border:none;
+	color:#0060df;
 }

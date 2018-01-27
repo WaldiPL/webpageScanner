@@ -19,7 +19,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon){
 				md5:	md5(html_data),
 				mode:	mode,
 				changed:false,
-				favicon:icon?icon:"https://icons.better-idea.org/icon?size=16..16..16&url="+url,
+				favicon:icon?icon:"https://www.google.com/s2/favicons?domain="+url,
 				freq:	freq?freq:8,
 				charset:s.charset,
 				broken:	false,

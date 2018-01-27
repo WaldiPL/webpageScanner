@@ -144,7 +144,7 @@ function editSite(e){
 			title:	document.getElementById("eTitle10153").value,
 			url:	document.getElementById("eUrl10153").value,
 			mode:	document.getElementById("eMode10153").value,
-			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl10153").value,
+			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl10153").value,
 			freq:	freq>0?freq*parseInt(document.getElementById("eMulti10153").value):8,
 			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:result.settings.charset
 		}

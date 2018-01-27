@@ -361,6 +361,8 @@ body#body10153.hiddenHeader10153{
 	font-size:14px !important;
 	color:#000 !important;
 	vertical-align: initial !important;
+	white-space:nowrap !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
 }
 
 #editingSite10153 table select,#editingSite10153 table input{
@@ -512,7 +514,6 @@ x-highlight{
 	float:none !important;
 	height:26px !important;
 	min-height:26px !important;
-	width:220px !important;
 	min-width:220px !important;
 	opacity:1 !important;
 	overflow:visible !important;

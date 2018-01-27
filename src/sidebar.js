@@ -318,7 +318,7 @@ function editSite(e){
 			title:	document.getElementById("eTitle").value,
 			url:	document.getElementById("eUrl").value,
 			mode:	document.getElementById("eMode").value,
-			favicon:"https://icons.better-idea.org/icon?size=16..16..16&url="+document.getElementById("eUrl").value,
+			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl").value,
 			freq:	freq>0?freq*parseInt(document.getElementById("eMulti").value):8,
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset
 		}
