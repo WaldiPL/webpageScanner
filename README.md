@@ -1,7 +1,7 @@
-# Web pages scanner ![](https://img.shields.io/badge/AMO-v.1.6.5-blue.svg)
+# Web pages scanner ![](https://img.shields.io/badge/AMO-v.1.6.6-blue.svg)
 Scan web pages for updates.
 
-Futures:
+Features:
 - unlimited number of pages
 - automatic and manual asynchronous scanning
 - ability to change charset, accuracy, interval between scans
@@ -12,7 +12,7 @@ Futures:
 and a lot more...
 
 ## Screenshot
-![](screenshots/1.png)
+![](screenshots/2.png)
 
 ## Requirements
 - Firefox 48+
@@ -24,7 +24,7 @@ and a lot more...
 - Notifications
 - Context menus
 - <all_urls>
-- Bookmarks
+- Bookmarks (optional)
 
 ## Download
 https://addons.mozilla.org/firefox/addon/web-pages-scanner?src=external-github
