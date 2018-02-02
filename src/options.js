@@ -323,101 +323,109 @@ function importFolder(e){
 	});
 }
 
+let bookmarksToAdd=[],
+	bookmarksLength,
+	bookmarksNotAdded,
+	bookmarksFolderId,
+	bookmarkSecondTry=false;
+
+browser.runtime.onMessage.addListener(run);
+function run(m){
+	if(m.nextBookmark){
+		let bookmarkId=m.nextBookmark;
+		if(m.errorBookmark)bookmarksNotAdded.push(bookmarksToAdd[bookmarkId-1]);
+		if(bookmarkId<bookmarksLength){
+			browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[bookmarkId].url,"title":bookmarksToAdd[bookmarkId].title,"btn":1,"favicon":false,"addBookmark":bookmarkId});
+			document.getElementById("importOK").textContent=i18n("importing",[bookmarkId+1,bookmarksLength,bookmarksToAdd[bookmarkId].title]);
+		}else{
+			if(bookmarksNotAdded.length){
+				if(bookmarkSecondTry){
+					importCheck(bookmarksNotAdded);
+				}else{
+					bookmarkSecondTry=true;
+					importFinish(bookmarksFolderId);
+				}
+			}else{
+				bookmarkSecondTry=false;
+				document.getElementById("importOK").textContent=i18n("importOK");
+			}
+		}
+	}
+}
+
 function importFinish(folderId){
+	bookmarksFolderId=folderId;
+	bookmarksNotAdded=[];
 	document.getElementById("importError").classList.add("none");
 	document.getElementById("importAlert").classList.add("none");
 	document.getElementById("importAlert2").classList.add("none");
 	browser.bookmarks.getChildren(folderId).then(bookmarks=>{
 		let urlList=[],
 			folderList=[];
+		bookmarks=bookmarks.filter(b=>{return b.type==="bookmark";});
 		browser.storage.local.get("sites").then(result=>{
 			let sites=result.sites;
-			sites.forEach(v=>{
-				urlList.push(v.url);
+			urlList=sites.map(v=>{
+				return v.url;
 			});
-			bookmarks.forEach((v,i)=>{
-				if(v.type==="bookmark"){
-					folderList.push({url:v.url,title:v.title});
-					if(urlList.indexOf(v.url)<0)
-						setTimeout(()=>{browser.runtime.sendMessage({"addThis":true,"url":v.url,"title":v.title,"btn":1,"favicon":false});},i*1000);
-					setTimeout(()=>{document.getElementById("importOK").textContent=i18n("importing",[i+1,bookmarks.length,v.title]);},i*1000);
-				}
+			folderList=bookmarks.map(v=>{
+				return {url:v.url,title:v.title||v.url};
 			});
-			setTimeout(()=>{document.getElementById("importOK").textContent=i18n("checking");importCheck(folderList);},bookmarks.length*1000+5000);
-			document.getElementById("importOK").classList.remove("none");
+			bookmarksToAdd=folderList.filter(v=>{
+				return urlList.indexOf(v.url)<0;
+			});
+			if(bookmarksToAdd.length){
+				bookmarksLength=bookmarksToAdd.length;
+				browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[0].url,"title":bookmarksToAdd[0].title,"btn":1,"favicon":false,"addBookmark":0});
+				document.getElementById("importOK").textContent=i18n("importing",[1,bookmarksLength,bookmarksToAdd[0].title]);
+				document.getElementById("importOK").classList.remove("none");
+			}else if(bookmarks.length){
+				document.getElementById("importOK").textContent=i18n("importOK");
+				document.getElementById("importOK").classList.remove("none");
+			}else{
+				document.getElementById("importError").textContent=i18n("emptyFolder");
+				document.getElementById("importError").classList.remove("none");
+			}
 			document.getElementById("management").scrollIntoView(false);
 		});
 	});
 }
 
 function importBookmarksList(e){
-	document.getElementById("importContinue").classList.remove("none");
 	browser.bookmarks.getChildren(e.target.value).then(bookmarks=>{
 		let ul=document.getElementById("bookmarksList");
 		document.getElementById("bookmarksList").textContent="";
-		if(!bookmarks.length)document.getElementById("bookmarksList").textContent=i18n("emptyFolder");
-		for(let i=0;(i<bookmarks.length&&i<10);i++){
-			let li=document.createElement("li");
-			li.appendChild(document.createTextNode(bookmarks[i].title));
-			  ul.appendChild(li);
+		bookmarks=bookmarks.filter(b=>{return b.type==="bookmark";});
+		if(!bookmarks.length){
+			document.getElementById("importContinue").classList.add("none");
+			document.getElementById("bookmarksList").textContent=i18n("emptyFolder");
+		}else{
+			document.getElementById("importContinue").classList.remove("none");
+			for(let i=0;(i<bookmarks.length&&i<10);i++){
+				let li=document.createElement("li");
+				li.appendChild(document.createTextNode(bookmarks[i].title||bookmarks[i].url));
+				  ul.appendChild(li);
+			}
 		}
 	});
 }
 
-function importCheck(folderList){
-	browser.storage.local.get("sites").then(result=>{
-		let sites=result.sites,
-			urlList=[],
-			notAdded=[];
-		sites.forEach(v=>{
-			urlList.push(v.url);
-		});
-		folderList.forEach(v=>{
-			if(urlList.indexOf(v.url)<0)
-				notAdded.push({url:v.url,title:v.title});
-		});
-		if(notAdded.length){
-			notAdded.forEach((v,i)=>{
-				setTimeout(()=>{
-					browser.runtime.sendMessage({"addThis":true,"url":v.url,"title":v.title,"btn":1,"favicon":false});
-					document.getElementById("importOK").textContent=i18n("importing",[i+1,notAdded.length,v.title]);
-				},i*2500);
-			});
-			setTimeout(()=>{document.getElementById("importOK").textContent=i18n("checking");importCheck2(notAdded);},notAdded.length*2500+5000);
-		}else document.getElementById("importOK").textContent=i18n("importOK");
+function importCheck(notAdded){
+	document.getElementById("importOK").textContent=i18n("importOK");
+	document.getElementById("importAlert2H4").textContent=i18n("importAlert2H4",notAdded.length);
+	document.getElementById("importAlert2").classList.remove("none");
+	let ul=document.getElementById("notAdded");
+	document.getElementById("notAdded").textContent="";
+	notAdded.forEach(v=>{
+		let li=document.createElement("li"),
+			a=document.createElement("a");
+		a.appendChild(document.createTextNode(v.title));
+		a.href=v.url;
+		a.target="_blank";
+		li.appendChild(a);
+		ul.appendChild(li);
 	});
-}
-
-function importCheck2(notAddedList){
-	browser.storage.local.get("sites").then(result=>{
-		let sites=result.sites,
-			urlList=[],
-			notAdded=[];
-		sites.forEach(v=>{
-			urlList.push(v.url);
-		});
-		notAddedList.forEach(v=>{
-			if(urlList.indexOf(v.url)<0)
-				notAdded.push({url:v.url,title:v.title});
-		});
-		document.getElementById("importOK").textContent=i18n("importOK");
-		if(notAdded.length){
-			document.getElementById("importAlert2H4").textContent=i18n("importAlert2H4",notAdded.length);
-			document.getElementById("importAlert2").classList.remove("none");
-			let ul=document.getElementById("notAdded");
-			document.getElementById("notAdded").textContent="";
-			notAdded.forEach(v=>{
-				let li=document.createElement("li"),
-					a=document.createElement("a");
-				a.appendChild(document.createTextNode(v.title));
-				a.href=v.url;
-				a.target="_blank";
-				li.appendChild(a);
-				ul.appendChild(li);
-			});
-		}
-		document.getElementById("management").scrollIntoView(false);
-	});
+	document.getElementById("management").scrollIntoView(false);
 }
 
 function exportFolder(e){
@@ -529,7 +537,7 @@ function deleteBroken(e){
 			ul=document.getElementById("deletedBroken");
 		brokenSites=[];
 		sites.forEach((v,i)=>{
-			if(v.broken)
+			if(v.broken>1&&v.paused!==true)
 				brokenSites.unshift([i,v.url,v.title]);
 		});
 		if(brokenSites.length){

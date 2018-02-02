@@ -122,7 +122,7 @@ browser.alarms.onAlarm.addListener(alarm=>{
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
-	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,m.btn,m.favicon);
+	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,m.btn,m.favicon,m.addBookmark);
 	if(m.scanSites)scanSites(0,true,true);
 	if(m.openSites)openSite("webpagesScannertrue");
 	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);

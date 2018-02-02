@@ -189,7 +189,7 @@
     "message": "Głośność powiadomienia"
   },
   "maxRequestTime": {
-    "message": "Maksymalny czas zapytania [s]"
+    "message": "Maksymalny czas żadania [s]"
   },
   "changedPages": {
     "message": "Zmienione strony"

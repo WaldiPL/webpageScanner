@@ -500,3 +500,7 @@ a .deleteFolder:hover{
 a .editFolder:hover{
 	background:var(--context-hover);
 }
+
+#scanSites[disabled]{
+	opacity:.4;
+}

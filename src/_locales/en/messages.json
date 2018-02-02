@@ -189,7 +189,7 @@
     "message": "Notification volume"
   },
   "maxRequestTime": {
-    "message": "Maximum query time [s]"
+    "message": "Maximum request time [s]"
   },
   "changedPages": {
     "message": "Changed pages"

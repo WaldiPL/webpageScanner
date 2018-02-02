@@ -180,7 +180,7 @@ function listSite(send){
 					iLi.dataset.folder=value[1];
 					iLi.draggable=true;
 					if(sites[id].changed)iLi.classList.add("changed");
-					if(sites[id].broken)iLi.classList.add("gray");
+					if(sites[id].broken>1)iLi.classList.add("gray");
 					if(sites[id].paused)iLi.dataset.paused=true;
 					iLi.addEventListener('dragstart',dragStart);
 				let iA=document.createElement('a');
