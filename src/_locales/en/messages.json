@@ -30,14 +30,17 @@
   "scanFreq": {
     "message": "Scan every:"
   },
+  "minutes": {
+    "message": "Minute(s)"
+  },
   "hours": {
-    "message": "Hours"
+    "message": "Hour(s)"
   },
   "days": {
-    "message": "Days"
+    "message": "Day(s)"
   },
   "weeks": {
-    "message": "Weeks"
+    "message": "Week(s)"
   },
   "modeTitle": {
     "message": "Mode:"
@@ -406,5 +409,26 @@
   },
   "revoke": {
     "message": "Revoke permission"
+  },
+  "search": {
+    "message": "Search..."
+  },
+  "hidePages": {
+    "message": "Hide pages:"
+  },
+  "changed": {
+    "message": "Changed"
+  },
+  "paused": {
+    "message": "Paused"
+  },
+  "broken": {
+    "message": "Broken"
+  },
+  "normal": {
+    "message": "Normal"
+  },
+  "showSearchbar": {
+    "message": "Show search bar"
   }
 }

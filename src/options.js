@@ -62,6 +62,7 @@
 	});
 	document.getElementById("grantPermission").addEventListener("click",changePermission);
 	document.getElementById("revokePermission").addEventListener("click",changePermission);
+	document.getElementById("showSearchbar").addEventListener("change",e=>{browser.runtime.sendMessage({"search":e.target.checked});});
 })();
 
 function saveOptions(){
@@ -87,7 +88,8 @@ function saveOptions(){
 		changelog:			document.getElementById("openChangelog").checked,
 		charset:			document.getElementById("defaultCharset").value?document.getElementById("defaultCharset").value:"utf-8",
 		period:				period>5?period<1440?period:1440:5,
-		paused:				document.getElementById("autoScanPause").checked
+		paused:				document.getElementById("autoScanPause").checked,
+		search:				document.getElementById("showSearchbar").checked
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -131,6 +133,7 @@ function restoreOptions(){
 		document.getElementById("groupPeriod").className="row "+!s.paused;
 		document.getElementById("autoScanPause").checked=s.paused;
 		document.getElementById("alertToolbar").className=s.paused?"":"none";
+		document.getElementById("showSearchbar").checked=s.search;
 	});
 }
 
@@ -229,6 +232,7 @@ function translate(){
 	document.getElementById("enableAutoScan").textContent=i18n("enable");
 	document.getElementById("grantPermission").textContent=i18n("grant");
 	document.getElementById("revokePermission").textContent=i18n("revoke");
+	document.getElementById("labelShowSearchbar").textContent=i18n("showSearchbar");
 }
 
 function i18n(e,s1){

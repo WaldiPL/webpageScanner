@@ -30,6 +30,9 @@
   "scanFreq": {
     "message": "Skanuj co:"
   },
+  "minutes": {
+    "message": "Minut/y"
+  },
   "hours": {
     "message": "Godzin/y"
   },
@@ -406,5 +409,26 @@
   },
   "revoke": {
     "message": "Cofnij uprawnienia"
+  },
+  "search": {
+    "message": "Szukaj..."
+  },
+  "hidePages": {
+    "message": "Ukryj strony:"
+  },
+  "changed": {
+    "message": "Zmienione"
+  },
+  "paused": {
+    "message": "Wstrzymane"
+  },
+  "broken": {
+    "message": "Uszkodzone"
+  },
+  "normal": {
+    "message": "Normalne"
+  },
+  "showSearchbar": {
+    "message": "Pokaż pasek wyszukiwania"
   }
 }

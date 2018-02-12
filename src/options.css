@@ -73,6 +73,19 @@ nav a{
 	background-position:left 10px center;
 	background-repeat:no-repeat;
 	background-size:24px 24px;
+	white-space:nowrap;
+}
+
+@media (max-width:830px){
+	body{
+		grid-template-columns:110px auto;
+	}
+	nav a{
+		color:red;
+		overflow:hidden;
+		width:0;
+		padding-right:0;
+	}
 }
 
 nav a.active{
@@ -94,6 +107,7 @@ nav a img{
 section{
 	grid-area:content;
 	padding: 40px 28px 0 0;
+	overflow:auto;
 }
 
 h2{

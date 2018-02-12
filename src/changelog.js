@@ -1,6 +1,10 @@
 let changelog=`[
+	{"version":"1.7.0",
+		"changes":["Added search bar","Added possibility to set the scanning frequency in minutes #19","Minor changes","Fixed bugs"],
+		"changesPL":["Dodano pasek wyszukiwania","Dodano możliwość ustawienia częstotliwości skanowania w minutach #19","Drobne zmiany","Naprawiono błędy"]
+	},
 	{"version":"1.6.7",
-		"changes":["Improved function to import pages from a bookmark folder,"Minor changes","Fixed bugs"],
+		"changes":["Improved function to import pages from a bookmark folder","Minor changes","Fixed bugs"],
 		"changesPL":["Ulepszono funkcję importowania stron z folderu zakładek","Drobne zmiany","Naprawiono błędy"]
 	},
 	{"version":"1.6.6",

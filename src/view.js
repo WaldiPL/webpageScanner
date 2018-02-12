@@ -123,10 +123,12 @@ function showEdit(e){
 		document.getElementById("eCharset10153").value=sites[e].charset?sites[e].charset:result.settings.charset;
 		const freq=sites[e].freq;
 		let multi;
-		if(freq>=168)
+		if(!(freq%168))
 			multi=168;
-		else if(freq>=24)
+		else if(!(freq%24))
 			multi=24;
+		else if(freq<1)
+			multi=0.0166667;
 		else
 			multi=1;
 		document.getElementById("eFreq10153").value=parseInt(freq/multi);
@@ -145,7 +147,7 @@ function editSite(e){
 			url:	document.getElementById("eUrl10153").value,
 			mode:	document.getElementById("eMode10153").value,
 			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl10153").value,
-			freq:	freq>0?freq*parseInt(document.getElementById("eMulti10153").value):8,
+			freq:	freq>0?freq*parseFloat(document.getElementById("eMulti10153").value):8,
 			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:result.settings.charset
 		}
 		document.getElementById("title10153").textContent=obj.title;
@@ -315,9 +317,10 @@ function translate(){
 	document.getElementById("scanFreq10153").textContent=i18n("scanFreq");
 	document.getElementById("modeTitle10153").textContent=i18n("modeTitle");
 	let selectFreq=document.getElementById("eMulti10153").options;
-		selectFreq[0].text=i18n("hours");
-		selectFreq[1].text=i18n("days");
-		selectFreq[2].text=i18n("weeks");
+		selectFreq[0].text=i18n("minutes");
+		selectFreq[1].text=i18n("hours");
+		selectFreq[2].text=i18n("days");
+		selectFreq[3].text=i18n("weeks");
 	let selectMode=document.getElementById("eMode10153").options;
 		selectMode[0].text=i18n("modeM0");
 		selectMode[1].text=i18n("modeM3");

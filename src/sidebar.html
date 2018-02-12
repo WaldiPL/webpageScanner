@@ -12,6 +12,9 @@
 			><input id="addFolder" type="image" src="icons/folder-add.svg"
 			><input id="options" type="image" src="icons/gear.svg#black">
 		</div>
+		<div id="searchBar">
+			<input type="search" id="search" autocomplete="off"/><input id="filter" type="image" src="icons/filter.svg">
+		</div>
 		<div id="addingSite" class="hidden">
 			<b id="addWebpage"></b> 
 			<table>
@@ -20,6 +23,7 @@
 				<tr><td id="scanFreqA"></td><td style="width:100%;">
 				<input id="aFreq" type="number" min="1"
 				><select id="aMulti">
+					<option value="0.0166667"></option>
 					<option value="1"></option>
 					<option value="24"></option>
 					<option value="168"></option>
@@ -50,6 +54,7 @@
 				<tr><td id="scanFreqE"></td><td style="width:100%;">
 					<input id="eFreq" type="number" min="1"
 					><select id="eMulti">
+						<option value="0.0166667"></option>
 						<option value="1"></option>
 						<option value="24"></option>
 						<option value="168"></option>
@@ -110,6 +115,7 @@
 		</div>
 		<div id="dragIndicator" class="none"></div>
 		<ul id="lista"></ul>
+		<div id="popupFilter" class="hidden"><div id="hidePages"></div><button></button><button></button><button></button><button></button></div>
 		<div id="statusbar"></div>
 		<script src="md5.js"></script>
 		<script src="shared.js"></script>

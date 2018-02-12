@@ -28,7 +28,8 @@ function handleInstalled(details) {
 					"changelog":true,
 					"charset":"utf-8",
 					"period":60,
-					"paused":false
+					"paused":false,
+					"search":true
 				}});
 			}
 			if(!details.temporary){
@@ -49,7 +50,8 @@ function handleInstalled(details) {
 					"changelog":true,
 					"charset":"utf-8",
 					"period":60,
-					"paused":false
+					"paused":false,
+					"search":true
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.addToContextMenu===undefined){
@@ -58,20 +60,23 @@ function handleInstalled(details) {
 					"changelog":true,
 					"charset":"utf-8",
 					"period":60,
-					"paused":false
+					"paused":false,
+					"search":true
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.charset===undefined){
 				result.settings=Object.assign(result.settings,{
 					"charset":"utf-8",
 					"period":60,
-					"paused":false
+					"paused":false,
+					"search":true
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.period===undefined){
 				result.settings=Object.assign(result.settings,{
 					"period":60,
-					"paused":false
+					"paused":false,
+					"search":true
 				});
 				browser.storage.local.set({settings:result.settings});
 			}
@@ -143,11 +148,11 @@ function showContext(e){
 
 function contextAdd(e){
 	browser.tabs.query({
-		url:e.pageUrl,
+		url:e.pageUrl.split("#")[0],
 		currentWindow:true
 	}).then(tabs=>{
 		const tab=tabs[0];
-		rqstAdd(tab.url,tab.title,"m0",8,2,tab.favicon);
+		rqstAdd(e.pageUrl,tab.title,"m0",8,2,tab.favicon);
 	});
 }
 
