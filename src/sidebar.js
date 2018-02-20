@@ -292,12 +292,12 @@ function search(){
 			}
 			if(bro){
 				filtred=filtred.filter(v=>{
-					return v.broken!=true;
+					return v.broken<2
 				});
 			}
 			if(nor){
 				filtred=filtred.filter(v=>{
-					return (v.changed==true||v.paused==true||v.broken==true);
+					return (v.changed==true||v.paused==true||v.broken>1);
 				});
 			}
 			filtred.forEach(value=>{

@@ -277,17 +277,21 @@ function openSite(ev){
 			}
 		});
 		if(ixs.length){
-			if(settings.openWindow&&ixs.length>settings.openWindowMore){
-				browser.windows.create({
-					url: links
-				});
+			if(settings.delay){
+				browser.runtime.sendMessage({"openSitesDelay":1,"linksId":ixs,"openWindow":(settings.openWindow&&ixs.length>settings.openWindowMore)});
 			}else{
-				links.forEach(value=>{
-					browser.tabs.create({
-						url:value,
-						active:false
+				if(settings.openWindow&&ixs.length>settings.openWindowMore){
+					browser.windows.create({
+						url: links
 					});
-				});
+				}else{
+					links.forEach(value=>{
+						browser.tabs.create({
+							url:value,
+							active:false
+						});
+					});
+				}
 			}
 			updateBadge();
 			unchange(ixs);

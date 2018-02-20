@@ -89,7 +89,8 @@ function saveOptions(){
 		charset:			document.getElementById("defaultCharset").value?document.getElementById("defaultCharset").value:"utf-8",
 		period:				period>5?period<1440?period:1440:5,
 		paused:				document.getElementById("autoScanPause").checked,
-		search:				document.getElementById("showSearchbar").checked
+		search:				document.getElementById("showSearchbar").checked,
+		delay:				!(document.getElementById("delay").value>0)?0:document.getElementById("delay").value
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -134,6 +135,7 @@ function restoreOptions(){
 		document.getElementById("autoScanPause").checked=s.paused;
 		document.getElementById("alertToolbar").className=s.paused?"":"none";
 		document.getElementById("showSearchbar").checked=s.search;
+		document.getElementById("delay").value=s.delay;
 	});
 }
 
@@ -233,6 +235,8 @@ function translate(){
 	document.getElementById("grantPermission").textContent=i18n("grant");
 	document.getElementById("revokePermission").textContent=i18n("revoke");
 	document.getElementById("labelShowSearchbar").textContent=i18n("showSearchbar");
+	document.getElementById("labelDelay").textContent=i18n("delay");
+	document.getElementById("sublabelDelay").textContent=i18n("subDelay");
 }
 
 function i18n(e,s1){

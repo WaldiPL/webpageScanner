@@ -430,5 +430,11 @@
   },
   "showSearchbar": {
     "message": "Pokaż pasek wyszukiwania"
+  },
+  "delay": {
+    "message": "Opóźnienie w otwieraniu kolejnych stron w nowych kartach [s]"
+  },
+  "subDelay": {
+    "message": "Domyślna wartość: 0, wszystkie strony otwierane jednocześnie"
   }
 }

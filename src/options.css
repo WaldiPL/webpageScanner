@@ -92,9 +92,21 @@ nav a.active{
 	color:#0A84FF;
 }
 
-nav a:hover{
-	background-color: #0c0c0d1a;
+nav a.active:hover,nav a.active:focus{
+	background-color:#d5d5d6;
+}
+
+nav a.active:active{
+	background-color:#c9c9ca;
+}
+
+nav a:hover,nav a:focus{
+	background-color:#ebebeb;
 	border-radius:2px;
+}
+
+nav a:active{
+	background-color:#dadada;
 }
 
 nav a img{
@@ -145,8 +157,8 @@ input[type="checkbox"]:checked {
 	stroke: none;
 }
 
-input[type="checkbox"]:hover:not(:disabled) {
-	border-color: #0a84ff;;
+input[type="checkbox"]:hover:not(:disabled),input[type="checkbox"]:focus:not(:disabled){
+	border-color: #0a84ff;
 }
 
 button{
@@ -163,7 +175,7 @@ button{
 	font-size:13px;
 }
 
-button:hover,select:hover,#fileInput:hover{
+button:hover,select:hover,#fileInput:hover,button:focus,select:focus{
 	background-color:#ebebeb;
 }
 
@@ -260,7 +272,7 @@ article:hover{
 	color:#fff;
 }
 
-.share:hover{
+.share:hover,.share:focus{
 	filter:brightness(1.15);
 }
 
@@ -340,7 +352,7 @@ section a{
 	text-decoration:none;
 }
 
-section a:hover{
+section a:hover,section a:focus{
 	text-decoration:underline;
 }
 
@@ -382,4 +394,8 @@ span+button{
 	background-color:none;
 	border:none;
 	color:#0060df;
+}
+
+*:focus{
+	outline:none;
 }

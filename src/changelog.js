@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.7.1",
+		"changes":["Added possibility to set the delay in the opening pages in new tabs","Minor changes","Fixed bugs"],
+		"changesPL":["Dodano możliwość ustawienia opóźnienia w otwieraniu stron w nowych kartach","Drobne zmiany","Naprawiono błędy"]
+	},
 	{"version":"1.7.0",
 		"changes":["Added search bar","Added possibility to set the scanning frequency in minutes #19","Minor changes","Fixed bugs"],
 		"changesPL":["Dodano pasek wyszukiwania","Dodano możliwość ustawienia częstotliwości skanowania w minutach #19","Drobne zmiany","Naprawiono błędy"]

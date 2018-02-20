@@ -29,7 +29,8 @@ function handleInstalled(details) {
 					"charset":"utf-8",
 					"period":60,
 					"paused":false,
-					"search":true
+					"search":true,
+					"delay":0
 				}});
 			}
 			if(!details.temporary){
@@ -51,7 +52,8 @@ function handleInstalled(details) {
 					"charset":"utf-8",
 					"period":60,
 					"paused":false,
-					"search":true
+					"search":true,
+					"delay":0
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.addToContextMenu===undefined){
@@ -61,7 +63,8 @@ function handleInstalled(details) {
 					"charset":"utf-8",
 					"period":60,
 					"paused":false,
-					"search":true
+					"search":true,
+					"delay":0
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.charset===undefined){
@@ -69,14 +72,16 @@ function handleInstalled(details) {
 					"charset":"utf-8",
 					"period":60,
 					"paused":false,
-					"search":true
+					"search":true,
+					"delay":0
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.period===undefined){
 				result.settings=Object.assign(result.settings,{
 					"period":60,
 					"paused":false,
-					"search":true
+					"search":true,
+					"delay":0
 				});
 				browser.storage.local.set({settings:result.settings});
 			}
@@ -122,8 +127,14 @@ function init(){
 }
 
 browser.alarms.onAlarm.addListener(alarm=>{
-	scanSites(0,true);
+	if(alarm.name==="webpageScanner"||alarm.name==="webpageScanner2")scanSites(0,true);
+	else if(alarm.name==="openSitesDelay")openSitesDelay();
 });
+
+let delayCurrentId,
+	delayTime,
+	delayLinksId,
+	lastWindowId;
 
 browser.runtime.onMessage.addListener(run);
 function run(m){
@@ -132,6 +143,7 @@ function run(m){
 	if(m.openSites)openSite("webpagesScannertrue");
 	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);
 	if(m.period)browser.alarms.create("webpageScanner",{periodInMinutes:m.period});
+	if(m.openSitesDelay){delayCurrentId=0;delayTime=m.openSitesDelay;delayLinksId=m.linksId;openWindow=-1;openSitesDelay(m.openWindow);}
 }
 
 function showContext(e){
@@ -225,4 +237,40 @@ function favicon64(url,callback){
 		callback(dataURL,faviconCount);
 	}
 	img.src="https://www.google.com/s2/favicons?domain="+url.split("://")[1];
+}
+
+function openSitesDelay(openWindow){
+	if(delayCurrentId<delayLinksId.length){
+		if(openWindow){
+			browser.windows.create({
+				url:"view.html?"+delayLinksId[delayCurrentId]
+			}).then(win=>{
+				lastWindowId=win.id;
+				delayCurrentId++;
+				browser.alarms.create("openSitesDelay",{delayInMinutes:delayTime/60});
+			});
+		}else if(lastWindowId>=0){
+			browser.tabs.create({
+				url:"view.html?"+delayLinksId[delayCurrentId],
+				active:false,
+				windowId:lastWindowId
+			}).then(tab=>{
+				delayCurrentId++;
+				browser.alarms.create("openSitesDelay",{delayInMinutes:delayTime/60});
+			},err=>{
+				openSitesDelay(true)
+			});
+		}else{
+			browser.tabs.create({
+				url:"view.html?"+delayLinksId[delayCurrentId],
+				active:false
+			}).then(tab=>{
+				delayCurrentId++;
+				browser.alarms.create("openSitesDelay",{delayInMinutes:delayTime/60});
+			});
+		}
+	}else{
+		delayLinksId=[];
+		openWindow=-1;
+	}
 }

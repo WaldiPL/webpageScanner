@@ -430,5 +430,11 @@
   },
   "showSearchbar": {
     "message": "Show search bar"
+  },
+  "delay": {
+    "message": "Delay in opening next pages in new tabs [s]"
+  },
+  "subDelay": {
+    "message": "Default value: 0, all pages opened simultaneously"
   }
 }
