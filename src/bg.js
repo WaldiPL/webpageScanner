@@ -143,7 +143,7 @@ function run(m){
 	if(m.openSites)openSite("webpagesScannertrue");
 	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);
 	if(m.period)browser.alarms.create("webpageScanner",{periodInMinutes:m.period});
-	if(m.openSitesDelay){delayCurrentId=0;delayTime=m.openSitesDelay;delayLinksId=m.linksId;openWindow=-1;openSitesDelay(m.openWindow);}
+	if(m.openSitesDelay){delayCurrentId=0;delayTime=m.openSitesDelay;delayLinksId=m.linksId;lastWindowId=-1;openSitesDelay(m.openWindow);}
 }
 
 function showContext(e){
@@ -271,6 +271,6 @@ function openSitesDelay(openWindow){
 		}
 	}else{
 		delayLinksId=[];
-		openWindow=-1;
+		lastWindowId=-1;
 	}
 }

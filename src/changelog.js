@@ -1,4 +1,8 @@
 let changelog=`[
+	{"version":"1.7.2",
+		"changes":["Fixed major bug"],
+		"changesPL":["Naprawiono poważny błąd"]
+	},
 	{"version":"1.7.1",
 		"changes":["Added possibility to set the delay in the opening pages in new tabs","Minor changes","Fixed bugs"],
 		"changesPL":["Dodano możliwość ustawienia opóźnienia w otwieraniu stron w nowych kartach","Drobne zmiany","Naprawiono błędy"]

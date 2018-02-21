@@ -278,7 +278,13 @@ function openSite(ev){
 		});
 		if(ixs.length){
 			if(settings.delay){
-				browser.runtime.sendMessage({"openSitesDelay":1,"linksId":ixs,"openWindow":(settings.openWindow&&ixs.length>settings.openWindowMore)});
+				browser.runtime.sendMessage({"openSitesDelay":settings.delay*1,"linksId":ixs,"openWindow":(settings.openWindow&&ixs.length>settings.openWindowMore)}).then(()=>{},()=>{
+					delayCurrentId=0;
+					delayTime=settings.delay*1;
+					delayLinksId=ixs;
+					lastWindowId=-1;
+					openSitesDelay(settings.openWindow&&ixs.length>settings.openWindowMore);
+				});
 			}else{
 				if(settings.openWindow&&ixs.length>settings.openWindowMore){
 					browser.windows.create({
