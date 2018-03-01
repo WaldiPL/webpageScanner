@@ -1,3 +1,5 @@
+"use strict";
+
 browser.runtime.onInstalled.addListener(handleInstalled);
 function handleInstalled(details) {
 	if(details.reason==="install"){
@@ -141,7 +143,7 @@ function run(m){
 	if(m.addThis)rqstAdd(m.url,m.title,"m0",8,m.btn,m.favicon,m.addBookmark);
 	if(m.scanSites)scanSites(0,true,true);
 	if(m.openSites)openSite("webpagesScannertrue");
-	if(m.addToContextMenu!=undefined)showContext(m.addToContextMenu);
+	if(m.addToContextMenu!==undefined)showContext(m.addToContextMenu);
 	if(m.period)browser.alarms.create("webpageScanner",{periodInMinutes:m.period});
 	if(m.openSitesDelay){delayCurrentId=0;delayTime=m.openSitesDelay;delayLinksId=m.linksId;lastWindowId=-1;openSitesDelay(m.openWindow);}
 }
@@ -235,7 +237,7 @@ function favicon64(url,callback){
 		ctx.drawImage(canvas,0,0,16,16);
 		let dataURL=canvas.toDataURL();
 		callback(dataURL,faviconCount);
-	}
+	};
 	img.src="https://www.google.com/s2/favicons?domain="+url.split("://")[1];
 }
 
@@ -258,7 +260,7 @@ function openSitesDelay(openWindow){
 				delayCurrentId++;
 				browser.alarms.create("openSitesDelay",{delayInMinutes:delayTime/60});
 			},err=>{
-				openSitesDelay(true)
+				openSitesDelay(true);
 			});
 		}else{
 			browser.tabs.create({

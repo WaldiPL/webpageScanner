@@ -1,4 +1,6 @@
-var localId,
+"use strict";
+
+let localId,
 	highlighted,
 	prevHighlighted,
 	filteredChanges;

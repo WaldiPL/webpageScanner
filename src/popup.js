@@ -1,3 +1,5 @@
+"use strict";
+
 (function(){
 	document.getElementById("addThis").textContent=i18n("addThis");
 	document.getElementById("scanNow").textContent=i18n("scanNow");

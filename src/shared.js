@@ -1,3 +1,5 @@
+"use strict";
+
 const extURL=browser.extension.getURL("");
 
 function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false){
@@ -311,7 +313,7 @@ function unchange(ixo){
 		ixo.forEach(value=>{
 			let obj={
 				changed:false
-			}
+			};
 			sites[value]=Object.assign(sites[value],obj);
 		});
 		browser.storage.local.set({sites});
@@ -330,7 +332,7 @@ function date(){
 		mo=d.getMonth()+1,
 		da=d.getDate()/100; 
 	return mo+da;
-};
+}
 
 function i18n(e,s1){
 	return browser.i18n.getMessage(e,s1);

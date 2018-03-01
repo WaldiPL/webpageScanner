@@ -1,3 +1,5 @@
+"use strict";
+
 let changelog=`[
 	{"version":"1.7.2",
 		"changes":["Fixed major bug"],

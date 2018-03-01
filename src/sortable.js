@@ -1,3 +1,5 @@
+"use strict";
+
 let startY,
 	enter,
 	dragged,
@@ -6,8 +8,8 @@ let startY,
 	hlFolder;
 
 (function(){
-	let list=document.getElementById("lista");
-	let nav=document.getElementById("navPanel");
+	let list=document.getElementById("lista"),
+		nav=document.getElementById("navPanel");
 	list.addEventListener('drop',drop);
 	list.addEventListener('dragover',dragOver);
 	list.addEventListener('dragenter',dragEnter);
@@ -37,7 +39,7 @@ function dragExit(e){
 }
 
 function dragEnter(e){
-	let toTop=e.clientY<startY;
+	const toTop=e.clientY<startY;
 	enter=e.target.tagName==="A"?e.target.parentElement:e.target.parentElement.parentElement;
 	document.getElementById("dragIndicator").style.position="absolute";
 	document.getElementById("dragIndicator").style.left=0;
@@ -86,11 +88,11 @@ function dragEnter(e){
 function drop(e){
 	if(e.preventDefault)e.preventDefault();
 	if(dragged===enter||dragged===enter.parentElement||!dragged)return;
-	let toTop=e.clientY<startY;
-	let toBottom=e.clientY>startY;
+	const toTop=e.clientY<startY,
+		  toBottom=e.clientY>startY,
+		  iList=document.getElementById("lista");
 	frag=document.createDocumentFragment();
 	frag.appendChild(dragged);
-	let iList=document.getElementById("lista");
 	if(enter.tagName==="HTML"||enter.tagName==="BODY"){
 		if(toTop)iList.insertBefore(frag,iList.firstElementChild);
 		else iList.appendChild(frag);
@@ -112,7 +114,7 @@ function drop(e){
 	else if(enter.nextElementSibling&&toBottom)iList.insertBefore(frag,enter.nextElementSibling);
 	else if(!enter.nextElementSibling&&toBottom)iList.appendChild(frag);
 	dragged.dataset.folder=folderId;
-	ulli=document.querySelectorAll("ul li,ul ul"),
+	const ulli=document.querySelectorAll("ul li,ul ul");
 	[...ulli].forEach((value,i)=>{
 		value.dataset.row="a"+i;
 	});

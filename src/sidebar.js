@@ -1,4 +1,6 @@
-var prevContext;
+"use strict";
+
+let prevContext;
 
 (function(){
 	if(!document.getElementById("scanSites"))return;
@@ -19,7 +21,11 @@ var prevContext;
 	});
 	document.getElementById("showAdd").addEventListener("click",showAdd);
 	document.getElementById("addFolder").addEventListener("click",showAddFolder);
-	document.getElementById("addSaveF").addEventListener("click",e=>{addFolder(document.getElementById("nameFolderA").value);document.getElementById("addingFolder").classList.add("hidden");document.getElementById("addFolder").classList.remove("open");});
+	document.getElementById("addSaveF").addEventListener("click",e=>{
+		addFolder(document.getElementById("nameFolderA").value);
+		document.getElementById("addingFolder").classList.add("hidden");
+		document.getElementById("addFolder").classList.remove("open");
+	});
 	document.getElementById("editCancel").addEventListener("click",hideAll);
 	document.getElementById("addCancel").addEventListener("click",hideAll);
 	document.getElementById("addCancelF").addEventListener("click",hideAll);
@@ -161,7 +167,7 @@ function context(e){
 }
 
 function removeContext(){
-	if(prevContext!=undefined){
+	if(prevContext!==undefined){
 		if(prevContext<10000){
 			let aParent=document.getElementById(`item${prevContext}`),
 				e1=document.getElementById(`edititem${prevContext}`),
@@ -292,12 +298,12 @@ function search(){
 			}
 			if(bro){
 				filtred=filtred.filter(v=>{
-					return v.broken<2
+					return v.broken<2;
 				});
 			}
 			if(nor){
 				filtred=filtred.filter(v=>{
-					return (v.changed==true||v.paused==true||v.broken>1);
+					return (v.changed===true||v.paused===true||v.broken>1);
 				});
 			}
 			filtred.forEach(value=>{
@@ -421,7 +427,7 @@ function editSite(e){
 			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl").value,
 			freq:	freq>0?freq*parseFloat(document.getElementById("eMulti").value):8,
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset
-		}
+		};
 		sites[e]=Object.assign(sites[e],obj);
 		browser.storage.local.set({sites}).then(()=>{
 			statusbar(i18n("savedWebpage",sites[e].title));
@@ -453,7 +459,7 @@ function deleteSite(e){
 		changes.splice(e,1);
 		if(sort){
 			sort.forEach((value,i)=>{
-				id=parseInt(value[0].substr(4));
+				const id=parseInt(value[0].substr(4));
 				if(id===e)sSort=i;
 				else if(id>e)sort[i][0]=`item${id-1}`;
 			});
@@ -481,7 +487,7 @@ function addSite(){
 	const url=document.getElementById("aUrl").value,
 		  title=document.getElementById("aTitle").value,
 		  mode=document.getElementById("aMode").value,
-		  aFreq=parseInt(document.getElementById("aFreq").value);
+		  aFreq=parseInt(document.getElementById("aFreq").value),
 		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("aMulti").value):8;
 	rqstAdd(url,title,mode,freq);
 	document.getElementById("addingSite").classList.add("hidden");
@@ -538,7 +544,7 @@ function hideAll(e){
 function statusbar(e){
 	let statusbar=document.getElementById("statusbar");
 	statusbar.textContent=e;
-	statusbar.className="visible"
+	statusbar.className="visible";
 	setTimeout(()=>{if(statusbar.textContent===e)statusbar.removeAttribute("class");},5000);
 }
 
