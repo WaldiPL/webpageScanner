@@ -59,6 +59,7 @@ let prevContext;
 		filterPopup[3].addEventListener("click",e=>{e.target.classList.toggle("checked");search();});
 		filterPopup[4].addEventListener("click",e=>{e.target.classList.toggle("checked");search();});
 	listSite();
+	if(document.URL.slice(-1)==="?")document.body.classList.add("onPopup");
 })();
 
 function context(e){

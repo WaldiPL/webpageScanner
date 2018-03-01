@@ -109,6 +109,11 @@ body{
 	overflow-y:hidden;
 }
 
+body.onPopup{
+	width:300px !important;
+	height:500px !important;
+}
+
 #navPanel{
 	background:var(--panel-background);
 	width:100%;

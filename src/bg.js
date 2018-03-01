@@ -115,7 +115,7 @@ function init(){
 	browser.storage.local.get('settings').then(result=>{
 		if(result.settings){
 			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
-			else browser.browserAction.setPopup({popup:"/sidebar.html"});
+			else browser.browserAction.setPopup({popup:"/sidebar.html?"});
 			showContext(result.settings.addToContextMenu);
 			convertFavicons();
 			let period=result.settings.period?result.settings.period:60;
