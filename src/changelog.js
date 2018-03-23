@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.7.3",
+		"changes":["Strict mode for JS","Fixed bug #21"],
+		"changesPL":["Tryb ścisły dla JS","Naprawiono błąd #21"]
+	},
 	{"version":"1.7.2",
 		"changes":["Fixed major bug"],
 		"changesPL":["Naprawiono poważny błąd"]

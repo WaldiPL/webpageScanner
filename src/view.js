@@ -60,7 +60,7 @@ function nextPrev(next){
 	if(prevHighlighted!==undefined)filteredChanges[prevHighlighted].classList.remove("hlc");
 	browser.runtime.getBrowserInfo().then(e=>{
 		let version=+e.version.substr(0,2);
-		if(version<57)
+		if(version<58)
 			filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"end"});
 		else
 			filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"center"});
