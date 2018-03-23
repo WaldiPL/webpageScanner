@@ -1,4 +1,4 @@
-# Web pages scanner ![](https://img.shields.io/badge/AMO-v.1.6.6-blue.svg)
+# Web pages scanner ![](https://img.shields.io/badge/AMO-v.1.7.3-blue.svg)
 Scan web pages for updates.
 
 Features:
