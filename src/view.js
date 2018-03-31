@@ -101,7 +101,7 @@ function deleteSite(e){
 		changes.splice(e,1);
 		if(sort){
 			sort.forEach((value,i)=>{
-				id=parseInt(value[0].substr(4));
+				const id=parseInt(value[0].substr(4));
 				if(id===e)sSort=i;
 				else if(id>e)sort[i][0]=`item${id-1}`;
 			});
