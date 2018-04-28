@@ -634,6 +634,10 @@ a .editFolder:hover{
 	background:var(--context-hover);
 }
 
-#scanSites[disabled]{
+#navPanel input[disabled]{
 	opacity:.4;
+}
+
+progress{
+	width:calc(100% - 9px);
 }

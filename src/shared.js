@@ -88,10 +88,14 @@ var tempChanges=[],
 	
 function scanCompleted(sitesLength,auto){
 	numberScanned++;
+	if(!auto)statusbar([numberScanned,sitesLength]);
 	if(numberScanned===sitesLength||sitesLength===true){
 		updateBase(tempChanges,tempTimes,tempBroken);
 		if(!auto){
 			document.getElementById("scanSites").disabled=false;
+			document.getElementById("openSite").disabled=false;
+			document.getElementById("showAdd").disabled=false;
+			document.getElementById("addFolder").disabled=false;
 			statusbar(i18n("scanCompleted"));
 		}
 		if(count){
@@ -199,6 +203,9 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 function scanSites(ev,auto=false,force=false){
 	if(!auto){
 		document.getElementById("scanSites").disabled=true;
+		document.getElementById("openSite").disabled=true;
+		document.getElementById("showAdd").disabled=true;
+		document.getElementById("addFolder").disabled=true;
 		hideAll();
 	}
 	browser.storage.local.get('sites').then(result=>{
@@ -280,13 +287,15 @@ function openSite(ev){
 		});
 		if(ixs.length){
 			if(settings.delay){
-				browser.runtime.sendMessage({"openSitesDelay":settings.delay*1,"linksId":ixs,"openWindow":(settings.openWindow&&ixs.length>settings.openWindowMore)}).then(()=>{},()=>{
+				try{
 					delayCurrentId=0;
 					delayTime=settings.delay*1;
 					delayLinksId=ixs;
 					lastWindowId=-1;
 					openSitesDelay(settings.openWindow&&ixs.length>settings.openWindowMore);
-				});
+				}catch(error){
+					browser.runtime.sendMessage({"openSitesDelay":settings.delay*1,"linksId":ixs,"openWindow":(settings.openWindow&&ixs.length>settings.openWindowMore)});
+				}
 			}else{
 				if(settings.openWindow&&ixs.length>settings.openWindowMore){
 					browser.windows.create({

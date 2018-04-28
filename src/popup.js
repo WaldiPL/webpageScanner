@@ -12,8 +12,13 @@
 		if(s.autoOpen){
 			openSitesBtn.className="none";
 		}else{
-			openSitesBtn.textContent=i18n("openWebpage");
-			openSitesBtn.addEventListener("click",openSites);
+			browser.browserAction.getBadgeText({}).then(e=>{
+				if(e){
+					openSitesBtn.textContent=i18n("openWebpage");
+					openSitesBtn.addEventListener("click",openSites);
+				}else
+					openSitesBtn.className="none";
+			});
 		}
 	});
 })();

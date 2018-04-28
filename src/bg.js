@@ -154,7 +154,8 @@ function showContext(e){
 			id:			"addThis",
 			title:		i18n("addThis"),
 			contexts:	["page","tab"],
-			onclick:	contextAdd
+			onclick:	contextAdd,
+			documentUrlPatterns: ["<all_urls>"]
 		});
 	}else
 		browser.contextMenus.remove("addThis");

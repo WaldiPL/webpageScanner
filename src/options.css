@@ -206,7 +206,7 @@ select {
 	margin: 0 8px;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	font-size:13px;
-	padding:4px 20px 4px 10px;
+	padding:3px 20px 4px 10px;
 	-moz-appearance: none;
 	min-height: 30px;
 	min-width: 100px;
@@ -398,4 +398,8 @@ span+button{
 
 *:focus{
 	outline:none;
+}
+
+#shortcut3{
+	width:100px;
 }

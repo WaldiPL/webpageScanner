@@ -436,5 +436,8 @@
   },
   "subDelay": {
     "message": "Domyślna wartość: 0, wszystkie strony otwierane jednocześnie"
+  },
+  "shortcutLabel": {
+    "message": "Skrót otwierający panel boczny"
   }
 }

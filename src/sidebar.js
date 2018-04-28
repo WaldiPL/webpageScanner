@@ -544,9 +544,22 @@ function hideAll(e){
 
 function statusbar(e){
 	let statusbar=document.getElementById("statusbar");
-	statusbar.textContent=e;
+	if(typeof(e)==="string"){
+		statusbar.textContent=e;
+		setTimeout(()=>{if(statusbar.textContent===e)statusbar.removeAttribute("class");},5000);
+	}else{
+		let progress;
+		if(e[0]===1){
+			statusbar.textContent="";
+			progress=document.createElement('progress');
+			progress.max=e[1];
+			statusbar.appendChild(progress);
+		}else{
+			progress=document.getElementsByTagName("progress")[0];
+		}
+		progress.value=e[0];
+	}
 	statusbar.className="visible";
-	setTimeout(()=>{if(statusbar.textContent===e)statusbar.removeAttribute("class");},5000);
 }
 
 browser.runtime.onMessage.addListener(run);

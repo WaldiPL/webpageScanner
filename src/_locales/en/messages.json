@@ -436,5 +436,8 @@
   },
   "subDelay": {
     "message": "Default value: 0, all pages opened simultaneously"
+  },
+  "shortcutLabel": {
+    "message": "Shortcut opening sidebar"
   }
 }

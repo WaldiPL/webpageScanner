@@ -1,6 +1,6 @@
 body{
-	max-width:330px;
-	margin-bottom:0px;
+	max-width:300px;
+	margin:6px 0;
 }
 
 div{
@@ -8,28 +8,44 @@ div{
 }
 
 button{
-	background:#fbfbfb;
+	background-color:transparent;
+	background-repeat:no-repeat;
+	background-position:12px 4px;
+	background-size:16px 16px;
 	color:#000;
-	border:1px solid #b1b1b1;
-	padding:4px 10px 6px;
-	margin-bottom:8px;
-	font-size:14px;
-	line-height:18px;
-	text-align:center;
+	border:none;
+	padding:4px 12px 4px 34px;
+	font-size:12px;
+	text-align:left;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	cursor:pointer;
-	border-radius:0;
 	width:100%;
 }
 
 button:hover{
-	background:#ebebeb;
+	background-color:#f0f0f0;
 }
 
 button:active{
-	background:#e0e0e0;
+	background-color:#e8e8e8;
 }
 
 .none{
 	display:none !important;
+}
+
+#addThis{
+	background-image:url("icons/add.svg");
+}
+
+#scanNow{
+	background-image:url("icons/scan.svg");
+}
+
+#showList{
+	background-image:url("icons/sidebar.svg");
+}
+
+#openSites{
+	background-image:url("icons/open.svg");
 }

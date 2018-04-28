@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.7.4",
+		"changes":["Added possibility to change the keyboard shortcut","Restored progress bar","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość zmiany skrótu klawiaturowego","Przywrócono pasek postępu","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.7.3",
 		"changes":["Strict mode for JS","Fixed bug #21"],
 		"changesPL":["Tryb ścisły dla JS","Naprawiono błąd #21"]
