@@ -414,7 +414,7 @@
     "message": "Search..."
   },
   "hidePages": {
-    "message": "Hide pages:"
+    "message": "Show only pages:"
   },
   "changed": {
     "message": "Changed"

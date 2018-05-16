@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.8.0",
+		"changes":["Added possibility to scan an entire folder","Added possibility to open all pages in the folder (middle mouse button or ctrl + left mouse button)","Folders that contain changed pages are highlighted","Added French language #25 (Mozinet-fr)","Added a 'clear' button to the search bar","Added an animation of opening / closing folders","Improved sorting pages","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość skanowania całego folderu","Dodano możliwość otwarcia wszystkich stron w folderze (środkowy przycisk myszy lub ctrl + lewy przycisk myszy)","Foldery zawierające zmienione strony są podświetlone","Dodano język francuski #25 (Mozinet-fr)","Dodano przycisk 'wyczyść' do paska wyszukiwania","Dodano animację otwierania/zamykania folderów","Usprawniono sortowanie stron","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.7.4",
 		"changes":["Added possibility to change the keyboard shortcut","Restored progress bar","Fixed bugs","Minor changes"],
 		"changesPL":["Dodano możliwość zmiany skrótu klawiaturowego","Przywrócono pasek postępu","Naprawiono błędy","Drobne zmiany"]

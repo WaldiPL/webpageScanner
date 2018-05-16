@@ -1,0 +1,443 @@
+{
+  "extensionName": {
+    "message": "Scanneur de pages web"
+  },
+  "extensionDescription": {
+    "message": "Scanner des pages web à la recherche de mises à jour."
+  },
+  
+  "scanWebpage": {
+    "message": "Scanner"
+  },
+  "openWebpage": {
+    "message": "Ouvrir les pages modifiées"
+  },
+  "addWebpage": {
+    "message": "Ajouter une nouvelle page"
+  },
+  "add": {
+    "message": "Ajouter"
+  },
+  "fillForm": {
+    "message": "Soumettre"
+  },
+  "address": {
+    "message": "Adresse :"
+  },
+  "title": {
+    "message": "Titre :"
+  },
+  "scanFreq": {
+    "message": "Tout scanner :"
+  },
+  "minutes": {
+    "message": "Minute(s)"
+  },
+  "hours": {
+    "message": "Heure(s)"
+  },
+  "days": {
+    "message": "Jour(s)"
+  },
+  "weeks": {
+    "message": "Semaine(s)"
+  },
+  "modeTitle": {
+    "message": "Mode :"
+  },
+  "modeM0": {
+    "message": "Changement d'une longueur de plus de 10 caractères"
+  },
+  "modeM1": {
+    "message": "Changement en longueur"
+  },
+  "modeM2": {
+    "message": "Chaque changement"
+  },
+  "modeM3": {
+    "message": "Changement d'une longueur de plus de 50 caractères"
+  },
+  "modeM4": {
+    "message": "Changement d'une longueur de plus de 250 caractères"
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "editWebpage": {
+    "message": "Modifier la page"
+  },
+  "save": {
+    "message": "Enregistrer"
+  },
+  "deleteWebpage": {
+    "message": "Voulez-vous supprimer cette page ?"
+  },
+  "delete": {
+    "message": "Supprimer"
+  },
+  "edit": {
+    "message": "Modifier"
+  },
+  "addedWebpage": {
+    "message": "$1 ajouté"
+  },
+  "addedWebpageError": {
+    "message": "Erreur en récupérant la page"
+  },
+  "savedWebpage": {
+    "message": "$1 enregistré"
+  },
+  "deletedWebpage": {
+    "message": "$1 supprimé"
+  },
+  "scanCompleted": {
+    "message": "Scan terminé"
+  },
+  "oneDetected": {
+    "message": "Une page a été mise à jour"
+  },
+  "moreDetected": {
+    "message": "$1 pages ont été mises à jour"
+  },
+  "editFolder": {
+    "message": "Modifier le dossier"
+  },
+  "name": {
+    "message": "Nom :"
+  },
+  "deleteFolder": {
+    "message": "Voulez-vous supprimer ce dossier ?"
+  },
+  "deleteFolderDesc": {
+    "message": "Toutes les pages web seront déplacées vers le dossier racine."
+  },
+  "addFolder": {
+    "message": "Ajouter un nouveau dossier"
+  },
+  "newFolder": {
+    "message": "Nouveau dossier"
+  },
+  
+  "oldVersion": {
+    "message": "Ancienne version"
+  },
+  "newVersion": {
+    "message": "Nouvelle version"
+  },
+  "newElements": {
+    "message": "Nouveaux éléments"
+  },
+  "deletedElements": {
+    "message": "Éléments supprimés"
+  },
+  "highlight": {
+    "message": "Surligner les modifications"
+  },
+  "currentWebpage": {
+    "message": "Page en cours"
+  },
+  "lastScan": {
+    "message": "Dernier scan : $1 à $2"
+  },
+  "monthList": {
+   "message": ",Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre"
+  },
+  "hideInterface": {
+    "message": "Masquer l'interface"
+  },
+  "showInterface": {
+    "message": "Montrer l'interface"
+  },
+  
+  "addThis": {
+    "message": "Ajouter à la liste de scan"
+  }, 
+  "scanNow": {
+    "message": "Scanner maintenant"
+  },
+  "showList": {
+    "message": "Montrer la liste de scan"
+  }, 
+  "errorAdding": {
+    "message": "Problème en ajoutant la page $1"
+  },
+  "charset": {
+    "message": "Jeu de caractères"
+  },
+  "options": {
+    "message": "Options"
+  },
+  "general": {
+    "message": "Général"
+  },
+  "notifications": {
+    "message": "Notifications"
+  },
+  "autoOpen": {
+    "message": "Ouvrir automatiquement"
+  },
+  "hideHeader": {
+    "message": "Masquer l'interface"
+  },
+  "defaultView": {
+    "message": "Vue par défaut"
+  },
+  "showNotification": {
+    "message": "Afficher la notification des modifications"
+  },
+  "notificationTime": {
+    "message": "Durée d'affichage de la notification"
+  },
+  "volume": {
+    "message": "Volume de la notification"
+  },
+  "maxRequestTime": {
+    "message": "Durée maximum de la requête [s]"
+  },
+  "changedPages": {
+    "message": "Pages modifiées"
+  },
+  "openNewWindow": {
+    "message": "Ouvrir dans une nouvelle page"
+  },
+  "openNewWindowMore": {
+    "message": "Seulement si des modifications détectées dans au moins 2 pages"
+  },
+  "diffOld": {
+    "message": "Utiliser l'ancien script de comparaison (plus rapide mais moins précis)"
+  },
+  "popupList": {
+    "message": "Montrer la liste de scan dans le panneau"
+  },
+  "theme": {
+    "message": "Thème"
+  },
+  "lightTheme": {
+    "message": "Clair"
+  },
+  "darkTheme": {
+    "message": "Sombre"
+  },
+  "backup": {
+    "message": "Créer une sauvegarde"
+  },
+  "showNextPrev": {
+    "message": "Montrer l'interface pour faire défiler les modifications"
+  },
+  "scrollToFirstChange": {
+    "message": "Faire défiler automatiquement jusqu'à la première modification"
+  },
+  "skipMinorChanges": {
+    "message": "Passer les modifications mineures"
+  },
+  "changeOf": {
+    "message": "Modification $1 sur $2"
+  },
+  "numberOfChanges": {
+    "message": "Nombre de modifications : $1"
+  },
+  "scrollPrev": {
+    "message": "Faire défiler jusqu'à la modification précédente"
+  },
+  "scrollNext": {
+    "message": "Faire défiler jusqu'à la modification suivante"
+  },
+  "close": {
+    "message": "Fermer"
+  },
+  "thBackup": {
+    "message": "Sauvegarder"
+  },
+  "restoreBackup": {
+    "message": "Restaurer la sauvegarde"
+  },
+  "restoreAlertH4": {
+    "message": "Êtes-vous sûr·e de vouloir restaurer la sauvegarde sélectionnée ?"
+  },
+  "restoreAlertP": {
+    "message": "Cette opération ne pourra être annulée. Toutes les données actuelles seront supprimées. Si vous sélectionnez le mauvais fichier ou un corrompu, l'extension ne fonctionnera plus correctement."
+  },
+  "restoreButton": {
+    "message": "Restaurer"
+  },
+  "restoreError": {
+    "message": "Un problème s'est produit. Veuillez réessayer."
+  },
+  "restoreOk": {
+    "message": "La sauvegarde a été restaurée."
+  },
+  "version": {
+    "message": "Version $1"
+  },
+  "changelog": {
+    "message": "Changelog"
+  },
+  "support": {
+    "message": "Assistance"
+  },
+  "bugReport": {
+    "message": "Rapporter un bogue"
+  },
+  "spanBugReport": {
+    "message": "Si vous avez découvert un bogue ou avez une idée pour améliorer l'extension, veuillez créer un nouveau ticket sur"
+  },
+  "translation": {
+    "message": "Traduction"
+  },
+  "spanTranslation1": {
+    "message": "Si vous voulez que l'extension soit disponible dans votre langue maternelle, veuillez traduire"
+  },
+  "spanTranslation2": {
+    "message": "ce fichier"
+  },
+  "spanTranslation3": {
+    "message": "et l'ajouter dans un nouveau ticket sur"
+  },
+  "share": {
+    "message": "Partager"
+  },
+  "spanShare": {
+    "message": "Vous aimez cette extension ? Partagez-la ou rédigez un commentaire pour atteindre le plus de personnes possible."
+  },
+  "h3pageView": {
+    "message": "Vue des pages"
+  },
+  "addToContextMenu": {
+    "message": "Ajouter un item au menu contextuel"
+  },
+  "openChangelog": {
+    "message": "Ouvrir la page « Changelog » après chaque mise à jour."
+  },
+  "defaultCharset": {
+    "message": "Jeu de caractères par défaut"
+  },
+  "importExport": {
+    "message": "Importer / Exporter"
+  },
+  "importBtn": {
+    "message": "Importer les pages d'un dossier de marque-pages"
+  },
+  "folderName": {
+    "message": "Nom du dossier"
+  },
+  "importAlertH4": {
+    "message": "Plusieurs dossiers trouvés avec ce nom."
+  },
+  "importAlertP": {
+    "message": "Sélectionnez le dossier à partir duquel vous voulez importer les marque-pages."
+  },
+  "continue": {
+    "message": "Continuer"
+  },
+  "exportBtn": {
+    "message": "Exporter les pages vers le dossier de marque-pages"
+  },
+  "exportOK": {
+    "message": "Exportation des pages vers le dossier de marque-pages terminée (Web Pages Scanner)"
+  },
+  "importError": {
+    "message": "Aucun dossier appelé $1 n'a été trouvé. Vérifiez si le nom est correct. La taille des lettres est importante."
+  },
+  "importing": {
+    "message": "Importation $1/$2 - $3"
+  },
+  "checking": {
+    "message": "Vérification…"
+  },
+  "emptyFolder": {
+    "message": "Aucun marque-page dans ce dossier."
+  },
+  "importOK": {
+    "message": "Importation terminée."
+  },
+  "importAlert2H4": {
+    "message": "Pages qui n'ont pas été ajoutées ($1)"
+  },
+  "management": {
+    "message": "Gestion"
+  },
+  "deleteDuplicates": {
+    "message": "Supprimer les doublons"
+  },
+  "deleteBroken": {
+    "message": "Supprimer les pages erronées"
+  },
+  "deleteAlertH4": {
+    "message": "Voulez-vous supprimer $1 pages de la liste de scan ?"
+  },
+  "noDuplicates": {
+    "message": "Aucun doublon"
+  },
+  "deleting": {
+    "message": "Suppression…"
+  },
+  "noBroken": {
+    "message": "Aucune page erronée"
+  },
+  "deletedPages": {
+    "message": "$1 pages ont été supprimées de la liste de scan"
+  },
+  "labelPeriod": {
+    "message": "Fréquence de démarrage du scan automatique [min]"
+  },
+  "sublabelPeriod": {
+    "message": "Une valeur trop basse peut présenter un impact négatif sur les performances"
+  },
+  "labelAutoScanPause": {
+    "message": "Désactiver le scan automatique des pages"
+  },
+  "scanningAlert": {
+    "message": "Le scan automatique des pages est désactivé"
+  },
+  "enable": {
+    "message": "Activer"
+  },
+  "pauseScan": {
+    "message": "Arrêter le scan"
+  },
+  "playScan": {
+    "message": "Reprendre le scan"
+  },
+  "permissionGranted": {
+    "message": "L'extension a la permission d'accéder aux marque-pages"
+  },
+  "permissionRevoked": {
+    "message": "Pour utiliser ces fonctions, vous devez autoriser l'accès aux marque-pages"
+  },
+  "grant": {
+    "message": "Accorder la permission"
+  },
+  "revoke": {
+    "message": "Révoquer la permission"
+  },
+  "search": {
+    "message": "Rechercher…"
+  },
+  "hidePages": {
+    "message": "N'afficher que les pages :"
+  },
+  "changed": {
+    "message": "Modifiées"
+  },
+  "paused": {
+    "message": "En pause"
+  },
+  "broken": {
+    "message": "Erronées"
+  },
+  "normal": {
+    "message": "Normales"
+  },
+  "showSearchbar": {
+    "message": "Afficher la barre de recherche"
+  },
+  "delay": {
+    "message": "Délai d'ouverture des pages suivantes dans de nouveaux onglets [s]"
+  },
+  "subDelay": {
+    "message": "Valeur par défaut : 0, toutes les pages ouvertes simultanément"
+  },
+  "shortcutLabel": {
+    "message": "Raccourci pour ouvrir le panneau latéral"
+  }
+}

@@ -138,6 +138,7 @@ function scanCompleted(sitesLength,auto){
 function scanPage(local,id,auto,sitesLength,extraTime=false){
 	getSettings().then(s=>{
 		const charset=local.charset?local.charset:s.charset;
+		const itemId=document.getElementById("item"+id);
 		let xhr=new XMLHttpRequest();
 		xhr.open("GET",local.url);
 		xhr.timeout=extraTime?s.requestTime*2:s.requestTime;
@@ -151,7 +152,8 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 				};
 				if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
 					if(!auto){
-						document.getElementById("item"+id).classList.add("changed","scanned");
+						itemId.classList.add("changed","scanned");
+						itemId.parentElement.classList.add("changedFolder");
 					}
 					count++;
 					tempChanges[id]=[html_data,scanned.md5,scanned.length];
@@ -159,16 +161,20 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 					tempTimes[id]=true;
 					if(this.status>=400)tempBroken[id]=local.broken+1||1;
 					if(!auto){
-						if(this.status<400)document.getElementById("item"+id).classList.add("scanned");
+						if(this.status<400)itemId.classList.add("scanned");
 						else{
-							document.getElementById("item"+id).classList.add("warn");
+							itemId.classList.add("warn");
+							itemId.parentElement.classList.add("errorFolder");
 							console.warn([local.url,this.status]);
 						}
 					}
 				}
 			}else{
 				tempBroken[id]=local.broken+1||1;
-				if(!auto)document.getElementById("item"+id).classList.add("error");
+				if(!auto){
+					itemId.classList.add("error");
+					itemId.parentElement.classList.add("errorFolder");
+				}
 				console.warn([local.url,this.status]);
 			}
 			scanCompleted(sitesLength,auto);
@@ -176,14 +182,14 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 		let error=function(e){
 			tempBroken[id]=local.broken+1||1;
 			scanCompleted(sitesLength,auto);
-			if(!auto)document.getElementById("item"+id).classList.add("error");
+			if(!auto)itemId.classList.add("error");
 			console.warn([local.url,e]);
 		};
 		let timeout=function(e){
 			if(extraTime){
 				tempBroken[id]=local.broken+1||1;
 				scanCompleted(sitesLength,auto);
-				if(!auto)document.getElementById("item"+id).classList.add("error");
+				if(!auto)itemId.classList.add("error");
 				console.warn(["2nd timeout",local.url,e]);
 			}else{
 				scanPage(local,id,auto,sitesLength,true);
@@ -312,6 +318,7 @@ function openSite(ev){
 			}
 			updateBadge();
 			unchange(ixs);
+			if(!auto)unchangeFolder(true);
 		}
 	});
 }

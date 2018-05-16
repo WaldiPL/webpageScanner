@@ -41,6 +41,7 @@
 	--button-active:#0c0c0d33;
 	--checked-icon:url("icons/checked.svg");
 	--popup-arrow:url("icons/arrowPanel.svg#l");
+	--clear-icon:url("icons/clear.svg");
 }
 
 .dark:root {
@@ -86,6 +87,7 @@
 	--button-active:#707071;
 	--checked-icon:url("icons/checked.svg#d");
 	--popup-arrow:url("icons/arrowPanel.svg#d");
+	--clear-icon:url("icons/clear.svg#d");
 }
 
 html{
@@ -177,6 +179,25 @@ html[data-search="true"] #navPanel{
 	border-color:var(--input-focus);
 }
 
+#clear{
+	background:var(--clear-icon) no-repeat;
+	height:16px;
+	width:16px;
+	position:absolute;
+	top:8px;
+	right:44px;
+	opacity:0;
+	transition:opacity 120ms;
+}
+
+#search:focus+#clear,#search:hover+#clear{
+	opacity:.8;
+}
+
+#clear:hover{
+	opacity:1;
+}
+
 #filter{
 	margin:0 4px 0 3px !important;
 }
@@ -188,7 +209,7 @@ html[data-search="true"] #navPanel{
 	position:fixed;
 	right:3px;
 	top:67px;
-	z-index:3;
+	z-index:4;
 	font-size:13px;
 	visibility:visible;
 	opacity: 1;
@@ -252,7 +273,7 @@ html[data-search="true"] #navPanel{
 }
 
 #popupFilter #hidePages{
-	padding:2px 0 7px 7px;
+	padding:2px 7px 7px 7px;
 	border-bottom:1px solid var(--link-border);
 	cursor:default;
 }
@@ -336,7 +357,7 @@ input,select,button{
 	padding:5px;
 	top:33px;
 	box-shadow:0px 10px 10px -10px var(--border-color);
-	z-index:2;
+	z-index:3;
 }
 
 .footer{
@@ -571,6 +592,7 @@ ul li.opened a .favicon{
 	margin-top:-2px;
 	width:50px;
 	position:absolute;
+	z-index:2;
 }
 
 .folder>a{
@@ -590,7 +612,7 @@ ul li.opened a .favicon{
 }
 
 .folder.collapsed{
-	height:31px;
+	height:31px !important;
 	overflow:hidden;
 }
 
@@ -616,12 +638,20 @@ ul li.opened a .favicon{
 	float:right;
 	padding:7px;
 	margin-top:-23px;
+	background:var(--folder-context-background);
+	filter:var(--invert-filter);
+}
+
+.scanFolder{
+	float:right;
+	padding:7px;
+	margin-top:-23px;
 	margin-right:-6px;
 	background:var(--folder-context-background);
 	filter:var(--invert-filter);
 }
 
-a:hover .deleteFolder,a:hover .editFolder{
+a:hover .deleteFolder,a:hover .editFolder,a:hover .scanFolder{
 	background:var(--folder-hover-context-background);
 }
 
@@ -630,7 +660,7 @@ a .deleteFolder:hover{
 	filter:invert(100%);
 }
 
-a .editFolder:hover{
+a .editFolder:hover,a .scanFolder:hover{
 	background:var(--context-hover);
 }
 
@@ -640,4 +670,29 @@ a .editFolder:hover{
 
 progress{
 	width:calc(100% - 9px);
+}
+
+.folder{
+	overflow:hidden;
+	transition:height 180ms;
+}
+
+.changedFolder>a{
+	border-left:3px solid var(--changed-background);
+	padding-left:3px !important;
+}
+
+.errorFolder>a{
+	border-left:3px solid var(--error-border);
+	padding-left:3px !important;
+}
+
+.changedFolder.errorFolder>a {
+	padding-left:0px !important;
+}
+
+.changedFolder.errorFolder>a::before {
+    content:"";
+    border-left:3px solid var(--changed-background);
+	padding:6px 0;
 }
