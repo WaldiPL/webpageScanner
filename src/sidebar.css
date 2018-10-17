@@ -39,7 +39,7 @@
 	--dropdown:url("icons/dropdown.svg#d");
 	--search-icon:url("icons/search.svg");
 	--button-active:#0c0c0d33;
-	--checked-icon:url("icons/checked.svg");
+	--checked-icon:url("icons/checked.svg#l");
 	--popup-arrow:url("icons/arrowPanel.svg#l");
 	--clear-icon:url("icons/clear.svg");
 }
@@ -173,6 +173,7 @@ html[data-search="true"] #navPanel{
 	font-size: 13px;
 	padding:2px 5px 3px 26px;
 	vertical-align:top;
+	margin-top:1px;
 }
 
 #search:focus{
@@ -188,6 +189,7 @@ html[data-search="true"] #navPanel{
 	right:44px;
 	opacity:0;
 	transition:opacity 120ms;
+	cursor:pointer;
 }
 
 #search:focus+#clear,#search:hover+#clear{

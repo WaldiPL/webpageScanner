@@ -5,6 +5,7 @@
 		<link id="diff10153" rel="stylesheet" href="view.css"/>
 	</head>
 	<body id="body10153">
+		<div id="content10153"></div>
 		<div id='header10153'>
 			<img id="icon10153" src="icons/icon.svg"/>
 			<b id="title10153"></b>
@@ -14,21 +15,22 @@
 			</div>
 			<div id="lastScan10153"></div>
 			<div id="tabs10153">
-				<button id='oldHtml10153' type='button' disabled></button
-				><button id='newHtml10153' type='button'></button
-				><button id='news10153' type='button' disabled></button
-				><button id='deleted10153' type='button' disabled></button
-				><button id='light10153' type='button'></button
-				><button id='active10153' type='button'></button>
+				<select id="viewMode10153" class="neutral">
+					<option id='oldHtml10153' value="oldHtml" disabled></option>
+					<option id='newHtml10153' value="newHtml"></option>
+					<option id='news10153' value="news" disabled></option>
+					<option id='deleted10153' value="deleted" disabled></option>
+					<option id='light10153' value="light"></option>
+					<option id='raw10153' value="raw"></option>
+				</select><a id='active10153' class="neutral"></a>
 			</div>
-			<img id='toogleHeader10153' src="icons/toogle.svg#t"/>
+			<x-button id='toggleHeader10153'></x-button>
 			<x-highlight id="highlight10153" class="hidden">
 				<x-button id='prev10153' type='button'></x-button><x-button id='next10153' type='button'></x-button>
 				<x-text id="xtext10153"></x-text>
 				<x-close id="close10153"></x-close>
 			</x-highlight>
 		</div>
-		<div id="content10153"></div>
 		<div id="deletingSite10153" class="hidden">
 			<b id="deleteB10153"></b>
 			<div id="deleteTitle10153"></div>

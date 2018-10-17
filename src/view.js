@@ -10,12 +10,7 @@ const extURL=browser.extension.getURL("");
 	const urlString=window.location.search;
 	localId=parseInt(urlString.substr(1));
 	translate();
-	document.getElementById("oldHtml10153").addEventListener("click",()=>{load(localId,"oldHtml");});
-	document.getElementById("newHtml10153").addEventListener("click",()=>{load(localId,"newHtml");});
-	document.getElementById("news10153").addEventListener("click",()=>{load(localId,"news");});
-	document.getElementById("deleted10153").addEventListener("click",()=>{load(localId,"deleted");});
-	document.getElementById("light10153").addEventListener("click",()=>{load(localId,"light");});
-	document.getElementById("active10153").addEventListener("click",()=>{load(localId,"active");});
+	document.getElementById("viewMode10153").addEventListener("change",e=>{load(localId,e.target.value);});
 	document.getElementById("delete10153").addEventListener("click",()=>{showDelete(localId);});
 	document.getElementById("deleteCancel10153").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("edit10153").addEventListener("click",()=>{showEdit(localId);});
@@ -28,9 +23,9 @@ const extURL=browser.extension.getURL("");
 		js.onload=function(){
 			load(localId,s.defaultView);
 		}
-		if(s.hideHeader)toogleHeader(true);
+		if(s.hideHeader)toggleHeader(true);
 	});
-	document.getElementById("toogleHeader10153").addEventListener("click",()=>{toogleHeader();});
+	document.getElementById("toggleHeader10153").addEventListener("click",()=>{toggleHeader();});
 	document.getElementById("prev10153").addEventListener("click",()=>{nextPrev(false);});
 	document.getElementById("next10153").addEventListener("click",()=>{nextPrev(true);});
 	document.getElementById("close10153").addEventListener("click",toggleNextPrev);
@@ -171,7 +166,7 @@ function setTitle(){
 }
 
 function load(siteId,type){
-	btnActive(type);
+	document.getElementById("viewMode10153").value=type;
 	browser.storage.local.get(['sites','changes']).then(result=>{
 		const sites=result.sites,
 			  changes=result.changes,
@@ -185,15 +180,12 @@ function load(siteId,type){
 			  deleted=cId?diffString.o:"",
 			  url=sId.url.split("/"),
 			  url2=url[0]+"//"+url[2]+"/";
-		if(type==="active"){
-			window.location=sId.url;
-			return;
-		}
 		let parser=new DOMParser(),
 			doc;
 		if(oldHtml)enableBtn("oldHtml10153");
 		if(news)enableBtn("news10153");
 		if(deleted)enableBtn("deleted10153");
+		document.getElementById("active10153").href=sId.url;
 		document.getElementById("title10153").textContent=sId.title;
 		document.getElementById("lastScan10153").textContent=i18n("lastScan",[realDate(sId.date),realTime(sId.time)]);
 		toggleNextPrev();
@@ -215,6 +207,19 @@ function load(siteId,type){
 				break;
 			case "oldHtml":
 				doc=parser.parseFromString(oldHtml,"text/html");
+				break;
+			case "raw":
+				let divNews=document.createElement("div"),
+					divDeleted=document.createElement("div"),
+					raw=document.createElement("div");
+				divNews.id="rawNews10153";
+				divDeleted.id="rawDeleted10153";
+				divNews.textContent=news;
+				divDeleted.textContent=deleted.replace(/<del>|<\/del>/g,"");
+				doc=document.createDocumentFragment();
+				raw.appendChild(divNews);
+				raw.appendChild(divDeleted);
+				doc.appendChild(raw);
 				break;
 		}
 		document.getElementById("content10153").textContent="";
@@ -240,7 +245,7 @@ function load(siteId,type){
 				if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
 			});
 			[...img].forEach(value=>{
-				if(value.id!="icon10153"&&value.id!="toogleHeader10153"){
+				if(value.id!="icon10153"&&value.id!="toggleHeader10153"){
 					if(value.src.includes(extUrl))value.src=value.src.replace(extUrl,url2);
 					if(value.src.includes("moz-extension://"))value.src=value.src.replace("moz-extension://","http://");
 				}
@@ -253,16 +258,6 @@ function load(siteId,type){
 			});
 		},50);
 	});
-}
-
-function btnActive(type){
-	if(type==="active")return;
-	document.getElementById("oldHtml10153").classList.remove("active10153");
-	document.getElementById("newHtml10153").classList.remove("active10153");
-	document.getElementById("news10153").classList.remove("active10153");
-	document.getElementById("deleted10153").classList.remove("active10153");
-	document.getElementById("light10153").classList.remove("active10153");
-	document.getElementById(type+"10153").classList.add("active10153");
 }
 
 function realDate(e){
@@ -306,7 +301,8 @@ function translate(){
 	document.getElementById("news10153").textContent=i18n("newElements");
 	document.getElementById("deleted10153").textContent=i18n("deletedElements");
 	document.getElementById("light10153").textContent=i18n("highlight");
-	document.getElementById("active10153").textContent=i18n("currentWebpage");
+	document.getElementById("raw10153").textContent=i18n("rawData");
+	document.getElementById("active10153").title=i18n("currentWebpage");
 	document.getElementById("deleteCancel10153").textContent=i18n("cancel");
 	document.getElementById("deleteSite10153").textContent=i18n("delete");
 	document.getElementById("editCancel10153").textContent=i18n("cancel");
@@ -329,7 +325,7 @@ function translate(){
 		selectMode[2].text=i18n("modeM4");
 		selectMode[3].text=i18n("modeM1");
 		selectMode[4].text=i18n("modeM2");
-	document.getElementById("toogleHeader10153").title=i18n("hideInterface");
+	document.getElementById("toggleHeader10153").title=i18n("hideInterface");
 	document.getElementById("prev10153").title=i18n("scrollPrev");
 	document.getElementById("next10153").title=i18n("scrollNext");
 	document.getElementById("close10153").title=i18n("close");
@@ -341,17 +337,15 @@ function getSettings(name){
 	});
 }
 
-function toogleHeader(auto){
+function toggleHeader(auto){
 	let body=document.body,
-		arrow=document.getElementById("toogleHeader10153"),
+		arrow=document.getElementById("toggleHeader10153"),
 		hidd=body.classList.contains("hiddenHeader10153");
 	if(!hidd||auto){
 		body.className=auto?"hiddenHeader10153 autoHidden10153":"hiddenHeader10153";
-		arrow.src=`${extURL}icons/toogle.svg#d`;
 		arrow.title=i18n("showInterface");
 	}else{
 		body.className="";
-		arrow.src=`${extURL}icons/toogle.svg#t`;
 		arrow.title=i18n("hideInterface");
 	}
 }

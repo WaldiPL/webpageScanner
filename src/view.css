@@ -92,7 +92,7 @@ body#body10153.hiddenHeader10153{
 	line-height:20px !important;
 	margin:0 !important;
 	opacity:1 !important;
-	overflow:visible !important;
+	overflow:hidden !important;
 	outline:0 !important;
 	padding:0 !important;
 	position:static !important;
@@ -100,6 +100,7 @@ body#body10153.hiddenHeader10153{
 	transform:none !important;
 	visibility:visible !important;
 	width:auto !important;
+	max-width:700px !important;
 	white-space:nowrap !important;
 }
 
@@ -147,36 +148,53 @@ body#body10153.hiddenHeader10153{
 	white-space:normal !important;
 }
 
-#tabs10153 button{
+#tabs10153 #active10153{
 	color:#000 !important;
-	background:#f9f9fa !important;
+	display:inline-block !important;
+	background-image:url('icons/extLink.svg') !important;
+	background-repeat:no-repeat !important;
+	background-position:center center !important;
 	border:1px solid #ccc !important;
-	padding:4px 8px 6px !important;
+	border-radius:2px !important;
+	padding:6px !important;
+	height:16px !important;
+	width:16px !important;
+	cursor:pointer !important;
+	box-sizing: initial !important;
 }
 
-#tabs10153 button:hover{
-	background:#0c0c0d1a !important;
-}
-
-#tabs10153 button:active, #tabs10153 button.active10153{
-	background:#0078d7 !important;
-	border-color:#0060df !important;
-	color:#fff !important;
-}
-
-#tabs10153 button.active10153:hover{
-	background:#0060df !important;
-}
-
-#tabs10153 button[disabled]{
-	opacity:.4 !important;
-}
-
-#tabs10153 button[disabled]:hover,
-#tabs10153 button[disabled]:active{
+select#viewMode10153{
+	border-radius:2px !important;
 	color:#000 !important;
-	background:#f9f9fa !important;
+	height:auto !important;
+	width:180px !important;
+	padding:3px 3px 4px 3px !important;
 	border:1px solid #ccc !important;
+	outline:none !important;
+	font-size:14px !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
+	line-height:initial !important;
+	-moz-appearance:none !important;
+	box-sizing:content-box !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	vertical-align:top !important;
+	margin-right:4px !important;
+	background-image:url("icons/dropdown.svg#d") !important;
+	background-repeat:no-repeat !important;
+	background-position:right 6px center !important;
+}
+
+select#viewMode10153 option{
+	color:#000 !important;
+	font-size:14px !important;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif !important;
+	font-weight:initial !important;
+	line-height:initial !important;
+}
+
+select#viewMode10153 option[disabled]{
+	display:none !important;
 }
 
 .footer10153 button{
@@ -190,29 +208,32 @@ body#body10153.hiddenHeader10153{
 .neutral{
 	border:1px solid #ccc !important;
 	color:#000 !important;
-	background:#f9f9fa !important;
+	background-color:#f9f9fa !important;
 }
 .neutral:hover{
-	background:#0c0c0d1a !important;
+	background-color:#0c0c0d1a !important;
+}
+.neutral:active{
+	background-color:#0c0c0d33 !important;
 }
 
 .negative{
 	border:1px solid #d70022 !important;
-	background:#ff0039 !important;
+	background-color:#ff0039 !important;
 	color:#fff !important;
 }
 .negative:hover,#header10153 #delete10153:hover{
-	background:#d70022 !important;
+	background-color:#d70022 !important;
 	border-color:#d70022 !important;
 }
 
 .positive{
 	border:1px solid #0060df !important;
-	background:#0078d7 !important;
+	background-color:#0078d7 !important;
 	color:#fff !important;
 }
 .positive:hover{
-	background:#0060df !important;
+	background-color:#0060df !important;
 }
 
 #lastScan10153{
@@ -459,51 +480,56 @@ a .changes10153:hover{
 	color:#000 !important;
 }
 
-#toogleHeader10153{
+#toggleHeader10153{
 	position:absolute !important;
-	right:50% !important;
-	top:65px !important;
-	margin:-22px 0 0 !important;
-	background:none !important;
+	right:calc(50% - 25px) !important;
+	top:60px !important;
+	margin:-24px 0 0 !important;
+	background:url(icons/arrow.svg) no-repeat center center !important;
+	background-size:20px !important;
 	border:0 !important;
 	border-radius:0 !important;
 	box-sizing:initial !important;
 	display:block !important;
 	float:none !important;
-	height:22px !important;
-	min-height:22px !important;
-	min-width:64px !important;
+	height:12px !important;
+	min-height:12px !important;
+	width:20px !important;
+	min-width:20px !important;
 	opacity:1 !important;
 	overflow:visible !important;
 	outline:0 !important;
-	padding:0 !important;
-	transform:none !important;
+	padding:6px !important;
+	transform:scale(1,-1) !important;
 	visibility:visible !important;
-	width:64px !important;
 	z-index:2147483647 !important;
 }
 
-.hiddenHeader10153 #toogleHeader10153{
+.hiddenHeader10153 #toggleHeader10153{
+	background-color:#f5f6f7 !important;
+	border:1px solid #0078d7 !important;
+	border-radius:2px !important;
 	position:fixed !important;
-	top:-2px !important;
+	top:-3px !important;
 	margin:0 !important;
 	opacity:.9 !important;
+	transform:scale(1,1) !important;
 	transition:margin-top 200ms 350ms !important;
 }
 
-#toogleHeader10153:hover{
-	top:63px !important;
+#toggleHeader10153:hover{
+	top:58px !important;
 }
 
-.hiddenHeader10153 #toogleHeader10153:hover{
+.hiddenHeader10153 #toggleHeader10153:hover{
 	position:fixed !important;
-	top:0px !important;
+	top:-1px !important;
 	opacity:1 !important;
 }
 
 x-highlight{
 	position:absolute !important;
-	right:12px !important;
+	right:10px !important;
 	top:75px !important;
 	margin:0 !important;
 	background:#F5F6F7 !important;
@@ -551,8 +577,8 @@ x-highlight x-text{
 }
 
 x-highlight x-button{
-	background:#f5f6f7 url("icons/arrow.svg") no-repeat calc(50% + 2px) center !important;
-	background-size:16px !important;
+	background:#f5f6f7 url("icons/arrow.svg") no-repeat center center !important;
+	background-size:14px !important;
 	min-height:26x !important;
 	height:26px !important;
 	width:26px !important;
@@ -572,7 +598,7 @@ x-highlight x-button:active{
 }
 
 #prev10153{
-	transform:rotate(180deg) !important;
+	transform:scale(1,-1) !important;
 }
 
 #next10153{
@@ -601,3 +627,12 @@ x-close:hover{
 x-close:active{
 	background-color:#c0c0c0 !important;
 }
+
+#rawNews10153{
+	background-color:#aeffae !important;
+}
+
+#rawDeleted10153{
+	background-color:#fca2af !important;
+}
+

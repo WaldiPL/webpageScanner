@@ -133,6 +133,9 @@
   "highlight": {
     "message": "Surligner les modifications"
   },
+  "rawData": {
+    "message": "Données brutes"
+  },
   "currentWebpage": {
     "message": "Page en cours"
   },

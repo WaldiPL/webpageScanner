@@ -133,6 +133,9 @@
   "highlight": {
     "message": "Highlight changes"
   },
+  "rawData": {
+    "message": "Raw data"
+  },
   "currentWebpage": {
     "message": "Current page"
   },

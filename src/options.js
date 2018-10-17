@@ -180,6 +180,7 @@ function translate(){
 		defaultViewSelect[2].text=i18n("deletedElements");
 		defaultViewSelect[3].text=i18n("newVersion");
 		defaultViewSelect[4].text=i18n("oldVersion");
+		defaultViewSelect[5].text=i18n("rawData");
 	document.getElementById("thNotifications").textContent=i18n("notifications");
 	document.getElementById("labelShow").textContent=i18n("showNotification");
 	document.getElementById("volumeLabel").textContent=i18n("volume");
