@@ -442,5 +442,23 @@
   },
   "shortcutLabel": {
     "message": "Skrót otwierający panel boczny"
+  },
+  "inspectText": {
+    "message": "Wybrano element. Zmiany będą wykrywane wyłącznie wewnątrz tego elementu."
+  },
+  "inspectRetry": {
+    "message": "Wskaż inny element"
+  },
+  "paritialMode": {
+    "message": "Skanuj część strony"
+  },
+  "selectorCSS": {
+    "message": "Selektor CSS"
+  },
+  "inspectElement": {
+    "message": "Wskaż element na stronie"
+  },
+  "ok": {
+    "message": "OK"
   }
 }

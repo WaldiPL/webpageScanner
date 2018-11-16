@@ -16,7 +16,7 @@
 			<input type="search" id="search" autocomplete="off"/><div id="clear"></div><input id="filter" type="image" src="icons/filter.svg">
 		</div>
 		<div id="addingSite" class="hidden">
-			<b id="addWebpage"></b> 
+			<b id="addWebpage"></b>
 			<table>
 				<tr><td id="addressA"></td><td style="width:100%;"><input id="aUrl" type="text"></td></tr>
 				<tr><td id="titleA"></td><td style="width:100%;"><input id="aTitle" type="text"></td></tr>
@@ -38,6 +38,8 @@
 					<option value="m2"></option>
 				</select>
 				</td></tr>
+				<tr><td colspan="2"><input type="checkbox" id="aParitialMode"><label id="paritialModeA" for="aParitialMode"></label></td></tr>
+				<tr id="rowSelectorA" class="hidden"><td id="cssSelectorA"></td><td style="width:100%;"><input id="aCssSelector" type="text"><input id="inspectA" type="image" src="icons/select.svg"/></td></tr>
 			</table>
 			<div class="footer">
 				<button id="fillForm" type="button"></button>
@@ -46,7 +48,7 @@
 			</div>	
 		</div>	
 		<div id="editingSite" class="hidden">
-			<b id="editWebpage"></b> 
+			<b id="editWebpage"></b>
 			<table>
 				<tr><td id="addressE"></td><td style="width:100%;"><input id="eUrl" type="text"></td></tr>
 				<tr><td id="titleE"></td><td style="width:100%;"><input id="eTitle" type="text"></td></tr>
@@ -69,6 +71,8 @@
 						<option value="m2"></option>
 					</select>
 				</td></tr>
+				<tr><td colspan="2"><input type="checkbox" id="eParitialMode"><label id="paritialModeE" for="eParitialMode"></label></td></tr>
+				<tr id="rowSelectorE" class="hidden"><td id="cssSelectorE"></td><td style="width:100%;"><input id="eCssSelector" type="text"><input id="inspectE" type="image" src="icons/select.svg"/></td></tr>
 			</table>
 			<div class="footer">
 				<button id="editCancel" class="editingSite" type="button"></button>
@@ -95,7 +99,7 @@
 			</div>
 		</div>
 		<div id="editingFolder" class="hidden">
-			<b id="editFolder"></b> 
+			<b id="editFolder"></b>
 			<table>
 				<tr><td id="nFolder"></td><td style="width:100%;"><input id="nameFolder" type="text"></td></tr>
 			</table>

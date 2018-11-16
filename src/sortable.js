@@ -116,13 +116,13 @@ function drop(e){
 	}else if(enter.classList.contains("folder")){
 		enter.appendChild(frag);
 		updateHeight(enter,true);
-		document.getElementById(enter.id).classList.add("changedFolder");
+		if(dragged.classList.contains("changed"))document.getElementById(enter.id).classList.add("changedFolder");
 	}else if(folderId!=="root"){
 		if(toTop)document.getElementById(folderId).insertBefore(frag,enter);
 		else if(enter.nextElementSibling)document.getElementById(folderId).insertBefore(frag,enter.nextElementSibling);
 		else document.getElementById(folderId).appendChild(frag);
 		updateHeight(document.getElementById(folderId),true);
-		document.getElementById(folderId).classList.add("changedFolder");
+		if(dragged.classList.contains("changed"))document.getElementById(folderId).classList.add("changedFolder");
 	}else if(toTop)list.insertBefore(frag,enter);
 	else if(enter.nextElementSibling&&toBottom)list.insertBefore(frag,enter.nextElementSibling);
 	else if(!enter.nextElementSibling&&toBottom)list.appendChild(frag);

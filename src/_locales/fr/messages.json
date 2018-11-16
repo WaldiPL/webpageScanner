@@ -442,5 +442,23 @@
   },
   "shortcutLabel": {
     "message": "Raccourci pour ouvrir le panneau latéral"
+  },
+  "inspectText": {
+    "message": "L'élément a été sélectionné. Les changements seront détectés seulement à l'intérieur de cet élément."
+  },
+  "inspectRetry": {
+    "message": "Sélectionner un autre élément"
+  },
+  "paritialMode": {
+    "message": "Scanner une partie de la page"
+  },
+  "selectorCSS": {
+    "message": "Le sélecteur CSS"
+  },
+  "inspectElement": {
+    "message": "Sélectionner un élément de la page"
+  },
+  "ok": {
+    "message": "OK"
   }
 }

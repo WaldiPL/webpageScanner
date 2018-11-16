@@ -2,7 +2,7 @@
 
 const extURL=browser.extension.getURL("");
 
-function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false){
+function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector=false){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
@@ -25,7 +25,9 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false){
 				freq:	freq?freq:8,
 				charset:s.charset,
 				broken:	0,
-				paused:	false
+				paused:	false,
+				paritialMode:(cssSelector!==false)?true:false,
+				cssSelector: (cssSelector!==false)?cssSelector:""
 			};
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
@@ -146,10 +148,30 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 		xhr.onload=function(){
 			if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 				const html_data=this.responseText;
-				const scanned={
-					length:	html_data.length,
-					md5:	md5(html_data)
-				};
+				let scanned;
+				if(!local.paritialMode||!local.cssSelector){
+					scanned={
+						length:	html_data.length,
+						md5:	md5(html_data)
+					};
+				}else{
+					let parser=new DOMParser(),
+						doc=parser.parseFromString(html_data,"text/html"),
+						selectedElement=doc.querySelector(local.cssSelector);
+					if(selectedElement){
+						let partHTML=selectedElement.outerHTML;
+						scanned={
+							length:	partHTML.length,
+							md5:	md5(partHTML)
+						};
+					}else{
+						scanned={
+							length:	html_data.length,
+							md5:	md5(html_data)
+						};
+					}
+				}
+				
 				if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
 					if(!auto){
 						itemId.classList.add("changed","scanned");

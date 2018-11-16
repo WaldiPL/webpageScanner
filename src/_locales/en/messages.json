@@ -442,5 +442,23 @@
   },
   "shortcutLabel": {
     "message": "Shortcut opening sidebar"
+  },
+  "inspectText": {
+    "message": "Selected element. Changes will be detected only inside this element."
+  },
+  "inspectRetry": {
+    "message": "Pick another element"
+  },
+  "paritialMode": {
+    "message": "Scan a part of the page"
+  },
+  "selectorCSS": {
+    "message": "CSS Selector"
+  },
+  "inspectElement": {
+    "message": "Pick an element from the page"
+  },
+  "ok": {
+    "message": "OK"
   }
 }

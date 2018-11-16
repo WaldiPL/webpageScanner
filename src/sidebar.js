@@ -64,6 +64,22 @@ let prevContext;
 		document.getElementById("search").value="";
 		search();
 	});
+	document.getElementById("eParitialMode").addEventListener("change",e=>{
+		if(e.target.checked){
+			document.getElementById("rowSelectorE").removeAttribute("class");
+		}else{
+			document.getElementById("rowSelectorE").className="hidden";
+		}
+	});
+	document.getElementById("aParitialMode").addEventListener("change",e=>{
+		if(e.target.checked){
+			document.getElementById("rowSelectorA").removeAttribute("class");
+		}else{
+			document.getElementById("rowSelectorA").className="hidden";
+		}
+	});
+	document.getElementById("inspectE").addEventListener("click",()=>{inspect("edit");});
+	document.getElementById("inspectA").addEventListener("click",()=>{inspect("add");});
 })();
 
 function context(e){
@@ -80,6 +96,7 @@ function context(e){
 				dInput.id=`deleteFolder${id}`;
 				dInput.src="icons/delete.svg";
 				dInput.title=i18n("delete");
+				dInput.draggable=false;
 				dInput.addEventListener('click',()=>{
 					showDeleteFolder(`folder${id}`,e.target.childNodes[1].textContent);
 				});
@@ -88,6 +105,7 @@ function context(e){
 				eInput.id=`editFolder${id}`;
 				eInput.src="icons/edit.svg";
 				eInput.title=i18n("edit");
+				eInput.draggable=false;
 				eInput.addEventListener('click',()=>{
 					showEditFolder(`folder${id}`,e.target.childNodes[1].textContent);
 				});
@@ -96,6 +114,7 @@ function context(e){
 				sInput.id=`scanFolder${id}`;
 				sInput.src="icons/scan2.svg";
 				sInput.title=i18n("scanWebpage");
+				sInput.draggable=false;
 				sInput.addEventListener('click',()=>{
 					scanFolder(`folder${id}`);
 				});
@@ -134,9 +153,9 @@ function context(e){
 				sInput.type="image";
 				sInput.src="icons/scan2.svg";
 				sInput.title=i18n("scanWebpage");
-				browser.storage.local.get('sites').then(result=>{
-					let local=result.sites[id];
-					sInput.addEventListener('click',()=>{
+				sInput.addEventListener('click',()=>{
+					browser.storage.local.get('sites').then(result=>{
+						let local=result.sites[id];
 						scanPage(local,id,false,true);
 					});
 				});
@@ -420,29 +439,31 @@ function deleteFolder(id){
 	});
 }
 
-function showEdit(e){
+async function showEdit(e){
 	hideAll("edit");
-	browser.storage.local.get(['sites','settings']).then(result=>{
-		const table=result.sites;
-		document.getElementById("editSite").dataset.id=e;
-		document.getElementById("editingSite").classList.remove("hidden");
-		document.getElementById("eUrl").value=table[e].url;
-		document.getElementById("eTitle").value=table[e].title;
-		document.getElementById("eCharset").value=table[e].charset?table[e].charset:result.settings.charset;
-		const freq=table[e].freq;
-		let multi;
-		if(!(freq%168))
-			multi=168;
-		else if(!(freq%24))
-			multi=24;
-		else if(freq<1)
-			multi=0.0166667;
-		else
-			multi=1;
-		document.getElementById("eFreq").value=parseInt(freq/multi);
-		document.getElementById("eMulti").value=multi;		
-		document.getElementById("eMode").value=table[e].mode;
-	});
+	let result=await browser.storage.local.get(['sites','settings']);
+	const table=result.sites;
+	document.getElementById("editSite").dataset.id=e;
+	document.getElementById("editingSite").classList.remove("hidden");
+	document.getElementById("eUrl").value=table[e].url;
+	document.getElementById("eTitle").value=table[e].title;
+	document.getElementById("eCharset").value=table[e].charset?table[e].charset:result.settings.charset;
+	const freq=table[e].freq;
+	let multi;
+	if(!(freq%168))
+		multi=168;
+	else if(!(freq%24))
+		multi=24;
+	else if(freq<1)
+		multi=0.0166667;
+	else
+		multi=1;
+	document.getElementById("eFreq").value=parseInt(freq/multi);
+	document.getElementById("eMulti").value=multi;		
+	document.getElementById("eMode").value=table[e].mode;
+	document.getElementById("rowSelectorE").className=table[e].paritialMode?"":"hidden";
+	document.getElementById("eParitialMode").checked=table[e].paritialMode;
+	document.getElementById("eCssSelector").value=(table[e].cssSelector===undefined)?"":table[e].cssSelector;
 }
 
 function editSite(e){
@@ -456,7 +477,9 @@ function editSite(e){
 			mode:	document.getElementById("eMode").value,
 			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl").value,
 			freq:	freq>0?freq*parseFloat(document.getElementById("eMulti").value):8,
-			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset
+			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset,
+			paritialMode:document.getElementById("eParitialMode").checked,
+			cssSelector:document.getElementById("eCssSelector").value
 		};
 		sites[e]=Object.assign(sites[e],obj);
 		browser.storage.local.set({sites}).then(()=>{
@@ -511,6 +534,9 @@ function showAdd(){
 	document.getElementById("aFreq").value=8;
 	document.getElementById("aMulti").value=1;
 	document.getElementById("aMode").value="m0";
+	document.getElementById("aParitialMode").checked=false;
+	document.getElementById("aCssSelector").value="";
+	document.getElementById("rowSelectorA").className="hidden";
 }
 
 function addSite(){
@@ -518,8 +544,9 @@ function addSite(){
 		  title=document.getElementById("aTitle").value,
 		  mode=document.getElementById("aMode").value,
 		  aFreq=parseInt(document.getElementById("aFreq").value),
-		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("aMulti").value):8;
-	rqstAdd(url,title,mode,freq);
+		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("aMulti").value):8,
+		  cssSelector=(document.getElementById("aParitialMode").checked&&document.getElementById("aCssSelector").value.length)?document.getElementById("aCssSelector").value:false;
+	rqstAdd(url,title,mode,freq,false,false,false,cssSelector);
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
 }
@@ -633,11 +660,80 @@ function scanFolder(id){
 	});
 }
 
+function inspect(type){
+	if(type==="edit"){
+		let wpsURL=document.getElementById("eUrl").value,
+			wpsID=document.getElementById("editSite").dataset.id;
+		browser.tabs.create({url:wpsURL}).then(tab=>{
+		  browser.tabs.executeScript({
+			file:"/inspect.js",
+			runAt:"document_end"
+		  }).then(()=>{
+			  browser.tabs.sendMessage(tab.id,{
+				 "wpsURL":wpsURL,
+				 "wpsID":wpsID,
+				 "wpsType":"edit"
+			  });
+		  });
+		  browser.tabs.insertCSS({
+			file:"/inspect.css",
+			runAt:"document_end"
+		  });
+		});
+	}else if(type==="add"){
+		let wpsURL=document.getElementById("aUrl").value;
+		if(wpsURL.startsWith("http")){
+			browser.tabs.create({url:wpsURL}).then(tab=>{
+			  browser.tabs.executeScript({
+				file:"/inspect.js",
+				runAt:"document_end"
+			  }).then(()=>{
+				  browser.tabs.sendMessage(tab.id,{
+					 "wpsURL":wpsURL,
+					 "wpsType":"add"
+				  });
+			  });
+			  browser.tabs.insertCSS({
+				file:"/inspect.css",
+				runAt:"document_end"
+			  });
+			});
+		}
+	}
+}
+
+async function fillSelector(m){
+	if(m.type==="edit"){
+		if(m.url===document.getElementById("eUrl").value){
+			document.getElementById("eParitialMode").checked=true;
+			document.getElementById("rowSelectorE").removeAttribute("class");
+			document.getElementById("eCssSelector").value=m.selector;
+		}else{
+			await showEdit(m.id);
+			if(m.url===document.getElementById("eUrl").value){
+				document.getElementById("eParitialMode").checked=true;
+				document.getElementById("rowSelectorE").removeAttribute("class");
+				document.getElementById("eCssSelector").value=m.selector;
+			}
+		}
+	}else if(m.type==="add"){
+		if(m.url===document.getElementById("aUrl").value){
+			document.getElementById("aParitialMode").checked=true;
+			document.getElementById("rowSelectorA").removeAttribute("class");
+			document.getElementById("aCssSelector").value=m.selector;
+		}
+	}
+}
+
 browser.runtime.onMessage.addListener(run);
-function run(m){
+function run(m,s,r){
 	if(m.listSite)listSite();
 	if(m.changeTheme)document.documentElement.className=m.changeTheme;
 	if(m.search!==undefined)document.documentElement.dataset.search=m.search;
+	if(m.selector){
+		fillSelector(m);
+		r({sidebar:true});
+	}
 }
 
 function translate(){
@@ -680,6 +776,12 @@ function translate(){
 	document.getElementById("addFolderTitle").textContent=i18n("addFolder");
 	document.getElementById("search").placeholder=i18n("search");
 	document.getElementById("hidePages").textContent=i18n("hidePages");
+	document.getElementById("paritialModeA").textContent=i18n("paritialMode");
+	document.getElementById("paritialModeE").textContent=i18n("paritialMode");
+	document.getElementById("cssSelectorA").textContent=i18n("selectorCSS");
+	document.getElementById("cssSelectorE").textContent=i18n("selectorCSS");
+	document.getElementById("inspectA").title=i18n("inspectElement");
+	document.getElementById("inspectE").title=i18n("inspectElement");
 	
 	let selectMultiA=document.getElementById("aMulti").options;
 		selectMultiA[0].text=i18n("minutes");

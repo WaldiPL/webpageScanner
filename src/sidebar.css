@@ -23,6 +23,7 @@
 	--invert-filter:invert(0%);
 	--context-li-hover:#0c0c0d1a;
 	--context-hover:#0c0c0d33;
+	--context-hover2:#d8cf69;
 	--delete-background:#28ffdd;
 	--delete-border:#282824;
 	--delete-filter:invert(100%);
@@ -42,6 +43,8 @@
 	--checked-icon:url("icons/checked.svg#l");
 	--popup-arrow:url("icons/arrowPanel.svg#l");
 	--clear-icon:url("icons/clear.svg");
+	--scrollbar-thumb:auto;
+	--scrollbar-track:auto;
 }
 
 .dark:root {
@@ -69,6 +72,7 @@
 	--invert-filter:invert(100%);
 	--context-li-hover:#b5b5b0;
 	--context-hover:#a4a4a2;
+	--context-hover2:#c3bf95;
 	--delete-background:#00ffc6;
 	--delete-border:#cdcdcb;
 	--delete-filter:invert(100%);
@@ -88,6 +92,8 @@
 	--checked-icon:url("icons/checked.svg#d");
 	--popup-arrow:url("icons/arrowPanel.svg#d");
 	--clear-icon:url("icons/clear.svg#d");
+	--scrollbar-thumb:#737373;
+	--scrollbar-track:#3c3c3d;
 }
 
 html{
@@ -109,6 +115,7 @@ body{
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	margin:0;
 	overflow-y:hidden;
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 body.onPopup{
@@ -171,9 +178,8 @@ html[data-search="true"] #navPanel{
 	border:1px solid var(--border-color2);
 	border-radius:2px;
 	font-size: 13px;
-	padding:2px 5px 3px 26px;
+	padding:3px 5px 4px 26px;
 	vertical-align:top;
-	margin-top:1px;
 }
 
 #search:focus{
@@ -333,7 +339,8 @@ input,select,button{
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 }
 
-#scanFreqA,#scanFreqE{
+#scanFreqA,#scanFreqE,
+#cssSelectorA,#cssSelectorE{
 	white-space: nowrap;
 }
 
@@ -629,28 +636,30 @@ ul li.opened a .favicon{
 }
 
 .deleteFolder{
-	float:right;
 	padding:7px;
-	margin-top:-23px;
+	margin-top:-7px;
 	background:var(--folder-context-background);
 	filter:var(--invert-filter);
+	position:absolute;
+	right:60px;
 }
 
 .editFolder{
-	float:right;
 	padding:7px;
-	margin-top:-23px;
+	margin-top:-7px;
 	background:var(--folder-context-background);
 	filter:var(--invert-filter);
+	position:absolute;
+	right:30px;
 }
 
 .scanFolder{
-	float:right;
 	padding:7px;
-	margin-top:-23px;
-	margin-right:-6px;
+	margin-top:-7px;
 	background:var(--folder-context-background);
 	filter:var(--invert-filter);
+	position:absolute;
+	right:0px;
 }
 
 a:hover .deleteFolder,a:hover .editFolder,a:hover .scanFolder{
@@ -663,7 +672,7 @@ a .deleteFolder:hover{
 }
 
 a .editFolder:hover,a .scanFolder:hover{
-	background:var(--context-hover);
+	background:var(--context-hover2);
 }
 
 #navPanel input[disabled]{
@@ -697,4 +706,57 @@ progress{
     content:"";
     border-left:3px solid var(--changed-background);
 	padding:6px 0;
+}
+
+#rowSelectorE.hidden *,
+#rowSelectorA.hidden *{
+	margin:0;
+	padding-top:0;
+	padding-bottom:0;
+	height:0;
+	line-height:0;
+	border:none;
+}
+
+#eCssSelector,
+#aCssSelector{
+	width:calc(100% - 12px - 31px) !important;
+}
+
+#inspectE,
+#inspectA{
+	height:16px;
+	width:16px;
+	padding:5.5px;
+	vertical-align:bottom;
+	margin-left:4px
+}
+
+#inspectE:hover,
+#inspectA:hover{
+	background:var(--button-hover2);
+	border-radius:2px;
+}
+
+input[type="checkbox"] {
+	-moz-appearance: none;
+	width:18px;
+	height:18px;
+	border:1px solid var(--border-color2);
+	border-radius:2px;
+	margin:0;
+	margin-inline-end:8px;
+	background-color:var(--input-background);
+	background-position:center center;
+	background-repeat:no-repeat;
+	vertical-align:bottom;
+}
+
+input[type="checkbox"]:checked {
+	background-image:url("icons/checked.svg#b");
+}
+
+input[type="checkbox"]:hover:not(:disabled),
+input[type="checkbox"]:focus:not(:disabled){
+	border-color:var(--input-focus);
 }

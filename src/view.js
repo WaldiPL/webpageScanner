@@ -3,7 +3,8 @@
 let localId,
 	highlighted,
 	prevHighlighted,
-	filteredChanges;
+	filteredChanges,
+	inspected;
 const extURL=browser.extension.getURL("");
 
 (function(){
@@ -29,6 +30,14 @@ const extURL=browser.extension.getURL("");
 	document.getElementById("prev10153").addEventListener("click",()=>{nextPrev(false);});
 	document.getElementById("next10153").addEventListener("click",()=>{nextPrev(true);});
 	document.getElementById("close10153").addEventListener("click",toggleNextPrev);
+	document.getElementById("eParitialMode10153").addEventListener("change",e=>{
+		if(e.target.checked){
+			document.getElementById("rowSelectorE10153").removeAttribute("class");
+		}else{
+			document.getElementById("rowSelectorE10153").className="notVisible";
+		}
+	});
+	document.getElementById("inspectE10153").addEventListener("click",()=>{inspect();});
 })();
 
 function nextPrev(next){
@@ -131,6 +140,9 @@ function showEdit(e){
 		document.getElementById("eFreq10153").value=parseInt(freq/multi);
 		document.getElementById("eMulti10153").value=multi;
 		document.getElementById("eMode10153").value=sites[e].mode;
+		document.getElementById("rowSelectorE10153").className=sites[e].paritialMode?"":"notVisible";
+		document.getElementById("eParitialMode10153").checked=sites[e].paritialMode;
+		document.getElementById("eCssSelector10153").value=(sites[e].cssSelector===undefined)?"":sites[e].cssSelector;
 	});
 }
 
@@ -145,7 +157,9 @@ function editSite(e){
 			mode:	document.getElementById("eMode10153").value,
 			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl10153").value,
 			freq:	freq>0?freq*parseFloat(document.getElementById("eMulti10153").value):8,
-			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:result.settings.charset
+			charset:document.getElementById("eCharset10153").value?document.getElementById("eCharset10153").value:result.settings.charset,
+			paritialMode:document.getElementById("eParitialMode10153").checked,
+			cssSelector:document.getElementById("eCssSelector10153").value
 		}
 		document.getElementById("title10153").textContent=obj.title;
 		sites[e]=Object.assign(sites[e],obj);
@@ -191,6 +205,8 @@ function load(siteId,type){
 		toggleNextPrev();
 		highlighted=undefined;
 		prevHighlighted=undefined;
+		let base=document.createElement("base");
+			base.href=sId.url;
 		switch(type){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
@@ -222,6 +238,7 @@ function load(siteId,type){
 				doc.appendChild(raw);
 				break;
 		}
+		if(doc.head)doc.head.appendChild(base);
 		document.getElementById("content10153").textContent="";
 		document.getElementById("content10153").appendChild(doc.children[0]);
 		const allChanges=document.getElementsByClassName("changes10153");
@@ -235,28 +252,6 @@ function load(siteId,type){
 			document.getElementById("xtext10153").textContent=i18n("numberOfChanges",filteredChanges.length);
 		});
 		setTitle();
-		const a=document.getElementsByTagName("a"),
-			  img=document.getElementsByTagName("img"),
-			  meta=document.getElementsByTagName("link");
-		setTimeout(function(){
-			const extUrl=browser.extension.getURL("");
-			[...a].forEach(value=>{
-				if(value.href.includes(extUrl))value.href=value.href.replace(extUrl,url2);
-				if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
-			});
-			[...img].forEach(value=>{
-				if(value.id!="icon10153"&&value.id!="toggleHeader10153"){
-					if(value.src.includes(extUrl))value.src=value.src.replace(extUrl,url2);
-					if(value.src.includes("moz-extension://"))value.src=value.src.replace("moz-extension://","http://");
-				}
-			});
-			[...meta].forEach(value=>{
-				if(value.id!="diff10153"){
-					if(value.href.includes(extUrl))value.href=value.href.replace(extUrl,url2);
-					if(value.href.includes("moz-extension://"))value.href=value.href.replace("moz-extension://","http://");
-				}
-			});
-		},50);
 	});
 }
 
@@ -329,6 +324,9 @@ function translate(){
 	document.getElementById("prev10153").title=i18n("scrollPrev");
 	document.getElementById("next10153").title=i18n("scrollNext");
 	document.getElementById("close10153").title=i18n("close");
+	document.getElementById("paritialModeE10153").textContent=i18n("paritialMode");
+	document.getElementById("cssSelectorE10153").textContent=i18n("selectorCSS");
+	document.getElementById("inspectE10153").title=i18n("inspectElement");
 }
 
 function getSettings(name){
@@ -352,4 +350,29 @@ function toggleHeader(auto){
 
 function enableBtn(name){
 	document.getElementById(name).disabled=false;
+}
+
+function inspect(type){
+	load(localId,"newHtml");
+	if(!inspected){
+		inspected=true;
+		browser.tabs.executeScript({
+			file:"/inspect.js",
+			runAt:"document_end"
+		}).then(e=>{
+			document.getElementById("editingSite10153").classList.add("hidden");
+		});
+		browser.tabs.insertCSS({
+			file:"/inspect.css",
+			runAt:"document_end"
+		});
+	}else{
+		browser.tabs.getCurrent().then(tab=>{
+			browser.tabs.sendMessage(tab.id,{
+				"wpsInit":true
+			}).then(()=>{
+				document.getElementById("editingSite10153").classList.add("hidden");
+			});
+		});
+	}
 }

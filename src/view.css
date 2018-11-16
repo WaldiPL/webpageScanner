@@ -636,3 +636,58 @@ x-close:active{
 	background-color:#fca2af !important;
 }
 
+#editingSite10153 input[type="checkbox"] {
+	-moz-appearance:none !important;
+	width:18px !important;
+	height:18px !important;
+	border:1px solid #d7d7db !important;
+	border-radius:2px !important;
+	margin:0 !important;
+	margin-inline-end:8px !important;
+	background-color:#fff !important;
+	background-position:center center !important;
+	background-repeat:no-repeat !important;
+	vertical-align:bottom !important;
+	padding:0 !important;
+}
+
+#editingSite10153 input[type="checkbox"]:checked {
+	background-image:url("icons/checked.svg#b") !important;
+}
+
+#editingSite10153 input[type="checkbox"]:hover:not(:disabled),
+#editingSite10153 input[type="checkbox"]:focus:not(:disabled){
+	border-color:#0a84ff !important;
+}
+
+#editingSite10153 #inspectE10153{
+	height:16px !important;
+	width:16px !important;
+	padding:5.5px !important;
+	vertical-align:bottom !important;
+	margin-left:4px !important;
+	border:none !important;
+	background:none !important;
+}
+
+#editingSite10153 #inspectE10153:hover{
+	background:#dddede !important;
+	border-radius:2px !important;
+}
+
+#editingSite10153 #eCssSelector10153{
+	width:calc(100% - 4px - 31px) !important;
+}
+
+#editingSite10153 .notVisible{
+	visibility:hidden !important;
+}
+
+#editingSite10153 #rowSelectorE10153.notVisible *{
+	margin:0 !important;
+	padding-top:0 !important;
+	padding-bottom:0 !important;
+	height:0 !important;
+	line-height:0 !important;
+	border:none !important;
+}

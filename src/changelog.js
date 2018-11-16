@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.8.5",
+		"changes":["Added possibility to scan a part of the page #29","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość skanowania części strony #29","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.8.1",
 		"changes":["New view - 'Raw data'","Updated interface","Fixed bugs","Minor changes"],
 		"changesPL":["Nowy widok - 'Surowe dane'","Zaktualizowano interfejs","Naprawiono błędy","Drobne zmiany"]
