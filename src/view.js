@@ -238,7 +238,7 @@ function load(siteId,type){
 				doc.appendChild(raw);
 				break;
 		}
-		if(doc.head)doc.head.appendChild(base);
+		if(doc.head)doc.head.insertBefore(base,doc.head.firstElementChild);
 		document.getElementById("content10153").textContent="";
 		document.getElementById("content10153").appendChild(doc.children[0]);
 		const allChanges=document.getElementsByClassName("changes10153");
