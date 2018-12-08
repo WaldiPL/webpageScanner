@@ -58,6 +58,7 @@ let prevContext;
 		filterPopup[2].addEventListener("click",e=>{e.target.classList.toggle("checked");search();});
 		filterPopup[3].addEventListener("click",e=>{e.target.classList.toggle("checked");search();});
 		filterPopup[4].addEventListener("click",e=>{e.target.classList.toggle("checked");search();});
+		filterPopup[5].addEventListener("click",e=>{e.target.classList.toggle("checked");search();});
 	listSite();
 	if(document.URL.slice(-1)==="?")document.body.classList.add("onPopup");
 	document.getElementById("clear").addEventListener("click",e=>{
@@ -338,12 +339,13 @@ function search(){
 		  cha=document.getElementById("popupFilter").children[1].classList.contains("checked"),
 		  pau=document.getElementById("popupFilter").children[2].classList.contains("checked"),
 		  bro=document.getElementById("popupFilter").children[3].classList.contains("checked"),
-		  nor=document.getElementById("popupFilter").children[4].classList.contains("checked");
-	if(cha||pau||bro||nor)
+		  nor=document.getElementById("popupFilter").children[4].classList.contains("checked"),
+		  par=document.getElementById("popupFilter").children[5].classList.contains("checked");
+	if(cha||pau||bro||nor||par)
 		document.getElementById("popupFilter").classList.add("checked");
 	else
 		document.getElementById("popupFilter").classList.remove("checked");
-	if(s||cha||pau||bro||nor){
+	if(s||cha||pau||bro||nor||par){
 		browser.storage.local.get(['sites']).then(result=>{
 			prevContext=undefined;
 			document.getElementById("lista").textContent="";
@@ -353,7 +355,7 @@ function search(){
 				return v.title.toUpperCase().includes(s.toUpperCase())||v.url.toUpperCase().includes(s.toUpperCase());
 			});
 			filtred=filtred.filter(v=>{
-				return (cha&&v.changed===true)||(pau&&v.paused===true)||(bro&&v.broken>=2)||(nor&&v.changed!=true&&v.paused!=true&&v.broken<2)||(!cha&&!pau&&!bro&&!nor);
+				return (cha&&v.changed===true)||(pau&&v.paused===true)||(bro&&v.broken>=2)||(par&&v.paritialMode===true)||(nor&&v.changed!=true&&v.paused!=true&&v.broken<2&&v.paritialMode!=true)||(!cha&&!pau&&!bro&&!nor&&!par);
 			});
 			filtred.forEach(value=>{
 				let id=sites.indexOf(value),
@@ -810,4 +812,5 @@ function translate(){
 		popupFilter[2].textContent=i18n("paused");
 		popupFilter[3].textContent=i18n("broken");
 		popupFilter[4].textContent=i18n("normal");
+		popupFilter[5].textContent=i18n("paritially");
 }

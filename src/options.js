@@ -166,9 +166,15 @@ function createBackup(e){
 function translate(){
 	document.title=i18n("extensionName");
 	document.getElementById("optionsA").textContent=i18n("options");
+	document.getElementById("optionsA").title=i18n("options");
 	document.getElementById("managementA").textContent=i18n("management");
+	document.getElementById("managementA").title=i18n("management");
 	document.getElementById("changelogA").textContent=i18n("changelog");
+	document.getElementById("changelogA").title=i18n("changelog");
 	document.getElementById("supportA").textContent=i18n("support");
+	document.getElementById("supportA").title=i18n("support");
+	document.getElementById("scanListA").textContent=i18n("scanList");
+	document.getElementById("scanListA").title=i18n("scanList");
 	document.getElementById("h2options").textContent=i18n("options");
 	document.getElementById("thGeneral").textContent=i18n("general");
 	document.getElementById("labelAutoOpen").textContent=i18n("autoOpen");

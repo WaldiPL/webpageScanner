@@ -89,6 +89,9 @@
 	background-color:#d70022 !important;
 	border-color:#d70022 !important;
 }
+#__wps_popup .negative:active{
+	background-color:#a4000f !important;
+}
 
 #__wps_popup .positive{
 	border:1px solid #0060df !important;
@@ -97,6 +100,9 @@
 }
 #__wps_popup .positive:hover{
 	background-color:#0060df !important;
+}
+#__wps_popup .positive:active{
+	background-color:#003eaa !important;
 }
 
 #__wps_popup x-button.neutral{

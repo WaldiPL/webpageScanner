@@ -1,0 +1,54 @@
+.changes10153 a{
+	background:#ffa !important;
+}
+
+.changes10153.hlc a,
+.changes10153.hlc a .changes10153{
+	background:#00feff !important;
+	color:#000 !important;
+}
+
+.changes10153{
+	background:#ffe900 !important;
+	color:#000 !important;
+	border:0 !important;
+	padding:0 !important;
+	margin:0 !important;
+	opacity:1 !important;
+	overflow:visible !important;
+	outline:none !important;
+}
+
+.changes10153 a,
+a .changes10153{
+	color:#006abc !important;
+}
+
+.changes10153:hover a,
+a .changes10153:hover{
+	color:#00f !important;
+	background:#ffe100 !important;
+}
+
+.changes10153.hlc{
+	background-color:#00feff !important;
+	color:#000 !important;
+}
+
+#__wps_raw{
+	display:grid;
+	grid-template-columns:50% 50%;
+	margin:0;
+}
+
+#__wps_rawNews{
+	background-color:#aeffae;
+	padding:7px 15px;
+	overflow-wrap:break-word;
+}
+
+#__wps_rawDeleted{
+	background-color:#fca2af;
+	padding:7px 15px;
+	overflow-wrap:break-word;
+}

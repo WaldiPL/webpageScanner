@@ -431,6 +431,9 @@
   "normal": {
     "message": "Normales"
   },
+  "paritially": {
+    "message": "Partiellement scanné"
+  },
   "showSearchbar": {
     "message": "Afficher la barre de recherche"
   },
@@ -460,5 +463,8 @@
   },
   "ok": {
     "message": "OK"
+  },
+  "scanList": {
+    "message": "Liste de scan"
   }
 }

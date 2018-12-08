@@ -1,6 +1,8 @@
 "use strict";
 
 let wpsURL,wpsID,wpsType,overlay;
+let wpsView=(document.URL==="about:blank")?true:false;
+
 init();
 
 function init(){
@@ -44,7 +46,6 @@ function selectElement(e){
 }
 
 function showDialog(e){
-	let wpsView=(document.URL.startsWith("moz"))?true:false;
 	let popup=document.createElement("x-popup");
 		popup.id="__wps_popup";
 	let titlebar=document.createElement("x-titlebar");
@@ -59,7 +60,7 @@ function showDialog(e){
 				removeEvent();
 				document.getElementById("__wps_popup").remove();
 				overlay.remove();
-				document.getElementById("editingSite10153").classList.remove("hidden");
+				window.frameElement.ownerDocument.getElementById("editPopup").classList.remove("hidden");
 			}else{
 				browser.runtime.sendMessage({"closeTab":true});
 			}
@@ -78,11 +79,11 @@ function showDialog(e){
 		ok.addEventListener("click",()=>{
 			let cssSelector=uniqueSelector(e);
 			if(wpsView){
-				document.getElementById("eCssSelector10153").value=cssSelector;
+				window.frameElement.ownerDocument.getElementById("cssSelectorEdit").value=cssSelector;
 				removeEvent();
 				document.getElementById("__wps_popup").remove();
 				overlay.remove();
-				document.getElementById("editingSite10153").classList.remove("hidden");
+				window.frameElement.ownerDocument.getElementById("editPopup").classList.remove("hidden");
 			}else{
 				browser.runtime.sendMessage({"selector":cssSelector,"url":wpsURL,"id":wpsID,"type":wpsType}).then(r=>{
 					if(r){
@@ -167,8 +168,5 @@ function run(m){
 		wpsURL=m.wpsURL;
 		wpsID=m.wpsID;
 		wpsType=m.wpsType;
-	}
-	if(m.wpsInit){
-		init();
 	}
 }

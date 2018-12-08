@@ -431,6 +431,9 @@
   "normal": {
     "message": "Normal"
   },
+  "paritially": {
+    "message": "Scanned partially"
+  },
   "showSearchbar": {
     "message": "Show search bar"
   },
@@ -460,5 +463,8 @@
   },
   "ok": {
     "message": "OK"
+  },
+  "scanList": {
+    "message": "Scan list"
   }
 }

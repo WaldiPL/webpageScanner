@@ -204,6 +204,7 @@ function favicon64(url,callback){
 	let img=new Image(),
 		letter2=url.split("/")[2].split("."),
 		letter=letter2[letter2.length-2][0].toUpperCase();
+	let bgColors=["#0a84ff","#008ea4","#ed00b5","#058b00","#a47f00","#ff0039","#9400ff","#a44900","#363959","#737373"];
 	img.onload=e=>{
 		faviconCount++;
 		let canvas=document.createElement('canvas'),
@@ -213,7 +214,7 @@ function favicon64(url,callback){
 		ctx.drawImage(e.target,0,0,16,16);
 		let dataURL=canvas.toDataURL();
 		if(dataURL==="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACFElEQVQ4ja2TP2vbYBDGs+ZDeMqnyOIhg2dbTbbIqrM08h9oauPaVTFq2hpDaTZTPIQkeJCd4YVYJpVolYARuCUitIOEQWAkQ1KIBUKQkCEWT4cg1U7cqT246b3nx929zy0s/K9YXttZjMbqkTLfpfKvO8pGru2tMgf+KnPgp7JtL891lCLfpaKxemR5bWfxkXgl3ljKFUktlW4Z7z98cZrkHLvtMzTJOVTNRqUqO0lWMHIFUluJN5ZmINFYPZIrkNpG9nD0sdEDkXTIPRNj9xbWhQcAuLy6gdwzwbDCKFMgtWisHgkBRb5LJVnBUDUbRNJBJB2iMoCoDELAxAdO+kOc9oegWcEo8l0qBOS5jlKpys7ERwgI0ru+AwB413cgko4fxi9w7yRniztSQkAq2/ZUzQ6LHoqDDnRzDCLpUDUbTLrlhYAnyX3ftFwAgNwzoZvjGXEQJ/0hiKTDtFxQ63v+DODy6iZsNVjgPICoDGBaLhLTgKeZlqdq9kyxqtlhBnAAGLu3UDUbSVb4M0Ke6yh8VXamAQ/38f3nRfj2ku86z8tTSyy9ERPBN/4NQCQdE/++M3pTMEoVMfHISAwrjKYhpuWGYtNy78XP5hgpsHKmQGo0Kxjl7WNH1Wyc9ofYbZ/hU/MbytufHXpTMDLzrDx9TKWKmNjijhQm3fIoet9PrO/5SVbwXrzqfC2/PY7PPaZ/id9i4TQ7pxqOTwAAAABJRU5ErkJggg=="){
-			ctx.fillStyle="#0a84ff";
+			ctx.fillStyle=bgColors[Math.trunc(Math.random()*10)];
 			ctx.fillRect(0,0,16,16); 
 			ctx.font="11px Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif";
 			ctx.fillStyle="#fff";
@@ -230,7 +231,7 @@ function favicon64(url,callback){
 			ctx=canvas.getContext('2d');
 		canvas.width=16;
 		canvas.height=16;
-		ctx.fillStyle="#0a84ff";
+		ctx.fillStyle=bgColors[Math.trunc(Math.random()*10)];
 		ctx.fillRect(0,0,16,16); 
 		ctx.font="13px Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif";
 		ctx.fillStyle="#fff";

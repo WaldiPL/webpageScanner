@@ -2,60 +2,61 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link id="diff10153" rel="stylesheet" href="view.css"/>
+		<link rel="stylesheet" href="view.css"/>
+		<link rel="icon" type="image/png" href="data:image/png;base64," id="favicon"/>
 	</head>
-	<body id="body10153">
-		<div id="content10153"></div>
-		<div id='header10153'>
-			<img id="icon10153" src="icons/icon.svg"/>
-			<b id="title10153"></b>
-			<div id="set10153">
-				<button id='edit10153' class="neutral" type='button'></button
-				><button id='delete10153' class='negative' type='button'></button>
+	<body>
+		<div id="content"></div>
+		<div id="header">
+			<img id="icon" src="icons/icon.svg"/>
+			<h1 id="title"></h1>
+			<div id="controls">
+				<button id="editButton" class="neutral" type="button"></button
+				><button id="deleteButton" class="negative" type="button"></button>
 			</div>
-			<div id="lastScan10153"></div>
-			<div id="tabs10153">
-				<select id="viewMode10153" class="neutral">
-					<option id='oldHtml10153' value="oldHtml" disabled></option>
-					<option id='newHtml10153' value="newHtml"></option>
-					<option id='news10153' value="news" disabled></option>
-					<option id='deleted10153' value="deleted" disabled></option>
-					<option id='light10153' value="light"></option>
-					<option id='raw10153' value="raw"></option>
-				</select><a id='active10153' class="neutral"></a>
+			<div id="versionTime"></div>
+			<div id="tabs">
+				<select id="viewMode" class="neutral">
+					<option id="oldHtml" value="oldHtml" disabled></option>
+					<option id="newHtml" value="newHtml"></option>
+					<option id="news" value="news" disabled></option>
+					<option id="deleted" value="deleted" disabled></option>
+					<option id="light" value="light"></option>
+					<option id="raw" value="raw"></option>
+				</select><a id="current" class="neutral"></a>
 			</div>
-			<x-button id='toggleHeader10153'></x-button>
-			<x-highlight id="highlight10153" class="hidden">
-				<x-button id='prev10153' type='button'></x-button><x-button id='next10153' type='button'></x-button>
-				<x-text id="xtext10153"></x-text>
-				<x-close id="close10153"></x-close>
+			<x-button id="toggleHeader"></x-button>
+			<x-highlight id="highlight" class="hidden">
+				<x-button id="prev" type="button"></x-button><x-button id="next" type="button"></x-button>
+				<x-text id="xtext"></x-text>
+				<x-close id="close"></x-close>
 			</x-highlight>
 		</div>
-		<div id="deletingSite10153" class="hidden">
-			<b id="deleteB10153"></b>
-			<div id="deleteTitle10153"></div>
-			<div class="footer10153">
-				<button id="deleteCancel10153" class="neutral" type="button"></button
-				><button id="deleteSite10153" class="negative" type="button"></button>
+		<div id="deletePopup" class="hidden">
+			<h2 id="deleteHeader"></h2>
+			<div id="deleteTitle"></div>
+			<div class="popupFooter">
+				<button id="deleteCancel" class="neutral" type="button"></button
+				><button id="deleteOk" class="negative" type="button"></button>
 			</div>
 		</div>
-		<div id="editingSite10153" class="hidden">
-			<b id="editB10153"></b> 
+		<div id="editPopup" class="hidden">
+			<h2 id="editHeader"></h2> 
 			<table>
-				<tr><td id="address10153"></td><td style="width:100%;"><input id="eUrl10153" type="text"></td></tr>
-				<tr><td id="titleE10153"></td><td style="width:100%;"><input id="eTitle10153" type="text"></td></tr>
-				<tr><td id="charset10153"></td><td style="width:100%;"><input id="eCharset10153" type="text"></td></tr>
-				<tr><td id="scanFreq10153"></td><td style="width:100%;">
-				<input id="eFreq10153" type="number" min="1"
-				><select id="eMulti10153">
+				<tr><td id="urlLabelEdit"></td><td style="width:100%;"><input id="urlEdit" type="text"></td></tr>
+				<tr><td id="titleLabelEdit"></td><td style="width:100%;"><input id="titleEdit" type="text"></td></tr>
+				<tr><td id="charsetLabelEdit"></td><td style="width:100%;"><input id="charsetEdit" type="text"></td></tr>
+				<tr><td id="scanFreqLabelEdit"></td><td style="width:100%;">
+				<input id="scanFreqEdit" type="number" min="1"
+				><select id="unitEdit">
 					<option value="0.0166667"></option>
 					<option value="1"></option>
 					<option value="24"></option>
 					<option value="168"></option>
 				 </select>
 				</td></tr>
-				<tr><td id="modeTitle10153"></td><td style="width:100%;">
-				 <select id="eMode10153">
+				<tr><td id="modeLabelEdit"></td><td style="width:100%;">
+				 <select id="modeEdit">
 					<option value="m0"></option>
 					<option value="m3"></option>
 					<option value="m4"></option>
@@ -63,12 +64,12 @@
 					<option value="m2"></option>
 				 </select>
 				</td></tr>
-				<tr><td colspan="2"><input type="checkbox" id="eParitialMode10153"><label id="paritialModeE10153" for="eParitialMode10153"></label></td></tr>
-				<tr id="rowSelectorE10153" class="notVisible"><td id="cssSelectorE10153"></td><td style="width:100%;"><input id="eCssSelector10153" type="text"><input id="inspectE10153" type="image" src="icons/select.svg"/></td></tr>
+				<tr><td colspan="2"><input type="checkbox" id="paritialModeEdit"><label id="paritialModeLabelEdit" for="paritialModeEdit"></label></td></tr>
+				<tr id="rowSelectorEdit" class="notVisible"><td id="cssSelectorLabelEdit"></td><td style="width:100%;"><input id="cssSelectorEdit" type="text"><input id="inspectButtonEdit" type="image" src="icons/select.svg"/></td></tr>
 			</table>
-			<div class="footer10153">
-				<button id="editCancel10153" class="neutral" type="button"></button
-				><button id="editSite10153" class="positive" type="button"></button>
+			<div class="popupFooter">
+				<button id="editCancel" class="neutral" type="button"></button
+				><button id="editOk" class="positive" type="button"></button>
 			</div>
 		</div>
 		<script src="view.js"></script>

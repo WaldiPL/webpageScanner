@@ -11,7 +11,8 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 		xhr.timeout=s.requestTime;
 		xhr.overrideMimeType('text/html; charset='+s.charset);
 		xhr.onload=function(){
-			const html_data=this.responseText;
+			const contentType=this.getResponseHeader("Content-Type").split(/; *charset=/i);
+			const html_data=(contentType[0]==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):this.responseText;
 			const site={
 				title:	title,
 				url:	url,
@@ -21,13 +22,16 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 				md5:	md5(html_data),
 				mode:	mode,
 				changed:false,
-				favicon:icon?icon:"https://www.google.com/s2/favicons?domain="+url,
-				freq:	freq?freq:8,
-				charset:s.charset,
+				favicon:icon||"https://www.google.com/s2/favicons?domain="+url,
+				freq:	freq||8,
+				charset:contentType[1]||s.charset,
 				broken:	0,
 				paused:	false,
 				paritialMode:(cssSelector!==false)?true:false,
-				cssSelector: (cssSelector!==false)?cssSelector:""
+				cssSelector: (cssSelector!==false)?cssSelector:"",
+				mimeType:contentType[0]||"",
+				oldTime:undefined,
+				newTime:[date(),time()]
 			};
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
@@ -147,7 +151,7 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 		xhr.overrideMimeType('text/html; charset='+charset);
 		xhr.onload=function(){
 			if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-				const html_data=this.responseText;
+				const html_data=(local.mimeType==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):this.responseText;
 				let scanned;
 				if(!local.paritialMode||!local.cssSelector){
 					scanned={
@@ -283,7 +287,9 @@ function updateBase(changesArray,timesArray,brokenArray){
 				length:	value[2],
 				md5:	value[1],
 				changed:true,
-				broken:	0
+				broken:	0,
+				oldTime:sites[id].newTime||[sites[id].date,sites[id].time],
+				newTime:[date(),time()]
 			};
 			sites[id]=Object.assign(sites[id],obj);
 		});

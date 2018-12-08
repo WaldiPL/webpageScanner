@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.9.0",
+		"changes":["Fixed problem with displaying some pages","Improved the display of text files #32","Added a link to 'Scan list' in options #30","Added date and time for the 'old and new version of the page'","Minor changes","[dev] Pages are displayed in a 'iframe' element"],
+		"changesPL":["Naprawiono problem z wyświetlaniem niektórtch stron","Ulepszono wyświetlanie plików tekstowych #32","Dodano odnośnik do 'Listy skanowania' w opcjach #30","Dodano datę i czas dla 'nowej i starej wersji strony'","Drobne zmiany","[dev] Strony wyświetlane są w elemencie 'iframe'"]
+	},
 	{"version":"1.8.5",
 		"changes":["Added possibility to scan a part of the page #29","Fixed bugs","Minor changes"],
 		"changesPL":["Dodano możliwość skanowania części strony #29","Naprawiono błędy","Drobne zmiany"]
