@@ -333,7 +333,7 @@ function openItem(e,id){
 		}
 	}
 }
-				
+
 function search(){
 	const s=document.getElementById("search").value,
 		  cha=document.getElementById("popupFilter").children[1].classList.contains("checked"),

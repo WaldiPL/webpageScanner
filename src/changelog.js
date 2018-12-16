@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.9.1",
+		"changes":["Added dark theme for 'preview' and 'popup'","Fixed bugs"],
+		"changesPL":["Dodano ciemny motyw dla 'podglądu' oraz 'wyskakującego okna'","Naprawiono błędy"]
+	},
 	{"version":"1.9.0",
 		"changes":["Fixed problem with displaying some pages","Improved the display of text files #32","Added a link to 'Scan list' in options #30","Added date and time for the 'old and new version of the page'","Minor changes","[dev] Pages are displayed in a 'iframe' element"],
 		"changesPL":["Naprawiono problem z wyświetlaniem niektórtch stron","Ulepszono wyświetlanie plików tekstowych #32","Dodano odnośnik do 'Listy skanowania' w opcjach #30","Dodano datę i czas dla 'nowej i starej wersji strony'","Drobne zmiany","[dev] Strony wyświetlane są w elemencie 'iframe'"]
@@ -107,7 +111,7 @@ let changelog=`[
 	},
 	{"version":"1.2.5",
 		"changes":["Added possibility to display the scan list on the popup","Blocked text selection in the scan list","Added 'Fill' button to 'Add new page' panel","Minor changes"],
-		"changesPL":["Dodano możliwość wyświetlania listy skanowania na wyskaującym oknie","Zablokowano zaznaczanie tekstu na liscie skanowania","Dodano przycisk 'Uzupełnij' do panelu 'Dodaj nową stronę'","Drobne zmiany"]
+		"changesPL":["Dodano możliwość wyświetlania listy skanowania na wyskakującym oknie","Zablokowano zaznaczanie tekstu na liscie skanowania","Dodano przycisk 'Uzupełnij' do panelu 'Dodaj nową stronę'","Drobne zmiany"]
 	},
 	{"version":"1.2.4",
 		"changes":["Added a badge to a toolbar button","The 'open changed pages' button is hidden if automatic opening is active","Added 'open changed pages' button to popup","Fixed bugs","Minor changes"],

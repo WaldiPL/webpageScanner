@@ -10,12 +10,12 @@
  *  http://ejohn.org/projects/javascript-diff-algorithm/
  */
 
-function diffString2(o,n){
+function diffString2old(o,n){
 	if(!n)return{o:o,n:"",c:""};
 	let reg=/[\n\f\r\u0020\u0009]*(<[^>]*>)[\n\f\r\u0020\u0009]*/,
 		aN=n.split(reg).filter(v=>{if(v)return v;}),
 		aO=o.split(reg).filter(v=>{if(v)return v;}),
-		out=diff(aO,aN),
+		out=diffOld(aO,aN),
 		os="",
 		ns="",
 		cs="";
@@ -35,7 +35,7 @@ function diffString2(o,n){
 	return{o:os,n:ns,c:cs};
 }
 
-function diff(o,n){
+function diffOld(o,n){
 	let ns={},
 		os={},
 		nl=n.length,

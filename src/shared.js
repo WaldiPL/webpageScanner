@@ -140,7 +140,7 @@ function scanCompleted(sitesLength,auto){
 	count=0;
 	}
 }
-	
+
 function scanPage(local,id,auto,sitesLength,extraTime=false){
 	getSettings().then(s=>{
 		const charset=local.charset?local.charset:s.charset;

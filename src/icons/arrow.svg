@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" stroke-width="2"><path fill="none" stroke="#000" d="M1 1l4 4 4-4" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" stroke-width="2"><style>use:not(:target){display:none;}</style><defs><path id="a" fill="none" d="M1 1l4 4 4-4" stroke-linejoin="round"/></defs><use id="d" href="#a" stroke="#000"/><use id="l" href="#a" stroke="#fff"/></svg>

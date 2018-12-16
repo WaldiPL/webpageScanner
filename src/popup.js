@@ -8,6 +8,7 @@
 	document.getElementById("scanNow").addEventListener("click",scanNow);
 	document.getElementById("showList").addEventListener("click",showList);
 	getSettings().then(s=>{
+		if(s.theme==="dark")document.documentElement.className="dark";
 		let openSitesBtn=document.getElementById("openSites");
 		if(s.autoOpen){
 			openSitesBtn.className="none";

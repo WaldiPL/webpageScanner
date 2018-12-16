@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="light">
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="view.css"/>
@@ -7,8 +7,7 @@
 	</head>
 	<body>
 		<div id="content"></div>
-		<div id="header">
-			<img id="icon" src="icons/icon.svg"/>
+		<div id="header" class="hidden">
 			<h1 id="title"></h1>
 			<div id="controls">
 				<button id="editButton" class="neutral" type="button"></button
@@ -23,14 +22,14 @@
 					<option id="deleted" value="deleted" disabled></option>
 					<option id="light" value="light"></option>
 					<option id="raw" value="raw"></option>
-				</select><a id="current" class="neutral"></a>
+				</select><a id="current" class="neutral"><span id="currentIcon"></span></a>
 			</div>
-			<x-button id="toggleHeader"></x-button>
-			<x-highlight id="highlight" class="hidden">
-				<x-button id="prev" type="button"></x-button><x-button id="next" type="button"></x-button>
-				<x-text id="xtext"></x-text>
-				<x-close id="close"></x-close>
-			</x-highlight>
+			<button id="toggleHeader" type="button"></button>
+			<div id="highlight" class="hidden">
+				<button id="prev" type="button"></button><button id="next" type="button"></button>
+				<span id="xtext"></span>
+				<button id="close" class="ghost" type="button"></button>
+			</div>
 		</div>
 		<div id="deletePopup" class="hidden">
 			<h2 id="deleteHeader"></h2>
@@ -65,13 +64,15 @@
 				 </select>
 				</td></tr>
 				<tr><td colspan="2"><input type="checkbox" id="paritialModeEdit"><label id="paritialModeLabelEdit" for="paritialModeEdit"></label></td></tr>
-				<tr id="rowSelectorEdit" class="notVisible"><td id="cssSelectorLabelEdit"></td><td style="width:100%;"><input id="cssSelectorEdit" type="text"><input id="inspectButtonEdit" type="image" src="icons/select.svg"/></td></tr>
+				<tr id="rowSelectorEdit" class="notVisible"><td id="cssSelectorLabelEdit"></td><td style="width:100%;"><input id="cssSelectorEdit" type="text"><input id="inspectButtonEdit" class="ghost" type="image" src="icons/select.svg"/></td></tr>
 			</table>
 			<div class="popupFooter">
 				<button id="editCancel" class="neutral" type="button"></button
 				><button id="editOk" class="positive" type="button"></button>
 			</div>
 		</div>
+		<script src="diff.js"></script>
+		<script src="diffOld.js"></script>
 		<script src="view.js"></script>
 	</body>
 </html>

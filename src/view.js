@@ -21,22 +21,27 @@ browser.runtime.getBrowserInfo().then(e=>{
 	iframe=document.createElement("iframe");
 	iframe.id="__wps_iframe";
 	document.getElementById("content").appendChild(iframe);
+	browser.storage.local.get(["sites","settings"]).then(result=>{
+		let sites=result.sites,
+			settings=result.settings;
+		let site=sites[localId];
+
+		if(settings.theme==="dark")document.documentElement.className="dark";
+		document.getElementById("title").textContent=site.title;
+		if(settings.hideHeader)toggleHeader(true);
+		document.getElementById("viewMode").value=settings.defaultView;
+		document.getElementById("header").removeAttribute("class");
+		document.title=site.title;
+		document.getElementById("favicon").href=site.favicon;
+		document.getElementById("current").href=site.url;
+	});
+	load();
 	translate();
 	document.getElementById("viewMode").addEventListener("change",e=>{load(e.target.value);});
 	document.getElementById("deleteButton").addEventListener("click",showDelete);
 	document.getElementById("deleteCancel").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("editButton").addEventListener("click",showEdit);
 	document.getElementById("editCancel").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
-	let js=document.createElement("script");
-	getSettings().then(s=>{
-		if(s.diffOld)js.src="diffOld.js";
-		else js.src="diff.js";
-		document.body.appendChild(js);
-		js.onload=function(){
-			load(s.defaultView);
-		}
-		if(s.hideHeader)toggleHeader(true);
-	});
 	document.getElementById("toggleHeader").addEventListener("click",()=>{toggleHeader();});
 	document.getElementById("prev").addEventListener("click",()=>{nextPrev(false);});
 	document.getElementById("next").addEventListener("click",()=>{nextPrev(true);});
@@ -165,17 +170,17 @@ function editSite(){
 			paritialMode:document.getElementById("paritialModeEdit").checked,
 			cssSelector:document.getElementById("cssSelectorEdit").value
 		}
-		document.getElementById("title").textContent=obj.title;
-		document.title=obj.title;
 		sites[localId]=Object.assign(sites[localId],obj);
 		browser.storage.local.set({sites}).then(()=>{
 			browser.runtime.sendMessage({"listSite":true});
 		});
+		document.getElementById("title").textContent=obj.title;
+		document.title=obj.title;
+		document.getElementById("current").href=obj.url;
 	});
 }
 
 function load(type){
-	document.getElementById("viewMode").value=type;
 	browser.storage.local.get(['sites','changes','settings']).then(result=>{
 		const sites=result.sites,
 			  changes=result.changes,
@@ -184,7 +189,8 @@ function load(type){
 			  cId=changes[localId],
 			  newHtml=cId.html,
 			  oldHtml=cId?cId.oldHtml:"",
-			  diffString=diffString2(oldHtml,newHtml),
+			  diffStringX=settings.diffOld?diffString2old:diffString2,
+			  diffString=diffStringX(oldHtml,newHtml),
 			  light=cId?diffString.n:newHtml,
 			  news=cId?diffString.c:"",
 			  deleted=cId?diffString.o:"",
@@ -198,10 +204,6 @@ function load(type){
 		if(oldHtml)enableBtn("oldHtml");
 		if(news)enableBtn("news");
 		if(deleted)enableBtn("deleted");
-		document.getElementById("current").href=sId.url;
-		document.getElementById("title").textContent=sId.title;
-		document.title=sId.title;
-		document.getElementById("favicon").href=sId.favicon;
 		toggleNextPrev();
 		highlighted=undefined;
 		prevHighlighted=undefined;
@@ -209,6 +211,7 @@ function load(type){
 			css.rel="stylesheet";
 			css.href=extURL+"viewIframe.css";
 		
+		type=type||settings.defaultView;
 		switch(type){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
@@ -267,7 +270,7 @@ function load(type){
 			const allChanges=iframe.contentDocument.getElementsByClassName("changes10153");
 			if(settings.skipMinorChanges){
 				filteredChanges=[...allChanges].filter((element,index,array)=>{
-					return (element.childNodes[0].length>1||element.children.length);
+					return ((element.childNodes.length&&element.childNodes[0].length>1)||element.children.length);
 				});
 			}else{
 				filteredChanges=allChanges;
@@ -309,6 +312,7 @@ function run(m){
 			window.location=browser.runtime.getURL("view.html")+"?"+(localId-1);
 		}
 	}
+	if(m.changeTheme)document.documentElement.className=m.changeTheme;
 }
 
 function translate(){

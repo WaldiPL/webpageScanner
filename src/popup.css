@@ -1,10 +1,27 @@
+.light:root {
+	--background-color:#fff;
+	--text-color:#0c0c0d;
+	--hover:#ededed;
+	--active:#e5e5e5;
+	--invert:invert(0);
+}
+
+.dark:root {
+	--background-color:#4a4a4f;
+	--text-color:#f9f9fa;
+	--hover:#5b5b60;
+	--active:#636368;
+	--invert:invert(1);
+}
+
 body{
 	max-width:300px;
 	margin:6px 0;
+	background-color:var(--background-color);
 }
 
 div{
-	background:#fff;
+	background:var(--background-color);
 }
 
 button{
@@ -12,9 +29,9 @@ button{
 	background-repeat:no-repeat;
 	background-position:12px 4px;
 	background-size:16px 16px;
-	color:#000;
+	color:var(--text-color);
 	border:none;
-	padding:4px 12px 4px 34px;
+	padding:4px 12px;
 	font-size:12px;
 	text-align:left;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
@@ -23,29 +40,39 @@ button{
 }
 
 button:hover{
-	background-color:#f0f0f0;
+	background-color:var(--hover);
 }
 
 button:active{
-	background-color:#e8e8e8;
+	background-color:var(--active);
 }
 
 .none{
 	display:none !important;
 }
 
-#addThis{
+button::before{
+	content:"";
+	display:inline-block;
+	height:16px;
+	width:16px;
+	vertical-align:bottom;
+	margin-right:6px;
+	filter:var(--invert);
+}
+
+#addThis::before{
 	background-image:url("icons/add.svg");
 }
 
-#scanNow{
+#scanNow::before{
 	background-image:url("icons/scan.svg");
 }
 
-#showList{
+#showList::before{
 	background-image:url("icons/sidebar.svg");
 }
 
-#openSites{
+#openSites::before{
 	background-image:url("icons/open.svg");
 }
