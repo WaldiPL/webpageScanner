@@ -32,7 +32,8 @@ function handleInstalled(details) {
 					"period":60,
 					"paused":false,
 					"search":true,
-					"delay":0
+					"delay":0,
+					"highlightOutsideChanges":false
 				}});
 			}
 			if(!details.temporary){
@@ -55,7 +56,8 @@ function handleInstalled(details) {
 					"period":60,
 					"paused":false,
 					"search":true,
-					"delay":0
+					"delay":0,
+					"highlightOutsideChanges":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.addToContextMenu===undefined){
@@ -66,7 +68,8 @@ function handleInstalled(details) {
 					"period":60,
 					"paused":false,
 					"search":true,
-					"delay":0
+					"delay":0,
+					"highlightOutsideChanges":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.charset===undefined){
@@ -75,7 +78,8 @@ function handleInstalled(details) {
 					"period":60,
 					"paused":false,
 					"search":true,
-					"delay":0
+					"delay":0,
+					"highlightOutsideChanges":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}else if(result.settings.period===undefined){
@@ -83,7 +87,13 @@ function handleInstalled(details) {
 					"period":60,
 					"paused":false,
 					"search":true,
-					"delay":0
+					"delay":0,
+					"highlightOutsideChanges":false
+				});
+				browser.storage.local.set({settings:result.settings});
+			}else if(result.settings.highlightOutsideChanges===undefined){
+				result.settings=Object.assign(result.settings,{
+					"highlightOutsideChanges":false
 				});
 				browser.storage.local.set({settings:result.settings});
 			}

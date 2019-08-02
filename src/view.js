@@ -180,7 +180,7 @@ function editSite(){
 	});
 }
 
-function load(type){
+function load(type,inspectMode){
 	browser.storage.local.get(['sites','changes','settings']).then(result=>{
 		const sites=result.sites,
 			  changes=result.changes,
@@ -207,15 +207,47 @@ function load(type){
 		toggleNextPrev();
 		highlighted=undefined;
 		prevHighlighted=undefined;
-		let css=document.createElement("link");
-			css.rel="stylesheet";
-			css.href=extURL+"viewIframe.css";
-		
+
 		type=type||settings.defaultView;
 		switch(type){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
-				doc.head.appendChild(css);
+				let style=document.createElement("style");
+				let cssSelector=(settings.highlightOutsideChanges)?"":sId.cssSelector;
+					style.textContent=`
+						${cssSelector} .__wps_changes a{
+							background:#ffa !important;
+						}
+						${cssSelector} .__wps_changes.hlc a,
+						${cssSelector} .__wps_changes.hlc a .__wps_changes{
+							background:#00feff !important;
+							color:#000 !important;
+						}
+						${cssSelector} .__wps_changes{
+							background:#ffe900 !important;
+							color:#000 !important;
+							border:0 !important;
+							padding:0 !important;
+							margin:0 !important;
+							opacity:1 !important;
+							overflow:visible !important;
+							outline:none !important;
+						}
+						${cssSelector} .__wps_changes a,
+						${cssSelector} a .__wps_changes{
+							color:#006abc !important;
+						}
+						${cssSelector} .__wps_changes:hover a,
+						${cssSelector} a .__wps_changes:hover{
+							color:#00f !important;
+							background:#ffe100 !important;
+						}
+						${cssSelector} .__wps_changes.hlc{
+							background-color:#00feff !important;
+							color:#000 !important;
+						}
+					`;
+				doc.head.appendChild(style);
 				toggleNextPrev(settings.showNextPrev,settings.scrollToFirstChange);
 				document.getElementById("versionTime").textContent=newTime?i18n("newVersion")+": "+newTime:i18n("lastScan",lastScan);
 				break;
@@ -236,6 +268,9 @@ function load(type){
 				document.getElementById("versionTime").textContent=oldTime?i18n("oldVersion")+": "+oldTime:i18n("lastScan",lastScan);
 				break;
 			case "raw":
+				let css=document.createElement("link");
+					css.rel="stylesheet";
+					css.href=extURL+"viewIframe.css";
 				let divNews=document.createElement("div"),
 					divDeleted=document.createElement("div");
 				divNews.id="__wps_rawNews";
@@ -267,7 +302,7 @@ function load(type){
 		iframe.contentDocument.appendChild(doc.documentElement);
 		viewMode=type;
 		if(type==="light"){
-			const allChanges=iframe.contentDocument.getElementsByClassName("changes10153");
+			const allChanges=iframe.contentDocument.getElementsByClassName("__wps_changes");		
 			if(settings.skipMinorChanges){
 				filteredChanges=[...allChanges].filter((element,index,array)=>{
 					return ((element.childNodes.length&&element.childNodes[0].length>1)||element.children.length);
@@ -275,9 +310,16 @@ function load(type){
 			}else{
 				filteredChanges=allChanges;
 			}
+			if(!settings.highlightOutsideChanges){
+				let selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
+				filteredChanges=[...filteredChanges].filter((element,index,array)=>{
+					return (selectedElement.contains(element));
+				});
+			}
 			document.getElementById("xtext").textContent=i18n("numberOfChanges",filteredChanges.length);
 		}
 		document.getElementById("versionTime").title=i18n("lastScan",lastScan)+"\u000d"+i18n("newVersion")+": "+newTime+"\u000d"+i18n("oldVersion")+": "+oldTime;
+		if(inspectMode)inspect();
 	});
 }
 
@@ -388,7 +430,7 @@ function inspect(){
 				js.src=extURL+"inspect.js";
 			iframe.contentWindow.browser=browser;
 			iframe.contentDocument.body.appendChild(js);
-			
+
 			let css=document.createElement("link");
 				css.rel="stylesheet";
 				css.href=extURL+"inspect.css";
@@ -397,7 +439,6 @@ function inspect(){
 			iframe.contentWindow.init();
 		}
 	}else{
-		load("newHtml");
-		setTimeout(inspect,250);
+		load("newHtml",true);
 	}
 }

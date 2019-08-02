@@ -233,6 +233,12 @@
   "skipMinorChanges": {
     "message": "Skip minor changes"
   },
+  "highlightOutsideChanges": {
+    "message": "Highlight changes outside the scanned element"
+  },
+  "subHighlightOutside": {
+    "message": "Applies to partially scanned pages"
+  },
   "changeOf": {
     "message": "Change $1 of $2"
   },

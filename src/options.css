@@ -176,19 +176,20 @@ button{
 	margin: 0;
 	-moz-appearance: none;
 	min-height: 30px;
-	border: 1px solid #d7d7db;
+	border: 1px solid transparent;
 	border-radius: 2px;
-	background-color:#f9f9fa;
+	background-color:#0c0c0d1a;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	font-size:13px;
+	box-sizing:border-box;
 }
 
 button:hover,select:hover,#fileInput:hover,button:focus,select:focus{
-	background-color:#ebebeb;
+	background-color:#0c0c0d33;
 }
 
 button:active,select:active,#fileInput:active{
-	background-color:#dadada;
+	background-color:#0c0c0d4d;
 }
 
 .row{
@@ -218,9 +219,9 @@ select {
 	-moz-appearance: none;
 	min-height: 30px;
 	min-width: 100px;
-	border: 1px solid #d7d7db;
+	border: 1px solid transparent;
 	border-radius: 2px;
-	background-color:#f9f9fa;
+	background-color:#0c0c0d1a;
 	background-image:url("icons/dropdown.svg#d");
 	background-repeat:no-repeat;
 	background-position:right 8px center;
@@ -238,9 +239,9 @@ input[type="number"],input[type="text"]{
 	padding:4px 4px 4px 10px;
 	-moz-appearance:none;
 	min-height:30px;
-	border:1px solid #d7d7db;
+	border:1px solid transparent;
 	border-radius:2px;
-	background-color:#fff;
+	background-color:#0c0c0d1a	;
 }
 
 input[type="number"]{
@@ -306,9 +307,9 @@ article:hover{
 	height:28px;
 	margin:0 8px;
 	display:inline-block;
-	border:1px solid #d7d7db;
+	border:1px solid transparent;
+	background-color:#0c0c0d1a;
 	border-radius:2px;
-	background-color:#f9f9fa;
 	font-size:13px;
 	cursor:context-menu;
 	overflow:hidden;
@@ -320,7 +321,7 @@ article:hover{
 }
 
 #file{
-	height:28px;
+	height:30px;
 	width:200px;
 	opacity:0;
 	margin-right:-200px;
@@ -382,6 +383,10 @@ a.extLink::after{
 	color:#737373;
 	font-size:85%;
 	margin:0;
+}
+
+label + .subLabel{
+	padding:5px 0 0 28px;
 }
 
 #alertToolbar{

@@ -8,14 +8,14 @@ Features:
 - notifications about detected changes
 - easily add pages to scan list
 - preview old and new version of page
-- sidebar (Firefox 54+)
+- sidebar
 and a lot more...
 
 ## Screenshot
 ![](screenshots/2.png)
 
 ## Requirements
-- Firefox 48+
+- Firefox 60+
 
 ## Permissions
 - Tabs

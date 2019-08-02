@@ -43,11 +43,15 @@ let prevContext;
 	document.getElementById("editSaveF").addEventListener("click",e=>{editFolder(e.target.dataset.id);});
 	document.getElementById("deleteSaveF").addEventListener("click",e=>{deleteFolder(e.target.dataset.id);});
 	document.getElementById("search").addEventListener("input",search);
-	document.documentElement.addEventListener("click",e=>{
+	document.addEventListener("click",e=>{
 		if(e.target.id!=="filter"&&e.target.parentElement.id!=="popupFilter"){
 			document.getElementById("filter").classList.remove("open");
 			document.getElementById("popupFilter").classList.add("hidden");
 		}
+	});
+	document.addEventListener("blur",()=>{
+		document.getElementById("filter").classList.remove("open");
+		document.getElementById("popupFilter").classList.add("hidden");
 	});
 	document.getElementById("filter").addEventListener("click",()=>{
 		document.getElementById("filter").classList.toggle("open");

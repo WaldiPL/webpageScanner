@@ -6,10 +6,13 @@ let wpsView=(document.URL==="about:blank")?true:false;
 init();
 
 function init(){
-	overlay=document.createElement("div");
-	overlay.id="__wps";
-	document.body.appendChild(overlay);
-	addEvent();
+	overlay=document.getElementById("__wps");
+	if(!overlay){
+		overlay=document.createElement("div");
+		overlay.id="__wps";
+		document.body.appendChild(overlay);
+		addEvent();
+	}
 }
 
 function addEvent(){

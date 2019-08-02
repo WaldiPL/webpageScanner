@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.9.2",
+		"changes":["Added possibility to hide changes outside the scanned element #35 #41","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość ukrycia zmian poza skanowanym elementem #35 #41","Naprawiono błędy","Drobne zmiany"]
+	},
 	{"version":"1.9.1",
 		"changes":["Added dark theme for 'preview' and 'popup'","Fixed bugs"],
 		"changesPL":["Dodano ciemny motyw dla 'podglądu' oraz 'wyskakującego okna'","Naprawiono błędy"]

@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
 	"description": "__MSG_extensionDescription__",
-	"version": "1.9.1",
+	"version": "1.9.2",
 	"default_locale": "en",
 	"icons": {
 		"48": "icons/icon.svg",
@@ -15,7 +15,7 @@
 	"applications": {
 		"gecko": {
 			"id": "webpageScanner@waldemar.b",
-			"strict_min_version": "48.0a1"
+			"strict_min_version": "60.0a1"
 		}
 	},
 	"permissions": [

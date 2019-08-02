@@ -64,14 +64,14 @@ function diffString2(o,n){
 		}else{
 			if(!reg[5].test(v)){
 				if(!openSpan)
-					ns+="<span class='changes10153'>";
+					ns+="<span class='__wps_changes'>";
 				openSpan=true;
 			}else if(reg[6].test(v)){
 				if(openSpan)
 					ns+="</span>";
 				openSpan=false;
 				if(!openA)
-					ns+="<span class='changes10153'>";
+					ns+="<span class='__wps_changes'>";
 				openA=true;
 			}else if(reg[4].test(v)){
 				if(openSpan)

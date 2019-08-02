@@ -28,7 +28,7 @@ function diffString2old(o,n){
 		if(v.text!=null){
 			ns+=v.text;
 		}else{
-			ns+=`<span class="changes10153">${v}</span>`;
+			ns+=`<span class="__wps_changes">${v}</span>`;
 			cs+=v;
 		}
 	});

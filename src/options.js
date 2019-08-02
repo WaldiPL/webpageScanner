@@ -95,7 +95,8 @@ function saveOptions(){
 		period:				period>5?period<1440?period:1440:5,
 		paused:				document.getElementById("autoScanPause").checked,
 		search:				document.getElementById("showSearchbar").checked,
-		delay:				!(document.getElementById("delay").value>0)?0:document.getElementById("delay").value
+		delay:				!(document.getElementById("delay").value>0)?0:document.getElementById("delay").value,
+		highlightOutsideChanges:	document.getElementById("highlightOutsideChanges").checked
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -141,6 +142,7 @@ function restoreOptions(){
 		document.getElementById("alertToolbar").className=s.paused?"":"none";
 		document.getElementById("showSearchbar").checked=s.search;
 		document.getElementById("delay").value=s.delay;
+		document.getElementById("highlightOutsideChanges").checked=s.highlightOutsideChanges;
 	});
 	restoreShortcut();
 }
@@ -251,6 +253,8 @@ function translate(){
 	document.getElementById("labelDelay").textContent=i18n("delay");
 	document.getElementById("sublabelDelay").textContent=i18n("subDelay");
 	document.getElementById("labelShortcut").textContent=i18n("shortcutLabel");
+	document.getElementById("labelHighlightOutsideChanges").textContent=i18n("highlightOutsideChanges");
+	document.getElementById("sublabelOutside").textContent=i18n("subHighlightOutside");
 }
 
 function i18n(e,s1){
@@ -669,22 +673,16 @@ function changePermission(e){
 }
 
 function restoreShortcut(){
-	browser.runtime.getBrowserInfo().then(e=>{
-		const version=+e.version.substr(0,2);
-		if(version>=60){
-			document.getElementById("shortcut").classList.remove("none");
-			browser.commands.getAll().then(commands=>{
-				const shortcut=commands[0].shortcut.split("+");
-				if(shortcut.length===2){
-					document.getElementById("shortcut1").value=shortcut[0];
-					document.getElementById("shortcut2").value="";
-					document.getElementById("shortcut3").value=shortcut[1];
-				}else{
-					document.getElementById("shortcut1").value=shortcut[0];
-					document.getElementById("shortcut2").value=shortcut[1];
-					document.getElementById("shortcut3").value=shortcut[2];
-				}
-			});
+	browser.commands.getAll().then(commands=>{
+		const shortcut=commands[0].shortcut.split("+");
+		if(shortcut.length===2){
+			document.getElementById("shortcut1").value=shortcut[0];
+			document.getElementById("shortcut2").value="";
+			document.getElementById("shortcut3").value=shortcut[1];
+		}else{
+			document.getElementById("shortcut1").value=shortcut[0];
+			document.getElementById("shortcut2").value=shortcut[1];
+			document.getElementById("shortcut3").value=shortcut[2];
 		}
 	});
 }
@@ -693,6 +691,10 @@ function updateShortcut(){
 	let [s1,s2,s3]=[document.getElementById("shortcut1").value,document.getElementById("shortcut2").value,document.getElementById("shortcut3").value];
 	if(!s3)s3="Q";
 	else if(s3.length<=2)s3=s3.toUpperCase();
+	if(s1===s2){
+		s2="";
+		document.getElementById("shortcut2").value="";
+	}
 	try{
 		browser.commands.update({
 			name: "_execute_sidebar_action",
