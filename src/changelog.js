@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.9.3",
+		"changes":["Fixed major bug"],
+		"changesPL":["Naprawiono poważny błąd"]
+	},
 	{"version":"1.9.2",
 		"changes":["Added possibility to hide changes outside the scanned element #35 #41","Fixed bugs","Minor changes"],
 		"changesPL":["Dodano możliwość ukrycia zmian poza skanowanym elementem #35 #41","Naprawiono błędy","Drobne zmiany"]

@@ -213,7 +213,7 @@ function load(type,inspectMode){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
 				let style=document.createElement("style");
-				let cssSelector=(settings.highlightOutsideChanges)?"":sId.cssSelector;
+				let cssSelector=(!settings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector)?sId.cssSelector:"";
 					style.textContent=`
 						${cssSelector} .__wps_changes a{
 							background:#ffa !important;
@@ -310,11 +310,13 @@ function load(type,inspectMode){
 			}else{
 				filteredChanges=allChanges;
 			}
-			if(!settings.highlightOutsideChanges){
+			if(!settings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector){
 				let selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
-				filteredChanges=[...filteredChanges].filter((element,index,array)=>{
-					return (selectedElement.contains(element));
-				});
+				if(selectedElement){
+					filteredChanges=[...filteredChanges].filter((element,index,array)=>{
+						return (selectedElement.contains(element));
+					});
+				}
 			}
 			document.getElementById("xtext").textContent=i18n("numberOfChanges",filteredChanges.length);
 		}
