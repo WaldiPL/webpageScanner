@@ -2,7 +2,7 @@
 
 const extURL=browser.extension.getURL("");
 
-function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector=false){
+function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector=false,ignoreNumbers=false){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
@@ -10,7 +10,7 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 		xhr.open("GET",url);
 		xhr.timeout=s.requestTime;
 		xhr.overrideMimeType('text/html; charset='+s.charset);
-		xhr.onload=function(){
+		xhr.onload=async function(){
 			const contentType=this.getResponseHeader("Content-Type").split(/; *charset=/i);
 			const html_data=(contentType[0]==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):this.responseText;
 			const site={
@@ -18,11 +18,9 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 				url:	url,
 				date:	date(),
 				time:	time(),
-				length:	html_data.length,
-				md5:	md5(html_data),
 				mode:	mode,
 				changed:false,
-				favicon:icon||"https://www.google.com/s2/favicons?domain="+url,
+				favicon:icon?await favicon64(icon,"original"):await favicon64(url,s.faviconService),
 				freq:	freq||8,
 				charset:contentType[1]||s.charset,
 				broken:	0,
@@ -31,8 +29,10 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 				cssSelector: (cssSelector!==false)?cssSelector:"",
 				mimeType:contentType[0]||"",
 				oldTime:undefined,
-				newTime:[date(),time()]
+				newTime:[date(),time()],
+				ignoreNumbers:ignoreNumbers
 			};
+			Object.assign(site,length_md5(html_data,ignoreNumbers));
 			browser.storage.local.get(['sites','changes','sort']).then(result=>{
 				let sites=result.sites,
 					changes=result.changes,
@@ -154,25 +154,16 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 				const html_data=(local.mimeType==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):this.responseText;
 				let scanned;
 				if(!local.paritialMode||!local.cssSelector){
-					scanned={
-						length:	html_data.length,
-						md5:	md5(html_data)
-					};
+					scanned=length_md5(html_data,local.ignoreNumbers);
 				}else{
 					let parser=new DOMParser(),
 						doc=parser.parseFromString(html_data,"text/html"),
 						selectedElement=doc.querySelector(local.cssSelector);
 					if(selectedElement){
 						let partHTML=selectedElement.outerHTML;
-						scanned={
-							length:	partHTML.length,
-							md5:	md5(partHTML)
-						};
+						scanned=length_md5(partHTML,local.ignoreNumbers);
 					}else{
-						scanned={
-							length:	html_data.length,
-							md5:	md5(html_data)
-						};
+						scanned=length_md5(html_data,local.ignoreNumbers);
 					}
 				}
 				
@@ -291,13 +282,13 @@ function updateBase(changesArray,timesArray,brokenArray){
 				oldTime:sites[id].newTime||[sites[id].date,sites[id].time],
 				newTime:[date(),time()]
 			};
-			sites[id]=Object.assign(sites[id],obj);
+			Object.assign(sites[id],obj);
 		});
 		timesArray.forEach((value,id)=>{
-			sites[id]=Object.assign(sites[id],currentTime);
+			Object.assign(sites[id],currentTime);
 		});
 		brokenArray.forEach((value,id)=>{
-			sites[id]=Object.assign(sites[id],{broken:value});
+			Object.assign(sites[id],{broken:value});
 		});
 		browser.storage.local.set({sites:sites,changes:changes});
 	});
@@ -358,7 +349,7 @@ function unchange(ixo){
 			let obj={
 				changed:false
 			};
-			sites[value]=Object.assign(sites[value],obj);
+			Object.assign(sites[value],obj);
 		});
 		browser.storage.local.set({sites});
 	});
@@ -408,4 +399,9 @@ function updateBadge(count=0,singleScan){
 			text:count?count+"":""
 		});
 	}
+}
+
+function length_md5(html,ignoreNumbers){
+	const htmlNumber=ignoreNumbers?html.replace(/\d+/g,''):html;
+	return {length:htmlNumber.length,md5:md5(htmlNumber)};
 }

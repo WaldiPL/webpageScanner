@@ -1,6 +1,10 @@
 "use strict";
 
 let changelog=`[
+	{"version":"1.9.4",
+		"changes":["Added possibility to change the 'Favicon service' (Native, Google, DuckDuckGo) #31","Added possibility to ignore changes in numbers","Added change markers on a scrollbar"],
+		"changesPL":["Dodano mozliwość zmiany 'Usługi ikon stron' (Natywna, Google, DuckDuckGo) #31","Dodano możliwość ignorowania zmian liczb","Dodano znaczniki zmian na pasku przewijania"]
+	},
 	{"version":"1.9.3",
 		"changes":["Fixed major bug"],
 		"changesPL":["Naprawiono poważny błąd"]

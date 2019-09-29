@@ -72,6 +72,14 @@
 					<option value="MacCtrl">MacCtrl</option>
 				</select>+<input type="text" id="shortcut3" placeholder="Q" pattern="([A-Za-z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right|([Ff][1-9]|[Ff]1[0-2]))\s*$">
 			</div>
+			<div class="row">
+				<label id="labelFavicon"></label
+				><select id="favicon">
+					<option value="native"></option>
+					<option value="duckduckgo">DuckDuckGo</option>
+					<option value="google">Google</option>
+				</select>
+			</div>
 			<h3 id="h3pageView"></h3>
 			<div class="row">
 				<label id="labelDefaultView"></label
@@ -99,6 +107,9 @@
 			<div class="row">
 				<input type="checkbox" id="highlightOutsideChanges"><label id="labelHighlightOutsideChanges" for="highlightOutsideChanges"></label>
 				<p id="sublabelOutside" class="subLabel"></p>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="scrollbarMarkers"><label id="labelScrollbarMarkers" for="scrollbarMarkers"></label>
 			</div>
 			<h3 id="thChangedPages"></h3>
 			<div class="row">

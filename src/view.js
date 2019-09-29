@@ -149,6 +149,7 @@ function showEdit(){
 		document.getElementById("scanFreqEdit").value=parseInt(freq/unit);
 		document.getElementById("unitEdit").value=unit;
 		document.getElementById("modeEdit").value=sites[localId].mode;
+		document.getElementById("ignoreNumbersEdit").checked=sites[localId].ignoreNumbers;
 		document.getElementById("rowSelectorEdit").className=sites[localId].paritialMode?"":"notVisible";
 		document.getElementById("paritialModeEdit").checked=sites[localId].paritialMode;
 		document.getElementById("cssSelectorEdit").value=(sites[localId].cssSelector===undefined)?"":sites[localId].cssSelector;
@@ -157,20 +158,23 @@ function showEdit(){
 
 function editSite(){
 	document.getElementById("editPopup").classList.add("hidden");
-	browser.storage.local.get(['sites','settings']).then(result=>{
+	browser.storage.local.get(['sites','settings']).then(async result=>{
 		let sites=result.sites,
 			freq=parseInt(document.getElementById("scanFreqEdit").value);
 		let obj={
 			title:	document.getElementById("titleEdit").value,
 			url:	document.getElementById("urlEdit").value,
 			mode:	document.getElementById("modeEdit").value,
-			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("urlEdit").value,
 			freq:	freq>0?freq*parseFloat(document.getElementById("unitEdit").value):8,
 			charset:document.getElementById("charsetEdit").value?document.getElementById("charsetEdit").value:result.settings.charset,
 			paritialMode:document.getElementById("paritialModeEdit").checked,
-			cssSelector:document.getElementById("cssSelectorEdit").value
+			cssSelector:document.getElementById("cssSelectorEdit").value,
+			ignoreNumbers:document.getElementById("ignoreNumbersEdit").checked
 		}
-		sites[localId]=Object.assign(sites[localId],obj);
+		if(sites[localId].url!==obj.url){
+			Object.assign(obj,{favicon: await favicon64(document.getElementById("urlEdit").value,result.settings.faviconService)});
+		}
+		Object.assign(sites[localId],obj);
 		browser.storage.local.set({sites}).then(()=>{
 			browser.runtime.sendMessage({"listSite":true});
 		});
@@ -205,6 +209,7 @@ function load(type,inspectMode){
 		if(news)enableBtn("news");
 		if(deleted)enableBtn("deleted");
 		toggleNextPrev();
+		toggleScrollbarMarkers();
 		highlighted=undefined;
 		prevHighlighted=undefined;
 
@@ -249,6 +254,10 @@ function load(type,inspectMode){
 					`;
 				doc.head.appendChild(style);
 				toggleNextPrev(settings.showNextPrev,settings.scrollToFirstChange);
+				if(settings.scrollbarMarkers){
+					setTimeout(()=>{toggleScrollbarMarkers(true)},300);
+					setTimeout(()=>{toggleScrollbarMarkers(true)},2000);
+				}
 				document.getElementById("versionTime").textContent=newTime?i18n("newVersion")+": "+newTime:i18n("lastScan",lastScan);
 				break;
 			case "news":
@@ -398,6 +407,7 @@ function translate(){
 	document.getElementById("paritialModeLabelEdit").textContent=i18n("paritialMode");
 	document.getElementById("cssSelectorLabelEdit").textContent=i18n("selectorCSS");
 	document.getElementById("inspectButtonEdit").title=i18n("inspectElement");
+	document.getElementById("ignoreNumbersLabelEdit").textContent=i18n("ignoreNumbers");
 }
 
 function getSettings(name){
@@ -442,5 +452,31 @@ function inspect(){
 		}
 	}else{
 		load("newHtml",true);
+	}
+}
+
+function toggleScrollbarMarkers(show){
+	if(show&&iframe.contentDocument.body.scrollHeight>iframe.contentDocument.body.clientHeight&&filteredChanges&&filteredChanges.length){
+		let canvas=document.getElementById("__wps_scrollbarMarkers");
+		if(!canvas){
+			canvas=document.createElement("canvas");
+			canvas.width=16;
+			canvas.id="__wps_scrollbarMarkers";
+			document.body.appendChild(canvas);
+		}
+		const ctx=canvas.getContext('2d');
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		canvas.height=iframe.contentDocument.body.scrollHeight;
+		ctx.fillStyle="rgb(0,144,255)";
+		[...filteredChanges].forEach(e=>{
+		  const elm=e.getBoundingClientRect();
+		  const top=elm.top+iframe.contentWindow.scrollY;
+		  const height=elm.height;
+		  ctx.fillRect(0,top,16,height);
+		});
+	}else{
+		if(document.getElementById("__wps_scrollbarMarkers")){
+			document.getElementById("__wps_scrollbarMarkers").remove();
+		}
 	}
 }

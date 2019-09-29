@@ -466,5 +466,17 @@
   },
   "scanList": {
     "message": "Liste de scan"
+  },
+  "ignoreNumbers":{
+    "message": "Ignorer les modifications de nombres"
+  },
+  "scrollbarMarkers":{
+    "message": "Afficher les marqueurs de changement sur la barre de défilement"
+  },
+  "faviconService":{
+    "message": "Service favicon"
+  },
+  "native":{
+    "message": "Natif"
   }
 }

@@ -180,7 +180,7 @@ function context(e){
 					browser.storage.local.get('sites').then(result=>{
 						let sites=result.sites,
 							paused=(pInput.className==="pauseScan")?true:false;
-						sites[id]=Object.assign(sites[id],{paused});
+						Object.assign(sites[id],{paused});
 						browser.storage.local.set({sites}).then(()=>{
 							if(paused){
 								pInput.className="playScan";
@@ -467,6 +467,7 @@ async function showEdit(e){
 	document.getElementById("eFreq").value=parseInt(freq/multi);
 	document.getElementById("eMulti").value=multi;		
 	document.getElementById("eMode").value=table[e].mode;
+	document.getElementById("eIgnoreNumbers").checked=table[e].ignoreNumbers;
 	document.getElementById("rowSelectorE").className=table[e].paritialMode?"":"hidden";
 	document.getElementById("eParitialMode").checked=table[e].paritialMode;
 	document.getElementById("eCssSelector").value=(table[e].cssSelector===undefined)?"":table[e].cssSelector;
@@ -474,20 +475,23 @@ async function showEdit(e){
 
 function editSite(e){
 	document.getElementById("editingSite").classList.add("hidden");
-	browser.storage.local.get(['sites','settings']).then(result=>{
+	browser.storage.local.get(['sites','settings']).then(async result=>{
 		let sites=result.sites,
 			freq=parseInt(document.getElementById("eFreq").value);
 		let obj={
 			title:	document.getElementById("eTitle").value,
 			url:	document.getElementById("eUrl").value,
 			mode:	document.getElementById("eMode").value,
-			favicon:"https://www.google.com/s2/favicons?domain="+document.getElementById("eUrl").value,
 			freq:	freq>0?freq*parseFloat(document.getElementById("eMulti").value):8,
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset,
 			paritialMode:document.getElementById("eParitialMode").checked,
-			cssSelector:document.getElementById("eCssSelector").value
+			cssSelector:document.getElementById("eCssSelector").value,
+			ignoreNumbers:document.getElementById("eIgnoreNumbers").checked
 		};
-		sites[e]=Object.assign(sites[e],obj);
+		if(sites[e].url!==obj.url){
+			Object.assign(obj,{favicon: await favicon64(document.getElementById("eUrl").value,result.settings.faviconService)});
+		}
+		Object.assign(sites[e],obj);
 		browser.storage.local.set({sites}).then(()=>{
 			statusbar(i18n("savedWebpage",sites[e].title));
 			listSite(true);
@@ -543,6 +547,7 @@ function showAdd(){
 	document.getElementById("aParitialMode").checked=false;
 	document.getElementById("aCssSelector").value="";
 	document.getElementById("rowSelectorA").className="hidden";
+	document.getElementById("aIgnoreNumbers").checked=false;
 }
 
 function addSite(){
@@ -551,8 +556,9 @@ function addSite(){
 		  mode=document.getElementById("aMode").value,
 		  aFreq=parseInt(document.getElementById("aFreq").value),
 		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("aMulti").value):8,
-		  cssSelector=(document.getElementById("aParitialMode").checked&&document.getElementById("aCssSelector").value.length)?document.getElementById("aCssSelector").value:false;
-	rqstAdd(url,title,mode,freq,false,false,false,cssSelector);
+		  cssSelector=(document.getElementById("aParitialMode").checked&&document.getElementById("aCssSelector").value.length)?document.getElementById("aCssSelector").value:false,
+		  ignoreNumbers=document.getElementById("aIgnoreNumbers").checked;
+	rqstAdd(url,title,mode,freq,false,false,false,cssSelector,ignoreNumbers);
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
 }
@@ -788,6 +794,8 @@ function translate(){
 	document.getElementById("cssSelectorE").textContent=i18n("selectorCSS");
 	document.getElementById("inspectA").title=i18n("inspectElement");
 	document.getElementById("inspectE").title=i18n("inspectElement");
+	document.getElementById("ignoreNumbersA").textContent=i18n("ignoreNumbers");
+	document.getElementById("ignoreNumbersE").textContent=i18n("ignoreNumbers");
 	
 	let selectMultiA=document.getElementById("aMulti").options;
 		selectMultiA[0].text=i18n("minutes");

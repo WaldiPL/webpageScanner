@@ -472,5 +472,17 @@
   },
   "scanList": {
     "message": "Lista skanowania"
+  },
+  "ignoreNumbers":{
+    "message": "Ignoruj zmiany liczb"
+  },
+  "scrollbarMarkers":{
+    "message": "Pokaż znaczniki zmian na pasku przewijania"
+  },
+  "faviconService":{
+    "message": "Usługa ikon stron"
+  },
+  "native":{
+    "message": "Natywna"
   }
 }

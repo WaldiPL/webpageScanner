@@ -104,7 +104,7 @@ function showDialog(e){
 									cssSelector:cssSelector
 								};
 								if(sites[wpsID].url===wpsURL){
-									sites[wpsID]=Object.assign(sites[wpsID],obj);
+									Object.assign(sites[wpsID],obj);
 									browser.storage.local.set({sites}).then(()=>{
 										browser.runtime.sendMessage({"closeTab":true});
 									});

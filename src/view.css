@@ -512,3 +512,19 @@ h2{
 .ghost:active{
 	background-color:var(--ghost-active) !important;
 }
+
+#__wps_scrollbarMarkers{
+	position:fixed;
+	bottom:0;
+	right:0px;
+	height:calc(100% - 61px);
+	width:16px;
+	padding:16px 0;
+	pointer-events:none;
+	box-sizing:border-box;
+	opacity:.6;
+}
+
+.hiddenHeader #__wps_scrollbarMarkers{
+	height:100%;
+}

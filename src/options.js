@@ -96,7 +96,9 @@ function saveOptions(){
 		paused:				document.getElementById("autoScanPause").checked,
 		search:				document.getElementById("showSearchbar").checked,
 		delay:				!(document.getElementById("delay").value>0)?0:document.getElementById("delay").value,
-		highlightOutsideChanges:	document.getElementById("highlightOutsideChanges").checked
+		highlightOutsideChanges:	document.getElementById("highlightOutsideChanges").checked,
+		scrollbarMarkers:	document.getElementById("scrollbarMarkers").checked,
+		faviconService:		document.getElementById("favicon").value
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -143,6 +145,8 @@ function restoreOptions(){
 		document.getElementById("showSearchbar").checked=s.search;
 		document.getElementById("delay").value=s.delay;
 		document.getElementById("highlightOutsideChanges").checked=s.highlightOutsideChanges;
+		document.getElementById("scrollbarMarkers").checked=s.scrollbarMarkers;
+		document.getElementById("favicon").value=s.faviconService;
 	});
 	restoreShortcut();
 }
@@ -255,6 +259,9 @@ function translate(){
 	document.getElementById("labelShortcut").textContent=i18n("shortcutLabel");
 	document.getElementById("labelHighlightOutsideChanges").textContent=i18n("highlightOutsideChanges");
 	document.getElementById("sublabelOutside").textContent=i18n("subHighlightOutside");
+	document.getElementById("labelScrollbarMarkers").textContent=i18n("scrollbarMarkers");
+	document.getElementById("labelFavicon").textContent=i18n("faviconService");
+	document.getElementById("favicon").options[0].text=i18n("native");
 }
 
 function i18n(e,s1){
