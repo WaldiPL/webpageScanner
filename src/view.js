@@ -6,14 +6,9 @@ let localId,
 	filteredChanges,
 	inspected,
 	viewMode,
-	iframe,
-	browserVersion=0;
+	iframe;
 	
 const extURL=browser.extension.getURL("");
-
-browser.runtime.getBrowserInfo().then(e=>{
-	browserVersion=+e.version.substr(0,2);
-});
 
 (function(){
 	const urlString=window.location.search;
@@ -48,9 +43,11 @@ browser.runtime.getBrowserInfo().then(e=>{
 	document.getElementById("close").addEventListener("click",toggleNextPrev);
 	document.getElementById("paritialModeEdit").addEventListener("change",e=>{
 		if(e.target.checked){
-			document.getElementById("rowSelectorEdit").removeAttribute("class");
+			document.getElementById("spanSelectorEdit").removeAttribute("class");
+			document.getElementById("cssSelectorLabelEdit").removeAttribute("class");
 		}else{
-			document.getElementById("rowSelectorEdit").className="notVisible";
+			document.getElementById("spanSelectorEdit").className="notVisible";
+			document.getElementById("cssSelectorLabelEdit").className="notVisible";
 		}
 	});
 	document.getElementById("inspectButtonEdit").addEventListener("click",inspect);
@@ -78,10 +75,7 @@ function nextPrev(next){
 	document.getElementById("xtext").textContent=i18n("changeOf",[highlighted+1,filteredChanges.length]);
 	filteredChanges[highlighted].classList.add("hlc");
 	if(prevHighlighted!==undefined)filteredChanges[prevHighlighted].classList.remove("hlc");
-	if(browserVersion<58)
-		filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"end"});
-	else
-		filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"center"});
+	filteredChanges[highlighted].scrollIntoView({behavior:"smooth",block:"center"});
 }
 
 function toggleNextPrev(show,autoScroll){
@@ -150,10 +144,28 @@ function showEdit(){
 		document.getElementById("unitEdit").value=unit;
 		document.getElementById("modeEdit").value=sites[localId].mode;
 		document.getElementById("ignoreNumbersEdit").checked=sites[localId].ignoreNumbers;
-		document.getElementById("rowSelectorEdit").className=sites[localId].paritialMode?"":"notVisible";
+		document.getElementById("deleteScriptsEdit").checked=sites[localId].deleteScripts;
+		document.getElementById("spanSelectorEdit").className=sites[localId].paritialMode?"":"notVisible";
+		document.getElementById("cssSelectorLabelEdit").className=sites[localId].paritialMode?"":"notVisible";
 		document.getElementById("paritialModeEdit").checked=sites[localId].paritialMode;
 		document.getElementById("cssSelectorEdit").value=(sites[localId].cssSelector===undefined)?"":sites[localId].cssSelector;
+		const pageSettings=sites[localId].settings;
+		if(pageSettings){
+			document.getElementById("defaultView").value=pageSettings.defaultView;
+			document.querySelector(`input[name="hideHeader"][value="${pageSettings.hideHeader}"]`).checked=true;
+			document.querySelector(`input[name="showNextPrev"][value="${pageSettings.showNextPrev}"]`).checked=true;
+			document.querySelector(`input[name="scrollToFirstChange"][value="${pageSettings.scrollToFirstChange}"]`).checked=true;
+			document.querySelector(`input[name="skipMinorChanges"][value="${pageSettings.skipMinorChanges}"]`).checked=true;
+			document.querySelector(`input[name="highlightOutsideChanges"][value="${pageSettings.highlightOutsideChanges}"]`).checked=true;
+			document.querySelector(`input[name="scrollbarMarkers"][value="${pageSettings.scrollbarMarkers}"]`).checked=true;
+		}
 	});
+}
+
+function getRadioValue(e){
+	if(document.getElementById(e+"True").checked)return true;
+	else if(document.getElementById(e+"False").checked)return false;
+	return "global";
 }
 
 function editSite(){
@@ -169,8 +181,19 @@ function editSite(){
 			charset:document.getElementById("charsetEdit").value?document.getElementById("charsetEdit").value:result.settings.charset,
 			paritialMode:document.getElementById("paritialModeEdit").checked,
 			cssSelector:document.getElementById("cssSelectorEdit").value,
-			ignoreNumbers:document.getElementById("ignoreNumbersEdit").checked
+			ignoreNumbers:document.getElementById("ignoreNumbersEdit").checked,
+			deleteScripts:document.getElementById("deleteScriptsEdit").checked
 		}
+		const pageSettings={
+			defaultView:				document.getElementById("defaultView").value,
+			hideHeader:					getRadioValue("hideHeader"),
+			showNextPrev:				getRadioValue("showNextPrev"),
+			scrollToFirstChange:		getRadioValue("scrollToFirstChange"),
+			skipMinorChanges:			getRadioValue("skipMinorChanges"),
+			highlightOutsideChanges:	getRadioValue("highlightOutsideChanges"),
+			scrollbarMarkers:			getRadioValue("scrollbarMarkers"),
+		}
+		Object.assign(obj,{settings:pageSettings});
 		if(sites[localId].url!==obj.url){
 			Object.assign(obj,{favicon: await favicon64(document.getElementById("urlEdit").value,result.settings.faviconService)});
 		}
@@ -213,12 +236,34 @@ function load(type,inspectMode){
 		highlighted=undefined;
 		prevHighlighted=undefined;
 
-		type=type||settings.defaultView;
+		const pageSettings={
+			defaultView:0,
+			highlightOutsideChanges:0,
+			showNextPrev:0,
+			scrollToFirstChange:0,
+			skipMinorChanges:0,
+			scrollbarMarkers:0,
+			hideHeader:0
+		};
+		Object.entries(pageSettings).forEach(e=>{
+			if(typeof sId.settings==="undefined"||typeof sId.settings[e[0]]==="undefined"||sId.settings[e[0]]==="global"){
+				pageSettings[e[0]]=settings[e[0]];
+			}else{
+				pageSettings[e[0]]=sId.settings[e[0]]
+			}
+		});
+		if(pageSettings.hideHeader){
+			toggleHeader(true);
+		}else if(document.body.classList.contains("hiddenHeader")){
+			toggleHeader();
+		}
+		type=type||pageSettings.defaultView;
+		document.getElementById("viewMode").value=type;
 		switch(type){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
 				let style=document.createElement("style");
-				let cssSelector=(!settings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector)?sId.cssSelector:"";
+				let cssSelector=(!pageSettings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector)?sId.cssSelector:"";
 					style.textContent=`
 						${cssSelector} .__wps_changes a{
 							background:#ffa !important;
@@ -253,8 +298,8 @@ function load(type,inspectMode){
 						}
 					`;
 				doc.head.appendChild(style);
-				toggleNextPrev(settings.showNextPrev,settings.scrollToFirstChange);
-				if(settings.scrollbarMarkers){
+				toggleNextPrev(pageSettings.showNextPrev,pageSettings.scrollToFirstChange);
+				if(pageSettings.scrollbarMarkers){
 					setTimeout(()=>{toggleScrollbarMarkers(true)},300);
 					setTimeout(()=>{toggleScrollbarMarkers(true)},2000);
 				}
@@ -312,14 +357,14 @@ function load(type,inspectMode){
 		viewMode=type;
 		if(type==="light"){
 			const allChanges=iframe.contentDocument.getElementsByClassName("__wps_changes");		
-			if(settings.skipMinorChanges){
+			if(pageSettings.skipMinorChanges){
 				filteredChanges=[...allChanges].filter((element,index,array)=>{
 					return ((element.childNodes.length&&element.childNodes[0].length>1)||element.children.length);
 				});
 			}else{
 				filteredChanges=allChanges;
 			}
-			if(!settings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector){
+			if(!pageSettings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector){
 				let selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
 				if(selectedElement){
 					filteredChanges=[...filteredChanges].filter((element,index,array)=>{
@@ -408,12 +453,41 @@ function translate(){
 	document.getElementById("cssSelectorLabelEdit").textContent=i18n("selectorCSS");
 	document.getElementById("inspectButtonEdit").title=i18n("inspectElement");
 	document.getElementById("ignoreNumbersLabelEdit").textContent=i18n("ignoreNumbers");
-}
-
-function getSettings(name){
-	return browser.storage.local.get('settings').then(result=>{
-		return name?result.settings[name]:result.settings;
-	});
+	document.getElementById("deleteScriptsLabelEdit").textContent=i18n("deleteScripts");
+	document.getElementById("optionsH2").textContent=i18n("options");
+	document.getElementById("labelDefaultView").textContent=i18n("defaultView");
+	let defaultViewSelect=document.getElementById("defaultView").options;
+		defaultViewSelect[0].text=i18n("highlight");
+		defaultViewSelect[1].text=i18n("newElements");
+		defaultViewSelect[2].text=i18n("deletedElements");
+		defaultViewSelect[3].text=i18n("newVersion");
+		defaultViewSelect[4].text=i18n("oldVersion");
+		defaultViewSelect[5].text=i18n("rawData");
+		defaultViewSelect[6].text=i18n("global");
+	document.getElementById("labelHideHeader").textContent=i18n("hideHeader");
+	document.getElementById("hideHeaderTrue").nextSibling.textContent=i18n("yes");
+	document.getElementById("hideHeaderFalse").nextSibling.textContent=i18n("no");
+	document.getElementById("hideHeaderGlobal").nextSibling.textContent=i18n("global");
+	document.getElementById("labelShowNextPrev").textContent=i18n("showNextPrev");
+	document.getElementById("showNextPrevTrue").nextSibling.textContent=i18n("yes");
+	document.getElementById("showNextPrevFalse").nextSibling.textContent=i18n("no");
+	document.getElementById("showNextPrevGlobal").nextSibling.textContent=i18n("global");
+	document.getElementById("labelScrollToFirstChange").textContent=i18n("scrollToFirstChange");
+	document.getElementById("scrollToFirstChangeTrue").nextSibling.textContent=i18n("yes");
+	document.getElementById("scrollToFirstChangeFalse").nextSibling.textContent=i18n("no");
+	document.getElementById("scrollToFirstChangeGlobal").nextSibling.textContent=i18n("global");
+	document.getElementById("labelSkipMinorChanges").textContent=i18n("skipMinorChanges");
+	document.getElementById("skipMinorChangesTrue").nextSibling.textContent=i18n("yes");
+	document.getElementById("skipMinorChangesFalse").nextSibling.textContent=i18n("no");
+	document.getElementById("skipMinorChangesGlobal").nextSibling.textContent=i18n("global");
+	document.getElementById("labelHighlightOutsideChanges").textContent=i18n("highlightOutsideChanges");
+	document.getElementById("highlightOutsideChangesTrue").nextSibling.textContent=i18n("yes");
+	document.getElementById("highlightOutsideChangesFalse").nextSibling.textContent=i18n("no");
+	document.getElementById("highlightOutsideChangesGlobal").nextSibling.textContent=i18n("global");
+	document.getElementById("labelScrollbarMarkers").textContent=i18n("scrollbarMarkers");
+	document.getElementById("scrollbarMarkersTrue").nextSibling.textContent=i18n("yes");
+	document.getElementById("scrollbarMarkersFalse").nextSibling.textContent=i18n("no");
+	document.getElementById("scrollbarMarkersGlobal").nextSibling.textContent=i18n("global");
 }
 
 function toggleHeader(auto){

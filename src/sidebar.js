@@ -85,6 +85,7 @@ let prevContext;
 	});
 	document.getElementById("inspectE").addEventListener("click",()=>{inspect("edit");});
 	document.getElementById("inspectA").addEventListener("click",()=>{inspect("add");});
+	document.getElementById("pageSettings").addEventListener("click",pageSettings);
 })();
 
 function context(e){
@@ -103,7 +104,7 @@ function context(e){
 				dInput.title=i18n("delete");
 				dInput.draggable=false;
 				dInput.addEventListener('click',()=>{
-					showDeleteFolder(`folder${id}`,e.target.childNodes[1].textContent);
+					showDeleteFolder(`folder${id}`,e.target.firstChild.textContent);
 				});
 			let eInput=document.createElement('img');
 				eInput.className="editFolder";
@@ -112,7 +113,7 @@ function context(e){
 				eInput.title=i18n("edit");
 				eInput.draggable=false;
 				eInput.addEventListener('click',()=>{
-					showEditFolder(`folder${id}`,e.target.childNodes[1].textContent);
+					showEditFolder(`folder${id}`,e.target.firstChild.textContent);
 				});
 			let sInput=document.createElement('img');
 				sInput.className="scanFolder";
@@ -123,9 +124,7 @@ function context(e){
 				sInput.addEventListener('click',()=>{
 					scanFolder(`folder${id}`);
 				});
-			e.target.appendChild(sInput);
-			e.target.appendChild(eInput);
-			e.target.appendChild(dInput);
+			e.target.append(dInput,eInput,sInput);
 			prevContext=id;
 		}
 	}else if(a.tagName==="LI"){
@@ -278,19 +277,9 @@ function listSite(send){
 					iUl.className=value[4]?"folder collapsed":"folder";
 				let iA=document.createElement('a');
 					iA.textContent=value[3];
-				let iImg=document.createElement('img');
-					iImg.className="folderIcon";
-					iImg.src="icons/blank.svg";
-					iImg.draggable=false;
 				iUl.addEventListener("click",e=>{
 					if(!e.ctrlKey){
 						e.target.parentElement.classList.toggle("collapsed");
-						saveSort();
-					}
-				});
-				iImg.addEventListener("click",e=>{
-					if(!e.ctrlKey){
-						e.target.parentElement.parentElement.classList.toggle("collapsed");
 						saveSort();
 					}
 				});
@@ -308,7 +297,6 @@ function listSite(send){
 						});
 					}
 				});
-				iA.insertBefore(iImg,iA.firstChild);
 				iUl.appendChild(iA);
 				list.appendChild(iUl);
 				lastFolder=iUl;
@@ -328,12 +316,7 @@ function openItem(e,id){
 		if(eLi.classList.contains("changed")){
 			updateBadge(-1);
 			unchange([id]);
-			eLi.classList.remove("changed");
-			const parentFolder=eLi.parentElement;
-			if(parentFolder.id!=="lista"&&parentFolder.classList.contains("changedFolder")){
-				if(e===true) parentFolder.classList.remove("changedFolder");
-				else unchangeFolder(parentFolder.id);
-			}
+			unchangeItem(id,e);
 		}
 	}
 }
@@ -379,7 +362,7 @@ function search(){
 							active:(e.button===1||(e.button===0&&e.ctrlKey===true))?false:true
 						});
 						unchange([id]);
-						iLi.classList.remove("changed");
+						unchangeItem(id);
 					}
 				});
 				let iImg=document.createElement('img');
@@ -413,7 +396,7 @@ function editFolder(id){
 	let newName=document.getElementById("nameFolder").value;
 	newName=newName?newName:i18n("newFolder");
 	document.getElementById("editingFolder").classList.add("hidden");
-	document.getElementById(id).firstElementChild.childNodes[1].textContent=newName;
+	document.getElementById(id).firstElementChild.firstChild.textContent=newName;
 	saveSort();
 	statusbar(i18n("savedWebpage",newName));
 }
@@ -468,6 +451,7 @@ async function showEdit(e){
 	document.getElementById("eMulti").value=multi;		
 	document.getElementById("eMode").value=table[e].mode;
 	document.getElementById("eIgnoreNumbers").checked=table[e].ignoreNumbers;
+	document.getElementById("eDeleteScripts").checked=table[e].deleteScripts;
 	document.getElementById("rowSelectorE").className=table[e].paritialMode?"":"hidden";
 	document.getElementById("eParitialMode").checked=table[e].paritialMode;
 	document.getElementById("eCssSelector").value=(table[e].cssSelector===undefined)?"":table[e].cssSelector;
@@ -486,7 +470,8 @@ function editSite(e){
 			charset:document.getElementById("eCharset").value?document.getElementById("eCharset").value:result.settings.charset,
 			paritialMode:document.getElementById("eParitialMode").checked,
 			cssSelector:document.getElementById("eCssSelector").value,
-			ignoreNumbers:document.getElementById("eIgnoreNumbers").checked
+			ignoreNumbers:document.getElementById("eIgnoreNumbers").checked,
+			deleteScripts:document.getElementById("eDeleteScripts").checked
 		};
 		if(sites[e].url!==obj.url){
 			Object.assign(obj,{favicon: await favicon64(document.getElementById("eUrl").value,result.settings.faviconService)});
@@ -548,6 +533,7 @@ function showAdd(){
 	document.getElementById("aCssSelector").value="";
 	document.getElementById("rowSelectorA").className="hidden";
 	document.getElementById("aIgnoreNumbers").checked=false;
+	document.getElementById("aDeleteScripts").checked=true;
 }
 
 function addSite(){
@@ -557,8 +543,9 @@ function addSite(){
 		  aFreq=parseInt(document.getElementById("aFreq").value),
 		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("aMulti").value):8,
 		  cssSelector=(document.getElementById("aParitialMode").checked&&document.getElementById("aCssSelector").value.length)?document.getElementById("aCssSelector").value:false,
-		  ignoreNumbers=document.getElementById("aIgnoreNumbers").checked;
-	rqstAdd(url,title,mode,freq,false,false,false,cssSelector,ignoreNumbers);
+		  ignoreNumbers=document.getElementById("aIgnoreNumbers").checked,
+		  deleteScripts=document.getElementById("aDeleteScripts").checked;
+	rqstAdd(url,title,mode,freq,false,false,false,cssSelector,ignoreNumbers,deleteScripts);
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
 }
@@ -634,6 +621,23 @@ function statusbar(e){
 function updateHeight(elm,remove){
 	if(remove)elm.style.height=null
 	else elm.style.height=elm.scrollHeight+"px";
+}
+
+function unchangeItem(id,entireFolder){
+	if(id===true){
+		[...document.getElementsByClassName("changed")].forEach(v=>{
+			v.classList.remove("changed");
+		});
+		unchangeFolder(true);
+	}else{
+		const item=document.getElementById("item"+id);
+		item.classList.remove("changed");
+		const parentFolder=item.parentElement;
+		if(parentFolder.id!=="lista"&&parentFolder.classList.contains("changedFolder")){
+			if(entireFolder===true) parentFolder.classList.remove("changedFolder");
+			else unchangeFolder(parentFolder.id);
+		}
+	}
 }
 
 function unchangeFolder(id){
@@ -737,6 +741,17 @@ async function fillSelector(m){
 	}
 }
 
+
+function pageSettings(){
+	const id=document.getElementById("editSite").dataset.id;
+	browser.tabs.create({url:`${extURL}view.html?${id}`}).then(tab=>{
+		hideAll();
+		browser.tabs.executeScript({
+			code:"showEdit();"
+		});
+	});
+}
+
 browser.runtime.onMessage.addListener(run);
 function run(m,s,r){
 	if(m.listSite)listSite();
@@ -746,6 +761,7 @@ function run(m,s,r){
 		fillSelector(m);
 		r({sidebar:true});
 	}
+	if(m.unchangeItem)unchangeItem(m.unchangeItemId);
 }
 
 function translate(){
@@ -796,6 +812,9 @@ function translate(){
 	document.getElementById("inspectE").title=i18n("inspectElement");
 	document.getElementById("ignoreNumbersA").textContent=i18n("ignoreNumbers");
 	document.getElementById("ignoreNumbersE").textContent=i18n("ignoreNumbers");
+	document.getElementById("deleteScriptsA").textContent=i18n("deleteScripts");
+	document.getElementById("deleteScriptsE").textContent=i18n("deleteScripts");
+	document.getElementById("pageSettings").textContent=i18n("options");
 	
 	let selectMultiA=document.getElementById("aMulti").options;
 		selectMultiA[0].text=i18n("minutes");

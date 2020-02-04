@@ -45,6 +45,8 @@
 	--clear-icon:url("icons/clear.svg");
 	--scrollbar-thumb:auto;
 	--scrollbar-track:auto;
+	--folder-icon-opened:url("icons/folder-opened.svg#l");
+	--folder-icon-closed:url("icons/folder-closed.svg#l");
 }
 
 .dark:root {
@@ -94,6 +96,8 @@
 	--clear-icon:url("icons/clear.svg#d");
 	--scrollbar-thumb:#737373;
 	--scrollbar-track:#3c3c3d;
+	--folder-icon-opened:url("icons/folder-opened.svg#d");
+	--folder-icon-closed:url("icons/folder-closed.svg#d");
 }
 
 html{
@@ -438,9 +442,9 @@ ul li{
 }
 
 ul li a,
-.folder a{
+.folder>a{
 	display:inline-block;
-	height:16px;
+	height:31px;
 	background:var(--background-color);
 	border-bottom:1px solid var(--link-border);
 	padding:7px 6px;
@@ -451,8 +455,9 @@ ul li a,
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:"";
-	width:calc(100% - 12px);
+	width:100%;
 	cursor:pointer;
+	box-sizing:border-box;
 }
 
 ul li[data-paused="true"] a::before{
@@ -473,7 +478,7 @@ ul ul li[data-paused="true"] a::before{
 }
 
 ul li input+a{
-	width:calc(100% - 132px) !important;
+	width:calc(100% - 120px) !important;
 }
 
 ul li input{
@@ -575,8 +580,7 @@ ul li.opened a .favicon{
 	transition:bottom 250ms, opacity 250ms;
 }
 
-.favicon,
-.folderIcon{
+.favicon{
 	vertical-align:top;
 	padding-right:5px;
 	height:16px;
@@ -606,15 +610,27 @@ ul li.opened a .favicon{
 }
 
 .folder>a{
-	background:var(--folder-background);
+	background-color:var(--folder-background);
+	background-image:var(--folder-icon-opened);
+	background-repeat:no-repeat;
+	background-position:6px center;
+	display:grid;
+	grid-template-columns:calc(100% - 90px) 30px 30px 30px;
+	grid-template-rows:30px;
+	align-items:center;
+	padding:0 0 0 27px;
+}
+
+.folder.collapsed>a{
+	background-image:var(--folder-icon-closed);
 }
 
 .folder>a.indicator{
-	background:var(--folder-indicator) !important;
+	background-color:var(--folder-indicator) !important;
 }
 
 .folder>a:hover{
-	background:var(--folder-hover);
+	background-color:var(--folder-hover);
 }
 
 .folder .favicon{
@@ -626,41 +642,12 @@ ul li.opened a .favicon{
 	overflow:hidden;
 }
 
-.folder .folderIcon{
-	background:url("icons/folder-opened.svg") no-repeat;
-	filter:var(--invert-filter);
-}
-
-.folder.collapsed .folderIcon{
-	background:url("icons/folder-closed.svg") no-repeat;
-	filter:var(--invert-filter);
-}
-
-.deleteFolder{
-	padding:7px;
-	margin-top:-7px;
-	background:var(--folder-context-background);
-	filter:var(--invert-filter);
-	position:absolute;
-	right:60px;
-}
-
-.editFolder{
-	padding:7px;
-	margin-top:-7px;
-	background:var(--folder-context-background);
-	filter:var(--invert-filter);
-	position:absolute;
-	right:30px;
-}
-
+.deleteFolder,
+.editFolder,
 .scanFolder{
 	padding:7px;
-	margin-top:-7px;
 	background:var(--folder-context-background);
 	filter:var(--invert-filter);
-	position:absolute;
-	right:0px;
 }
 
 a:hover .deleteFolder,a:hover .editFolder,a:hover .scanFolder{
@@ -690,23 +677,15 @@ progress{
 }
 
 .changedFolder>a{
-	border-left:3px solid var(--changed-background);
-	padding-left:3px !important;
+	box-shadow:inset 3px 0 0 var(--changed-background);
 }
 
 .errorFolder>a{
-	border-left:3px solid var(--error-border);
-	padding-left:3px !important;
+	box-shadow:inset 3px 0 0 var(--error-border);
 }
 
 .changedFolder.errorFolder>a {
-	padding-left:0px !important;
-}
-
-.changedFolder.errorFolder>a::before {
-    content:"";
-    border-left:3px solid var(--changed-background);
-	padding:6px 0;
+	box-shadow:inset 3px 0 0 var(--error-border), inset 6px 0 0 var(--changed-background);
 }
 
 #rowSelectorE.hidden *,

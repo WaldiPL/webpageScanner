@@ -5,7 +5,7 @@
 		<link rel="icon" type="image/svg-xml" href="icons/icon2.svg">
 		<link rel="stylesheet" href="options.css"/>
 	</head>
-	<body>
+	<body class="none">
 		<nav>
 			<a id="optionsA" href="#options"></a>
 			<a id="managementA" href="#management"></a>
@@ -51,10 +51,6 @@
 			</div>
 			<div class="row">
 				<input type="checkbox" id="showSearchbar"><label id="labelShowSearchbar" for="showSearchbar"></label>
-			</div>
-			<div class="row">
-				<label id="labelDelay"></label><input type="number" id="delay" min="0" placeholder="0" value="0">
-				<p id="sublabelDelay" class="subLabel"></p>
 			</div>
 			<div class="row" id="shortcut">
 				<label id="labelShortcut"></label
@@ -121,6 +117,10 @@
 			<div class="sub">
 				<input type="checkbox" id="openWindowMore"><label id="labelOpenWindowMore" for="openWindowMore"></label>
 			</div>
+			<div class="row">
+				<label id="labelDelay"></label><input type="number" id="delay" min="0" placeholder="0" value="0">
+				<p id="sublabelDelay" class="subLabel"></p>
+			</div>
 			<h3 id="thNotifications"></h3>
 			<div class="row">
 				<input type="checkbox" id="showNotification"><label id="labelShow" for="showNotification"></label>
@@ -132,6 +132,17 @@
 			<div class="row">
 				<label id="volumeLabel"></label
 				><input type="range" min="0" max="100" step="5" id="notificationVolume"><output id="oVolume" for="notificationVolume"></output>%
+			</div>
+			<div class="row">
+				<label id="labelNotificationSound"></label
+				><select id="notificationSound">
+					<option value="notification.opus">)</option>
+					<option value="notification2.opus"></option>
+					<option value=""></option>
+				</select><button id="playSound"></button>
+			</div>
+			<div class="row none" id="rowExternalSound">
+				<input type="text" id="externalSound">
 			</div>
 		</form>
 		</section>
@@ -220,7 +231,6 @@
 				<p><span id="spanShare"></span></p>
 				<a class="share" id="twitter" href="https://twitter.com/home?status=Scan%20web%20pages%20for%20updates%20with%20%23WebPagesScanner%20for%20%23Firefox.%20%23WebExtension%0Ahttps%3A//addons.mozilla.org/en-us/firefox/addon/web-pages-scanner?src=external-twitter" target="_blank">Twitter</a
 				><a class="share" id="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//addons.mozilla.org/en-us/firefox/addon/web-pages-scanner?src=external-facebook" target="_blank">Facebook</a
-				><a class="share" id="googleplus" href="https://plus.google.com/share?url=https%3A//addons.mozilla.org/en-us/firefox/addon/web-pages-scanner?src=external-googleplus" target="_blank">Google+</a
 				><a class="share" id="amo" href="https://addons.mozilla.org/firefox/addon/web-pages-scanner/" target="_blank">addons.mozilla.org</a>
 			</article>
 		</section>

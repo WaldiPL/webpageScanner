@@ -276,7 +276,7 @@
     "message": "The backup has been restored."
   },
   "version": {
-    "message": "Version $1"
+    "message": "Version "
   },
   "changelog": {
     "message": "Changelog"
@@ -484,5 +484,35 @@
   },
   "native":{
     "message": "Native"
+  },
+  "deleteScripts":{
+    "message": "Delete scripts"
+  },
+  "yes":{
+    "message": "Yes"
+  },
+  "no":{
+    "message": "No"
+  },
+  "global":{
+    "message": "Global value"
+  },
+  "notificationSound":{
+    "message": "Notification sound"
+  },
+  "sound":{
+    "message": "Sound "
+  },
+  "externalSound":{
+    "message": "External sound"
+  },
+  "soundUrl":{
+    "message": "Sound URL"
+  },
+  "tooltipOpenPages":{
+    "message": "\r Open changed pages (middle-click)"
+  },
+  "tooltipStopOpening":{
+    "message": "\r Stop opening changed pages (middle-click)"
   }
 }

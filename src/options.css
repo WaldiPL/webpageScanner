@@ -225,10 +225,11 @@ select {
 	background-image:url("icons/dropdown.svg#d");
 	background-repeat:no-repeat;
 	background-position:right 8px center;
+	vertical-align:middle;
 }
 
 input[type="range"]{
-	vertical-align:bottom;
+	vertical-align:middle;
 }
 
 input[type="number"],input[type="text"]{
@@ -239,16 +240,26 @@ input[type="number"],input[type="text"]{
 	padding:4px 4px 4px 10px;
 	-moz-appearance:none;
 	min-height:30px;
-	border:1px solid transparent;
+	border:1px solid #0c0c0d4d;;
 	border-radius:2px;
-	background-color:#0c0c0d1a	;
+	background-color:#fff;
+	vertical-align:middle;
 }
 
 input[type="number"]{
 	max-width:80px;
 }
 
-input[type="number"]:focus,input[type="text"]:focus,#h2changelog+article{
+input[type="number"]:hover,input[type="text"]:hover{
+	border-color:#0c0c0d80;
+}
+
+input[type="number"]:focus,input[type="text"]:focus{
+	border-color:#0a84ff;
+	box-shadow:0 0 0 1px #0a84ff, 0 0 0 4px #0a84ff4d;
+}
+
+#h2changelog+article{
 	border-color:#0a84ff;
 }
 
@@ -295,10 +306,6 @@ article:hover{
 	background-color:#4267B2;
 }
 
-#googleplus{
-	background-color:#DB4437;
-}
-
 #amo{
 	background-color:#57BD35;
 }
@@ -318,6 +325,7 @@ article:hover{
 
 #fileText{
 	padding:0 20px;
+	vertical-align:middle;
 }
 
 #file{
@@ -421,4 +429,17 @@ span+button{
 
 #optionsForm{
 	margin-bottom:35px;
+}
+
+#playSound{
+	background-image:url("icons/play.svg");
+	min-width:30px;
+	background-position:center;
+	background-repeat:no-repeat;
+	padding:0;
+	vertical-align:middle;
+}
+
+#externalSound{
+	width:500px;
 }

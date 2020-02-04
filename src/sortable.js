@@ -161,19 +161,10 @@ function addFolder(name){
 		iLi.className="folder";
 	let iA=document.createElement('a');
 		iA.textContent=name;
-	let iImg=document.createElement('img');
-		iImg.className="folderIcon";
-		iImg.src="icons/blank.svg";
-		iImg.draggable=false;
 	iLi.addEventListener("click",e=>{
 			e.target.parentElement.classList.toggle("collapsed");
 			saveSort();
 	});
-	iImg.addEventListener("click",e=>{
-			e.target.parentElement.parentElement.classList.toggle("collapsed");
-			saveSort();
-	});
-	iA.insertBefore(iImg,iA.firstChild);
 	iLi.appendChild(iA);
 	list.appendChild(iLi);
 	saveSort();

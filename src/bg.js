@@ -2,133 +2,92 @@
 
 browser.runtime.onInstalled.addListener(handleInstalled);
 function handleInstalled(details) {
+	const defaultSettings={
+		"notificationVolume":60,
+		"notificationTime":10000,
+		"showNotification":true,
+		"autoOpen":false,
+		"hideHeader":false,
+		"defaultView":"light",
+		"openWindow":false,
+		"openWindowMore":1,
+		"requestTime":10000,
+		"diffOld":false,
+		"popupList":false,
+		"theme":"light",
+		"showNextPrev":true,
+		"scrollToFirstChange":true,
+		"skipMinorChanges":true,
+		"addToContextMenu":true,
+		"changelog":true,
+		"charset":"utf-8",
+		"period":60,
+		"paused":false,
+		"search":true,
+		"delay":0,
+		"highlightOutsideChanges":false,
+		"scrollbarMarkers":true,
+		"faviconService":"native",
+		"notificationSound":"notification.opus",
+	};
 	if(details.reason==="install"){
-		browser.storage.local.get('sites').then(result=>{
+		browser.storage.local.get(['sites','settings']).then(result=>{
+			const db={};
 			if(result.sites===undefined){
-				browser.storage.local.set({sites:[],changes:[],sort:[]});
+				Object.assign(db,{sites:[],changes:[],sort:[]});
 			}
-		});
-		browser.storage.local.get('settings').then(result=>{
 			if(result.settings===undefined){
-				browser.storage.local.set({settings:{
-					"notificationVolume":60,
-					"notificationTime":10000,
-					"showNotification":true,
-					"autoOpen":false,
-					"hideHeader":false,
-					"defaultView":"light",
-					"openWindow":false,
-					"openWindowMore":1,
-					"requestTime":10000,
-					"diffOld":false,
-					"popupList":false,
-					"theme":"light",
-					"showNextPrev":true,
-					"scrollToFirstChange":true,
-					"skipMinorChanges":true,
-					"addToContextMenu":true,
-					"changelog":true,
-					"charset":"utf-8",
-					"period":60,
-					"paused":false,
-					"search":true,
-					"delay":0,
-					"highlightOutsideChanges":false,
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				}});
+				Object.assign(db,{settings:defaultSettings});
 			}
-			if(!details.temporary){
-				browser.tabs.create({
-					url:"options.html#changelog",
-					active:true
-				});
-			}
-		});
+			browser.storage.local.set(db).then(()=>{
+				init();
+				if(!details.temporary){
+					browser.tabs.create({
+						url:"options.html#changelog",
+						active:true
+					});
+				}
+			});
+		});	
 	}else if(details.reason==="update"){
 		browser.storage.local.get('settings').then(result=>{
-			if(result.settings.showNextPrev===undefined){
-				Object.assign(result.settings,{
-					"showNextPrev":true,
-					"scrollToFirstChange":true,
-					"skipMinorChanges":true,
-					"addToContextMenu":true,
-					"changelog":true,
-					"charset":"utf-8",
-					"period":60,
-					"paused":false,
-					"search":true,
-					"delay":0,
-					"highlightOutsideChanges":false,
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				});
-				browser.storage.local.set({settings:result.settings});
-			}else if(result.settings.addToContextMenu===undefined){
-				Object.assign(result.settings,{
-					"addToContextMenu":true,
-					"changelog":true,
-					"charset":"utf-8",
-					"period":60,
-					"paused":false,
-					"search":true,
-					"delay":0,
-					"highlightOutsideChanges":false,
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				});
-				browser.storage.local.set({settings:result.settings});
-			}else if(result.settings.charset===undefined){
-				Object.assign(result.settings,{
-					"charset":"utf-8",
-					"period":60,
-					"paused":false,
-					"search":true,
-					"delay":0,
-					"highlightOutsideChanges":false,
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				});
-				browser.storage.local.set({settings:result.settings});
-			}else if(result.settings.period===undefined){
-				Object.assign(result.settings,{
-					"period":60,
-					"paused":false,
-					"search":true,
-					"delay":0,
-					"highlightOutsideChanges":false,
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				});
-				browser.storage.local.set({settings:result.settings});
-			}else if(result.settings.highlightOutsideChanges===undefined){
-				Object.assign(result.settings,{
-					"highlightOutsideChanges":false,
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				});
-				browser.storage.local.set({settings:result.settings});
-			}else if(result.settings.scrollbarMarkers===undefined){
-				Object.assign(result.settings,{
-					"scrollbarMarkers":true,
-					"faviconService":"native"
-				});
-				browser.storage.local.set({settings:result.settings});
-			}
-			
-			if(!details.temporary&&result.settings.changelog!==false){
-				browser.tabs.create({
-					url:"options.html#changelog",
-					active:true
-				});
-			}
+			const settings=Object.assign({},defaultSettings,result.settings);
+			browser.storage.local.set({settings}).then(()=>{
+				if(!details.temporary&&settings.changelog){
+					browser.tabs.create({
+						url:"options.html#changelog",
+						active:true
+					});
+				}
+			});
 		});
 	}
 }
 
+browser.browserAction.onClicked.addListener(async (tab,e)=>{
+	if(e.button===1){
+		const activeAlarm=browser.alarms.get("openSitesDelay");
+		const badgeNumber=browser.browserAction.getBadgeText({});
+		if(await activeAlarm){
+			browser.alarms.clear("openSitesDelay");
+			updateTooltip("alarm");
+		}else if(delayLinksId&&delayLinksId.length){
+			browser.alarms.create("openSitesDelay",{delayInMinutes:0.01});
+			updateTooltip("alarm");
+		}else if(await badgeNumber){
+			openSite("webpagesScannertrue");
+		}
+	}
+});
+
+
 (function(){
 	browser.storage.local.get(['sites','sort','settings']).then(result=>{
-		init();
+		if(result.sites===undefined||result.settings===undefined){
+			handleInstalled({reason:"install"});
+		}else{
+			init();
+		}
 		if(result.sort===undefined&&result.sites!==undefined){
 			let sort=[];
 			result.sites.forEach((value,i)=>{
@@ -141,17 +100,14 @@ function handleInstalled(details) {
 
 function init(){
 	browser.storage.local.get('settings').then(result=>{
-		if(result.settings){
-			if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
-			else browser.browserAction.setPopup({popup:"/sidebar.html?"});
-			showContext(result.settings.addToContextMenu);
-			let period=result.settings.period?result.settings.period:60;
-			if(!result.settings.paused){
-				browser.alarms.create("webpageScanner",{periodInMinutes:period+1});
-				browser.alarms.create("webpageScanner2",{delayInMinutes:1});
-			}
-		}else
-			setTimeout(init,100);
+		if(!result.settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
+		else browser.browserAction.setPopup({popup:"/sidebar.html?"});
+		showContext(result.settings.addToContextMenu);
+		let period=result.settings.period?result.settings.period:60;
+		if(!result.settings.paused){
+			browser.alarms.create("webpageScanner",{periodInMinutes:period+1});
+			browser.alarms.create("webpageScanner2",{delayInMinutes:1});
+		}
 	});
 }
 
@@ -229,6 +185,9 @@ function openSitesDelay(openWindow){
 				browser.alarms.create("openSitesDelay",{delayInMinutes:delayTime/60});
 			});
 		}
+		updateBadge(-1);
+		unchange([delayLinksId[delayCurrentId]]);
+		browser.runtime.sendMessage({"unchangeItem":true,"unchangeItemId":[delayLinksId[delayCurrentId]]});
 	}else{
 		delayLinksId=[];
 		lastWindowId=-1;

@@ -68,6 +68,22 @@
 	document.getElementById("shortcut1").addEventListener("change",updateShortcut);
 	document.getElementById("shortcut2").addEventListener("change",updateShortcut);
 	document.getElementById("shortcut3").addEventListener("change",updateShortcut);
+	document.getElementById("notificationSound").addEventListener("change",e=>{
+		if(e.target.value){
+			document.getElementById("rowExternalSound").className="row none";
+		}else{
+			document.getElementById("rowExternalSound").className="row";
+		}
+	});
+	document.getElementById("playSound").addEventListener("click",()=>{
+		const audioSrc=document.getElementById("notificationSound").value||document.getElementById("externalSound").value;
+		let audio=new Audio(audioSrc);
+			audio.volume=(document.getElementById("notificationVolume").value/100);
+			audio.addEventListener("canplay",()=>{
+				audio.play();
+				setTimeout(()=>{audio.pause();},10000);
+			});
+	});
 })();
 
 function saveOptions(){
@@ -98,7 +114,8 @@ function saveOptions(){
 		delay:				!(document.getElementById("delay").value>0)?0:document.getElementById("delay").value,
 		highlightOutsideChanges:	document.getElementById("highlightOutsideChanges").checked,
 		scrollbarMarkers:	document.getElementById("scrollbarMarkers").checked,
-		faviconService:		document.getElementById("favicon").value
+		faviconService:		document.getElementById("favicon").value,
+		notificationSound:	document.getElementById("notificationSound").value||document.getElementById("externalSound").value
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -147,6 +164,13 @@ function restoreOptions(){
 		document.getElementById("highlightOutsideChanges").checked=s.highlightOutsideChanges;
 		document.getElementById("scrollbarMarkers").checked=s.scrollbarMarkers;
 		document.getElementById("favicon").value=s.faviconService;
+		if(s.notificationSound==="notification.opus"||s.notificationSound==="notification2.opus"){
+			document.getElementById("notificationSound").value=s.notificationSound;
+		}else{
+			document.getElementById("notificationSound").value="";
+			document.getElementById("externalSound").value=s.notificationSound;
+			document.getElementById("rowExternalSound").className="row";
+		}
 	});
 	restoreShortcut();
 }
@@ -170,7 +194,6 @@ function createBackup(e){
 }
 
 function translate(){
-	document.title=i18n("extensionName");
 	document.getElementById("optionsA").textContent=i18n("options");
 	document.getElementById("optionsA").title=i18n("options");
 	document.getElementById("managementA").textContent=i18n("management");
@@ -262,6 +285,14 @@ function translate(){
 	document.getElementById("labelScrollbarMarkers").textContent=i18n("scrollbarMarkers");
 	document.getElementById("labelFavicon").textContent=i18n("faviconService");
 	document.getElementById("favicon").options[0].text=i18n("native");
+	document.getElementById("labelNotificationSound").textContent=i18n("notificationSound");
+	let sound=document.getElementById("notificationSound").options;
+		sound[0].text=i18n("sound")+"1";
+		sound[1].text=i18n("sound")+"2";
+		sound[2].text=i18n("externalSound");
+	document.getElementById("externalSound").placeholder=i18n("soundUrl");
+
+	document.body.removeAttribute("class");
 }
 
 function i18n(e,s1){
@@ -274,6 +305,10 @@ function changeActive(e){
 	document.getElementById("changelogA").removeAttribute("class");
 	document.getElementById("supportA").removeAttribute("class");
 	document.getElementById(e+"A").className="active";
+	document.title=i18n("extensionName")+" | "+i18n(e);	
+	if(e==="changelog"){
+		generateChangelog();
+	}
 }
 
 let uploaded;

@@ -9,6 +9,7 @@
  * More Info:
  *  http://ejohn.org/projects/javascript-diff-algorithm/
  */
+"use strict";
 
 function diffString2(o,n){
 	if(!n)return{o:o,n:"",c:""};
@@ -40,19 +41,19 @@ function diffString2(o,n){
 			}else
 				aO.push(v);
 		});
-	let out=diff(aO,aN),
-		os="",
+	diff(aO,aN);
+	let os="",
 		ns="",
 		cs="";
-	out.o.forEach(v=>{
-		if(v.text==null){
+	aO.forEach(v=>{
+		if(v.text===undefined){
 			os+=`<del>${v}</del>`;
 		}
 	});
 	let openSpan=false,
 		openA=false;
-	out.n.forEach(v=>{
-		if(v.text!=null){
+	aN.forEach(v=>{
+		if(v.text!==undefined){
 			if(openSpan)
 				ns+="</span>";
 			openSpan=false;
@@ -98,17 +99,17 @@ function diff(o,n){
 	Object.setPrototypeOf(ns,null);
 	Object.setPrototypeOf(os,null);
 	n.forEach((v,i)=>{
-		if(ns[v]==null)
+		if(ns[v]===undefined)
 			ns[v]={rows:[],o:null};
 		ns[v].rows.push(i);
 	});
 	o.forEach((v,i)=>{
-		if(os[v]==null)
+		if(os[v]===undefined)
 			os[v]={rows:[],n:null};
 		os[v].rows.push(i);
 	});
 	for(let i in ns){
-		if(ns[i].rows.length===1&&typeof(os[i])!="undefined"&&os[i].rows.length===1){
+		if(ns[i].rows.length===1&&typeof(os[i])!=="undefined"&&os[i].rows.length===1){
 			const a=ns[i].rows[0],
 				  b=os[i].rows[0];
 			n[a]={text:n[a],row:b};
@@ -116,16 +117,15 @@ function diff(o,n){
 		}
 	}
 	for(let i=0;i<nl-1;i++){
-		if(n[i].text!=null&&n[i+1].text==null&&n[i].row+1<ol&&o[n[i].row+1].text==null&&n[i+1]==o[n[i].row+1]){
+		if(n[i].text!==undefined&&n[i+1].text===undefined&&n[i].row+1<ol&&o[n[i].row+1].text===undefined&&n[i+1]===o[n[i].row+1]){
 			n[i+1]={text:n[i+1],row:n[i].row+1};
 			o[n[i].row+1]={text:o[n[i].row+1],row:i+1};
 		}
 	}
 	for(let i=nl-1;i>0;i--){
-		if(n[i].text!=null&&n[i-1].text==null&&n[i].row>0&&o[n[i].row-1].text==null&&n[i-1]==o[n[i].row-1]){
+		if(n[i].text!==undefined&&n[i-1].text===undefined&&n[i].row>0&&o[n[i].row-1].text===undefined&&n[i-1]===o[n[i].row-1]){
 			n[i-1]={text:n[i-1],row:n[i].row-1};
 			o[n[i].row-1]={text:o[n[i].row-1],row:i-1};
 		}
 	}
-	return{o:o,n:n};
 }

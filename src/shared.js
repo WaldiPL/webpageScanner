@@ -2,7 +2,7 @@
 
 const extURL=browser.extension.getURL("");
 
-function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector=false,ignoreNumbers=false){
+function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector=false,ignoreNumbers=false,deleteScripts=true){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
@@ -11,8 +11,9 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 		xhr.timeout=s.requestTime;
 		xhr.overrideMimeType('text/html; charset='+s.charset);
 		xhr.onload=async function(){
+			const result=browser.storage.local.get(['sites','changes','sort']);
 			const contentType=this.getResponseHeader("Content-Type").split(/; *charset=/i);
-			const html_data=(contentType[0]==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):this.responseText;
+			const html_data=(contentType[0]==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):deleteScripts?this.responseText.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,""):this.responseText;
 			const site={
 				title:	title,
 				url:	url,
@@ -30,29 +31,26 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 				mimeType:contentType[0]||"",
 				oldTime:undefined,
 				newTime:[date(),time()],
-				ignoreNumbers:ignoreNumbers
+				ignoreNumbers:ignoreNumbers,
+				deleteScripts:deleteScripts
 			};
 			Object.assign(site,length_md5(html_data,ignoreNumbers));
-			browser.storage.local.get(['sites','changes','sort']).then(result=>{
-				let sites=result.sites,
-					changes=result.changes,
-					sort=result.sort;
-				sites[sites.length]=site;
-				changes[changes.length]={
-					oldHtml:"",
-					html:	html_data
-				};
-				sort[sort.length]=[`item${sites.length-1}`,"root","item","",false];
-				browser.storage.local.set({sites:sites,changes:changes,sort:sort}).then(()=>{
-					if(!btn){
-						listSite(true);
-						statusbar(i18n("addedWebpage",title));
-					}else{
-						if(bookmarkId!==false)browser.runtime.sendMessage({"nextBookmark":bookmarkId+1});
-						browser.runtime.sendMessage({"listSite":true});
-					}
-				});
-			});
+			
+			const {sites,changes,sort}=await result;			
+			sites[sites.length]=site;
+			changes[changes.length]={
+				oldHtml:"",
+				html:	html_data
+			};
+			sort[sort.length]=[`item${sites.length-1}`,"root","item","",false];
+			await browser.storage.local.set({sites,changes,sort});
+			if(!btn){
+				listSite(true);
+				statusbar(i18n("addedWebpage",title));
+			}else{
+				if(bookmarkId!==false)browser.runtime.sendMessage({"nextBookmark":bookmarkId+1});
+				browser.runtime.sendMessage({"listSite":true});
+			}
 			if(btn>1){
 				browser.notifications.create(`webpagesScannerAdded`,{
 					"type":		"basic",
@@ -86,17 +84,17 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 	});
 }
 
-var tempChanges=[],
-	tempTimes=[],
-	tempBroken=[],
+var changesArray=[],
+	timesArray=[],
+	brokenArray=[],
 	numberScanned=0,
 	count=0;
 	
-function scanCompleted(sitesLength,auto){
+async function scanCompleted(sitesLength,auto){
 	numberScanned++;
 	if(!auto)statusbar([numberScanned,sitesLength]);
 	if(numberScanned===sitesLength||sitesLength===true){
-		updateBase(tempChanges,tempTimes,tempBroken);
+		await updateBase();
 		if(!auto){
 			document.getElementById("scanSites").disabled=false;
 			document.getElementById("openSite").disabled=false;
@@ -105,20 +103,21 @@ function scanCompleted(sitesLength,auto){
 			statusbar(i18n("scanCompleted"));
 		}
 		if(count){
-			let audio=new Audio('notification.opus'),
-				count2=count;
-			getSettings().then(s=>{
+			await getSettings().then(s=>{
+				let audio=new Audio(s.notificationSound);
 				audio.volume=(s.notificationVolume/100);
-				audio.play();
+				audio.addEventListener("canplay",()=>{
+					audio.play();
+				});
 				if(s.autoOpen)openSite(`webpagesScanner${auto}`);
-				else updateBadge(count2,sitesLength);
+				updateBadge(false,sitesLength);
 				if(s.showNotification){
 					browser.notifications.create(
 						`webpagesScanner${auto}`,{
 							"type":		"basic",
 							"iconUrl":	"icons/icon.svg",
 							"title":	i18n("extensionName"),
-							"message":	count2==1?i18n("oneDetected"):i18n("moreDetected",count2)
+							"message":	count==1?i18n("oneDetected"):i18n("moreDetected",count)
 						}
 					).then(()=>{
 						if(!s.autoOpen){
@@ -133,11 +132,11 @@ function scanCompleted(sitesLength,auto){
 				}
 			});
 		}
-	tempChanges=[];
-	tempTimes=[];
-	tempBroken=[];
-	numberScanned=0;
-	count=0;
+		changesArray=[];
+		timesArray=[];
+		brokenArray=[];
+		numberScanned=0;
+		count=0;
 	}
 }
 
@@ -151,7 +150,7 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 		xhr.overrideMimeType('text/html; charset='+charset);
 		xhr.onload=function(){
 			if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-				const html_data=(local.mimeType==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):this.responseText;
+				const html_data=(local.mimeType==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):(local.deleteScripts===true)?this.responseText.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,""):this.responseText;
 				let scanned;
 				if(!local.paritialMode||!local.cssSelector){
 					scanned=length_md5(html_data,local.ignoreNumbers);
@@ -167,16 +166,22 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 					}
 				}
 				
-				if((local.mode=="m0"&&(local.length<=scanned.length-10||local.length>=scanned.length+10))||(local.mode=="m3"&&(local.length<=scanned.length-50||local.length>=scanned.length+50))||(local.mode=="m4"&&(local.length<=scanned.length-250||local.length>=scanned.length+250))||(local.mode=="m1"&&local.length!=scanned.length)||(local.mode=="m2"&&local.md5!=scanned.md5)){
+				if((local.mode==="m0"&&(Math.abs(local.length-scanned.length)>=10))||(local.mode==="m3"&&(Math.abs(local.length-scanned.length)>=50))||(local.mode==="m4"&&(Math.abs(local.length-scanned.length)>=250))||(local.mode==="m1"&&local.length!==scanned.length)||(local.mode==="m2"&&local.md5!==scanned.md5)){
 					if(!auto){
 						itemId.classList.add("changed","scanned");
 						itemId.parentElement.classList.add("changedFolder");
 					}
 					count++;
-					tempChanges[id]=[html_data,scanned.md5,scanned.length];
+					if(typeof local.deleteScripts==="undefined"){
+						const htmlWithoutScripts=html_data.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
+						scanned=length_md5(htmlWithoutScripts,local.ignoreNumbers);
+						changesArray[id]=[htmlWithoutScripts,scanned.md5,scanned.length];
+					}else{
+						changesArray[id]=[html_data,scanned.md5,scanned.length];
+					}
 				}else{
-					tempTimes[id]=true;
-					if(this.status>=400)tempBroken[id]=local.broken+1||1;
+					timesArray[id]=true;
+					if(this.status>=400)brokenArray[id]=local.broken+1||1;
 					if(!auto){
 						if(this.status<400)itemId.classList.add("scanned");
 						else{
@@ -187,7 +192,7 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 					}
 				}
 			}else{
-				tempBroken[id]=local.broken+1||1;
+				brokenArray[id]=local.broken+1||1;
 				if(!auto){
 					itemId.classList.add("error");
 					itemId.parentElement.classList.add("errorFolder");
@@ -197,14 +202,14 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 			scanCompleted(sitesLength,auto);
 		};
 		let error=function(e){
-			tempBroken[id]=local.broken+1||1;
+			brokenArray[id]=local.broken+1||1;
 			scanCompleted(sitesLength,auto);
 			if(!auto)itemId.classList.add("error");
 			console.warn([local.url,e]);
 		};
 		let timeout=function(e){
 			if(extraTime){
-				tempBroken[id]=local.broken+1||1;
+				brokenArray[id]=local.broken+1||1;
 				scanCompleted(sitesLength,auto);
 				if(!auto)itemId.classList.add("error");
 				console.warn(["2nd timeout",local.url,e]);
@@ -258,44 +263,45 @@ function deltaTime(oldDate,oldTime){
 	return delta/60/60/1000;
 }
 
-function updateBase(changesArray,timesArray,brokenArray){
-	browser.storage.local.get(['sites','changes']).then(result=>{
-		let changes=result.changes,
-			sites=result.sites;
-		let currentTime={
-			date:date(),
-			time:time(),
-			broken:0
+
+async function updateBase(){
+	const {sites,changes}=await browser.storage.local.get(['sites','changes']);
+	let currentTime={
+		date:date(),
+		time:time(),
+		broken:0
+	};
+	changesArray.forEach((value,id)=>{
+		changes[id]={
+			oldHtml:changes[id].html,
+			html:	value[0]
 		};
-		changesArray.forEach((value,id)=>{
-			changes[id]={
-				oldHtml:changes[id].html,
-				html:	value[0]
-			};
-			let obj={
-				date:	date(),
-				time:	time(),
-				length:	value[2],
-				md5:	value[1],
-				changed:true,
-				broken:	0,
-				oldTime:sites[id].newTime||[sites[id].date,sites[id].time],
-				newTime:[date(),time()]
-			};
-			Object.assign(sites[id],obj);
-		});
-		timesArray.forEach((value,id)=>{
-			Object.assign(sites[id],currentTime);
-		});
-		brokenArray.forEach((value,id)=>{
-			Object.assign(sites[id],{broken:value});
-		});
-		browser.storage.local.set({sites:sites,changes:changes});
+		let obj={
+			date:	date(),
+			time:	time(),
+			length:	value[2],
+			md5:	value[1],
+			changed:true,
+			broken:	0,
+			oldTime:sites[id].newTime||[sites[id].date,sites[id].time],
+			newTime:[date(),time()]
+		};
+		Object.assign(sites[id],obj);
+		if(typeof sites[id].deleteScripts==="undefined"){
+			Object.assign(sites[id],{deleteScripts:true});
+		}
 	});
+	timesArray.forEach((value,id)=>{
+		Object.assign(sites[id],currentTime);
+	});
+	brokenArray.forEach((value,id)=>{
+		Object.assign(sites[id],{broken:value});
+	});
+	await browser.storage.local.set({sites,changes});
 }
 
 function openSite(ev){
-	const auto=(ev==="webpagesScannertrue")?true:false;
+	const auto=(ev==="webpagesScannertrue");
 	let ixs=[],
 		links=[];
 	browser.storage.local.get(['sites','settings']).then(result=>{
@@ -305,9 +311,6 @@ function openSite(ev){
 			if(value.changed===true){
 				ixs.push(i);
 				links.push(`${extURL}view.html?${i}`);
-				if(!auto){
-					document.getElementById(`item${i}`).classList.remove("changed");
-				}
 			}
 		});
 		if(ixs.length){
@@ -334,10 +337,12 @@ function openSite(ev){
 						});
 					});
 				}
+				updateBadge();
+				unchange(ixs);
+				if(!auto){
+					unchangeItem(true);
+				}
 			}
-			updateBadge();
-			unchange(ixs);
-			if(!auto)unchangeFolder(true);
 		}
 	});
 }
@@ -379,25 +384,53 @@ function getSettings(name){
 	});
 }
 
-function updateBadge(count=0,singleScan){
+function updateBadge(minus,singleScan){
 	if(singleScan===true){
 		browser.browserAction.getBadgeText({}).then(e=>{
 			let count2=parseInt(e?e:0)+1;
 			browser.browserAction.setBadgeText({
-				text:count2?count2+"":""
+				text:count2+""
 			});
+			updateTooltip(true);
 		});
-	}else if(count<0){
+	}else if(minus){
 		browser.browserAction.getBadgeText({}).then(e=>{
 			let count2=parseInt(e)-1;
 			browser.browserAction.setBadgeText({
 				text:count2?count2+"":""
 			});
+			updateTooltip(count2);
 		});
 	}else{
-		browser.browserAction.setBadgeText({
-			text:count?count+"":""
-		});
+		if(count){
+			browser.storage.local.get("sites").then(({sites})=>{
+				let i=0;
+				sites.forEach(e=>{
+					if(e.changed)i++;
+				});
+				browser.browserAction.setBadgeText({
+					text:i+""
+				});
+			});
+			updateTooltip(true);
+		}else{
+			browser.browserAction.setBadgeText({
+				text:""
+			});
+			updateTooltip();
+		}
+	}
+}
+
+async function updateTooltip(alarm){
+	if(alarm){
+		const activeAlarm=browser.alarms.get("openSitesDelay");
+		browser.browserAction.setTitle({title: i18n("extensionName")+i18n("tooltipOpenPages")});
+		if(await activeAlarm){
+			browser.browserAction.setTitle({title: i18n("extensionName")+i18n("tooltipStopOpening")});
+		}
+	}else{
+		browser.browserAction.setTitle({title:i18n("extensionName")});
 	}
 }
 

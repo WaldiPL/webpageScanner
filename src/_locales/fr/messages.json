@@ -270,7 +270,7 @@
     "message": "La sauvegarde a été restaurée."
   },
   "version": {
-    "message": "Version $1"
+    "message": "Version "
   },
   "changelog": {
     "message": "Changelog"
@@ -478,5 +478,35 @@
   },
   "native":{
     "message": "Natif"
+  },
+  "deleteScripts":{
+    "message": "Supprimer les scripts"
+  },
+  "yes":{
+    "message": "Oui"
+  },
+  "no":{
+    "message": "Non"
+  },
+  "global":{
+    "message": "Valeur globale"
+  },
+  "notificationSound":{
+    "message": "Son de notification"
+  },
+  "sound":{
+    "message": "Son "
+  },
+  "externalSound":{
+    "message": "Son externe"
+  },
+  "soundUrl":{
+    "message": "URL son"
+  },
+  "tooltipOpenPages":{
+    "message": "\r Ouvrir les pages modifiées (Clic du milieu)"
+  },
+  "tooltipStopOpening":{
+    "message": "\r Arrêtez d'ouvrir les pages modifiées (Clic du milieu)"
   }
 }

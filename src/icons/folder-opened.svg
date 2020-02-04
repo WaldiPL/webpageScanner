@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="#0c0c0d" stroke-width="1" stroke-linejoin="round"><path fill="none" d="M1.5 7.5h13v-4h-7l-1-2h-5zm-1 0h15l-1 7h-13z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke-width="1" stroke-linejoin="round"><style>use:not(:target){display:none;}</style><defs><path id="a" fill="none" d="M1.5 7.5h13v-4h-7l-1-2h-5zm-1 0h15l-1 7h-13z"/></defs><use id="l" href="#a" stroke="#0c0c0d"/><use id="d" href="#a" stroke="#f9f9fa"/></svg>

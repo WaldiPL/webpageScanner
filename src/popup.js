@@ -1,27 +1,30 @@
 "use strict";
 
-(function(){
+(async function(){
 	document.getElementById("addThis").textContent=i18n("addThis");
 	document.getElementById("scanNow").textContent=i18n("scanNow");
 	document.getElementById("showList").textContent=i18n("showList");
 	document.getElementById("addThis").addEventListener("click",addThis);
 	document.getElementById("scanNow").addEventListener("click",scanNow);
 	document.getElementById("showList").addEventListener("click",showList);
-	getSettings().then(s=>{
-		if(s.theme==="dark")document.documentElement.className="dark";
-		let openSitesBtn=document.getElementById("openSites");
-		if(s.autoOpen){
-			openSitesBtn.className="none";
-		}else{
-			browser.browserAction.getBadgeText({}).then(e=>{
-				if(e){
-					openSitesBtn.textContent=i18n("openWebpage");
-					openSitesBtn.addEventListener("click",openSites);
-				}else
-					openSitesBtn.className="none";
+	const result=browser.storage.local.get('settings');
+	const activeAlarm=browser.alarms.get("openSitesDelay");
+	const badgeText=browser.browserAction.getBadgeText({});
+	const {settings}=await result;
+	if(settings.theme==="dark")document.documentElement.className="dark";
+	let openSitesBtn=document.getElementById("openSites");
+	if(await badgeText&&!(await activeAlarm)){
+		openSitesBtn.textContent=i18n("openWebpage");
+		openSitesBtn.removeAttribute("class");
+		if(settings.autoOpen){
+			openSitesBtn.addEventListener("click",()=>{
+				browser.alarms.create("openSitesDelay",{delayInMinutes:0.01});
+				openSitesBtn.className="none";
 			});
+		}else{
+			openSitesBtn.addEventListener("click",openSites);
 		}
-	});
+	}
 })();
 
 function addThis(){
@@ -37,6 +40,7 @@ function scanNow(){
 
 function openSites(){
 	browser.runtime.sendMessage({"openSites":true});
+	openSitesBtn.className="none";
 }
 
 function showList(){
@@ -54,10 +58,4 @@ function showList(){
 
 function i18n(e){
 	return browser.i18n.getMessage(e);
-}
-
-function getSettings(name){
-	return browser.storage.local.get('settings').then(result=>{
-		return name?result.settings[name]:result.settings;
-	});
 }

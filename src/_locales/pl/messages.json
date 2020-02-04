@@ -276,7 +276,7 @@
     "message": "Kopia zapasowa została przywrócona."
   },
   "version": {
-    "message": "Wersja $1"
+    "message": "Wersja "
   },
   "changelog": {
     "message": "Historia zmian"
@@ -484,5 +484,35 @@
   },
   "native":{
     "message": "Natywna"
+  },
+  "deleteScripts":{
+    "message": "Usuwaj skrypty"
+  },
+  "yes":{
+    "message": "Tak"
+  },
+  "no":{
+    "message": "Nie"
+  },
+  "global":{
+    "message": "Wartość globalna"
+  },
+  "notificationSound":{
+    "message": "Dźwięk powiadomienia"
+  },
+  "sound":{
+    "message": "Dźwięk "
+  },
+  "externalSound":{
+    "message": "Dźwięk zewnętrzny"
+  },
+  "soundUrl":{
+    "message": "Adres URL dźwięku"
+  },
+  "tooltipOpenPages":{
+    "message": "\r Otwórz zmienione strony (środkowy przycisk)"
+  },
+  "tooltipStopOpening":{
+    "message": "\r Zatrzymaj otwieranie zmienionych stron (środkowy przycisk)"
   }
 }

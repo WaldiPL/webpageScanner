@@ -1,45 +1,57 @@
 "use strict";
 
-let changelog=`[
+let changelogGenerated=false;
+
+function generateChangelog(){
+	if(changelogGenerated){
+		return;
+	}
+	changelogGenerated=true;
+
+	let changelog=`[
+	{"version":"1.9.5",
+		"changes":["Fixed bug","#36","Added possibility to change options individually for each pages","Added possibility to delete JS scripts","Added links to GitHub in 'Changelog'","Added possibility to change sound of the notification","Added possibility to stop openning next pages (Middle-click the button on a toolbar)","#42","Minor changes","Fixed bugs"],
+		"changesPL":["Naprawiono błąd","#36","Dodano możliwość zmiany opcji indywidualnie dla każdej strony","Dodano możliwość usunięcia skryptów JS","Dodano odnośniki do GitHuba w 'Historii zmian' ","Dodano możliwość zmiany dźwięku powiadomienia","Dodano możliwość zatrzymania otwierania kolejnych stron (Kliknięcie środkowym przyciskiem myszy przycisku na pasku narzędzi)","#42","Drobne zmiany","Naprawiono błędy"]
+	},
 	{"version":"1.9.4",
-		"changes":["Added possibility to change the 'Favicon service' (Native, Google, DuckDuckGo) #31","Added possibility to ignore changes in numbers","Added change markers on a scrollbar"],
-		"changesPL":["Dodano mozliwość zmiany 'Usługi ikon stron' (Natywna, Google, DuckDuckGo) #31","Dodano możliwość ignorowania zmian liczb","Dodano znaczniki zmian na pasku przewijania"]
+		"changes":["Added possibility to change the 'Favicon service' (Native, Google, DuckDuckGo)","#31","Added possibility to ignore changes in numbers","Added change markers on a scrollbar"],
+		"changesPL":["Dodano mozliwość zmiany 'Usługi ikon stron' (Natywna, Google, DuckDuckGo)","#31","Dodano możliwość ignorowania zmian liczb","Dodano znaczniki zmian na pasku przewijania"]
 	},
 	{"version":"1.9.3",
 		"changes":["Fixed major bug"],
 		"changesPL":["Naprawiono poważny błąd"]
 	},
 	{"version":"1.9.2",
-		"changes":["Added possibility to hide changes outside the scanned element #35 #41","Fixed bugs","Minor changes"],
-		"changesPL":["Dodano możliwość ukrycia zmian poza skanowanym elementem #35 #41","Naprawiono błędy","Drobne zmiany"]
+		"changes":["Added possibility to hide changes outside the scanned element","#35","#41","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość ukrycia zmian poza skanowanym elementem","#35","#41","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.9.1",
 		"changes":["Added dark theme for 'preview' and 'popup'","Fixed bugs"],
 		"changesPL":["Dodano ciemny motyw dla 'podglądu' oraz 'wyskakującego okna'","Naprawiono błędy"]
 	},
 	{"version":"1.9.0",
-		"changes":["Fixed problem with displaying some pages","Improved the display of text files #32","Added a link to 'Scan list' in options #30","Added date and time for the 'old and new version of the page'","Minor changes","[dev] Pages are displayed in a 'iframe' element"],
-		"changesPL":["Naprawiono problem z wyświetlaniem niektórtch stron","Ulepszono wyświetlanie plików tekstowych #32","Dodano odnośnik do 'Listy skanowania' w opcjach #30","Dodano datę i czas dla 'nowej i starej wersji strony'","Drobne zmiany","[dev] Strony wyświetlane są w elemencie 'iframe'"]
+		"changes":["Fixed problem with displaying some pages","Improved the display of text files","#32","Added a link to 'Scan list' in options","#30","Added date and time for the 'old and new version of the page'","Minor changes","[dev] Pages are displayed in a 'iframe' element"],
+		"changesPL":["Naprawiono problem z wyświetlaniem niektórtch stron","Ulepszono wyświetlanie plików tekstowych","#32","Dodano odnośnik do 'Listy skanowania' w opcjach","#30","Dodano datę i czas dla 'nowej i starej wersji strony'","Drobne zmiany","[dev] Strony wyświetlane są w elemencie 'iframe'"]
 	},
 	{"version":"1.8.5",
-		"changes":["Added possibility to scan a part of the page #29","Fixed bugs","Minor changes"],
-		"changesPL":["Dodano możliwość skanowania części strony #29","Naprawiono błędy","Drobne zmiany"]
+		"changes":["Added possibility to scan a part of the page","#29","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość skanowania części strony","#29","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.8.1",
 		"changes":["New view - 'Raw data'","Updated interface","Fixed bugs","Minor changes"],
 		"changesPL":["Nowy widok - 'Surowe dane'","Zaktualizowano interfejs","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.8.0",
-		"changes":["Added possibility to scan an entire folder","Added possibility to open all pages in the folder (middle mouse button or ctrl + left mouse button)","Folders that contain changed pages are highlighted","Added French language #25 (Mozinet-fr)","Added a 'clear' button to the search bar","Added an animation of opening / closing folders","Improved sorting pages","Fixed bugs","Minor changes"],
-		"changesPL":["Dodano możliwość skanowania całego folderu","Dodano możliwość otwarcia wszystkich stron w folderze (środkowy przycisk myszy lub ctrl + lewy przycisk myszy)","Foldery zawierające zmienione strony są podświetlone","Dodano język francuski #25 (Mozinet-fr)","Dodano przycisk 'wyczyść' do paska wyszukiwania","Dodano animację otwierania/zamykania folderów","Usprawniono sortowanie stron","Naprawiono błędy","Drobne zmiany"]
+		"changes":["Added possibility to scan an entire folder","Added possibility to open all pages in the folder (middle mouse button or ctrl + left mouse button)","Folders that contain changed pages are highlighted","Added French language (Mozinet-fr)","#25","Added a 'clear' button to the search bar","Added an animation of opening / closing folders","Improved sorting pages","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość skanowania całego folderu","Dodano możliwość otwarcia wszystkich stron w folderze (środkowy przycisk myszy lub ctrl + lewy przycisk myszy)","Foldery zawierające zmienione strony są podświetlone","Dodano język francuski (Mozinet-fr)","#25","Dodano przycisk 'wyczyść' do paska wyszukiwania","Dodano animację otwierania/zamykania folderów","Usprawniono sortowanie stron","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.7.4",
 		"changes":["Added possibility to change the keyboard shortcut","Restored progress bar","Fixed bugs","Minor changes"],
 		"changesPL":["Dodano możliwość zmiany skrótu klawiaturowego","Przywrócono pasek postępu","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.7.3",
-		"changes":["Strict mode for JS","Fixed bug #21"],
-		"changesPL":["Tryb ścisły dla JS","Naprawiono błąd #21"]
+		"changes":["Strict mode for JS","Fixed bug","#21"],
+		"changesPL":["Tryb ścisły dla JS","Naprawiono błąd","#21"]
 	},
 	{"version":"1.7.2",
 		"changes":["Fixed major bug"],
@@ -50,8 +62,8 @@ let changelog=`[
 		"changesPL":["Dodano możliwość ustawienia opóźnienia w otwieraniu stron w nowych kartach","Drobne zmiany","Naprawiono błędy"]
 	},
 	{"version":"1.7.0",
-		"changes":["Added search bar","Added possibility to set the scanning frequency in minutes #19","Minor changes","Fixed bugs"],
-		"changesPL":["Dodano pasek wyszukiwania","Dodano możliwość ustawienia częstotliwości skanowania w minutach #19","Drobne zmiany","Naprawiono błędy"]
+		"changes":["Added search bar","Added possibility to set the scanning frequency in minutes","#19","Minor changes","Fixed bugs"],
+		"changesPL":["Dodano pasek wyszukiwania","Dodano możliwość ustawienia częstotliwości skanowania w minutach","#19","Drobne zmiany","Naprawiono błędy"]
 	},
 	{"version":"1.6.7",
 		"changes":["Improved function to import pages from a bookmark folder","Minor changes","Fixed bugs"],
@@ -78,16 +90,16 @@ let changelog=`[
 		"changesPL":["Możliwość importowania / eksportowania stron do folderu zakładek"]
 	},
 	{"version":"1.5.2",
-		"changes":["Added possibility to change the default charset #18","Fixed bugs","Minor changes"],
-		"changesPL":["Dodano możliwość zmiany domyślnego kodowania tekstu #18","Naprawiono błędy","Drobne zmiany"]
+		"changes":["Added possibility to change the default charset","#18","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano możliwość zmiany domyślnego kodowania tekstu","#18","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.5.0",
 		"changes":["Reorganized options","Added 'Changelog' and 'Support'","Added possibility to restore a backup","Fixed bugs","Minor changes"],
 		"changesPL":["Przeorganizowano opcje","Dodano 'Historię zmian' oraz 'Wsparcie'","Dodano możliwość przywrócenia kopii zapasowej","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.4.0",
-		"changes":["Added 'next/previous change' buttons #16","Fixed problem with blank page #15","Fixed bugs","Minor changes"],
-		"changesPL":["Dodano przyciski 'poprzednia/następna zmiana' #16","Naprawiono problem z pustą stroną #15","Naprawiono błędy","Drobne zmiany"]
+		"changes":["Added 'next/previous change' buttons","#16","Fixed problem with blank page","#15","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano przyciski 'poprzednia/następna zmiana'","#16","Naprawiono problem z pustą stroną","#15","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.3.6",
 		"changes":["Added possibility to name the folder before it was created"],
@@ -114,8 +126,8 @@ let changelog=`[
 		"changesPL":["Dodano podświetlenie dla folderów","Naprawiono błędy"]
 	},
 	{"version":"1.3.0",
-		"changes":["Added possibility to sort and create folders #1","Restored context menu to input fields","Fixed bugs","Minor changes"],
-		"changesPL":["Dodano mozliwość sortowania i tworzenia folderów #1","Przywrócono menu kontekstowe dla pól tekstowych","Naprawiono błędy","Drobne zmiany"]
+		"changes":["Added possibility to sort and create folders","#1","Restored context menu to input fields","Fixed bugs","Minor changes"],
+		"changesPL":["Dodano mozliwość sortowania i tworzenia folderów","#1","Przywrócono menu kontekstowe dla pól tekstowych","Naprawiono błędy","Drobne zmiany"]
 	},
 	{"version":"1.2.6",
 		"changes":["Replaced innerHTML by DOM Parser"],
@@ -189,24 +201,33 @@ let changelog=`[
 		"changes":["Initial release"],
 		"changesPL":["Pierwsze wydanie"]
 	}
-]`;
+	]`;
 
-(function(){
 	let container=document.getElementById("changelog"),
-		lang=browser.i18n.getUILanguage();
+		lang=browser.i18n.getUILanguage(),
+		versionText=browser.i18n.getMessage("version");
 	JSON.parse(changelog).forEach(v=>{
 		let article=document.createElement("article"),
 			h3=document.createElement("h3"),
 			ul=document.createElement("ul"),
 			changes=lang==="pl"?v.changesPL:v.changes;
-		h3.textContent=browser.i18n.getMessage("version",v.version);
+		h3.textContent=versionText+v.version;
 		changes.forEach(c=>{
 			let li=document.createElement("li");
+			if(c.length>3){
 				li.textContent=c;
-			ul.appendChild(li);
+				ul.appendChild(li);
+			}else{
+				let git=document.createElement("a");
+					git.target="_blank";
+					git.className="extLink";
+					git.href="https://github.com/WaldiPL/webpageScanner/issues/"+c.substring(1);
+					git.textContent=c;
+				ul.lastElementChild.append(" ",git);
+			}
 		});
 		article.appendChild(h3);
 		article.appendChild(ul);
 		container.appendChild(article);
 	});
-})();
+}
