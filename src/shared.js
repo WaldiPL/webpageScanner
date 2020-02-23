@@ -2,7 +2,7 @@
 
 const extURL=browser.extension.getURL("");
 
-function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector=false,ignoreNumbers=false,deleteScripts=true){
+function rqstAdd(url,title,icon=false,mode="m0",freq=8,bookmarkId=false,cssSelector=false,ignoreNumbers=false,deleteScripts=true){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
@@ -44,14 +44,10 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 			};
 			sort[sort.length]=[`item${sites.length-1}`,"root","item","",false];
 			await browser.storage.local.set({sites,changes,sort});
-			if(!btn){
-				listSite(true);
-				statusbar(i18n("addedWebpage",title));
+			browser.runtime.sendMessage({"statusbar":true,"statusbarArg":i18n("addedWebpage",title),"listSite":true});
+			if(bookmarkId!==false){
+				browser.runtime.sendMessage({"nextBookmark":bookmarkId+1});
 			}else{
-				if(bookmarkId!==false)browser.runtime.sendMessage({"nextBookmark":bookmarkId+1});
-				browser.runtime.sendMessage({"listSite":true});
-			}
-			if(btn>1){
 				browser.notifications.create(`webpagesScannerAdded`,{
 					"type":		"basic",
 					"iconUrl":	site.favicon,
@@ -64,8 +60,9 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 			}
 		};
 		let error=function(e){
-			if(bookmarkId!==false)browser.runtime.sendMessage({"nextBookmark":bookmarkId+1,"errorBookmark":true});
-			if(btn>1){
+			if(bookmarkId!==false){
+				browser.runtime.sendMessage({"nextBookmark":bookmarkId+1,"errorBookmark":true});
+			}else{
 				browser.notifications.create(`webpagesScannerError`,{
 					"type":		"basic",
 					"iconUrl":	"icons/warn.svg",
@@ -75,7 +72,8 @@ function rqstAdd(url,title,mode,freq,btn=false,icon,bookmarkId=false,cssSelector
 				setTimeout(()=>{
 					browser.notifications.clear(`webpagesScannerError`);
 				},5000);
-			}else if(!btn)statusbar(i18n("addedWebpageError"));
+				browser.runtime.sendMessage({"statusbar":true,"statusbarArg":i18n("addedWebpageError")});
+			}
 			console.warn([url,e]);
 		};
 		xhr.onerror=error;
@@ -90,18 +88,12 @@ var changesArray=[],
 	numberScanned=0,
 	count=0;
 	
-async function scanCompleted(sitesLength,auto){
+async function scanCompleted(sitesLength){
 	numberScanned++;
-	if(!auto)statusbar([numberScanned,sitesLength]);
-	if(numberScanned===sitesLength||sitesLength===true){
+	browser.runtime.sendMessage({"statusbar":true,"statusbarArg":[numberScanned,sitesLength]});
+	if(numberScanned===sitesLength){
 		await updateBase();
-		if(!auto){
-			document.getElementById("scanSites").disabled=false;
-			document.getElementById("openSite").disabled=false;
-			document.getElementById("showAdd").disabled=false;
-			document.getElementById("addFolder").disabled=false;
-			statusbar(i18n("scanCompleted"));
-		}
+		browser.runtime.sendMessage({"statusbar":true,"statusbarArg":i18n("scanCompleted"),"enableButtons":true});
 		if(count){
 			await getSettings().then(s=>{
 				let audio=new Audio(s.notificationSound);
@@ -109,11 +101,11 @@ async function scanCompleted(sitesLength,auto){
 				audio.addEventListener("canplay",()=>{
 					audio.play();
 				});
-				if(s.autoOpen)openSite(`webpagesScanner${auto}`);
+				if(s.autoOpen)openSite();
 				updateBadge(false,sitesLength);
 				if(s.showNotification){
 					browser.notifications.create(
-						`webpagesScanner${auto}`,{
+						`webpagesScannerScanned`,{
 							"type":		"basic",
 							"iconUrl":	"icons/icon.svg",
 							"title":	i18n("extensionName"),
@@ -126,7 +118,7 @@ async function scanCompleted(sitesLength,auto){
 						}
 					});
 					setTimeout(()=>{
-						browser.notifications.clear(`webpagesScanner${auto}`);
+						browser.notifications.clear(`webpagesScannerScanned`);
 						if(!s.autoOpen)browser.notifications.onClicked.removeListener(openSite);
 					},s.notificationTime);
 				}
@@ -140,10 +132,9 @@ async function scanCompleted(sitesLength,auto){
 	}
 }
 
-function scanPage(local,id,auto,sitesLength,extraTime=false){
+function scanPage(local,id,sitesLength,extraTime=false){
 	getSettings().then(s=>{
 		const charset=local.charset?local.charset:s.charset;
-		const itemId=document.getElementById("item"+id);
 		let xhr=new XMLHttpRequest();
 		xhr.open("GET",local.url);
 		xhr.timeout=extraTime?s.requestTime*2:s.requestTime;
@@ -167,10 +158,8 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 				}
 				
 				if((local.mode==="m0"&&(Math.abs(local.length-scanned.length)>=10))||(local.mode==="m3"&&(Math.abs(local.length-scanned.length)>=50))||(local.mode==="m4"&&(Math.abs(local.length-scanned.length)>=250))||(local.mode==="m1"&&local.length!==scanned.length)||(local.mode==="m2"&&local.md5!==scanned.md5)){
-					if(!auto){
-						itemId.classList.add("changed","scanned");
-						itemId.parentElement.classList.add("changedFolder");
-					}
+					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changed","scanned"]});
+					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changedFolder"],"parentElement":true});
 					count++;
 					if(typeof local.deleteScripts==="undefined"){
 						const htmlWithoutScripts=html_data.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
@@ -181,40 +170,37 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 					}
 				}else{
 					timesArray[id]=true;
-					if(this.status>=400)brokenArray[id]=local.broken+1||1;
-					if(!auto){
-						if(this.status<400)itemId.classList.add("scanned");
-						else{
-							itemId.classList.add("warn");
-							itemId.parentElement.classList.add("errorFolder");
-							console.warn([local.url,this.status]);
-						}
+					if(this.status<400){
+						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["scanned"]});
+					}else{
+						brokenArray[id]=local.broken+1||1;
+						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["warn"]});
+						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["errorFolder"],"parentElement":true});
+						console.warn([local.url,this.status]);
 					}
 				}
 			}else{
 				brokenArray[id]=local.broken+1||1;
-				if(!auto){
-					itemId.classList.add("error");
-					itemId.parentElement.classList.add("errorFolder");
-				}
+				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["error"]});
+				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["errorFolder"],"parentElement":true});
 				console.warn([local.url,this.status]);
 			}
-			scanCompleted(sitesLength,auto);
+			scanCompleted(sitesLength);
 		};
 		let error=function(e){
 			brokenArray[id]=local.broken+1||1;
-			scanCompleted(sitesLength,auto);
-			if(!auto)itemId.classList.add("error");
+			scanCompleted(sitesLength);
+			browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["error"]});
 			console.warn([local.url,e]);
 		};
 		let timeout=function(e){
 			if(extraTime){
 				brokenArray[id]=local.broken+1||1;
-				scanCompleted(sitesLength,auto);
-				if(!auto)itemId.classList.add("error");
+				scanCompleted(sitesLength);
+				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["error"]});
 				console.warn(["2nd timeout",local.url,e]);
 			}else{
-				scanPage(local,id,auto,sitesLength,true);
+				scanPage(local,id,sitesLength,true);
 				console.warn(["1st timeout",local.url,e]);
 			}
 		};
@@ -228,25 +214,33 @@ function scanPage(local,id,auto,sitesLength,extraTime=false){
 	});
 }
 
-function scanSites(ev,auto=false,force=false){
-	if(!auto){
-		document.getElementById("scanSites").disabled=true;
-		document.getElementById("openSite").disabled=true;
-		document.getElementById("showAdd").disabled=true;
-		document.getElementById("addFolder").disabled=true;
-		hideAll();
-	}
+function scanSites(force=false){
 	browser.storage.local.get('sites').then(result=>{
 		const sites=result.sites,
 			  len=sites.length;
 		sites.forEach((local,ix)=>{
 			if(local.changed){
 				count++;
-				scanCompleted(len,auto);
-			}else if((auto&&!force&&deltaTime(local.date,local.time)<local.freq)||local.paused){
-				scanCompleted(len,auto);
+				scanCompleted(len);
+			}else if((!force&&deltaTime(local.date,local.time)<local.freq)||local.paused){
+				scanCompleted(len);
 			}else{
-				scanPage(local,ix,auto,len);
+				scanPage(local,ix,len);
+			}
+		});
+	});
+}
+
+function scanPagesById(idArray){
+	browser.storage.local.get('sites').then(result=>{
+		const sites=result.sites,
+			  len=idArray.length;
+		idArray.forEach(i=>{
+			let local=sites[i];
+			if(local.changed||local.paused){
+				scanCompleted(len);
+			}else{
+				scanPage(local,i,len);
 			}
 		});
 	});
@@ -262,7 +256,6 @@ function deltaTime(oldDate,oldTime){
 		delta=delta>0?delta:Date.now()-Date.parse(`${year-1}-${oMonth}-${oDay} ${oHour}:${oMinute}`);
 	return delta/60/60/1000;
 }
-
 
 async function updateBase(){
 	const {sites,changes}=await browser.storage.local.get(['sites','changes']);
@@ -300,8 +293,7 @@ async function updateBase(){
 	await browser.storage.local.set({sites,changes});
 }
 
-function openSite(ev){
-	const auto=(ev==="webpagesScannertrue");
+function openSite(){
 	let ixs=[],
 		links=[];
 	browser.storage.local.get(['sites','settings']).then(result=>{
@@ -339,9 +331,7 @@ function openSite(ev){
 				}
 				updateBadge();
 				unchange(ixs);
-				if(!auto){
-					unchangeItem(true);
-				}
+				browser.runtime.sendMessage({"unchangeItem":true,"unchangeItemId":true});
 			}
 		}
 	});
@@ -385,7 +375,7 @@ function getSettings(name){
 }
 
 function updateBadge(minus,singleScan){
-	if(singleScan===true){
+	if(singleScan===1){
 		browser.browserAction.getBadgeText({}).then(e=>{
 			let count2=parseInt(e?e:0)+1;
 			browser.browserAction.setBadgeText({

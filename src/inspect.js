@@ -93,7 +93,7 @@ function showDialog(e){
 						browser.runtime.sendMessage({"closeTab":true});
 					}else{
 						if(wpsType==="add"){
-							browser.runtime.sendMessage({"addThis":true,"url":wpsURL,"title":document.title,"btn":2,"cssSelector":cssSelector}).then(()=>{
+							browser.runtime.sendMessage({"addThis":true,"url":wpsURL,"title":document.title,"cssSelector":cssSelector}).then(()=>{
 								browser.runtime.sendMessage({"closeTab":true});
 							});
 						}else if(wpsType==="edit"){

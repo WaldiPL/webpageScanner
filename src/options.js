@@ -403,7 +403,7 @@ function run(m){
 		let bookmarkId=m.nextBookmark;
 		if(m.errorBookmark)bookmarksNotAdded.push(bookmarksToAdd[bookmarkId-1]);
 		if(bookmarkId<bookmarksLength){
-			browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[bookmarkId].url,"title":bookmarksToAdd[bookmarkId].title,"btn":1,"favicon":false,"addBookmark":bookmarkId});
+			browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[bookmarkId].url,"title":bookmarksToAdd[bookmarkId].title,"addBookmark":bookmarkId});
 			document.getElementById("importOK").textContent=i18n("importing",[bookmarkId+1,bookmarksLength,bookmarksToAdd[bookmarkId].title]);
 		}else{
 			if(bookmarksNotAdded.length){
@@ -444,7 +444,7 @@ function importFinish(folderId){
 			});
 			if(bookmarksToAdd.length){
 				bookmarksLength=bookmarksToAdd.length;
-				browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[0].url,"title":bookmarksToAdd[0].title,"btn":1,"favicon":false,"addBookmark":0});
+				browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[0].url,"title":bookmarksToAdd[0].title,"addBookmark":0});
 				document.getElementById("importOK").textContent=i18n("importing",[1,bookmarksLength,bookmarksToAdd[0].title]);
 				document.getElementById("importOK").classList.remove("none");
 			}else if(bookmarks.length){

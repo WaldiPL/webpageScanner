@@ -30,12 +30,12 @@
 function addThis(){
 	browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
 		let tab=tabs[0];
-		browser.runtime.sendMessage({"addThis":true,"url":tab.url,"title":tab.title,"btn":2,"favicon":tab.favIconUrl});
+		browser.runtime.sendMessage({"addThis":true,"url":tab.url,"title":tab.title,"favicon":tab.favIconUrl});
 	});
 }
 
 function scanNow(){
-	browser.runtime.sendMessage({"scanSites":true});
+	browser.runtime.sendMessage({"scanSites":true,"force":true});
 }
 
 function openSites(){
@@ -44,15 +44,6 @@ function openSites(){
 }
 
 function showList(){
-	browser.runtime.getBrowserInfo().then(e=>{
-		let version=+e.version.substr(0,2);
-		if(version<57){
-			browser.tabs.create({
-				url:`sidebar.html`,
-				active:true
-			});
-		}
-	});
 	browser.sidebarAction.open();
 }
 

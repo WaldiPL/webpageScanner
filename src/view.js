@@ -170,7 +170,7 @@ function getRadioValue(e){
 
 function editSite(){
 	document.getElementById("editPopup").classList.add("hidden");
-	browser.storage.local.get(['sites','settings']).then(async result=>{
+	browser.storage.local.get(['sites','settings']).then(result=>{
 		let sites=result.sites,
 			freq=parseInt(document.getElementById("scanFreqEdit").value);
 		let obj={
@@ -194,9 +194,6 @@ function editSite(){
 			scrollbarMarkers:			getRadioValue("scrollbarMarkers"),
 		}
 		Object.assign(obj,{settings:pageSettings});
-		if(sites[localId].url!==obj.url){
-			Object.assign(obj,{favicon: await favicon64(document.getElementById("urlEdit").value,result.settings.faviconService)});
-		}
 		Object.assign(sites[localId],obj);
 		browser.storage.local.set({sites}).then(()=>{
 			browser.runtime.sendMessage({"listSite":true});
