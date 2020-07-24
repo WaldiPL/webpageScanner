@@ -12,7 +12,7 @@ Features:
 and a lot more...
 
 ## Screenshot
-![](screenshots/2.png)
+![](screenshots/3.png)
 
 ## Requirements
 - Firefox 60+
