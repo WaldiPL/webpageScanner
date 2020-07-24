@@ -431,12 +431,13 @@ function deleteFolder(id){
 async function showEdit(e){
 	hideAll("edit");
 	let result=await browser.storage.local.get(['sites','settings']);
-	const table=result.sites;
+	const table=result.sites,
+		  settings=result.settings;
 	document.getElementById("editSite").dataset.id=e;
 	document.getElementById("editingSite").classList.remove("hidden");
 	document.getElementById("eUrl").value=table[e].url;
 	document.getElementById("eTitle").value=table[e].title;
-	document.getElementById("eCharset").value=table[e].charset?table[e].charset:result.settings.charset;
+	document.getElementById("eCharset").value=table[e].charset?table[e].charset:settings.charset;
 	const freq=table[e].freq;
 	let multi;
 	if(!(freq%168))
@@ -451,7 +452,9 @@ async function showEdit(e){
 	document.getElementById("eMulti").value=multi;		
 	document.getElementById("eMode").value=table[e].mode;
 	document.getElementById("eIgnoreNumbers").checked=table[e].ignoreNumbers;
-	document.getElementById("eDeleteScripts").checked=table[e].deleteScripts;
+	document.getElementById("eIgnoreHrefs").checked=(table[e].ignoreHrefs===undefined)?settings.defaultIgnoreHrefs:table[e].ignoreHrefs;
+	document.getElementById("eDeleteScripts").checked=(table[e].deleteScripts===undefined)?settings.defaultDeleteScripts:table[e].deleteScripts;
+	document.getElementById("eDeleteComments").checked=(table[e].deleteComments===undefined)?settings.defaultDeleteComments:table[e].deleteComments;
 	document.getElementById("rowSelectorE").className=table[e].paritialMode?"":"hidden";
 	document.getElementById("eParitialMode").checked=table[e].paritialMode;
 	document.getElementById("eCssSelector").value=(table[e].cssSelector===undefined)?"":table[e].cssSelector;
@@ -471,7 +474,9 @@ function editSite(e){
 			paritialMode:document.getElementById("eParitialMode").checked,
 			cssSelector:document.getElementById("eCssSelector").value,
 			ignoreNumbers:document.getElementById("eIgnoreNumbers").checked,
-			deleteScripts:document.getElementById("eDeleteScripts").checked
+			ignoreHrefs:document.getElementById("eIgnoreHrefs").checked,
+			deleteScripts:document.getElementById("eDeleteScripts").checked,
+			deleteComments:document.getElementById("eDeleteComments").checked,
 		};
 		Object.assign(sites[e],obj);
 		browser.storage.local.set({sites}).then(()=>{
@@ -518,19 +523,34 @@ function deleteSite(e){
 }
 
 function showAdd(){
-	hideAll("add");
-	document.getElementById("addingSite").classList.toggle("hidden");
-	document.getElementById("showAdd").classList.toggle("open");
-	document.getElementById("aUrl").value="";
-	document.getElementById("aTitle").value="";
-	document.getElementById("aFreq").value=8;
-	document.getElementById("aMulti").value=1;
-	document.getElementById("aMode").value="m0";
-	document.getElementById("aParitialMode").checked=false;
-	document.getElementById("aCssSelector").value="";
-	document.getElementById("rowSelectorA").className="hidden";
-	document.getElementById("aIgnoreNumbers").checked=false;
-	document.getElementById("aDeleteScripts").checked=true;
+	browser.storage.local.get('settings').then(result=>{
+		const settings=result.settings;
+		const freq=settings.defaultFreq;
+		let unit;
+		if(!(freq%168))
+			unit=168;
+		else if(!(freq%24))
+			unit=24;
+		else if(freq<1)
+			unit=0.0166667;
+		else
+			unit=1;
+		hideAll("add");
+		document.getElementById("addingSite").classList.toggle("hidden");
+		document.getElementById("showAdd").classList.toggle("open");
+		document.getElementById("aUrl").value="";
+		document.getElementById("aTitle").value="";
+		document.getElementById("aFreq").value=parseInt(freq/unit);;
+		document.getElementById("aMulti").value=unit;
+		document.getElementById("aMode").value=settings.defaultMode;
+		document.getElementById("aParitialMode").checked=false;
+		document.getElementById("aCssSelector").value="";
+		document.getElementById("rowSelectorA").className="hidden";
+		document.getElementById("aIgnoreNumbers").checked=settings.defaultIgnoreNumbers;
+		document.getElementById("aIgnoreHrefs").checked=settings.defaultIgnoreHrefs;
+		document.getElementById("aDeleteScripts").checked=settings.defaultDeleteScripts;
+		document.getElementById("aDeleteComments").checked=settings.defaultDeleteComments;
+	});
 }
 
 function addSite(){
@@ -541,8 +561,10 @@ function addSite(){
 		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("aMulti").value):8,
 		  cssSelector=(document.getElementById("aParitialMode").checked&&document.getElementById("aCssSelector").value.length)?document.getElementById("aCssSelector").value:false,
 		  ignoreNumbers=document.getElementById("aIgnoreNumbers").checked,
-		  deleteScripts=document.getElementById("aDeleteScripts").checked;
-	browser.runtime.sendMessage({"addThis":true,"url":url,"title":title,"mode":mode,"freq":freq,"cssSelector":cssSelector,"ignoreNumbers":ignoreNumbers,"deleteScripts":deleteScripts});
+		  ignoreHrefs=document.getElementById("aIgnoreHrefs").checked,
+		  deleteScripts=document.getElementById("aDeleteScripts").checked,
+		  deleteComments=document.getElementById("aDeleteComments").checked;
+	browser.runtime.sendMessage({"addThis":true,"url":url,"title":title,"mode":mode,"freq":freq,"cssSelector":cssSelector,"ignoreNumbers":ignoreNumbers,"deleteScripts":deleteScripts,"deleteComments":deleteComments,"ignoreHrefs":ignoreHrefs});
 	document.getElementById("addingSite").classList.add("hidden");
 	document.getElementById("showAdd").classList.remove("open");
 }
@@ -820,8 +842,12 @@ function translate(){
 	document.getElementById("inspectE").title=i18n("inspectElement");
 	document.getElementById("ignoreNumbersA").textContent=i18n("ignoreNumbers");
 	document.getElementById("ignoreNumbersE").textContent=i18n("ignoreNumbers");
+	document.getElementById("ignoreHrefsA").textContent=i18n("ignoreHrefs");
+	document.getElementById("ignoreHrefsE").textContent=i18n("ignoreHrefs");
 	document.getElementById("deleteScriptsA").textContent=i18n("deleteScripts");
 	document.getElementById("deleteScriptsE").textContent=i18n("deleteScripts");
+	document.getElementById("deleteCommentsA").textContent=i18n("deleteComments");
+	document.getElementById("deleteCommentsE").textContent=i18n("deleteComments");
 	document.getElementById("pageSettings").textContent=i18n("options");
 	
 	let selectMultiA=document.getElementById("aMulti").options;

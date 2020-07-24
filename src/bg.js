@@ -29,6 +29,12 @@ function handleInstalled(details) {
 		"scrollbarMarkers":true,
 		"faviconService":"native",
 		"notificationSound":"notification.opus",
+		"defaultFreq":8,
+		"defaultMode":"m0",
+		"defaultIgnoreNumbers":false,
+		"defaultDeleteScripts":true,
+		"defaultDeleteComments":true,
+		"defaultIgnoreHrefs":false,
 	};
 	if(details.reason==="install"){
 		browser.storage.local.get(['sites','settings']).then(result=>{
@@ -122,7 +128,7 @@ let delayCurrentId,
 
 browser.runtime.onMessage.addListener(run);
 function run(m,s){
-	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScript);
+	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScript,m.deleteComments,m.ignoreHrefs);
 	if(m.scanSites)scanSites(m.force);
 	if(m.openSites)openSite();
 	if(m.addToContextMenu!==undefined)showContext(m.addToContextMenu);

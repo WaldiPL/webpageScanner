@@ -123,13 +123,12 @@ function deleteSite(){
 
 function showEdit(){
 	document.getElementById("deletePopup").classList.add("hidden");
-	browser.storage.local.get(['sites','settings']).then(result=>{
-		const sites=result.sites;
+	browser.storage.local.get(['sites','settings']).then(({sites,settings})=>{
 		document.getElementById("editOk").addEventListener("click",editSite);
 		document.getElementById("editPopup").classList.remove("hidden");
 		document.getElementById("urlEdit").value=sites[localId].url;
 		document.getElementById("titleEdit").value=sites[localId].title;
-		document.getElementById("charsetEdit").value=sites[localId].charset?sites[localId].charset:result.settings.charset;
+		document.getElementById("charsetEdit").value=sites[localId].charset?sites[localId].charset:settings.charset;
 		const freq=sites[localId].freq;
 		let unit;
 		if(!(freq%168))
@@ -144,7 +143,9 @@ function showEdit(){
 		document.getElementById("unitEdit").value=unit;
 		document.getElementById("modeEdit").value=sites[localId].mode;
 		document.getElementById("ignoreNumbersEdit").checked=sites[localId].ignoreNumbers;
-		document.getElementById("deleteScriptsEdit").checked=sites[localId].deleteScripts;
+		document.getElementById("ignoreHrefsEdit").checked=(sites[localId].ignoreHrefs===undefined)?settings.defaultIgnoreHrefs:sites[localId].ignoreHrefs;
+		document.getElementById("deleteScriptsEdit").checked=(sites[localId].deleteScripts===undefined)?settings.defaultDeleteScripts:sites[localId].deleteScripts;
+		document.getElementById("deleteCommentsEdit").checked=(sites[localId].deleteComments===undefined)?settings.defaultDeleteComments:sites[localId].deleteComments;
 		document.getElementById("spanSelectorEdit").className=sites[localId].paritialMode?"":"notVisible";
 		document.getElementById("cssSelectorLabelEdit").className=sites[localId].paritialMode?"":"notVisible";
 		document.getElementById("paritialModeEdit").checked=sites[localId].paritialMode;
@@ -182,7 +183,9 @@ function editSite(){
 			paritialMode:document.getElementById("paritialModeEdit").checked,
 			cssSelector:document.getElementById("cssSelectorEdit").value,
 			ignoreNumbers:document.getElementById("ignoreNumbersEdit").checked,
-			deleteScripts:document.getElementById("deleteScriptsEdit").checked
+			ignoreHrefs:document.getElementById("ignoreHrefsEdit").checked,
+			deleteScripts:document.getElementById("deleteScriptsEdit").checked,
+			deleteComments:document.getElementById("deleteCommentsEdit").checked,
 		}
 		const pageSettings={
 			defaultView:				document.getElementById("defaultView").value,
@@ -204,6 +207,17 @@ function editSite(){
 	});
 }
 
+function partHtml(html,selectorCss){
+	let parser=new DOMParser(),
+		doc=parser.parseFromString(html,"text/html"),
+		selectedElement=doc.querySelector(selectorCss);
+	if(selectedElement){
+		return selectedElement.outerHTML;
+	}else{
+		return html;
+	}
+}
+
 function load(type,inspectMode){
 	browser.storage.local.get(['sites','changes','settings']).then(result=>{
 		const sites=result.sites,
@@ -213,25 +227,7 @@ function load(type,inspectMode){
 			  cId=changes[localId],
 			  newHtml=cId.html,
 			  oldHtml=cId?cId.oldHtml:"",
-			  diffStringX=settings.diffOld?diffString2old:diffString2,
-			  diffString=diffStringX(oldHtml,newHtml),
-			  light=cId?diffString.n:newHtml,
-			  news=cId?diffString.c:"",
-			  deleted=cId?diffString.o:"",
-			  url=sId.url.split("/"),
-			  url2=url[0]+"//"+url[2]+"/",
-			  lastScan=[realDate(sId.date),realTime(sId.time)],
-			  oldTime=sId.oldTime?[realDate(sId.oldTime[0])," "+realTime(sId.oldTime[1])]:"",
-			  newTime=sId.newTime?[realDate(sId.newTime[0])," "+realTime(sId.newTime[1])]:"";
-		let parser=new DOMParser(),
-			doc;
-		if(oldHtml)enableBtn("oldHtml");
-		if(news)enableBtn("news");
-		if(deleted)enableBtn("deleted");
-		toggleNextPrev();
-		toggleScrollbarMarkers();
-		highlighted=undefined;
-		prevHighlighted=undefined;
+			  diffStringX=settings.diffOld?diffString2old:diffString2;
 
 		const pageSettings={
 			defaultView:0,
@@ -249,12 +245,38 @@ function load(type,inspectMode){
 				pageSettings[e[0]]=sId.settings[e[0]]
 			}
 		});
+		type=type||pageSettings.defaultView;
+
+		let diffString;
+		if((type==="raw"||type==="news"||type==="deleted")&&sId.paritialMode&&sId.cssSelector&&!pageSettings.highlightOutsideChanges){
+			diffString=diffStringX(partHtml(oldHtml,sId.cssSelector),partHtml(newHtml,sId.cssSelector));
+		}else{
+			diffString=diffStringX(oldHtml,newHtml);
+		}
+
+		const light=cId?diffString.n:newHtml,
+			  news=cId?diffString.c:"",
+			  deleted=cId?diffString.o:"",
+			  url=sId.url.split("/"),
+			  url2=url[0]+"//"+url[2]+"/",
+			  lastScan=[realDate(sId.date),realTime(sId.time)],
+			  oldTime=sId.oldTime?[realDate(sId.oldTime[0])," "+realTime(sId.oldTime[1])]:"",
+			  newTime=sId.newTime?[realDate(sId.newTime[0])," "+realTime(sId.newTime[1])]:"";
+		let parser=new DOMParser(),
+			doc;
+		if(oldHtml)enableBtn("oldHtml");
+		if(news)enableBtn("news");
+		if(deleted)enableBtn("deleted");
+		toggleNextPrev();
+		toggleScrollbarMarkers();
+		highlighted=undefined;
+		prevHighlighted=undefined;
+
 		if(pageSettings.hideHeader){
 			toggleHeader(true);
 		}else if(document.body.classList.contains("hiddenHeader")){
 			toggleHeader();
 		}
-		type=type||pageSettings.defaultView;
 		document.getElementById("viewMode").value=type;
 		switch(type){
 			case "light":
@@ -450,7 +472,9 @@ function translate(){
 	document.getElementById("cssSelectorLabelEdit").textContent=i18n("selectorCSS");
 	document.getElementById("inspectButtonEdit").title=i18n("inspectElement");
 	document.getElementById("ignoreNumbersLabelEdit").textContent=i18n("ignoreNumbers");
+	document.getElementById("ignoreHrefsLabelEdit").textContent=i18n("ignoreHrefs");
 	document.getElementById("deleteScriptsLabelEdit").textContent=i18n("deleteScripts");
+	document.getElementById("deleteCommentsLabelEdit").textContent=i18n("deleteComments");
 	document.getElementById("optionsH2").textContent=i18n("options");
 	document.getElementById("labelDefaultView").textContent=i18n("defaultView");
 	let defaultViewSelect=document.getElementById("defaultView").options;

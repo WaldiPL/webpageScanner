@@ -28,7 +28,7 @@
     "message": "Tytuł:"
   },
   "scanFreq": {
-    "message": "Skanuj co:"
+    "message": "Interwał:"
   },
   "minutes": {
     "message": "Minut/y"
@@ -234,7 +234,7 @@
     "message": "Pomiń drobne zmiany"
   },
   "highlightOutsideChanges": {
-    "message": "Podświetl zmiany poza skanowanym elementem"
+    "message": "Pokaż zmiany poza skanowanym elementem"
   },
   "subHighlightOutside": {
     "message": "Dotyczy stron skanowanych częściowo"
@@ -488,6 +488,12 @@
   "deleteScripts":{
     "message": "Usuwaj skrypty"
   },
+  "deleteComments":{
+    "message": "Usuwaj komentarze"
+  },
+  "ignoreHrefs":{
+    "message": "Ignoruj adresy odnośników"
+  },
   "yes":{
     "message": "Tak"
   },
@@ -514,5 +520,29 @@
   },
   "tooltipStopOpening":{
     "message": "\r Zatrzymaj otwieranie zmienionych stron (środkowy przycisk)"
+  },
+  "h3sidebar":{
+    "message": "Panel boczny"
+  },
+  "h3defaultValues":{
+    "message": "Wartości domyślne"
+  },
+  "defaultInterval":{
+    "message": "Domyślny interwał"
+  },
+  "defaultMode":{
+    "message": "Domyślny tryb"
+  },
+  "defaultIgnoreNumbers":{
+    "message": "Domyślnie ignoruj zmiany liczb"
+  },
+  "defaultDeleteScripts":{
+    "message": "Domyślnie usuwaj skrypty"
+  },
+  "defaultDeleteComments":{
+    "message": "Domyślnie usuwaj komentarze"
+  },
+  "defaultIgnoreHrefs":{
+    "message": "Domyślnie ignoruj adresy odnośników"
   }
 }

@@ -33,6 +33,13 @@
 				<input type="checkbox" id="openChangelog"><label id="labelOpenChangelog" for="openChangelog"></label>
 			</div>
 			<div class="row">
+				<input type="checkbox" id="autoScanPause"><label id="labelAutoScanPause" for="autoScanPause"></label>
+			</div>
+			<div class="row" id="groupPeriod">
+				<label id="labelPeriod"></label><input id="period" type="number" min="5" max="1440" placeholder="60">
+				<p id="sublabelPeriod" class="subLabel"></p>
+			</div>
+			<div class="row">
 				<label id="labelTheme"></label
 				><select id="theme">
 					<option value="light"></option>
@@ -40,18 +47,14 @@
 				</select>
 			</div>
 			<div class="row">
-				<label id="labelDefaultCharset"></label><input type="text" id="defaultCharset" placeholder="utf-8">
+				<label id="labelFavicon"></label
+				><select id="favicon">
+					<option value="native"></option>
+					<option value="duckduckgo">DuckDuckGo</option>
+					<option value="google">Google</option>
+				</select>
 			</div>
-			<div class="row" id="groupPeriod">
-				<label id="labelPeriod"></label><input id="period" type="number" min="5" max="1440" placeholder="60">
-				<p id="sublabelPeriod" class="subLabel"></p>
-			</div>
-			<div class="row">
-				<input type="checkbox" id="autoScanPause"><label id="labelAutoScanPause" for="autoScanPause"></label>
-			</div>
-			<div class="row">
-				<input type="checkbox" id="showSearchbar"><label id="labelShowSearchbar" for="showSearchbar"></label>
-			</div>
+			<h3 id="h3sidebar"></h3>
 			<div class="row" id="shortcut">
 				<label id="labelShortcut"></label
 				><select id="shortcut1">
@@ -69,12 +72,7 @@
 				</select>+<input type="text" id="shortcut3" placeholder="Q" pattern="([A-Za-z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right|([Ff][1-9]|[Ff]1[0-2]))\s*$">
 			</div>
 			<div class="row">
-				<label id="labelFavicon"></label
-				><select id="favicon">
-					<option value="native"></option>
-					<option value="duckduckgo">DuckDuckGo</option>
-					<option value="google">Google</option>
-				</select>
+				<input type="checkbox" id="showSearchbar"><label id="labelShowSearchbar" for="showSearchbar"></label>
 			</div>
 			<h3 id="h3pageView"></h3>
 			<div class="row">
@@ -143,6 +141,40 @@
 			</div>
 			<div class="row none" id="rowExternalSound">
 				<input type="text" id="externalSound">
+			</div>
+			<h3 id="h3defaultValues"></h3>
+			<div class="row">
+				<label id="labelDefaultCharset"></label><input type="text" id="defaultCharset" placeholder="utf-8">
+			</div>
+			<div class="row">
+				<label id="labelDefaultInterval"></label><input id="defaultFreq" type="number" min="1"
+				><select id="defaultUnit">
+					<option value="0.0166667"></option>
+					<option value="1"></option>
+					<option value="24"></option>
+					<option value="168"></option>
+				 </select>
+			</div>
+			<div class="row">
+				<label id="labelDefaultMode"></label><select id="defaultMode">
+					<option value="m0"></option>
+					<option value="m3"></option>
+					<option value="m4"></option>
+					<option value="m1"></option>
+					<option value="m2"></option>
+				</select>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="defaultIgnoreNumbers"><label id="labelDefaultIgnoreNumbers" for="defaultIgnoreNumbers"></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="defaultIgnoreHrefs"><label id="labelDefaultIgnoreHrefs" for="defaultIgnoreHrefs"></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="defaultDeleteScripts"><label id="labelDefaultDeleteScripts" for="defaultDeleteScripts"></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="defaultDeleteComments"><label id="labelDefaultDeleteComments" for="defaultDeleteComments"></label>
 			</div>
 		</form>
 		</section>

@@ -2,10 +2,22 @@
 
 const extURL=browser.extension.getURL("");
 
-function rqstAdd(url,title,icon=false,mode="m0",freq=8,bookmarkId=false,cssSelector=false,ignoreNumbers=false,deleteScripts=true){
+function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=false,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
+		if(ignoreNumbers===undefined){
+			ignoreNumbers=s.defaultIgnoreNumbers;
+		}
+		if(deleteScripts===undefined){
+			deleteScripts=s.defaultDeleteScripts;
+		}
+		if(deleteComments===undefined){
+			deleteComments=s.defaultDeleteComments;
+		}
+		if(ignoreHrefs===undefined){
+			ignoreHrefs=s.defaultIgnoreHrefs;
+		}
 		let xhr=new XMLHttpRequest();
 		xhr.open("GET",url);
 		xhr.timeout=s.requestTime;
@@ -13,16 +25,28 @@ function rqstAdd(url,title,icon=false,mode="m0",freq=8,bookmarkId=false,cssSelec
 		xhr.onload=async function(){
 			const result=browser.storage.local.get(['sites','changes','sort']);
 			const contentType=this.getResponseHeader("Content-Type").split(/; *charset=/i);
-			const html_data=(contentType[0]==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):deleteScripts?this.responseText.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,""):this.responseText;
+
+			let html_data=this.responseText;
+			if(contentType[0]==="text/plain"){
+				html_data=html_data.replace(/(\r\n)|\n|\r/g,"<br>");
+			}else{
+				if(deleteScripts===true){
+					html_data=html_data.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
+				}
+				if(deleteComments===true){
+					html_data=html_data.replace(/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->)(.|\n))*-->/gi,"");
+				}
+			}
+
 			const site={
 				title:	title,
 				url:	url,
 				date:	date(),
 				time:	time(),
-				mode:	mode,
+				mode:	mode||s.defaultMode,
 				changed:false,
 				favicon:icon?await favicon64(icon,"original"):await favicon64(url,s.faviconService),
-				freq:	freq||8,
+				freq:	freq||s.defaultFreq,
 				charset:contentType[1]||s.charset,
 				broken:	0,
 				paused:	false,
@@ -32,10 +56,12 @@ function rqstAdd(url,title,icon=false,mode="m0",freq=8,bookmarkId=false,cssSelec
 				oldTime:undefined,
 				newTime:[date(),time()],
 				ignoreNumbers:ignoreNumbers,
-				deleteScripts:deleteScripts
+				deleteScripts:deleteScripts,
+				deleteComments:deleteComments,
+				ignoreHrefs:ignoreHrefs,
 			};
-			Object.assign(site,length_md5(html_data,ignoreNumbers));
-			
+			Object.assign(site,length_md5(html_data,ignoreNumbers,ignoreHrefs));
+
 			const {sites,changes,sort}=await result;			
 			sites[sites.length]=site;
 			changes[changes.length]={
@@ -141,30 +167,51 @@ function scanPage(local,id,sitesLength,extraTime=false){
 		xhr.overrideMimeType('text/html; charset='+charset);
 		xhr.onload=function(){
 			if(this.status<405){ //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-				const html_data=(local.mimeType==="text/plain")?this.responseText.replace(/(\r\n)|\n|\r/g,"<br>"):(local.deleteScripts===true)?this.responseText.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,""):this.responseText;
+				let html_data=this.responseText;
+				if(local.mimeType==="text/plain"){
+					html_data=html_data.replace(/(\r\n)|\n|\r/g,"<br>");
+				}else{
+					if(local.deleteScripts===true){
+						html_data=html_data.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
+					}
+					if(local.deleteComments===true){
+						html_data=html_data.replace(/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->)(.|\n))*-->/gi,"");
+					}
+				}
+
+				if(typeof local.ignoreHrefs==="undefined"){
+					Object.assign(local,{ignoreHrefs:s.defaultIgnoreHrefs});
+				}
+
 				let scanned;
 				if(!local.paritialMode||!local.cssSelector){
-					scanned=length_md5(html_data,local.ignoreNumbers);
+					scanned=length_md5(html_data,local.ignoreNumbers,local.ignoreHrefs);
 				}else{
 					let parser=new DOMParser(),
 						doc=parser.parseFromString(html_data,"text/html"),
 						selectedElement=doc.querySelector(local.cssSelector);
 					if(selectedElement){
 						let partHTML=selectedElement.outerHTML;
-						scanned=length_md5(partHTML,local.ignoreNumbers);
+						scanned=length_md5(partHTML,local.ignoreNumbers,local.ignoreHrefs);
 					}else{
-						scanned=length_md5(html_data,local.ignoreNumbers);
+						scanned=length_md5(html_data,local.ignoreNumbers,local.ignoreHrefs);
 					}
 				}
-				
+
 				if((local.mode==="m0"&&(Math.abs(local.length-scanned.length)>=10))||(local.mode==="m3"&&(Math.abs(local.length-scanned.length)>=50))||(local.mode==="m4"&&(Math.abs(local.length-scanned.length)>=250))||(local.mode==="m1"&&local.length!==scanned.length)||(local.mode==="m2"&&local.md5!==scanned.md5)){
 					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changed","scanned"]});
 					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changedFolder"],"parentElement":true});
 					count++;
-					if(typeof local.deleteScripts==="undefined"){
-						const htmlWithoutScripts=html_data.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
-						scanned=length_md5(htmlWithoutScripts,local.ignoreNumbers);
-						changesArray[id]=[htmlWithoutScripts,scanned.md5,scanned.length];
+					if(typeof local.deleteScripts==="undefined"||typeof local.deleteComments==="undefined"){	//workaround
+						let htmlReplaced=html_data;
+						if(typeof local.deleteScripts==="undefined"&&s.defaultDeleteScripts===true){
+							htmlReplaced=htmlReplaced.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
+						}
+						if(typeof local.deleteComments==="undefined"&&s.defaultDeleteComments===true){
+							htmlReplaced=htmlReplaced.replace(/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->)(.|\n))*-->/gi,"");
+						}
+						scanned=length_md5(htmlReplaced,local.ignoreNumbers,local.ignoreHrefs);
+						changesArray[id]=[htmlReplaced,scanned.md5,scanned.length];
 					}else{
 						changesArray[id]=[html_data,scanned.md5,scanned.length];
 					}
@@ -258,7 +305,7 @@ function deltaTime(oldDate,oldTime){
 }
 
 async function updateBase(){
-	const {sites,changes}=await browser.storage.local.get(['sites','changes']);
+	const {sites,changes,settings}=await browser.storage.local.get(['sites','changes','settings']);
 	let currentTime={
 		date:date(),
 		time:time(),
@@ -281,7 +328,13 @@ async function updateBase(){
 		};
 		Object.assign(sites[id],obj);
 		if(typeof sites[id].deleteScripts==="undefined"){
-			Object.assign(sites[id],{deleteScripts:true});
+			Object.assign(sites[id],{deleteScripts:settings.defaultDeleteScripts});
+		}
+		if(typeof sites[id].deleteComments==="undefined"){
+			Object.assign(sites[id],{deleteComments:settings.defaultDeleteComments});
+		}
+		if(typeof sites[id].ignoreHrefs==="undefined"){
+			Object.assign(sites[id],{ignoreHrefs:settings.defaultIgnoreHrefs});
 		}
 	});
 	timesArray.forEach((value,id)=>{
@@ -424,7 +477,12 @@ async function updateTooltip(alarm){
 	}
 }
 
-function length_md5(html,ignoreNumbers){
-	const htmlNumber=ignoreNumbers?html.replace(/\d+/g,''):html;
-	return {length:htmlNumber.length,md5:md5(htmlNumber)};
+function length_md5(html,ignoreNumbers,ignoreHrefs){
+	if(ignoreNumbers){
+		html=html.replace(/\d+/g,"");
+	}
+	if(ignoreHrefs){
+		html=html.replace(/href=(["'])(.*?)\1/g,"href=''");
+	}
+	return {length:html.length,md5:md5(html)};
 }

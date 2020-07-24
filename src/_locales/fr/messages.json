@@ -28,7 +28,7 @@
     "message": "Titre :"
   },
   "scanFreq": {
-    "message": "Tout scanner :"
+    "message": "Intervalle :"
   },
   "minutes": {
     "message": "Minute(s)"
@@ -232,6 +232,12 @@
   },
   "skipMinorChanges": {
     "message": "Passer les modifications mineures"
+  },
+  "highlightOutsideChanges": {
+    "message": "Afficher les changements en dehors de l'élément scanné"
+  },
+  "subHighlightOutside": {
+    "message": "Pour les pages partiellement scannées"
   },
   "changeOf": {
     "message": "Modification $1 sur $2"
@@ -482,6 +488,12 @@
   "deleteScripts":{
     "message": "Supprimer les scripts"
   },
+  "deleteComments":{
+    "message": "Supprimer les commentaires"
+  },
+  "ignoreHrefs":{
+    "message": "Ignorer les adresses des liens"
+  },
   "yes":{
     "message": "Oui"
   },
@@ -508,5 +520,29 @@
   },
   "tooltipStopOpening":{
     "message": "\r Arrêtez d'ouvrir les pages modifiées (Clic du milieu)"
+  },
+  "h3sidebar":{
+    "message": "Panneau latéral"
+  },
+  "h3defaultValues":{
+    "message": "Valeurs par défaut"
+  },
+  "defaultInterval":{
+    "message": "Intervalle par défaut"
+  },
+  "defaultMode":{
+    "message": "Mode par défaut"
+  },
+  "defaultIgnoreNumbers":{
+    "message": "Par défaut, ignorer les modifications de nombres"
+  },
+  "defaultDeleteScripts":{
+    "message": "Par défaut, supprimer les scripts"
+  },
+  "defaultDeleteComments":{
+    "message": "Par défaut, supprimer les commentaires"
+  },
+  "defaultIgnoreHrefs":{
+    "message": "Par défaut, ignorer les adresses des liens"
   }
 }

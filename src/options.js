@@ -88,7 +88,8 @@
 
 function saveOptions(){
 	const rqstTime=parseInt(document.getElementById("requestTime").value*1000),
-		  period=parseInt(document.getElementById("period").value);
+		  period=parseInt(document.getElementById("period").value),
+		  freq=parseInt(document.getElementById("defaultFreq").value);
 	let settings={
 		notificationVolume:	parseInt(document.getElementById("notificationVolume").value),
 		notificationTime:	parseInt(document.getElementById("notificationTime").value),
@@ -115,7 +116,13 @@ function saveOptions(){
 		highlightOutsideChanges:	document.getElementById("highlightOutsideChanges").checked,
 		scrollbarMarkers:	document.getElementById("scrollbarMarkers").checked,
 		faviconService:		document.getElementById("favicon").value,
-		notificationSound:	document.getElementById("notificationSound").value||document.getElementById("externalSound").value
+		notificationSound:	document.getElementById("notificationSound").value||document.getElementById("externalSound").value,
+		defaultFreq:		freq>0?freq*parseFloat(document.getElementById("defaultUnit").value):8,	
+		defaultMode:		document.getElementById("defaultMode").value,
+		defaultIgnoreNumbers:	document.getElementById("defaultIgnoreNumbers").checked,
+		defaultDeleteScripts:	document.getElementById("defaultDeleteScripts").checked,
+		defaultDeleteComments:	document.getElementById("defaultDeleteComments").checked,
+		defaultIgnoreHrefs:	document.getElementById("defaultIgnoreHrefs").checked,
 	};
 	browser.storage.local.set({settings:settings});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -171,6 +178,23 @@ function restoreOptions(){
 			document.getElementById("externalSound").value=s.notificationSound;
 			document.getElementById("rowExternalSound").className="row";
 		}
+		const freq=s.defaultFreq||8;
+		let unit;
+		if(!(freq%168))
+			unit=168;
+		else if(!(freq%24))
+			unit=24;
+		else if(freq<1)
+			unit=0.0166667;
+		else
+			unit=1;
+		document.getElementById("defaultFreq").value=parseInt(freq/unit);
+		document.getElementById("defaultUnit").value=unit;
+		document.getElementById("defaultMode").value=s.defaultMode;
+		document.getElementById("defaultIgnoreNumbers").checked=s.defaultIgnoreNumbers;
+		document.getElementById("defaultDeleteScripts").checked=s.defaultDeleteScripts;
+		document.getElementById("defaultDeleteComments").checked=s.defaultDeleteComments;
+		document.getElementById("defaultIgnoreHrefs").checked=s.defaultIgnoreHrefs;
 	});
 	restoreShortcut();
 }
@@ -291,6 +315,25 @@ function translate(){
 		sound[1].text=i18n("sound")+"2";
 		sound[2].text=i18n("externalSound");
 	document.getElementById("externalSound").placeholder=i18n("soundUrl");
+	document.getElementById("h3sidebar").textContent=i18n("h3sidebar");
+	document.getElementById("h3defaultValues").textContent=i18n("h3defaultValues");
+	document.getElementById("labelDefaultInterval").textContent=i18n("defaultInterval");
+	document.getElementById("labelDefaultMode").textContent=i18n("defaultMode");
+	let selectFreq=document.getElementById("defaultUnit").options;
+		selectFreq[0].text=i18n("minutes");
+		selectFreq[1].text=i18n("hours");
+		selectFreq[2].text=i18n("days");
+		selectFreq[3].text=i18n("weeks");
+	let selectMode=document.getElementById("defaultMode").options;
+		selectMode[0].text=i18n("modeM0");
+		selectMode[1].text=i18n("modeM3");
+		selectMode[2].text=i18n("modeM4");
+		selectMode[3].text=i18n("modeM1");
+		selectMode[4].text=i18n("modeM2");
+	document.getElementById("labelDefaultIgnoreNumbers").textContent=i18n("defaultIgnoreNumbers");
+	document.getElementById("labelDefaultDeleteScripts").textContent=i18n("defaultDeleteScripts");
+	document.getElementById("labelDefaultDeleteComments").textContent=i18n("defaultDeleteComments");
+	document.getElementById("labelDefaultIgnoreHrefs").textContent=i18n("defaultIgnoreHrefs");
 
 	document.body.removeAttribute("class");
 }

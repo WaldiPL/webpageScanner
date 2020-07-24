@@ -28,7 +28,7 @@
     "message": "Title:"
   },
   "scanFreq": {
-    "message": "Scan every:"
+    "message": "Interval:"
   },
   "minutes": {
     "message": "Minute(s)"
@@ -234,7 +234,7 @@
     "message": "Skip minor changes"
   },
   "highlightOutsideChanges": {
-    "message": "Highlight changes outside the scanned element"
+    "message": "Show changes outside the scanned element"
   },
   "subHighlightOutside": {
     "message": "Applies to partially scanned pages"
@@ -488,6 +488,12 @@
   "deleteScripts":{
     "message": "Delete scripts"
   },
+  "deleteComments":{
+    "message": "Delete comments"
+  },
+  "ignoreHrefs":{
+    "message": "Ignore link addresses"
+  },
   "yes":{
     "message": "Yes"
   },
@@ -514,5 +520,29 @@
   },
   "tooltipStopOpening":{
     "message": "\r Stop opening changed pages (middle-click)"
+  },
+  "h3sidebar":{
+    "message": "Sidebar"
+  },
+  "h3defaultValues":{
+    "message": "Default values"
+  },
+  "defaultInterval":{
+    "message": "Default interval"
+  },
+  "defaultMode":{
+    "message": "Default mode"
+  },
+  "defaultIgnoreNumbers":{
+    "message": "By default, ignore number changes"
+  },
+  "defaultDeleteScripts":{
+    "message": "By default, delete scripts"
+  },
+  "defaultDeleteComments":{
+    "message": "By default, delete comments"
+  },
+  "defaultIgnoreHrefs":{
+    "message": "By default, ignore link addresses"
   }
 }

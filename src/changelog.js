@@ -9,6 +9,10 @@ function generateChangelog(){
 	changelogGenerated=true;
 
 	let changelog=`[
+	{"version":"1.9.6",
+		"changes":["Added possibility to change 'default values' (interval, mode, etc.)","#48","Added possibility to ignore link addresses","#52","Added possibility to delete HTML comments","#51","Moved execution of some functions from sidebar to background","Minor changes","Fiexed bugs"],
+		"changesPL":["Dodano możliwość zmiany 'wartości domyślnych' (interwał, tryb, itp.)","#48","Dodano możliwość ignorowania adresów odnośników","#52","Dodano możliwość usunięcia komentarzy HTML","#51","Przeniesiono wykonywanie niektórtch funkcji z panelu bocznego do tła","Drobne zmiany","Naprawiono błędy"]
+	},
 	{"version":"1.9.5",
 		"changes":["Fixed bug","#36","Added possibility to change options individually for each pages","Added possibility to delete JS scripts","Added links to GitHub in 'Changelog'","Added possibility to change sound of the notification","Added possibility to stop openning next pages (Middle-click the button on a toolbar)","#42","Minor changes","Fixed bugs"],
 		"changesPL":["Naprawiono błąd","#36","Dodano możliwość zmiany opcji indywidualnie dla każdej strony","Dodano możliwość usunięcia skryptów JS","Dodano odnośniki do GitHuba w 'Historii zmian' ","Dodano możliwość zmiany dźwięku powiadomienia","Dodano możliwość zatrzymania otwierania kolejnych stron (Kliknięcie środkowym przyciskiem myszy przycisku na pasku narzędzi)","#42","Drobne zmiany","Naprawiono błędy"]
