@@ -136,7 +136,7 @@ function run(m,s){
 	if(m.openSitesDelay){delayCurrentId=0;delayTime=m.openSitesDelay;delayLinksId=m.linksId;lastWindowId=-1;openSitesDelay(m.openWindow);}
 	if(m.closeTab){browser.tabs.remove(s.tab.id);}
 	if(m.scanPagesById){scanPagesById(m.idArray);}
-	if(m.updateBage){updateBadge(m.updateBadgeArg);}
+	if(m.updateBadge){updateBadge(m.updateBadgeArg);}
 	if(m.unchange){unchange(m.unchangeArg);}
 }
 

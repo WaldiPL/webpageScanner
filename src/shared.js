@@ -116,10 +116,10 @@ var changesArray=[],
 	
 async function scanCompleted(sitesLength){
 	numberScanned++;
-	browser.runtime.sendMessage({"statusbar":true,"statusbarArg":[numberScanned,sitesLength]});
+	browser.runtime.sendMessage({"statusbar":true,"statusbarArg":[numberScanned,sitesLength]}).then(()=>{},()=>{});
 	if(numberScanned===sitesLength){
 		await updateBase();
-		browser.runtime.sendMessage({"statusbar":true,"statusbarArg":i18n("scanCompleted"),"enableButtons":true});
+		browser.runtime.sendMessage({"statusbar":true,"statusbarArg":i18n("scanCompleted"),"enableButtons":true}).then(()=>{},()=>{});
 		if(count){
 			await getSettings().then(s=>{
 				let audio=new Audio(s.notificationSound);
@@ -199,8 +199,8 @@ function scanPage(local,id,sitesLength,extraTime=false){
 				}
 
 				if((local.mode==="m0"&&(Math.abs(local.length-scanned.length)>=10))||(local.mode==="m3"&&(Math.abs(local.length-scanned.length)>=50))||(local.mode==="m4"&&(Math.abs(local.length-scanned.length)>=250))||(local.mode==="m1"&&local.length!==scanned.length)||(local.mode==="m2"&&local.md5!==scanned.md5)){
-					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changed","scanned"]});
-					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changedFolder"],"parentElement":true});
+					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changed","scanned"]}).then(()=>{},()=>{});
+					browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["changedFolder"],"parentElement":true}).then(()=>{},()=>{});
 					count++;
 					if(typeof local.deleteScripts==="undefined"||typeof local.deleteComments==="undefined"){	//workaround
 						let htmlReplaced=html_data;
@@ -218,18 +218,18 @@ function scanPage(local,id,sitesLength,extraTime=false){
 				}else{
 					timesArray[id]=true;
 					if(this.status<400){
-						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["scanned"]});
+						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["scanned"]}).then(()=>{},()=>{});
 					}else{
 						brokenArray[id]=local.broken+1||1;
-						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["warn"]});
-						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["errorFolder"],"parentElement":true});
+						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["warn"]}).then(()=>{},()=>{});
+						browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["errorFolder"],"parentElement":true}).then(()=>{},()=>{});
 						console.warn([local.url,this.status]);
 					}
 				}
 			}else{
 				brokenArray[id]=local.broken+1||1;
-				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["error"]});
-				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["errorFolder"],"parentElement":true});
+				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["error"]}).then(()=>{},()=>{});
+				browser.runtime.sendMessage({"addClass":true,"elementId":"item"+id,"classList":["errorFolder"],"parentElement":true}).then(()=>{},()=>{});
 				console.warn([local.url,this.status]);
 			}
 			scanCompleted(sitesLength);
