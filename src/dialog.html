@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html class="light">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="dialog.css"/>
+		<link rel="icon" type="image/svg-xml" href="icons/icon2.svg">
+	</head>
+	<body class="fade">
+		<div id="pageSettingsDialog">
+			<div id="titlebar"><h1 id="titlebarH1"></h1></div>
+			<div id="propertiesSection">
+				<h2 id="pageSettingsH2"></h2>
+				<label id="urlLabel" for="urlInput"></label><input id="urlInput" type="text">
+				<label id="titleLabel" for="titleInput"></label><input id="titleInput" type="text">
+				<label id="charsetLabel" for="charsetInput"></label><input id="charsetInput" type="text">
+				<label id="scanFreqLabel" for="scanFreqInput"></label><span>
+					<input id="scanFreqInput" type="number" min="1"
+					><select id="unitInput">
+						<option value="0.0166667"></option>
+						<option value="1"></option>
+						<option value="24"></option>
+						<option value="168"></option>
+					 </select>
+				</span>
+				<label id="modeLabel" for="modeInput"></label><select id="modeInput">
+					<option value="m0"></option>
+					<option value="m3"></option>
+					<option value="m4"></option>
+					<option value="m1"></option>
+					<option value="m2"></option>
+				</select>
+				<div class="row"><input type="checkbox" id="ignoreNumbersInput"><label id="ignoreNumbersLabel" for="ignoreNumbersInput"></label></div>
+				<div class="row"><input type="checkbox" id="ignoreHrefsInput"><label id="ignoreHrefsLabel" for="ignoreHrefsInput"></label></div>
+				<div class="row"><input type="checkbox" id="ignoreAllAttributesInput"><label id="ignoreAllAttributesLabel" for="ignoreAllAttributesInput"></label></div>
+				<div class="row"><input type="checkbox" id="ignoreStylesInput"><label id="ignoreStylesLabel" for="ignoreStylesInput"></label></div>
+				<div class="row"><input type="checkbox" id="deleteScriptsInput"><label id="deleteScriptsLabel" for="deleteScriptsInput"></label></div>
+				<div class="row"><input type="checkbox" id="deleteCommentsInput"><label id="deleteCommentsLabel" for="deleteCommentsInput"></label></div>
+				<div class="row"><input type="checkbox" id="paritialModeInput"><label id="paritialModeLabel" for="paritialModeInput"></label></div>
+				<label id="cssSelectorLabel" for="cssSelectorInput"></label><span id="spanSelectorInput"><input id="cssSelectorInput" type="text"><input id="inspectButtonInput" class="ghost" type="image" src="icons/select.svg"/></span>
+			</div>
+			<div id="optionsSection">
+				<h2 id="optionsH2"></h2>
+					<div class="row">
+						<label id="labelDefaultView" for="defaultView"></label
+						><select id="defaultView">
+							<option value="light"></option>
+							<option value="news"></option>
+							<option value="deleted"></option>
+							<option value="newHtml"></option>
+							<option value="oldHtml"></option>
+							<option value="raw"></option>
+							<option value="global" selected></option>
+						</select>
+					</div>
+					<div class="radio">
+						<label id="labelHideHeader"></label>
+						<input type="radio" name="hideHeader" id="hideHeaderTrue" value="true"><label for="hideHeaderTrue"></label
+						><input type="radio" name="hideHeader" id="hideHeaderFalse" value="false"><label for="hideHeaderFalse"></label
+						><input type="radio" name="hideHeader" id="hideHeaderGlobal" value="global" checked><label for="hideHeaderGlobal"></label>
+					</div>
+					<div class="radio">
+						<label id="labelShowNextPrev"></label>
+						<input type="radio" name="showNextPrev" id="showNextPrevTrue" value="true"><label for="showNextPrevTrue"></label
+						><input type="radio" name="showNextPrev" id="showNextPrevFalse" value="false"><label for="showNextPrevFalse"></label
+						><input type="radio" name="showNextPrev" id="showNextPrevGlobal" value="global" checked><label for="showNextPrevGlobal"></label>
+					</div>
+					<div class="radio">
+						<label id="labelScrollToFirstChange"></label>
+						<input type="radio" name="scrollToFirstChange" id="scrollToFirstChangeTrue" value="true"><label for="scrollToFirstChangeTrue"></label
+						><input type="radio" name="scrollToFirstChange" id="scrollToFirstChangeFalse" value="false"><label for="scrollToFirstChangeFalse"></label
+						><input type="radio" name="scrollToFirstChange" id="scrollToFirstChangeGlobal" value="global" checked><label for="scrollToFirstChangeGlobal"></label>
+					</div>
+					<div class="radio">
+						<label id="labelSkipMinorChanges"></label>
+						<input type="radio" name="skipMinorChanges" id="skipMinorChangesTrue" value="true"><label for="skipMinorChangesTrue"></label
+						><input type="radio" name="skipMinorChanges" id="skipMinorChangesFalse" value="false"><label for="skipMinorChangesFalse"></label
+						><input type="radio" name="skipMinorChanges" id="skipMinorChangesGlobal" value="global" checked><label for="skipMinorChangesGlobal"></label>
+					</div>
+					<div class="radio">
+						<label id="labelHighlightOutsideChanges"></label>
+						<input type="radio" name="highlightOutsideChanges" id="highlightOutsideChangesTrue" value="true"><label for="highlightOutsideChangesTrue"></label
+						><input type="radio" name="highlightOutsideChanges" id="highlightOutsideChangesFalse" value="false"><label for="highlightOutsideChangesFalse"></label
+						><input type="radio" name="highlightOutsideChanges" id="highlightOutsideChangesGlobal" value="global" checked><label for="highlightOutsideChangesGlobal"></label>
+					</div>
+					<div class="radio">
+						<label id="labelScrollbarMarkers"></label>
+						<input type="radio" name="scrollbarMarkers" id="scrollbarMarkersTrue" value="true"><label for="scrollbarMarkersTrue"></label
+						><input type="radio" name="scrollbarMarkers" id="scrollbarMarkersFalse" value="false"><label for="scrollbarMarkersFalse"></label
+						><input type="radio" name="scrollbarMarkers" id="scrollbarMarkersGlobal" value="global" checked><label for="scrollbarMarkersGlobal"></label>
+					</div>	
+			</div>
+			<div class="popupFooter">
+				<button id="fillForm" class="neutral hidden" type="button"></button
+				><button id="editOk" class="positive" type="button"></button
+				><button id="editCancel" class="neutral" type="button"></button>
+			</div>
+		</div>
+		<div id="messageBar" class="info hidden"><span id="messageText"></span><button id="messageButton"></button></div>
+		<script src="dialog.js"></script>
+	</body>
+</html>

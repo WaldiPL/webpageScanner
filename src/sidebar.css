@@ -12,11 +12,13 @@
 	--select-hover:#fff;
 	--input-focus:#0078d7;
 	--button-focus:#0c0c0d1a;
+	--neutral-background:#0c0c0d1a;
+	--neutral-hover:#0c0c0d33;
 	--negative-background:#ff0039;
-	--negative-border:#d70022;
+	--negative-hover:#d70022;
 	--negative-color:#fff;
-	--positive-background:#0a84ff;
-	--positive-border:#0060df;
+	--positive-background:#0060df;
+	--positive-hover:#003eaa;
 	--positive-color:#fff;
 	--link-border:#d7d7db;
 	--context-border:#d7d7db;
@@ -63,11 +65,13 @@
 	--select-hover:#474749;
 	--input-focus:#0078d7;
 	--button-focus:#4a4a4f;
+	--neutral-background:#474749;
+	--neutral-hover:#5a5a5c;
 	--negative-background:#d70022;
-	--negative-border:#ff0039;
+	--negative-hover:#ff0039;
 	--negative-color:#f9f9fa;
 	--positive-background:#0060df;
-	--positive-border:#0a84ff;
+	--positive-hover:#0a84ff;
 	--positive-color:#f9f9fa;
 	--link-border:#323234;
 	--context-border:#cdcdcb;
@@ -335,8 +339,11 @@ input[type="text"]:focus,input[type="number"]:focus,select:focus{
 	border:1px solid var(--input-focus);
 }
 
-button:focus,button:hover,ul li:hover a{
+button:focus,ul li:hover a{
 	background:var(--button-focus);
+}
+button:hover{
+	background:var(--neutral-hover);
 }
 
 input,select,button{
@@ -380,32 +387,30 @@ input,select,button{
 
 .negative{
 	background:var(--negative-background);
-	border-color:var(--negative-border);
 	color:var(--negative-color);
 }
 
 .negative:hover{
-	background:var(--negative-border);
+	background:var(--negative-hover);
 }
 
 .positive{
 	background:var(--positive-background);
-	border-color:var(--positive-border);
 	color:var(--positive-color);
 }
 
 .positive:hover{
-	background:var(--positive-border);
+	background:var(--positive-hover);
 }
 
 button{
-	background:var(--background-color);
+	background:var(--neutral-background);
 	color:var(--text-color);
-	border:1px solid var(--border-color2);
+	border:none;
 	border-radius:2px;
-	padding:4px 10px 6px;
+	padding:0 10px;
 	font-size:13px;
-	line-height:18px;
+	line-height:32px;
 	text-align:center;
 	cursor:pointer;
 }

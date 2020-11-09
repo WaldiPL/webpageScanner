@@ -494,6 +494,12 @@
   "ignoreHrefs":{
     "message": "Ignore link addresses"
   },
+  "ignoreStyles":{
+    "message": "Ignore page styles"
+  },
+  "ignoreAllAttributes":{
+    "message": "Ignore all attributes"
+  },
   "yes":{
     "message": "Yes"
   },
@@ -544,5 +550,41 @@
   },
   "defaultIgnoreHrefs":{
     "message": "By default, ignore link addresses"
+  },
+  "defaultIgnoreStyles":{
+    "message": "By default, ignore page styles"
+  },
+  "defaultIgnoreAllAttributes":{
+    "message": "By default, ignore all attributes"
+  },
+  "warningPart":{
+    "message": "The selected element of partial scanning does not exist."
+  },
+  "warningBroken":{
+    "message": "This page was not scanned. The problem occurred $1 times."
+  },
+  "warnBeforeUpdating":{
+    "message": "Inform about the extension update"
+  },
+  "updateAlertH4":{
+    "message": "A new version of the extension is available"
+  },
+  "updateAlertP":{
+    "message": "It is recommended to make a backup before updating"
+  },
+  "updateNow":{
+    "message": "Update now"
+  },
+  "foundDuplicate":{
+    "message": "Found a duplicate"
+  },
+  "duplicateMessage":{
+    "message": "The '$1' page was already on the scan list. Show duplicates."
+  },
+  "duplicateMessage2":{
+    "message": "This page is already added to the scan list"
+  },
+  "show":{
+    "message": "Show"
   }
 }

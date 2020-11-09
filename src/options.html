@@ -33,6 +33,9 @@
 				<input type="checkbox" id="openChangelog"><label id="labelOpenChangelog" for="openChangelog"></label>
 			</div>
 			<div class="row">
+				<input type="checkbox" id="warnBeforeUpdating"><label id="labelWarnBeforeUpdating" for="warnBeforeUpdating"></label>
+			</div>
+			<div class="row">
 				<input type="checkbox" id="autoScanPause"><label id="labelAutoScanPause" for="autoScanPause"></label>
 			</div>
 			<div class="row" id="groupPeriod">
@@ -171,6 +174,12 @@
 				<input type="checkbox" id="defaultIgnoreHrefs"><label id="labelDefaultIgnoreHrefs" for="defaultIgnoreHrefs"></label>
 			</div>
 			<div class="row">
+				<input type="checkbox" id="defaultIgnoreStyles"><label id="labelDefaultIgnoreStyles" for="defaultIgnoreStyles"></label>
+			</div>
+			<div class="row">
+				<input type="checkbox" id="defaultIgnoreAllAttributes"><label id="labelDefaultIgnoreAllAttributes" for="defaultIgnoreAllAttributes"></label>
+			</div>
+			<div class="row">
 				<input type="checkbox" id="defaultDeleteScripts"><label id="labelDefaultDeleteScripts" for="defaultDeleteScripts"></label>
 			</div>
 			<div class="row">
@@ -204,6 +213,11 @@
 				<button id="deleteBrokenConfirm"></button>
 			</div>
 			<h3 id="thBackup"></h3>
+			<div id="updateAlert" class="none successBox">
+				<h4 id="updateAlertH4"></h4>
+				<p id="updateAlertP"></p>
+				<button id="updateNow" class="none"></button>
+			</div>
 			<div class="row">
 				<button id="backup"></button
 				><span id="fileInput"

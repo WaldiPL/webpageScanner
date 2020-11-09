@@ -12,10 +12,10 @@ Features:
 and a lot more...
 
 ## Screenshot
-![](screenshots/3.png)
+![](screenshots/4.png)
 
 ## Requirements
-- Firefox 60+
+- Firefox 63+
 
 ## Permissions
 - Tabs

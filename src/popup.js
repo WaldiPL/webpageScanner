@@ -28,18 +28,15 @@
 })();
 
 function addThis(){
-	browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
-		let tab=tabs[0];
-		browser.runtime.sendMessage({"addThis":true,"url":tab.url,"title":tab.title,"favicon":tab.favIconUrl});
-	});
+	browser.runtime.sendMessage({"showWpsPopup":true}).then(()=>{},err=>{console.warn(err);});
 }
 
 function scanNow(){
-	browser.runtime.sendMessage({"scanSites":true,"force":true});
+	browser.runtime.sendMessage({"scanSites":true,"force":true}).then(()=>{},err=>{console.warn(err);});
 }
 
 function openSites(){
-	browser.runtime.sendMessage({"openSites":true});
+	browser.runtime.sendMessage({"openSites":true}).then(()=>{},err=>{console.warn(err);});
 	openSitesBtn.className="none";
 }
 

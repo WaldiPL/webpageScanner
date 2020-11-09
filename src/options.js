@@ -4,6 +4,9 @@
 	let section=window.location.hash;
 	if(!section)window.location.hash="#options";
 	else changeActive(section.substr(1));
+	if(window.location.search.substr(1)==="update"){
+		document.getElementById("updateAlert").classList.remove("none");
+	}
 	translate();
 	document.getElementById("notificationVolume").addEventListener("change",e=>{document.getElementById("oVolume").value=e.target.value;});
 	document.getElementById("notificationTime").addEventListener("change",e=>{document.getElementById("oTime").value=parseInt(e.target.value/1000);});
@@ -39,8 +42,12 @@
 	document.getElementById("file").addEventListener("change",handleFileSelect);
 	document.getElementById("restore").addEventListener("click",restoreBackup);
 	window.addEventListener("hashchange",e=>{changeActive(e.newURL.split("#")[1]);});
-	document.getElementById("addToContextMenu").addEventListener("change",e=>{browser.runtime.sendMessage({"addToContextMenu":e.target.checked});});
-	document.getElementById("theme").addEventListener("change",e=>{browser.runtime.sendMessage({"changeTheme":e.target.value});});
+	document.getElementById("addToContextMenu").addEventListener("change",e=>{
+		browser.runtime.sendMessage({"addToContextMenu":e.target.checked}).then(()=>{},err=>{console.warn(err);});
+	});
+	document.getElementById("theme").addEventListener("change",e=>{
+		browser.runtime.sendMessage({"changeTheme":e.target.value}).then(()=>{},err=>{console.warn(err);});
+	});
 	document.getElementById("import").addEventListener("click",importFolder);
 	document.getElementById("export").addEventListener("click",exportFolder);
 	document.getElementById("importContinue").addEventListener("click",e=>{e.preventDefault();importFinish(document.getElementById("folderList").value);});
@@ -64,7 +71,9 @@
 	});
 	document.getElementById("grantPermission").addEventListener("click",changePermission);
 	document.getElementById("revokePermission").addEventListener("click",changePermission);
-	document.getElementById("showSearchbar").addEventListener("change",e=>{browser.runtime.sendMessage({"search":e.target.checked});});
+	document.getElementById("showSearchbar").addEventListener("change",e=>{
+		browser.runtime.sendMessage({"search":e.target.checked}).then(()=>{},err=>{console.warn(err);});
+	});
 	document.getElementById("shortcut1").addEventListener("change",updateShortcut);
 	document.getElementById("shortcut2").addEventListener("change",updateShortcut);
 	document.getElementById("shortcut3").addEventListener("change",updateShortcut);
@@ -84,6 +93,7 @@
 				setTimeout(()=>{audio.pause();},10000);
 			});
 	});
+	document.getElementById("updateNow").addEventListener("click",()=>{browser.runtime.reload();});
 })();
 
 function saveOptions(){
@@ -108,6 +118,7 @@ function saveOptions(){
 		skipMinorChanges:	document.getElementById("skipMinorChanges").checked,
 		addToContextMenu:	document.getElementById("addToContextMenu").checked,
 		changelog:			document.getElementById("openChangelog").checked,
+		warnBeforeUpdating:	document.getElementById("warnBeforeUpdating").checked,
 		charset:			document.getElementById("defaultCharset").value?document.getElementById("defaultCharset").value:"utf-8",
 		period:				period>5?period<1440?period:1440:5,
 		paused:				document.getElementById("autoScanPause").checked,
@@ -122,9 +133,11 @@ function saveOptions(){
 		defaultIgnoreNumbers:	document.getElementById("defaultIgnoreNumbers").checked,
 		defaultDeleteScripts:	document.getElementById("defaultDeleteScripts").checked,
 		defaultDeleteComments:	document.getElementById("defaultDeleteComments").checked,
-		defaultIgnoreHrefs:	document.getElementById("defaultIgnoreHrefs").checked,
+		defaultIgnoreHrefs:		document.getElementById("defaultIgnoreHrefs").checked,
+		defaultIgnoreStyles:	document.getElementById("defaultIgnoreStyles").checked,
+		defaultIgnoreAllAttributes:	document.getElementById("defaultIgnoreAllAttributes").checked,
 	};
-	browser.storage.local.set({settings:settings});
+	browser.storage.local.set({settings}).then(()=>{},err=>{console.warn(err);});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
 	else browser.browserAction.setPopup({popup:"/sidebar.html?"});
 }
@@ -160,6 +173,7 @@ function restoreOptions(){
 		document.getElementById("skipMinorChanges").disabled=!s.showNextPrev;
 		document.getElementById("addToContextMenu").checked=s.addToContextMenu;
 		document.getElementById("openChangelog").checked=s.changelog;
+		document.getElementById("warnBeforeUpdating").checked=s.warnBeforeUpdating;
 		document.getElementById("defaultCharset").value=s.charset;
 		document.getElementById("period").value=s.period;
 		document.getElementById("period").disabled=s.paused;
@@ -195,6 +209,10 @@ function restoreOptions(){
 		document.getElementById("defaultDeleteScripts").checked=s.defaultDeleteScripts;
 		document.getElementById("defaultDeleteComments").checked=s.defaultDeleteComments;
 		document.getElementById("defaultIgnoreHrefs").checked=s.defaultIgnoreHrefs;
+		document.getElementById("defaultIgnoreStyles").checked=s.defaultIgnoreStyles;
+		document.getElementById("defaultIgnoreAllAttributes").checked=s.defaultIgnoreAllAttributes;
+	},err=>{
+		console.error(err);
 	});
 	restoreShortcut();
 }
@@ -214,6 +232,9 @@ function createBackup(e){
 		a.style.display="none";
 		a.click();
 		window.URL.revokeObjectURL(url);
+		document.getElementById("updateNow").removeAttribute("class");
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -278,6 +299,7 @@ function translate(){
 	document.getElementById("spanShare").textContent=i18n("spanShare");
 	document.getElementById("labelAddToContextMenu").textContent=i18n("addToContextMenu");
 	document.getElementById("labelOpenChangelog").textContent=i18n("openChangelog");
+	document.getElementById("labelWarnBeforeUpdating").textContent=i18n("warnBeforeUpdating");
 	document.getElementById("labelDefaultCharset").textContent=i18n("defaultCharset");
 	document.getElementById("thImport").textContent=i18n("importExport");
 	document.getElementById("import").textContent=i18n("importBtn");
@@ -334,6 +356,11 @@ function translate(){
 	document.getElementById("labelDefaultDeleteScripts").textContent=i18n("defaultDeleteScripts");
 	document.getElementById("labelDefaultDeleteComments").textContent=i18n("defaultDeleteComments");
 	document.getElementById("labelDefaultIgnoreHrefs").textContent=i18n("defaultIgnoreHrefs");
+	document.getElementById("labelDefaultIgnoreStyles").textContent=i18n("defaultIgnoreStyles");
+	document.getElementById("labelDefaultIgnoreAllAttributes").textContent=i18n("defaultIgnoreAllAttributes");
+	document.getElementById("updateAlertH4").textContent=i18n("updateAlertH4");
+	document.getElementById("updateAlertP").textContent=i18n("updateAlertP");
+	document.getElementById("updateNow").textContent=i18n("updateNow");
 
 	document.body.removeAttribute("class");
 }
@@ -384,10 +411,11 @@ function restoreBackup(){
 	browser.storage.local.set({sites:uploaded.sites,changes:uploaded.changes,sort:uploaded.sort}).then(()=>{
 		document.getElementById("restoreAlert").classList.add("none");
 		document.getElementById("restoreOk").classList.remove("none");
-		browser.runtime.sendMessage({"listSite":true});
-	},()=>{
+		browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
+	},err=>{
 		document.getElementById("restoreAlert").classList.add("none");
 		document.getElementById("restoreError").classList.remove("none");
+		console.error(err);
 	});
 }
 
@@ -446,7 +474,14 @@ function run(m){
 		let bookmarkId=m.nextBookmark;
 		if(m.errorBookmark)bookmarksNotAdded.push(bookmarksToAdd[bookmarkId-1]);
 		if(bookmarkId<bookmarksLength){
-			browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[bookmarkId].url,"title":bookmarksToAdd[bookmarkId].title,"addBookmark":bookmarkId});
+			browser.runtime.sendMessage({
+				"addThis":true,
+				"url":bookmarksToAdd[bookmarkId].url,
+				"title":bookmarksToAdd[bookmarkId].title,
+				"addBookmark":bookmarkId
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
 			document.getElementById("importOK").textContent=i18n("importing",[bookmarkId+1,bookmarksLength,bookmarksToAdd[bookmarkId].title]);
 		}else{
 			if(bookmarksNotAdded.length){
@@ -487,7 +522,14 @@ function importFinish(folderId){
 			});
 			if(bookmarksToAdd.length){
 				bookmarksLength=bookmarksToAdd.length;
-				browser.runtime.sendMessage({"addThis":true,"url":bookmarksToAdd[0].url,"title":bookmarksToAdd[0].title,"addBookmark":0});
+				browser.runtime.sendMessage({
+					"addThis":true,
+					"url":bookmarksToAdd[0].url,
+					"title":bookmarksToAdd[0].title,
+					"addBookmark":0}
+				).then(()=>{},err=>{
+					console.warn(err);
+				});
 				document.getElementById("importOK").textContent=i18n("importing",[1,bookmarksLength,bookmarksToAdd[0].title]);
 				document.getElementById("importOK").classList.remove("none");
 			}else if(bookmarks.length){
@@ -498,6 +540,8 @@ function importFinish(folderId){
 				document.getElementById("importError").classList.remove("none");
 			}
 			document.getElementById("management").scrollIntoView(false);
+		},err=>{
+			console.error(err);
 		});
 	});
 }
@@ -591,6 +635,8 @@ function exportAddBookmarks(folderId){
 			document.getElementById("exportOK").classList.remove("none");
 			document.getElementById("management").scrollIntoView(false);
 		});
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -629,6 +675,8 @@ function deleteDuplicates(e){
 			document.getElementById("duplicatesAlert").classList.add("none");
 			document.getElementById("duplicatesOK").classList.remove("none");
 		}
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -670,6 +718,8 @@ function deleteBroken(e){
 			document.getElementById("brokenAlert").classList.add("none");
 			document.getElementById("brokenOK").classList.remove("none");
 		}
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -698,8 +748,14 @@ function deleteSite(j,mode){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites:sites,changes:changes,sort:sort}).then(()=>{
-			browser.runtime.sendMessage({"deletedSite":true,"id":e,"listSite":true});
+		browser.storage.local.set({sites,changes,sort}).then(()=>{
+			browser.runtime.sendMessage({
+				"deletedSite":true,
+				"id":e,
+				"listSite":true
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
 			if(mode==="duplicates"){
 				if(j+1<duplicatedSites.length)
 					deleteSite(j+1,mode);
@@ -711,14 +767,18 @@ function deleteSite(j,mode){
 				else
 					document.getElementById("brokenOKH4").textContent=i18n("deletedPages",brokenSites.length);
 			}
+		},err=>{
+			console.error(err);
 		});
+	},err=>{
+		console.error(err);
 	});
 }
 
 function changePeriod(e){
 	let period=parseInt(e.target.value);
 	period=period>5?period<1440?period:1440:5;
-	browser.runtime.sendMessage({"period":period+1});
+	browser.runtime.sendMessage({"period":period+1}).then(()=>{},err=>{console.warn(err);});
 }
 
 function autoScanPause(e){
@@ -728,10 +788,11 @@ function autoScanPause(e){
 	document.getElementById("period").disabled=checked;
 	document.getElementById("groupPeriod").className="row "+!checked;
 	document.getElementById("alertToolbar").className=checked?"":"none";
-	if(checked)
+	if(checked){
 		browser.alarms.clearAll();
-	else
-		browser.runtime.sendMessage({"period":period+1});
+	}else{
+		browser.runtime.sendMessage({"period":period+1}).then(()=>{},err=>{console.warn(err);});
+	}
 }
 
 function changePermission(e){

@@ -494,6 +494,12 @@
   "ignoreHrefs":{
     "message": "Ignoruj adresy odnośników"
   },
+  "ignoreStyles":{
+    "message": "Ignoruj style strony"
+  },
+  "ignoreAllAttributes":{
+    "message": "Ignoruj wszystkie atrybuty"
+  },
   "yes":{
     "message": "Tak"
   },
@@ -544,5 +550,41 @@
   },
   "defaultIgnoreHrefs":{
     "message": "Domyślnie ignoruj adresy odnośników"
+  },
+  "defaultIgnoreStyles":{
+    "message": "Domyślnie ignoruj style strony"
+  },
+  "defaultIgnoreAllAttributes":{
+    "message": "Domyślnie ignoruj wszystkie atrybuty"
+  },
+  "warningPart":{
+    "message": "Wybrany element skanowania częściowego nie istnieje."
+  },
+  "warningBroken":{
+    "message": "Ta strona nie została przeskanowana. Problem wystąpił $1 razy."
+  },
+  "warnBeforeUpdating":{
+    "message": "Informuj o aktualizacji rozszerzenia"
+  },
+  "updateAlertH4":{
+    "message": "Dostępna jest nowa wersja rozszerzenia"
+  },
+  "updateAlertP":{
+    "message": "Przed aktualizacją zaleca się wykonanie kopii zapasowej"
+  },
+  "updateNow":{
+    "message": "Aktualizuj teraz"
+  },
+  "foundDuplicate":{
+    "message": "Znaleziono duplikat"
+  },
+  "duplicateMessage":{
+    "message": "Strona '$1' była już na liście skanowania. Pokaż duplikaty."
+  },
+  "duplicateMessage2":{
+    "message": "Ta strona jest już dodana do listy skanowania"
+  },
+  "show":{
+    "message": "Pokaż"
   }
 }

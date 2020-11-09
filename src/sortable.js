@@ -180,7 +180,9 @@ function saveSort(){
 			collapsed=value.classList.contains("collapsed")?true:false;
 		sort.push([value.id,value.dataset.folder,type,name,collapsed])
 	});
-	browser.storage.local.set({sort:sort}).then(()=>{
-		browser.runtime.sendMessage({"listSite":true});
+	browser.storage.local.set({sort}).then(()=>{
+		browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
+	},err=>{
+		console.error(err);
 	});
 }

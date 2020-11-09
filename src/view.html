@@ -11,7 +11,8 @@
 			<h1 id="title"></h1>
 			<div id="controls">
 				<button id="editButton" class="neutral" type="button"></button
-				><button id="deleteButton" class="negative" type="button"></button>
+				><button id="deleteButton" class="negative" type="button"></button
+				><div id="messageBar" class="hidden"></div>
 			</div>
 			<div id="versionTime"></div>
 			<div id="tabs">
@@ -31,97 +32,12 @@
 				<button id="close" class="ghost" type="button"></button>
 			</div>
 		</div>
-		<div id="deletePopup" class="hidden">
+		<div id="deletePopup" class="fade">
 			<h2 id="deleteHeader"></h2>
 			<div id="deleteTitle"></div>
 			<div class="popupFooter">
 				<button id="deleteCancel" class="neutral" type="button"></button
 				><button id="deleteOk" class="negative" type="button"></button>
-			</div>
-		</div>
-		<div id="editPopup" class="hidden">
-			<div id="editSection">
-				<h2 id="editHeader"></h2>
-				<label id="urlLabelEdit"></label><input id="urlEdit" type="text">
-				<label id="titleLabelEdit"></label><input id="titleEdit" type="text">
-				<label id="charsetLabelEdit"></label><input id="charsetEdit" type="text">
-				<label id="scanFreqLabelEdit"></label><span>
-					<input id="scanFreqEdit" type="number" min="1"
-					><select id="unitEdit">
-						<option value="0.0166667"></option>
-						<option value="1"></option>
-						<option value="24"></option>
-						<option value="168"></option>
-					 </select>
-				</span>
-				<label id="modeLabelEdit"></label><select id="modeEdit">
-					<option value="m0"></option>
-					<option value="m3"></option>
-					<option value="m4"></option>
-					<option value="m1"></option>
-					<option value="m2"></option>
-				</select>
-				<div class="row"><input type="checkbox" id="ignoreNumbersEdit"><label id="ignoreNumbersLabelEdit" for="ignoreNumbersEdit"></label></div>
-				<div class="row"><input type="checkbox" id="ignoreHrefsEdit"><label id="ignoreHrefsLabelEdit" for="ignoreHrefsEdit"></label></div>
-				<div class="row"><input type="checkbox" id="deleteScriptsEdit"><label id="deleteScriptsLabelEdit" for="deleteScriptsEdit"></label></div>
-				<div class="row"><input type="checkbox" id="deleteCommentsEdit"><label id="deleteCommentsLabelEdit" for="deleteCommentsEdit"></label></div>
-				<div class="row"><input type="checkbox" id="paritialModeEdit"><label id="paritialModeLabelEdit" for="paritialModeEdit"></label></div>
-				<label id="cssSelectorLabelEdit"></label><span id="spanSelectorEdit"><input id="cssSelectorEdit" type="text"><input id="inspectButtonEdit" class="ghost" type="image" src="icons/select.svg"/></span>
-			</div>
-			<div id="optionsSection">
-				<h2 id="optionsH2"></h2>
-					<div class="row">
-						<label id="labelDefaultView"></label
-						><select id="defaultView">
-							<option value="light"></option>
-							<option value="news"></option>
-							<option value="deleted"></option>
-							<option value="newHtml"></option>
-							<option value="oldHtml"></option>
-							<option value="raw"></option>
-							<option value="global" selected></option>
-						</select>
-					</div>
-					<div class="radio">
-						<label id="labelHideHeader"></label>
-						<input type="radio" name="hideHeader" id="hideHeaderTrue" value="true"><label for="hideHeaderTrue"></label
-						><input type="radio" name="hideHeader" id="hideHeaderFalse" value="false"><label for="hideHeaderFalse"></label
-						><input type="radio" name="hideHeader" id="hideHeaderGlobal" value="global" checked><label for="hideHeaderGlobal"></label>
-					</div>
-					<div class="radio">
-						<label id="labelShowNextPrev"></label>
-						<input type="radio" name="showNextPrev" id="showNextPrevTrue" value="true"><label for="showNextPrevTrue"></label
-						><input type="radio" name="showNextPrev" id="showNextPrevFalse" value="false"><label for="showNextPrevFalse"></label
-						><input type="radio" name="showNextPrev" id="showNextPrevGlobal" value="global" checked><label for="showNextPrevGlobal"></label>
-					</div>
-					<div class="radio">
-						<label id="labelScrollToFirstChange"></label>
-						<input type="radio" name="scrollToFirstChange" id="scrollToFirstChangeTrue" value="true"><label for="scrollToFirstChangeTrue"></label
-						><input type="radio" name="scrollToFirstChange" id="scrollToFirstChangeFalse" value="false"><label for="scrollToFirstChangeFalse"></label
-						><input type="radio" name="scrollToFirstChange" id="scrollToFirstChangeGlobal" value="global" checked><label for="scrollToFirstChangeGlobal"></label>
-					</div>
-					<div class="radio">
-						<label id="labelSkipMinorChanges"></label>
-						<input type="radio" name="skipMinorChanges" id="skipMinorChangesTrue" value="true"><label for="skipMinorChangesTrue"></label
-						><input type="radio" name="skipMinorChanges" id="skipMinorChangesFalse" value="false"><label for="skipMinorChangesFalse"></label
-						><input type="radio" name="skipMinorChanges" id="skipMinorChangesGlobal" value="global" checked><label for="skipMinorChangesGlobal"></label>
-					</div>
-					<div class="radio">
-						<label id="labelHighlightOutsideChanges"></label>
-						<input type="radio" name="highlightOutsideChanges" id="highlightOutsideChangesTrue" value="true"><label for="highlightOutsideChangesTrue"></label
-						><input type="radio" name="highlightOutsideChanges" id="highlightOutsideChangesFalse" value="false"><label for="highlightOutsideChangesFalse"></label
-						><input type="radio" name="highlightOutsideChanges" id="highlightOutsideChangesGlobal" value="global" checked><label for="highlightOutsideChangesGlobal"></label>
-					</div>
-					<div class="radio">
-						<label id="labelScrollbarMarkers"></label>
-						<input type="radio" name="scrollbarMarkers" id="scrollbarMarkersTrue" value="true"><label for="scrollbarMarkersTrue"></label
-						><input type="radio" name="scrollbarMarkers" id="scrollbarMarkersFalse" value="false"><label for="scrollbarMarkersFalse"></label
-						><input type="radio" name="scrollbarMarkers" id="scrollbarMarkersGlobal" value="global" checked><label for="scrollbarMarkersGlobal"></label>
-					</div>	
-			</div>
-			<div class="popupFooter">
-				<button id="editCancel" class="neutral" type="button"></button
-				><button id="editOk" class="positive" type="button"></button>
 			</div>
 		</div>
 		<script src="diff.js"></script>

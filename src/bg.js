@@ -35,6 +35,9 @@ function handleInstalled(details) {
 		"defaultDeleteScripts":true,
 		"defaultDeleteComments":true,
 		"defaultIgnoreHrefs":false,
+		"defaultIgnoreStyles":false,
+		"defaultIgnoreAllAttributes":false,
+		"warnBeforeUpdating":true,
 	};
 	if(details.reason==="install"){
 		browser.storage.local.get(['sites','settings']).then(result=>{
@@ -53,8 +56,12 @@ function handleInstalled(details) {
 						active:true
 					});
 				}
+			},err=>{
+				console.error(err);
 			});
-		});	
+		},err=>{
+			console.error(err);
+		});
 	}else if(details.reason==="update"){
 		browser.storage.local.get('settings').then(result=>{
 			const settings=Object.assign({},defaultSettings,result.settings);
@@ -65,7 +72,11 @@ function handleInstalled(details) {
 						active:true
 					});
 				}
+			},err=>{
+				console.error(err);
 			});
+		},err=>{
+			console.error(err);
 		});
 	}
 }
@@ -86,6 +97,32 @@ browser.browserAction.onClicked.addListener(async (tab,e)=>{
 	}
 });
 
+browser.runtime.onUpdateAvailable.addListener(()=>{
+	browser.storage.local.get("settings").then(result=>{
+		if(result.settings.warnBeforeUpdating){
+			browser.tabs.create({
+				url:"options.html?update#management",
+				active:true
+			});
+		}
+	},err=>{
+		console.error(err);
+	});
+});
+
+browser.notifications.onClicked.addListener(e=>{
+	switch(e){
+		case "webpagesScannerScanned":
+			getSettings("autoOpen").then(s=>{
+				if(s){openSite();}
+			});
+			break;
+		case "webpagesScannerDuplicates":
+			openDuplicates();
+			break;
+	}
+});
+
 (function(){
 	browser.storage.local.get(['sites','sort','settings']).then(result=>{
 		if(result.sites===undefined||result.settings===undefined){
@@ -98,8 +135,10 @@ browser.browserAction.onClicked.addListener(async (tab,e)=>{
 			result.sites.forEach((value,i)=>{
 				sort.push([`item${i}`,"root","item","",false]);
 			});
-			browser.storage.local.set({sort:sort});
+			browser.storage.local.set({sort}).then(()=>{},err=>{console.error(err);});
 		}
+	},err=>{
+		console.error(err);
 	});
 })();
 
@@ -113,6 +152,8 @@ function init(){
 			browser.alarms.create("webpageScanner",{periodInMinutes:period+1});
 			browser.alarms.create("webpageScanner2",{delayInMinutes:1});
 		}
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -127,8 +168,8 @@ let delayCurrentId,
 	lastWindowId;
 
 browser.runtime.onMessage.addListener(run);
-function run(m,s){
-	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScript,m.deleteComments,m.ignoreHrefs);
+function run(m,s,r){
+	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScripts,m.deleteComments,m.ignoreHrefs,m.charset,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes);
 	if(m.scanSites)scanSites(m.force);
 	if(m.openSites)openSite();
 	if(m.addToContextMenu!==undefined)showContext(m.addToContextMenu);
@@ -138,6 +179,107 @@ function run(m,s){
 	if(m.scanPagesById){scanPagesById(m.idArray);}
 	if(m.updateBadge){updateBadge(m.updateBadgeArg);}
 	if(m.unchange){unchange(m.unchangeArg);}
+	if(m.tabInfo){r({tab:s.tab});}
+	if(m.showWpsPopup){showPopup(m.mode,m.editId);}
+	if(m.unhideWpsPopup){
+		browser.tabs.executeScript(s.tab.id,{
+			code:`document.getElementById("__wps_pageSettings").style.visibility="visible";`
+		}).then(()=>{},err=>{
+			console.error(err);
+		});
+	}
+	if(m.deleteWpsPopup){
+		browser.tabs.executeScript(s.tab.id,{
+			code:`document.getElementById("__wps_pageSettings").remove();`
+		}).then(()=>{},err=>{
+			console.error(err);
+		});
+	}
+	if(m.inspectTab){
+		if(m.again){
+			browser.tabs.sendMessage(s.tab.id,{
+				"initInspect":true,
+				"inspectMode":"onPageTab",
+				"fadeOut":true
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
+			browser.tabs.executeScript(s.tab.id,{
+				code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
+			}).then(()=>{},err=>{
+				console.error(err);
+			});
+		}else{
+			browser.tabs.executeScript(s.tab.id,{
+				file: "/inspect.js",
+				runAt:"document_end"
+			}).then(()=>{
+				browser.tabs.sendMessage(s.tab.id,{
+					"initInspect":true,
+					"inspectMode":"onPageTab",
+					"fadeOut":true
+				});
+				browser.tabs.executeScript(s.tab.id,{
+					code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
+				}).then(()=>{},err=>{
+					console.error(err);
+				});
+			},err=>{
+				console.error(err);
+				browser.tabs.sendMessage(s.tab.id,{
+					"initInspect":true,
+					"inspectMode":"onPageTab",
+					"fadeOut":true
+				}).then(()=>{},err=>{
+					console.warn(err);
+				});
+				browser.tabs.executeScript(s.tab.id,{
+					code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
+				}).then(()=>{},err=>{
+					console.error(err);
+				});
+			});
+			browser.tabs.insertCSS(s.tab.id,{
+				file: "/inspect.css",
+				runAt:"document_end"
+			}).then(()=>{},err=>{
+				console.error(err);
+			});
+		}
+	}
+	if(m.returnToDialogTab){
+		browser.tabs.remove(s.tab.id).then(()=>{
+			browser.tabs.sendMessage(m.dialogTabId,{
+				"changeSelector":true,
+				"selector":m.cssSelector
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
+			browser.tabs.update(m.dialogTabId,{
+				active:true
+			})
+		});
+	}
+	if(m.changeSelectorOnViewTab){
+		browser.tabs.sendMessage(s.tab.id,{
+			"changeSelector":true,
+			"selector":m.cssSelector
+		}).then(()=>{},err=>{
+			console.warn(err);
+		});
+	}
+	if(m.editThis){editSite(m.id,m.url,m.title,m.mode,m.freq,m.charset,m.cssSelector,m.ignoreNumbers,m.ignoreHrefs,m.deleteScripts,m.deleteComments,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes);}
+	if(m.executeCustom){
+		browser.tabs.executeScript(s.tab.id,{
+			file:"/custom.js"
+		}).then(()=>{},err=>{
+			console.error(err);
+		});
+	}
+	if(m.byBG){
+		browser.tabs.sendMessage(s.tab.id,m).then(()=>{},err=>{console.warn(err);});
+	}
+	if(m.openViewPage){browser.tabs.create({url:"/view.html?"+m.viewId});}
 }
 
 function showContext(e){
@@ -153,14 +295,16 @@ function showContext(e){
 		browser.contextMenus.remove("addThis");
 }
 
-function contextAdd(e){
-	browser.tabs.query({
-		url:e.pageUrl.split("#")[0],
-		currentWindow:true
-	}).then(tabs=>{
-		const tab=tabs[0];
-		rqstAdd(e.pageUrl,tab.title,tab.favIconUrl);
-	});
+function contextAdd(e,tab){
+	if(e.viewType==="tab"){
+		showPopup();
+	}else{
+		browser.tabs.update(tab.id,{
+			active:true
+		}).then(()=>{
+			showPopup();
+		});
+	}
 }
 
 function openSitesDelay(openWindow){
@@ -195,9 +339,117 @@ function openSitesDelay(openWindow){
 		}
 		updateBadge(-1);
 		unchange([delayLinksId[delayCurrentId]]);
-		browser.runtime.sendMessage({"unchangeItem":true,"unchangeItemId":[delayLinksId[delayCurrentId]]});
+		browser.runtime.sendMessage({
+			"unchangeItem":true,
+			"unchangeItemId":[delayLinksId[delayCurrentId]]
+		}).then(()=>{},err=>{
+			console.warn(err);
+		});
 	}else{
 		delayLinksId=[];
 		lastWindowId=-1;
 	}
+}
+
+function showPopup(mode="add",editId){
+	const code=`
+		(function(){
+			if(!document.getElementById("__wps_pageSettings")&&(("${mode}"==="add"&&this.location.protocol.startsWith("http"))||("${mode}"==="edit"&&this.location.protocol==="moz-extension:"))){
+				let popup=document.createElement("wps-popup");
+					popup.id="__wps_pageSettings";
+					popup.setAttribute("editId","${editId}");
+					popup.setAttribute("mode","${mode}");
+					document.documentElement.appendChild(popup);	
+			}
+		})();	
+	`;
+	browser.tabs.executeScript({
+		file:"/custom.js"
+	}).then(()=>{
+		browser.tabs.executeScript({
+			code:code
+		}).then(()=>{},err=>{
+			console.error(err);
+			if(mode!=="edit"){
+				browser.tabs.query({active:true}).then(tab=>{
+					rqstAdd(tab.url,tab.title,tab.favIconUrl);
+				});
+			}
+		});
+	},err=>{
+		console.error(err);
+		if(mode==="add"){
+			browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
+				const tab=tabs[0];
+				if(tab.url.startsWith("http")){
+					browser.tabs.create({url:`${browser.extension.getURL("")}dialog.html?onEmptyTab&add&tabId=${tab.id}`});
+				}else{
+					browser.tabs.create({url:`${browser.extension.getURL("")}dialog.html?onEmptyTab&add`});
+				}
+			});
+		}else{
+			browser.tabs.create({url:`${browser.extension.getURL("")}dialog.html?onEmptyTab&edit&editId=${editId}`});
+		}
+	});
+}
+
+function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignoreHrefs,deleteScripts,deleteComments,pageSettings,ignoreStyles,ignoreAllAttributes){
+	browser.storage.local.get("sites").then(async result=>{
+		let sites=result.sites;
+		let obj={
+			url,
+			title,
+			mode,
+			freq,
+			charset,
+			paritialMode:(cssSelector!==false)?true:false,
+			cssSelector:(cssSelector!==false)?cssSelector:"",
+			ignoreNumbers,
+			ignoreHrefs,
+			ignoreStyles,
+			ignoreAllAttributes,
+			deleteScripts,
+			deleteComments,
+		};
+		const old={
+			paritialMode:sites[id].paritialMode,
+			cssSelector :sites[id].cssSelector,
+			ignoreNumbers:sites[id].ignoreNumbers,
+			ignoreHrefs	 :sites[id].ignoreHrefs,
+			ignoreStyles :sites[id].ignoreStyles,
+			ignoreAllAttributes:sites[id].ignoreAllAttributes,
+		};
+		if(old.paritialMode!==obj.paritialMode||old.cssSelector!==obj.cssSelector||old.ignoreNumbers!==ignoreNumbers||old.ignoreHrefs!==ignoreHrefs||old.ignoreStyles!==ignoreStyles||old.ignoreAllAttributes!==ignoreAllAttributes){
+			const {changes}=await browser.storage.local.get("changes");
+			const html_data=changes[id].html;
+			if(cssSelector===false){
+				Object.assign(obj,length_md5(html_data,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
+			}else{
+				let parser=new DOMParser(),
+					doc=parser.parseFromString(html_data,"text/html"),
+					selectedElement=doc.querySelector(cssSelector);
+				if(selectedElement){
+					let partHTML=selectedElement.outerHTML;
+					Object.assign(obj,length_md5(partHTML,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
+				}else{
+					Object.assign(obj,length_md5(html_data,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
+				}
+			}
+		}
+		Object.assign(obj,{settings:pageSettings});
+		Object.assign(sites[id],obj);
+		browser.storage.local.set({sites}).then(()=>{
+			browser.runtime.sendMessage({
+				"statusbar":true,
+				"statusbarArg":i18n("savedWebpage",sites[id].title),
+				"listSite":true
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
+		},err=>{
+			console.error(err);
+		});
+	},err=>{
+		console.error(err);
+	});
 }

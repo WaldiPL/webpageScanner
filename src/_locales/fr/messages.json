@@ -494,6 +494,12 @@
   "ignoreHrefs":{
     "message": "Ignorer les adresses des liens"
   },
+  "ignoreStyles":{
+    "message": "Ignorer les styles de page"
+  },
+  "ignoreAllAttributes":{
+    "message": "Ignorer tous les attributs"
+  },
   "yes":{
     "message": "Oui"
   },
@@ -544,5 +550,41 @@
   },
   "defaultIgnoreHrefs":{
     "message": "Par défaut, ignorer les adresses des liens"
+  },
+  "defaultIgnoreStyles":{
+    "message": "Par défaut, ignorer les styles de page"
+  },
+  "defaultIgnoreAllAttributes":{
+    "message": "Par défaut, ignorer tous les attributs"
+  },
+  "warningPart":{
+    "message": "L'élément sélectionné du scan partiel n'existe pas."
+  },
+  "warningBroken":{
+    "message": "Cette page n'a pas été scannée. Le problème s'est produit $1 fois."
+  },
+  "warnBeforeUpdating":{
+    "message": "Informer sur la mise à jour de l'extension"
+  },
+  "updateAlertH4":{
+    "message": "Une nouvelle version de l'extension est disponible"
+  },
+  "updateAlertP":{
+    "message": "Il est recommandé de faire une sauvegarde avant de mettre à jour"
+  },
+  "updateNow":{
+    "message": "Mettre à jour maintenant"
+  },
+  "foundDuplicate":{
+    "message": "Trouvé un doublon"
+  },
+  "duplicateMessage":{
+    "message": "La page '$1' était déjà dans la liste de scan. Montrer les doublons."
+  },
+  "duplicateMessage2":{
+    "message": "Cette page est déjà ajoutée à la liste de scan"
+  },
+  "show":{
+    "message": "Montrer"
   }
 }

@@ -29,28 +29,19 @@ const extURL=browser.extension.getURL("");
 		document.title=site.title;
 		document.getElementById("favicon").href=site.favicon;
 		document.getElementById("current").href=site.url;
+	},err=>{
+		console.error(err);
 	});
 	load();
 	translate();
 	document.getElementById("viewMode").addEventListener("change",e=>{load(e.target.value);});
 	document.getElementById("deleteButton").addEventListener("click",showDelete);
-	document.getElementById("deleteCancel").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
+	document.getElementById("deleteCancel").addEventListener("click",e=>{e.target.offsetParent.classList.add("fade");});
 	document.getElementById("editButton").addEventListener("click",showEdit);
-	document.getElementById("editCancel").addEventListener("click",e=>{e.target.offsetParent.classList.add("hidden");});
 	document.getElementById("toggleHeader").addEventListener("click",()=>{toggleHeader();});
 	document.getElementById("prev").addEventListener("click",()=>{nextPrev(false);});
 	document.getElementById("next").addEventListener("click",()=>{nextPrev(true);});
 	document.getElementById("close").addEventListener("click",toggleNextPrev);
-	document.getElementById("paritialModeEdit").addEventListener("change",e=>{
-		if(e.target.checked){
-			document.getElementById("spanSelectorEdit").removeAttribute("class");
-			document.getElementById("cssSelectorLabelEdit").removeAttribute("class");
-		}else{
-			document.getElementById("spanSelectorEdit").className="notVisible";
-			document.getElementById("cssSelectorLabelEdit").className="notVisible";
-		}
-	});
-	document.getElementById("inspectButtonEdit").addEventListener("click",inspect);
 })();
 
 function nextPrev(next){
@@ -89,12 +80,13 @@ function toggleNextPrev(show,autoScroll){
 }
 
 function showDelete(){
-	document.getElementById("editPopup").classList.add("hidden");
 	browser.storage.local.get('sites').then(result=>{
 		const sites=result.sites;
 		document.getElementById("deleteOk").addEventListener("click",deleteSite);
-		document.getElementById("deletePopup").classList.remove("hidden");
+		document.getElementById("deletePopup").classList.remove("fade");
 		document.getElementById("deleteTitle").textContent=sites[localId].title;
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -114,96 +106,31 @@ function deleteSite(){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites:sites,changes:changes,sort:sort}).then(()=>{
-			browser.runtime.sendMessage({"listSite":true,"deletedSite":true,"id":localId});
+		browser.storage.local.set({sites,changes,sort}).then(()=>{
+			browser.runtime.sendMessage({
+				"listSite":true,
+				"deletedSite":true,
+				"id":localId
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
 			browser.tabs.getCurrent().then(tab=>{browser.tabs.remove(tab.id);});
+		},err=>{
+			console.error(err);
 		});
+	},err=>{
+		console.error(err);
 	});
 }
 
 function showEdit(){
-	document.getElementById("deletePopup").classList.add("hidden");
-	browser.storage.local.get(['sites','settings']).then(({sites,settings})=>{
-		document.getElementById("editOk").addEventListener("click",editSite);
-		document.getElementById("editPopup").classList.remove("hidden");
-		document.getElementById("urlEdit").value=sites[localId].url;
-		document.getElementById("titleEdit").value=sites[localId].title;
-		document.getElementById("charsetEdit").value=sites[localId].charset?sites[localId].charset:settings.charset;
-		const freq=sites[localId].freq;
-		let unit;
-		if(!(freq%168))
-			unit=168;
-		else if(!(freq%24))
-			unit=24;
-		else if(freq<1)
-			unit=0.0166667;
-		else
-			unit=1;
-		document.getElementById("scanFreqEdit").value=parseInt(freq/unit);
-		document.getElementById("unitEdit").value=unit;
-		document.getElementById("modeEdit").value=sites[localId].mode;
-		document.getElementById("ignoreNumbersEdit").checked=sites[localId].ignoreNumbers;
-		document.getElementById("ignoreHrefsEdit").checked=(sites[localId].ignoreHrefs===undefined)?settings.defaultIgnoreHrefs:sites[localId].ignoreHrefs;
-		document.getElementById("deleteScriptsEdit").checked=(sites[localId].deleteScripts===undefined)?settings.defaultDeleteScripts:sites[localId].deleteScripts;
-		document.getElementById("deleteCommentsEdit").checked=(sites[localId].deleteComments===undefined)?settings.defaultDeleteComments:sites[localId].deleteComments;
-		document.getElementById("spanSelectorEdit").className=sites[localId].paritialMode?"":"notVisible";
-		document.getElementById("cssSelectorLabelEdit").className=sites[localId].paritialMode?"":"notVisible";
-		document.getElementById("paritialModeEdit").checked=sites[localId].paritialMode;
-		document.getElementById("cssSelectorEdit").value=(sites[localId].cssSelector===undefined)?"":sites[localId].cssSelector;
-		const pageSettings=sites[localId].settings;
-		if(pageSettings){
-			document.getElementById("defaultView").value=pageSettings.defaultView;
-			document.querySelector(`input[name="hideHeader"][value="${pageSettings.hideHeader}"]`).checked=true;
-			document.querySelector(`input[name="showNextPrev"][value="${pageSettings.showNextPrev}"]`).checked=true;
-			document.querySelector(`input[name="scrollToFirstChange"][value="${pageSettings.scrollToFirstChange}"]`).checked=true;
-			document.querySelector(`input[name="skipMinorChanges"][value="${pageSettings.skipMinorChanges}"]`).checked=true;
-			document.querySelector(`input[name="highlightOutsideChanges"][value="${pageSettings.highlightOutsideChanges}"]`).checked=true;
-			document.querySelector(`input[name="scrollbarMarkers"][value="${pageSettings.scrollbarMarkers}"]`).checked=true;
-		}
-	});
-}
-
-function getRadioValue(e){
-	if(document.getElementById(e+"True").checked)return true;
-	else if(document.getElementById(e+"False").checked)return false;
-	return "global";
-}
-
-function editSite(){
-	document.getElementById("editPopup").classList.add("hidden");
-	browser.storage.local.get(['sites','settings']).then(result=>{
-		let sites=result.sites,
-			freq=parseInt(document.getElementById("scanFreqEdit").value);
-		let obj={
-			title:	document.getElementById("titleEdit").value,
-			url:	document.getElementById("urlEdit").value,
-			mode:	document.getElementById("modeEdit").value,
-			freq:	freq>0?freq*parseFloat(document.getElementById("unitEdit").value):8,
-			charset:document.getElementById("charsetEdit").value?document.getElementById("charsetEdit").value:result.settings.charset,
-			paritialMode:document.getElementById("paritialModeEdit").checked,
-			cssSelector:document.getElementById("cssSelectorEdit").value,
-			ignoreNumbers:document.getElementById("ignoreNumbersEdit").checked,
-			ignoreHrefs:document.getElementById("ignoreHrefsEdit").checked,
-			deleteScripts:document.getElementById("deleteScriptsEdit").checked,
-			deleteComments:document.getElementById("deleteCommentsEdit").checked,
-		}
-		const pageSettings={
-			defaultView:				document.getElementById("defaultView").value,
-			hideHeader:					getRadioValue("hideHeader"),
-			showNextPrev:				getRadioValue("showNextPrev"),
-			scrollToFirstChange:		getRadioValue("scrollToFirstChange"),
-			skipMinorChanges:			getRadioValue("skipMinorChanges"),
-			highlightOutsideChanges:	getRadioValue("highlightOutsideChanges"),
-			scrollbarMarkers:			getRadioValue("scrollbarMarkers"),
-		}
-		Object.assign(obj,{settings:pageSettings});
-		Object.assign(sites[localId],obj);
-		browser.storage.local.set({sites}).then(()=>{
-			browser.runtime.sendMessage({"listSite":true});
-		});
-		document.getElementById("title").textContent=obj.title;
-		document.title=obj.title;
-		document.getElementById("current").href=obj.url;
+	document.getElementById("deletePopup").classList.add("fade");
+	browser.runtime.sendMessage({
+		"showWpsPopup":true,
+		"mode":"edit",
+		"editId":localId
+	}).then(()=>{},err=>{
+		console.warn(err);
 	});
 }
 
@@ -373,6 +300,26 @@ function load(type,inspectMode){
 		base.target="_top";
 		iframe.contentDocument.documentElement.remove();
 		iframe.contentDocument.appendChild(doc.documentElement);
+
+		let selectedElement;
+		if(sId.paritialMode&&sId.cssSelector&&(type==="light"||type==="newHtml"||type==="oldHtml")){
+			selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
+			if(!selectedElement){
+				let notification=document.getElementById("messageBar");
+				notification.textContent=i18n("warningPart");
+				notification.className="warning";
+			}else{
+				document.getElementById("messageBar").className="hidden";
+			}
+		}else{
+			document.getElementById("messageBar").className="hidden";
+		}
+		if(sId.broken>1){
+			let notification=document.getElementById("messageBar");
+			notification.textContent=i18n("warningBroken",sId.broken);
+			notification.className="warning";
+		}
+
 		viewMode=type;
 		if(type==="light"){
 			const allChanges=iframe.contentDocument.getElementsByClassName("__wps_changes");		
@@ -383,18 +330,17 @@ function load(type,inspectMode){
 			}else{
 				filteredChanges=allChanges;
 			}
-			if(!pageSettings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector){
-				let selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
-				if(selectedElement){
-					filteredChanges=[...filteredChanges].filter((element,index,array)=>{
-						return (selectedElement.contains(element));
-					});
-				}
+			if(!pageSettings.highlightOutsideChanges&&selectedElement){
+				filteredChanges=[...filteredChanges].filter((element,index,array)=>{
+					return (selectedElement.contains(element));
+				});
 			}
 			document.getElementById("xtext").textContent=i18n("numberOfChanges",filteredChanges.length);
 		}
 		document.getElementById("versionTime").title=i18n("lastScan",lastScan)+"\u000d"+i18n("newVersion")+": "+newTime+"\u000d"+i18n("oldVersion")+": "+oldTime;
 		if(inspectMode)inspect();
+	},err=>{
+		console.error(err);
 	});
 }
 
@@ -430,6 +376,7 @@ function run(m){
 		}
 	}
 	if(m.changeTheme)document.documentElement.className=m.changeTheme;
+	if(m.inspectView){inspect();}
 }
 
 function translate(){
@@ -444,71 +391,11 @@ function translate(){
 	document.getElementById("current").title=i18n("currentWebpage");
 	document.getElementById("deleteCancel").textContent=i18n("cancel");
 	document.getElementById("deleteOk").textContent=i18n("delete");
-	document.getElementById("editCancel").textContent=i18n("cancel");
-	document.getElementById("editOk").textContent=i18n("save");
 	document.getElementById("deleteHeader").textContent=i18n("deleteWebpage");
-	document.getElementById("editHeader").textContent=i18n("editWebpage");
-	document.getElementById("urlLabelEdit").textContent=i18n("address");
-	document.getElementById("titleLabelEdit").textContent=i18n("title");
-	document.getElementById("charsetLabelEdit").textContent=i18n("charset");
-	document.getElementById("scanFreqLabelEdit").textContent=i18n("scanFreq");
-	document.getElementById("modeLabelEdit").textContent=i18n("modeTitle");
-	let selectFreq=document.getElementById("unitEdit").options;
-		selectFreq[0].text=i18n("minutes");
-		selectFreq[1].text=i18n("hours");
-		selectFreq[2].text=i18n("days");
-		selectFreq[3].text=i18n("weeks");
-	let selectMode=document.getElementById("modeEdit").options;
-		selectMode[0].text=i18n("modeM0");
-		selectMode[1].text=i18n("modeM3");
-		selectMode[2].text=i18n("modeM4");
-		selectMode[3].text=i18n("modeM1");
-		selectMode[4].text=i18n("modeM2");
 	document.getElementById("toggleHeader").title=i18n("hideInterface");
 	document.getElementById("prev").title=i18n("scrollPrev");
 	document.getElementById("next").title=i18n("scrollNext");
 	document.getElementById("close").title=i18n("close");
-	document.getElementById("paritialModeLabelEdit").textContent=i18n("paritialMode");
-	document.getElementById("cssSelectorLabelEdit").textContent=i18n("selectorCSS");
-	document.getElementById("inspectButtonEdit").title=i18n("inspectElement");
-	document.getElementById("ignoreNumbersLabelEdit").textContent=i18n("ignoreNumbers");
-	document.getElementById("ignoreHrefsLabelEdit").textContent=i18n("ignoreHrefs");
-	document.getElementById("deleteScriptsLabelEdit").textContent=i18n("deleteScripts");
-	document.getElementById("deleteCommentsLabelEdit").textContent=i18n("deleteComments");
-	document.getElementById("optionsH2").textContent=i18n("options");
-	document.getElementById("labelDefaultView").textContent=i18n("defaultView");
-	let defaultViewSelect=document.getElementById("defaultView").options;
-		defaultViewSelect[0].text=i18n("highlight");
-		defaultViewSelect[1].text=i18n("newElements");
-		defaultViewSelect[2].text=i18n("deletedElements");
-		defaultViewSelect[3].text=i18n("newVersion");
-		defaultViewSelect[4].text=i18n("oldVersion");
-		defaultViewSelect[5].text=i18n("rawData");
-		defaultViewSelect[6].text=i18n("global");
-	document.getElementById("labelHideHeader").textContent=i18n("hideHeader");
-	document.getElementById("hideHeaderTrue").nextSibling.textContent=i18n("yes");
-	document.getElementById("hideHeaderFalse").nextSibling.textContent=i18n("no");
-	document.getElementById("hideHeaderGlobal").nextSibling.textContent=i18n("global");
-	document.getElementById("labelShowNextPrev").textContent=i18n("showNextPrev");
-	document.getElementById("showNextPrevTrue").nextSibling.textContent=i18n("yes");
-	document.getElementById("showNextPrevFalse").nextSibling.textContent=i18n("no");
-	document.getElementById("showNextPrevGlobal").nextSibling.textContent=i18n("global");
-	document.getElementById("labelScrollToFirstChange").textContent=i18n("scrollToFirstChange");
-	document.getElementById("scrollToFirstChangeTrue").nextSibling.textContent=i18n("yes");
-	document.getElementById("scrollToFirstChangeFalse").nextSibling.textContent=i18n("no");
-	document.getElementById("scrollToFirstChangeGlobal").nextSibling.textContent=i18n("global");
-	document.getElementById("labelSkipMinorChanges").textContent=i18n("skipMinorChanges");
-	document.getElementById("skipMinorChangesTrue").nextSibling.textContent=i18n("yes");
-	document.getElementById("skipMinorChangesFalse").nextSibling.textContent=i18n("no");
-	document.getElementById("skipMinorChangesGlobal").nextSibling.textContent=i18n("global");
-	document.getElementById("labelHighlightOutsideChanges").textContent=i18n("highlightOutsideChanges");
-	document.getElementById("highlightOutsideChangesTrue").nextSibling.textContent=i18n("yes");
-	document.getElementById("highlightOutsideChangesFalse").nextSibling.textContent=i18n("no");
-	document.getElementById("highlightOutsideChangesGlobal").nextSibling.textContent=i18n("global");
-	document.getElementById("labelScrollbarMarkers").textContent=i18n("scrollbarMarkers");
-	document.getElementById("scrollbarMarkersTrue").nextSibling.textContent=i18n("yes");
-	document.getElementById("scrollbarMarkersFalse").nextSibling.textContent=i18n("no");
-	document.getElementById("scrollbarMarkersGlobal").nextSibling.textContent=i18n("global");
 }
 
 function toggleHeader(auto){
@@ -530,14 +417,15 @@ function enableBtn(name){
 
 function inspect(){
 	if(viewMode==="newHtml"){
-		document.getElementById("editPopup").classList.add("hidden");
 		if(!inspected){
 			inspected=true;
 			let js=document.createElement("script");
 				js.src=extURL+"inspect.js";
 			iframe.contentWindow.browser=browser;
 			iframe.contentDocument.body.appendChild(js);
-
+			let jsCustom=document.createElement("script");
+				jsCustom.src=extURL+"custom.js";
+			iframe.contentDocument.body.appendChild(jsCustom);
 			let css=document.createElement("link");
 				css.rel="stylesheet";
 				css.href=extURL+"inspect.css";
