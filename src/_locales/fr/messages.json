@@ -586,5 +586,11 @@
   },
   "show":{
     "message": "Montrer"
+  },
+  "saveOnlyPart":{
+    "message": "Sauvegarder uniquement l'élément sélectionné"
+  },
+  "defaultSaveOnlyPart":{
+    "message": "Par défaut, sauvegarder uniquement l'élément sélectionné"
   }
 }

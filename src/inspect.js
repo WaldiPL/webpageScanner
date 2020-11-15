@@ -1,16 +1,6 @@
 "use strict";
 
-let inspectMode,overlay,dialogTabId,thisTabId;
-
-(async function(){
-	if(document.URL==="about:blank"){
-		const returnMessage=browser.runtime.sendMessage({"tabInfo":true});
-		const {tab}=await returnMessage;
-		thisTabId=tab.id;
-		inspectMode="onViewTab";
-		init();
-	}
-})();
+let inspectMode,overlay,dialogTabId;
 
 function init(){
 	overlay=document.getElementById("__wps_inspectOverlay");
@@ -112,22 +102,20 @@ function run(m,s){
 		init();
 	}
 	if(m.toInspect){
-		if(m.byBG===true||thisTabId===s.tab.id){
-			if(m.addEvent){
-				addEvent();
-			}
-			if(m.removeEvent){
-				removeEvent();
-			}
-			if(m.removeInspectDialog){
-				document.getElementById("__wps_inspectDialog").remove();
-			}
-			if(m.removeOverlay){
-				overlay.remove();
-			}
-			if(m.yellowOverlay){
-				overlay.style.backgroundColor="#ffe900";
-			}
+		if(m.addEvent){
+			addEvent();
+		}
+		if(m.removeEvent){
+			removeEvent();
+		}
+		if(m.removeInspectDialog){
+			document.getElementById("__wps_inspectDialog").remove();
+		}
+		if(m.removeOverlay){
+			overlay.remove();
+		}
+		if(m.yellowOverlay){
+			overlay.style.backgroundColor="#ffe900";
 		}
 	}
 }

@@ -136,6 +136,7 @@ function saveOptions(){
 		defaultIgnoreHrefs:		document.getElementById("defaultIgnoreHrefs").checked,
 		defaultIgnoreStyles:	document.getElementById("defaultIgnoreStyles").checked,
 		defaultIgnoreAllAttributes:	document.getElementById("defaultIgnoreAllAttributes").checked,
+		defaultSaveOnlyPart:	document.getElementById("defaultSaveOnlyPart").checked,
 	};
 	browser.storage.local.set({settings}).then(()=>{},err=>{console.warn(err);});
 	if(!settings.popupList)browser.browserAction.setPopup({popup:"/popup.html"});
@@ -211,6 +212,7 @@ function restoreOptions(){
 		document.getElementById("defaultIgnoreHrefs").checked=s.defaultIgnoreHrefs;
 		document.getElementById("defaultIgnoreStyles").checked=s.defaultIgnoreStyles;
 		document.getElementById("defaultIgnoreAllAttributes").checked=s.defaultIgnoreAllAttributes;
+		document.getElementById("defaultSaveOnlyPart").checked=s.defaultSaveOnlyPart;
 	},err=>{
 		console.error(err);
 	});
@@ -361,6 +363,7 @@ function translate(){
 	document.getElementById("updateAlertH4").textContent=i18n("updateAlertH4");
 	document.getElementById("updateAlertP").textContent=i18n("updateAlertP");
 	document.getElementById("updateNow").textContent=i18n("updateNow");
+	document.getElementById("labelDefaultSaveOnlyPart").textContent=i18n("defaultSaveOnlyPart");
 
 	document.body.removeAttribute("class");
 }

@@ -34,7 +34,7 @@ function cancel(){
 		browser.runtime.sendMessage({"closeTab":true}).then(()=>{},err=>{console.warn(err);});
 	}else{
 		browser.runtime.sendMessage({
-			"byBG":(inspectMode!=="onViewTab"),
+			"byBG":true,
 			"toInspect":true,
 			"removeEvent":true,
 			"removeInspectDialog":true,
@@ -48,7 +48,7 @@ function cancel(){
 
 function retry(){
 	browser.runtime.sendMessage({
-		"byBG":(inspectMode!=="onViewTab"),
+		"byBG":true,
 		"toInspect":true,
 		"removeInspectDialog":true,
 		"yellowOverlay":true,
@@ -60,18 +60,7 @@ function retry(){
 
 function ok(){
 	let cssSelector=document.getElementById("selectorInput").value;
-	if(inspectMode==="onViewTab"){
-		browser.runtime.sendMessage({
-			"changeSelectorOnViewTab":true,
-			"cssSelector":cssSelector,
-			"toInspect":true,
-			"removeInspectDialog":true,
-			"removeOverlay":true,
-			"unhideWpsPopup":true
-		}).then(()=>{},err=>{
-			console.warn(err);
-		});
-	}else if(inspectMode==="onPageTab"){
+	if(inspectMode==="onPageTab"){
 		browser.runtime.sendMessage({
 			"byBG":true,
 			"changeSelector":true,

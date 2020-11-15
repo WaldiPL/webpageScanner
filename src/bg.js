@@ -37,6 +37,7 @@ function handleInstalled(details) {
 		"defaultIgnoreHrefs":false,
 		"defaultIgnoreStyles":false,
 		"defaultIgnoreAllAttributes":false,
+		"defaultSaveOnlyPart":false,
 		"warnBeforeUpdating":true,
 	};
 	if(details.reason==="install"){
@@ -169,7 +170,7 @@ let delayCurrentId,
 
 browser.runtime.onMessage.addListener(run);
 function run(m,s,r){
-	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScripts,m.deleteComments,m.ignoreHrefs,m.charset,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes);
+	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScripts,m.deleteComments,m.ignoreHrefs,m.charset,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes,m.saveOnlyPart);
 	if(m.scanSites)scanSites(m.force);
 	if(m.openSites)openSite();
 	if(m.addToContextMenu!==undefined)showContext(m.addToContextMenu);
@@ -260,15 +261,7 @@ function run(m,s,r){
 			})
 		});
 	}
-	if(m.changeSelectorOnViewTab){
-		browser.tabs.sendMessage(s.tab.id,{
-			"changeSelector":true,
-			"selector":m.cssSelector
-		}).then(()=>{},err=>{
-			console.warn(err);
-		});
-	}
-	if(m.editThis){editSite(m.id,m.url,m.title,m.mode,m.freq,m.charset,m.cssSelector,m.ignoreNumbers,m.ignoreHrefs,m.deleteScripts,m.deleteComments,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes);}
+	if(m.editThis){editSite(m.id,m.url,m.title,m.mode,m.freq,m.charset,m.cssSelector,m.ignoreNumbers,m.ignoreHrefs,m.deleteScripts,m.deleteComments,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes,m.saveOnlyPart);}
 	if(m.executeCustom){
 		browser.tabs.executeScript(s.tab.id,{
 			file:"/custom.js"
@@ -393,7 +386,7 @@ function showPopup(mode="add",editId){
 	});
 }
 
-function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignoreHrefs,deleteScripts,deleteComments,pageSettings,ignoreStyles,ignoreAllAttributes){
+function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignoreHrefs,deleteScripts,deleteComments,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart){
 	browser.storage.local.get("sites").then(async result=>{
 		let sites=result.sites;
 		let obj={
@@ -410,6 +403,7 @@ function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignor
 			ignoreAllAttributes,
 			deleteScripts,
 			deleteComments,
+			saveOnlyPart,
 		};
 		const old={
 			paritialMode:sites[id].paritialMode,

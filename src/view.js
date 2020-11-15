@@ -4,7 +4,6 @@ let localId,
 	highlighted,
 	prevHighlighted,
 	filteredChanges,
-	inspected,
 	viewMode,
 	iframe;
 	
@@ -145,7 +144,7 @@ function partHtml(html,selectorCss){
 	}
 }
 
-function load(type,inspectMode){
+function load(type){
 	browser.storage.local.get(['sites','changes','settings']).then(result=>{
 		const sites=result.sites,
 			  changes=result.changes,
@@ -302,7 +301,7 @@ function load(type,inspectMode){
 		iframe.contentDocument.appendChild(doc.documentElement);
 
 		let selectedElement;
-		if(sId.paritialMode&&sId.cssSelector&&(type==="light"||type==="newHtml"||type==="oldHtml")){
+		if(sId.paritialMode&&sId.cssSelector&&(type==="light"||type==="newHtml"||type==="oldHtml")&&sId.saveOnlyPart!==true){
 			selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
 			if(!selectedElement){
 				let notification=document.getElementById("messageBar");
@@ -338,7 +337,6 @@ function load(type,inspectMode){
 			document.getElementById("xtext").textContent=i18n("numberOfChanges",filteredChanges.length);
 		}
 		document.getElementById("versionTime").title=i18n("lastScan",lastScan)+"\u000d"+i18n("newVersion")+": "+newTime+"\u000d"+i18n("oldVersion")+": "+oldTime;
-		if(inspectMode)inspect();
 	},err=>{
 		console.error(err);
 	});
@@ -376,7 +374,6 @@ function run(m){
 		}
 	}
 	if(m.changeTheme)document.documentElement.className=m.changeTheme;
-	if(m.inspectView){inspect();}
 }
 
 function translate(){
@@ -413,29 +410,6 @@ function toggleHeader(auto){
 
 function enableBtn(name){
 	document.getElementById(name).disabled=false;
-}
-
-function inspect(){
-	if(viewMode==="newHtml"){
-		if(!inspected){
-			inspected=true;
-			let js=document.createElement("script");
-				js.src=extURL+"inspect.js";
-			iframe.contentWindow.browser=browser;
-			iframe.contentDocument.body.appendChild(js);
-			let jsCustom=document.createElement("script");
-				jsCustom.src=extURL+"custom.js";
-			iframe.contentDocument.body.appendChild(jsCustom);
-			let css=document.createElement("link");
-				css.rel="stylesheet";
-				css.href=extURL+"inspect.css";
-			iframe.contentDocument.head.appendChild(css);
-		}else{
-			iframe.contentWindow.init();
-		}
-	}else{
-		load("newHtml",true);
-	}
 }
 
 function toggleScrollbarMarkers(show){

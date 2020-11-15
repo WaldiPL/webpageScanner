@@ -33,7 +33,7 @@ let tabIcon,
 	tabIcon=tab.favIconUrl;
 	thisTabId=tab.id;
 
-	let url,title,charset,freq,mode,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes,deleteScripts,deleteComments,paritialMode,selectorCSS;
+	let url,title,charset,freq,mode,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes,deleteScripts,deleteComments,paritialMode,selectorCSS,saveOnlyPart;
 	if(onEmptyTab&&modeAdd){
 		if(prevTabId!==false){
 			document.getElementById("fillForm").classList.remove("hidden");
@@ -51,6 +51,7 @@ let tabIcon,
 		deleteComments	=settings.defaultDeleteComments;
 		paritialMode	=false;
 		selectorCSS		="";
+		saveOnlyPart	=settings.defaultSaveOnlyPart;
 	}else if(modeEdit){
 		url		=sites[editId].url;
 		title	=sites[editId].title;
@@ -65,6 +66,7 @@ let tabIcon,
 		deleteComments	=sites[editId].deleteComments;
 		paritialMode	=sites[editId].paritialMode;
 		selectorCSS		=sites[editId].cssSelector;
+		saveOnlyPart	=sites[editId].saveOnlyPart;
 		const pageSettings=sites[editId].settings;
 		if(pageSettings){
 			document.getElementById("defaultView").value=pageSettings.defaultView;
@@ -89,6 +91,7 @@ let tabIcon,
 		deleteComments	=settings.defaultDeleteComments;
 		paritialMode	=false;
 		selectorCSS		="";
+		saveOnlyPart	=settings.defaultSaveOnlyPart;
 
 		const duplicates=[];
 		sites.forEach((v,i)=>{
@@ -135,6 +138,7 @@ let tabIcon,
 	toggleSelector(paritialMode);
 	document.getElementById("paritialModeInput").checked=paritialMode;
 	document.getElementById("cssSelectorInput").value=selectorCSS===undefined?"":selectorCSS;
+	document.getElementById("saveOnlyPartInput").checked=saveOnlyPart;
 	document.getElementById("editOk").addEventListener("click",saveSite);
 	document.getElementById("editCancel").addEventListener("click",e=>{
 		if(onEmptyTab){
@@ -159,6 +163,7 @@ function saveSite(){
 		  aFreq=parseInt(document.getElementById("scanFreqInput").value),
 		  freq=aFreq>0?aFreq*parseFloat(document.getElementById("unitInput").value):8,
 		  cssSelector=(document.getElementById("paritialModeInput").checked&&document.getElementById("cssSelectorInput").value.length)?document.getElementById("cssSelectorInput").value:false,
+		  saveOnlyPart=(document.getElementById("paritialModeInput").checked&&document.getElementById("cssSelectorInput").value.length)?document.getElementById("saveOnlyPartInput").checked:false,
 		  ignoreNumbers=document.getElementById("ignoreNumbersInput").checked,
 		  deleteScripts=document.getElementById("deleteScriptsInput").checked,
 		  deleteComments=document.getElementById("deleteCommentsInput").checked,
@@ -177,9 +182,9 @@ function saveSite(){
 
 	let message;
 	if(modeEdit){
-		message={"editThis":true,"id":editId,url,title,mode,freq,cssSelector,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes};
+		message={"editThis":true,"id":editId,url,title,mode,freq,cssSelector,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart};
 	}else{
-		message={"addThis":true,url,title,favicon,mode,freq,cssSelector,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes};
+		message={"addThis":true,url,title,favicon,mode,freq,cssSelector,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart};
 	}
 	browser.runtime.sendMessage(message).then(()=>{
 		if(onEmptyTab){
@@ -210,12 +215,18 @@ function toggleSelector(paritial){
 	if(paritial){
 		document.getElementById("cssSelectorLabel").removeAttribute("class");
 		document.getElementById("spanSelectorInput").removeAttribute("class");
+		document.getElementById("saveOnlyPartInput").removeAttribute("class");
+		document.getElementById("saveOnlyPartLabel").removeAttribute("class");
 	}else{
 		document.getElementById("cssSelectorLabel").className="disabled";
 		document.getElementById("spanSelectorInput").className="disabled";
+		document.getElementById("saveOnlyPartInput").className="disabled";
+		document.getElementById("saveOnlyPartLabel").className="disabled";
 	}
 	document.getElementById("cssSelectorInput").disabled=!paritial;
 	document.getElementById("inspectButtonInput").disabled=!paritial;
+	document.getElementById("saveOnlyPartInput").disabled=!paritial;
+	document.getElementById("saveOnlyPartLabel").disabled=!paritial;
 }
 
 function i18n(e,s1){
@@ -294,11 +305,12 @@ function translate(){
 	document.getElementById("scrollbarMarkersFalse").nextSibling.textContent=i18n("no");
 	document.getElementById("scrollbarMarkersGlobal").nextSibling.textContent=i18n("global");
 	document.getElementById("fillForm").textContent=i18n("fillForm");
+	document.getElementById("saveOnlyPartLabel").textContent=i18n("saveOnlyPart");
 }
 
 let inspected;
 function inspect(){
-	if(onEmptyTab){
+	if(onEmptyTab||onViewTab){
 		let wpsURL=document.getElementById("urlInput").value;
 		if(wpsURL.startsWith("http")){
 			browser.tabs.create({url:wpsURL}).then(tab=>{
@@ -332,19 +344,6 @@ function inspect(){
 			  
 			});
 		}
-	}else if(onViewTab){
-			browser.tabs.sendMessage(thisTabId,{
-				"inspectView":true,
-				"fadeOut":true
-			}).then(()=>{
-				browser.tabs.executeScript(thisTabId,{
-					code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
-				}).then(()=>{},err=>{
-					console.error(err);
-				});
-			},err=>{
-				console.warn(err);
-			});
 	}else{
 		browser.runtime.sendMessage({
 			"inspectTab":true,

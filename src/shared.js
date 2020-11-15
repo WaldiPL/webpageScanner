@@ -3,7 +3,7 @@
 const extURL=browser.extension.getURL("");
 let duplicates=[];
 
-function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=false,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes){
+function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=false,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
@@ -70,6 +70,7 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				ignoreHrefs:ignoreHrefs,
 				ignoreStyles:ignoreStyles,
 				ignoreAllAttributes:ignoreAllAttributes,
+				saveOnlyPart:saveOnlyPart,
 			};
 			Object.assign(site,{settings:pageSettings});
 
@@ -82,7 +83,16 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				if(selectedElement){
 					let partHTML=selectedElement.outerHTML;
 					Object.assign(site,length_md5(partHTML,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
+					if(saveOnlyPart){
+						html_data=partHTML;
+					}
 				}else{
+					browser.notifications.create(`webpagesScannerWarningPart`,{
+						"type":		"basic",
+						"iconUrl":	"icons/warn.svg",
+						"title":	i18n("extensionName"),
+						"message":	i18n("warningPart")
+					});
 					Object.assign(site,length_md5(html_data,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
 				}
 			}
@@ -129,6 +139,7 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				setTimeout(()=>{
 					browser.notifications.clear(`webpagesScannerAdded`);
 					browser.notifications.clear(`webpagesScannerDuplicates`);
+					browser.notifications.clear(`webpagesScannerWarningPart`);
 				},s.notificationTime);
 			}
 		};
@@ -255,7 +266,14 @@ function scanPage(local,id,sitesLength,extraTime=false){
 					if(selectedElement){
 						let partHTML=selectedElement.outerHTML;
 						scanned=length_md5(partHTML,local.ignoreNumbers,local.ignoreHrefs,local.ignoreStyles,local.ignoreAllAttributes);
+						if(local.saveOnlyPart){
+							html_data=partHTML;
+						}
 					}else{
+						if(local.saveOnlyPart){
+							error(i18n("warningPart")+": "+local.cssSelector);
+							throw i18n("warningPart");
+						}
 						scanned=length_md5(html_data,local.ignoreNumbers,local.ignoreHrefs,local.ignoreStyles,local.ignoreAllAttributes);
 					}
 				}
@@ -277,7 +295,7 @@ function scanPage(local,id,sitesLength,extraTime=false){
 						console.warn(err);
 					});
 					count++;
-					if(typeof local.deleteScripts==="undefined"||typeof local.deleteComments==="undefined"){ // workaround, temp comment
+					if(typeof local.deleteScripts==="undefined"||typeof local.deleteComments==="undefined"){
 						let htmlReplaced=html_data;
 						if(typeof local.deleteScripts==="undefined"&&s.defaultDeleteScripts===true){
 							htmlReplaced=htmlReplaced.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
@@ -621,7 +639,7 @@ async function updateTooltip(alarm){
 
 function length_md5(html,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes){
 	if(ignoreStyles){
-		html=html.replace(/<style(.*?)<\/style>/gis,"");
+		html=html.replace(/<style[^\x05]*?<\/style>/gi,"");
 	}
 	if(ignoreAllAttributes){
 		html=html.replace(/ *([^\t\n\f \/>"'=]+?)=(["'])(.*?)\2/gi,"");
