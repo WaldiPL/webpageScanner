@@ -341,8 +341,11 @@
   "exportBtn": {
     "message": "Eksportuj strony do folderu zakładek"
   },
+  "exporting": {
+    "message": "Eksportowanie - $1"
+  },
   "exportOK": {
-    "message": "Zakończono eksport stron do folderu zakładek (Skaner Stron)"
+    "message": "Zakończono eksportowanie stron do folderu zakładek (Skaner Stron)"
   },
   "importError": {
     "message": "Nie odnaleziono folderu o nazwie $1. Sprawdź, czy nazwa jest poprawna. Wielkość liter ma znaczenie."
@@ -592,5 +595,26 @@
   },
   "defaultSaveOnlyPart":{
     "message": "Domyślnie zapisuj tylko wybrany element"
+  },
+  "dropHere":{
+    "message": "Upuść tutaj, aby dodać do listy skanowania"
+  },
+  "h3sort": {
+    "message": "Sortowanie"
+  },
+  "sort": {
+    "message": "Sortuj"
+  },
+  "descDate": {
+    "message": "Od najnowszych"
+  },
+  "ascDate": {
+    "message": "Od najstarszych"
+  },
+  "az": {
+    "message": "Od A do Z"
+  },
+  "za": {
+    "message": "Od Z do A"
   }
 }

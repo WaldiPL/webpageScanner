@@ -1,0 +1,620 @@
+{
+  "extensionName": {
+    "message": "Web Pages Scanner"
+  },
+  "extensionDescription": {
+    "message": "Scannt Webseiten auf Aktualisierungen."
+  },
+
+  "scanWebpage": {
+    "message": "Scan"
+  },
+  "openWebpage": {
+    "message": "Geänderte Seiten öffnen" 
+  },
+  "addWebpage": {
+    "message": "Neue Seite hinzufügen"
+  },
+  "add": {
+    "message": "Hinzufügen"
+  },
+  "fillForm": {
+    "message": "Ausfüllen"
+  },
+  "address": {
+    "message": "Adresse:"
+  },
+  "title": {
+    "message": "Titel:"
+  },
+  "scanFreq": {
+    "message": "Intervall:"
+  },
+  "minutes": {
+    "message": "Minute(n)"
+  },
+  "hours": {
+    "message": "Stunde(n)"
+  },
+  "days": {
+    "message": "Tag(e)"
+  },
+  "weeks": {
+    "message": "Woche(n)"
+  },
+  "modeTitle": {
+    "message": "Modus:"
+  },
+  "modeM0": {
+    "message": "Veränderung der Länge um mehr als 10 Zeichen"
+  },
+  "modeM1": {
+    "message": "Veränderung der Länge"
+  },
+  "modeM2": {
+    "message": "Jede Änderung"
+  },
+  "modeM3": {
+    "message": "Veränderung der Länge um mehr als 50 Zeichen"
+  },
+  "modeM4": {
+    "message": "Veränderung der Länge um mehr als 200 Zeichen"
+  },
+  "cancel": {
+    "message": "Abbrechen"
+  },
+  "editWebpage": {
+    "message": "Seite ändern"
+  },
+  "save": {
+    "message": "Speichern"
+  },
+  "deleteWebpage": {
+    "message": "Diese Seite endgültig löschen?"
+  },
+  "delete": {
+    "message": "Löschen"
+  },
+  "edit": {
+    "message": "Ändern"
+  },
+  "addedWebpage": {
+    "message": "Hinzugefügt $1"
+  },
+  "addedWebpageError": {
+    "message": "Fehler beim Seitenaufruf"
+  },
+  "savedWebpage": {
+    "message": "Gespeichert $1"
+  },
+  "deletedWebpage": {
+    "message": "Gelöscht $1"
+  },
+  "scanCompleted": {
+    "message": "Scan komplett"
+  },
+  "oneDetected": {
+    "message": "Eine Seite wurde aktualisiert"
+  },
+  "moreDetected": {
+    "message": "$1 Seiten wurden aktualisiert"
+  },
+  "editFolder": {
+    "message": "Ordner ändern"
+  },
+  "name": {
+    "message": "Name:"
+  },
+  "deleteFolder": {
+    "message": "Diesen Ordner endgültig löschen?"
+  },
+  "deleteFolderDesc": {
+    "message": "Alle Webseiten werden in den Hauptordner verschoben."
+  },
+  "addFolder": {
+    "message": "Neuen Ordner hinzufügen"
+  },
+  "newFolder": {
+    "message": "Neuer Ordner"
+  },
+
+  "oldVersion": {
+    "message": "Alte Version"
+  },
+  "newVersion": {
+    "message": "Neue Version"
+  },
+  "newElements": {
+    "message": "Neue Elemente"
+  },
+  "deletedElements": {
+    "message": "Gelöschte Elemente"
+  },
+  "highlight": {
+    "message": "Änderungen markieren"
+  },
+  "rawData": {
+    "message": "Rohdaten"
+  },
+  "currentWebpage": {
+    "message": "Aktuelle Seite"
+  },
+  "lastScan": {
+    "message": "Letzter Scan: $1 um $2"
+  },
+  "monthList": {
+   "message": ",Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember"
+  },
+  "hideInterface": {
+    "message": "Interface verstecken"
+  },
+  "showInterface": {
+    "message": "Interface anzeigen"
+  },
+
+  "addThis": {
+    "message": "Zur Scanliste hinzufügen"
+  }, 
+  "scanNow": {
+    "message": "Jetzt scannen"
+  },
+  "showList": {
+    "message": "Zeige Scanliste"
+  }, 
+  "errorAdding": {
+    "message": "Es gibt ein Problem mit dem Hinzufügen von Seite $1"
+  },
+  "charset": {
+    "message": "Zeichensatz"
+  },
+  "options": {
+    "message": "Optionen"
+  },
+  "general": {
+    "message": "Allgemein"
+  },
+  "notifications": {
+    "message": "Benachrichtigungen"
+  },
+  "autoOpen": {
+    "message": "Automatisch öffnen"
+  },
+  "hideHeader": {
+    "message": "Interface verstecken"
+  },
+  "defaultView": {
+    "message": "Standardansicht"
+  },
+  "showNotification": {
+    "message": "Zeige Benachrichtigung bei Änderungen"
+  },
+  "notificationTime": {
+    "message": "Anzeigedauer der Benachrichtigung"
+  },
+  "volume": {
+    "message": "Benachrichtigungston Lautstärke"
+  },
+  "maxRequestTime": {
+    "message": "Maximale Ladezeit [s]"
+  },
+  "changedPages": {
+    "message": "Geänderte Seiten"
+  },
+  "openNewWindow": {
+    "message": "In neuem Fenster öffnen"
+  },
+  "openNewWindowMore": {
+    "message": "Nur wenn Änderungen auf mindestens 2 Seiten erkannt wurden."
+  },
+  "diffOld": {
+    "message": "Altes Vergleichsskript verwenden (schneller, aber ungenauer)"
+  },
+  "popupList": {
+    "message": "Scanliste im Popup anzeigen."
+  },
+  "theme": {
+    "message": "Thema"
+  },
+  "lightTheme": {
+    "message": "Hell"
+  },
+  "darkTheme": {
+    "message": "Dunkel"
+  },
+  "backup": {
+    "message": "Sicherung erstellen"
+  },
+  "showNextPrev": {
+    "message": "Interface öffnen um Änderungen anzuzeigen."
+  },
+  "scrollToFirstChange": {
+    "message": "Automatisch zur ersten Änderung springen."
+  },
+  "skipMinorChanges": {
+    "message": "Kleine Änderungen ignorieren"
+  },
+  "highlightOutsideChanges": {
+    "message": "Zeige Änderungen außerhalb des gescannten Bereichs."
+  },
+  "subHighlightOutside": {
+    "message": "Gilt nur bei Scans von Teil-Bereichen"
+  },
+  "changeOf": {
+    "message": "Änderung $1 von $2"
+  },
+  "numberOfChanges": {
+    "message": "Anzahl der Änderungen: $1"
+  },
+  "scrollPrev": {
+    "message": "Zur vorigen Änderung springen"
+  },
+  "scrollNext": {
+    "message": "Zur nächsten Änderung springen"
+  },
+  "close": {
+    "message": "Schließen"
+  },
+  "thBackup": {
+    "message": "Sicherungen"
+  },
+  "restoreBackup": {
+    "message": "Sicherung wiederherstellen"
+  },
+  "restoreAlertH4": {
+    "message": "Sind Sie sicher, dass sie diese Sicherung wiederherstellen wollen?"
+  },
+  "restoreAlertP": {
+    "message": "Dieser Vorgang kann nicht rückgängig gemacht werden. Alle aktuellen Daten werden gelöscht. Wenn Sie eine falsche oder beschädigte Datei auswählen, dann funktioniert die Erweiterung evtl. nicht mehr richtig."
+  },
+  "restoreButton": {
+    "message": "Wiederherstellen"
+  },
+  "restoreError": {
+    "message": "Es ist ein Problem aufgetreten, versuchen sie es bitte erneut."
+  },
+  "restoreOk": {
+    "message": "Die Sicherung wurde wiederhergestellt."
+  },
+  "version": {
+    "message": "Version "
+  },
+  "changelog": {
+    "message": "Änderungsprotokoll"
+  },
+  "support": {
+    "message": "Unterstützung"
+  },
+  "bugReport": {
+    "message": "Einen Fehler melden"
+  },
+  "spanBugReport": {
+    "message": "Sie haben einen Fehler gefunden oder Sie haben eine Idee, wie man die Erweiterung verbessern kann, dann erstellen Sie einen neuen 'Issue' auf"
+  },
+  "translation": {
+    "message": "Übersetzung"
+  },
+  "spanTranslation1": {
+    "message": "Möchten Sie, dass die Erweiterung in Ihrer Sprache verfügbar ist, dann übersetzen Sie bitte"
+  },
+  "spanTranslation2": {
+    "message": "diese Datei"
+  },
+  "spanTranslation3": {
+    "message": "und fügen Sie in einem neuen 'Issue' hinzu auf"
+  },
+  "share": {
+    "message": "Teilen"
+  },
+  "spanShare": {
+    "message": "Gefällt Ihnen diese Erweiterung? Dann teilen Sie sie mit Freunden oder schreiben eine Bewertung."
+  },
+  "h3pageView": {
+    "message": "Seitenansicht"
+  },
+  "addToContextMenu": {
+    "message": "Eintrag im Kontextmenü hinzufügen"
+  },
+  "openChangelog": {
+    "message": "Nach Update des Addons das 'Änderungsprotokoll' anzeigen."
+  },
+  "defaultCharset": {
+    "message": "Standard-Zeichensatz"
+  },
+  "importExport": {
+    "message": "Import / Export"
+  },
+  "importBtn": {
+    "message": "Importiert Seiten aus einem Lesezeichenordner"
+  },
+  "folderName": {
+    "message": "Ordnername"
+  },
+  "importAlertH4": {
+    "message": "Mehrere Ordner mit diesem Namen gefunden."
+  },
+  "importAlertP": {
+    "message": "Wählen Sie den Ordner, aus dem Sie Lesezeichen importieren möchten."
+  },
+  "continue": {
+    "message": "Fortfahren"
+  },
+  "exportBtn": {
+    "message": "Seiten in den Lesezeichenordner exportieren"
+  },
+  "exporting": {
+    "message": "Exportiere - $1"
+  },
+  "exportOK": {
+    "message": "Export in den Lesezeichenordner (Web Pages Scanner) abgeschlossen"
+  },
+  "importError": {
+    "message": "Es wurde kein Ordner mit dem Namen $1 gefunden. Überprüfen Sie bitte, ob der Name korrekt ist (Groß- und Kleinschreibung beachten)."
+  },
+  "importing": {
+    "message": "Importiere $1/$2 - $3"
+  },
+  "checking": {
+    "message": "Prüfe..."
+  },
+  "emptyFolder": {
+    "message": "Keine Lesezeichen in diesem Ordner gefunden"
+  },
+  "importOK": {
+    "message": "Import fertig."
+  },
+  "importAlert2H4": {
+    "message": "Seiten, die nicht hinzugefügt wurden ($1)"
+  },
+  "management": {
+    "message": "Verwaltung"
+  },
+  "deleteDuplicates": {
+    "message": "Duplikate löschen"
+  },
+  "deleteBroken": {
+    "message": "Defekte Seiten löschen"
+  },
+  "deleteAlertH4": {
+    "message": "Möchten Sie $1 Seiten aus der Scanliste löschen?"
+  },
+  "noDuplicates": {
+    "message": "Keine Duplikate"
+  },
+  "deleting": {
+    "message": "Lösche..."
+  },
+  "noBroken": {
+    "message": "Keine defekten Seiten"
+  },
+  "deletedPages": {
+    "message": "Aus der Scanliste wurden $1 Seiten gelöscht"
+  },
+  "labelPeriod": {
+    "message": "Häufigkeit der automatischen Scans [Min]"
+  },
+  "sublabelPeriod": {
+    "message": "Ein zu niedriger Wert kann sich negativ auf die Performance auswirken"
+  },
+  "labelAutoScanPause": {
+    "message": "Automatisches Scannen deaktivieren."
+  },
+  "scanningAlert": {
+    "message": "Automatisches Scannen ist deaktiviert"
+  },
+  "enable": {
+    "message": "Aktiviert"
+  },
+  "pauseScan": {
+    "message": "Scan stoppen"
+  },
+  "playScan": {
+    "message": "Scan fortsetzen"
+  },
+  "permissionGranted": {
+    "message": "Die Erweiterung hat die Berechtigung zum Zugriff auf die Lesezeichen"
+  },
+  "permissionRevoked": {
+    "message": "Um diese Funktionen zu nutzen, müssen Sie den Zugriff auf die Lesezeichen erlauben"
+  },
+  "grant": {
+    "message": "Erlaubnis erteilen"
+  },
+  "revoke": {
+    "message": "Erlaubnis widerrufen"
+  },
+  "search": {
+    "message": "Suche..."
+  },
+  "hidePages": {
+    "message": "Zeige nur Seiten:"
+  },
+  "changed": {
+    "message": "Geändert"
+  },
+  "paused": {
+    "message": "Pausiert"
+  },
+  "broken": {
+    "message": "Defekt"
+  },
+  "normal": {
+    "message": "Normal"
+  },
+  "paritially": {
+    "message": "Bereich gescannt"
+  },
+  "showSearchbar": {
+    "message": "Suchleiste anzeigen"
+  },
+  "delay": {
+    "message": "Verzögerung beim Öffnen der nächsten Seiten in neuen Tabs [s]"
+  },
+  "subDelay": {
+    "message": "Standardwert: 0, alle Seiten werden gleichzeitig geöffnet"
+  },
+  "shortcutLabel": {
+    "message": "Shortcut zum Öffnen der Sidebar"
+  },
+  "inspectText": {
+    "message": "Ausgewählter Bereich. Änderungen werden nur innerhalb dieses Bereichs erkannt."
+  },
+  "inspectRetry": {
+    "message": "Einen anderen Bereich wählen."
+  },
+  "paritialMode": {
+    "message": "Scannt einen Bereich der Seite."
+  },
+  "selectorCSS": {
+    "message": "CSS Auswahl"
+  },
+  "inspectElement": {
+    "message": "Einen Teil-Bereich der Webseite auswählen."
+  },
+  "ok": {
+    "message": "OK"
+  },
+  "scanList": {
+    "message": "Scanliste"
+  },
+  "ignoreNumbers":{
+    "message": "Ignoriere Änderung von Zahlen"
+  },
+  "scrollbarMarkers":{
+    "message": "Änderungen in der Bildlaufleiste markieren"
+  },
+  "faviconService":{
+    "message": "Favicon-Dienst"
+  },
+  "native":{
+    "message": "Systemintern"
+  },
+  "deleteScripts":{
+    "message": "Lösche Scripte"
+  },
+  "deleteComments":{
+    "message": "Lösche Kommentare"
+  },
+  "ignoreHrefs":{
+    "message": "Ignoriere Link-Adressen"
+  },
+  "ignoreStyles":{
+    "message": "Ignoriere Seiten Styles"
+  },
+  "ignoreAllAttributes":{
+    "message": "Ignoriere alle Attribute"
+  },
+  "yes":{
+    "message": "Ja"
+  },
+  "no":{
+    "message": "Nein"
+  },
+  "global":{
+    "message": "Globale Werte"
+  },
+  "notificationSound":{
+    "message": "Benachrichtigungston"
+  },
+  "sound":{
+    "message": "Sound "
+  },
+  "externalSound":{
+    "message": "Externer Sound"
+  },
+  "soundUrl":{
+    "message": "Sound URL"
+  },
+  "tooltipOpenPages":{
+    "message": "\r Geänderte Seiten öffnen (Mittelklick)"
+  },
+  "tooltipStopOpening":{
+    "message": "\r Geänderte Seiten nicht mehr öffnen (Mittelklick)"
+  },
+  "h3sidebar":{
+    "message": "Sidebar"
+  },
+  "h3defaultValues":{
+    "message": "Standardvorgaben"
+  },
+  "defaultInterval":{
+    "message": "Standardintervall"
+  },
+  "defaultMode":{
+    "message": "Standard Modus"
+  },
+  "defaultIgnoreNumbers":{
+    "message": "Standardmäßig Änderungen von Zahlen ignorieren"
+  },
+  "defaultDeleteScripts":{
+    "message": "Standardmäßig Skripts löschen"
+  },
+  "defaultDeleteComments":{
+    "message": "Standardmäßig Kommentare löschen"
+  },
+  "defaultIgnoreHrefs":{
+    "message": "Standardmäßig Link-Adressen ignorieren."
+  },
+  "defaultIgnoreStyles":{
+    "message": "Standardmäßig Seiten Styles ignorieren."
+  },
+  "defaultIgnoreAllAttributes":{
+    "message": "Standardmäßig alle Attribute ignorieren."
+  },
+  "warningPart":{
+    "message": "Der ausgewählte Bereich für den Scan ist nicht vorhanden."
+  },
+  "warningBroken":{
+    "message": "Diese Seite wurde nicht gescannt. Das Problem trat $1 mal auf."
+  },
+  "warnBeforeUpdating":{
+    "message": "Über Aktualisierungen der Erweiterung informieren"
+  },
+  "updateAlertH4":{
+    "message": "Eine neue Version der Erweiterung ist verfügbar"
+  },
+  "updateAlertP":{
+    "message": "Es wird empfohlen, vor der Aktualisierung ein Backup zu erstellen"
+  },
+  "updateNow":{
+    "message": "Jetzt Aktualisieren"
+  },
+  "foundDuplicate":{
+    "message": "Duplikat gefunden"
+  },
+  "duplicateMessage":{
+    "message": "Die Seite '$1' ist bereits in der Scanliste vorhanden. Duplikate anzeigen."
+  },
+  "duplicateMessage2":{
+    "message": "Diese Seite wurde bereits zur Scanliste hinzugefügt"
+  },
+  "show":{
+    "message": "Zeigen"
+  },
+  "saveOnlyPart":{
+    "message": "Nur den ausgewählten Bereich speichern"
+  },
+  "defaultSaveOnlyPart":{
+    "message": "Standardmäßig nur den ausgewählten Bereich speichern"
+  },
+  "dropHere":{
+    "message": "Hier ablegen, um sie zur Scanliste hinzuzufügen"
+  },
+  "h3sort": {
+    "message": "Ordnen"
+  },
+  "sort": {
+    "message": "Sortieren"
+  },
+  "descDate": {
+    "message": "Nach neuesten"
+  },
+  "ascDate": {
+    "message": "Nach ältesten"
+  },
+  "az": {
+    "message": "Von A bis Z"
+  },
+  "za": {
+    "message": "Von Z bis A"
+  }
+}

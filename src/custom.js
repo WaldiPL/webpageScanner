@@ -19,14 +19,14 @@
 				const mode=this.getAttribute("mode");
 				const editId=this.getAttribute("editId");
 				const selector=this.getAttribute("selector");
-				const inspectMode=this.getAttribute("inspectMode");
 				const dialogTabId=this.getAttribute("dialogTabId");
+				const extURL=browser.runtime.getURL("");
 				if(mode==="edit"){
-					iframe.src=`${browser.extension.getURL("")}dialog.html?onViewTab&edit&editId=${editId}`;
+					iframe.src=`${extURL}dialog.html?onViewTab&edit&editId=${editId}`;
 				}else if(mode==="add"){
-					iframe.src=`${browser.extension.getURL("")}dialog.html?add&charset=${document.charset}`;
+					iframe.src=`${extURL}dialog.html?add&charset=${document.charset}`;
 				} if(mode==="inspect"){
-					iframe.src=`${browser.extension.getURL("")}inspectDialog.html?inspectMode=${inspectMode}&dialogTabId=${dialogTabId}&selector=${selector}`;
+					iframe.src=`${extURL}inspectDialog.html?dialogTabId=${dialogTabId}&selector=${selector}`;
 				}
 				this.shadowRoot.appendChild(iframe);
 			}

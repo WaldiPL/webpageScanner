@@ -7,7 +7,7 @@ let localId,
 	viewMode,
 	iframe;
 	
-const extURL=browser.extension.getURL("");
+const extURL=browser.runtime.getURL("");
 
 (function(){
 	const urlString=window.location.search;
@@ -208,40 +208,41 @@ function load(type){
 			case "light":
 				doc=parser.parseFromString(light,"text/html");
 				let style=document.createElement("style");
-				let cssSelector=(!pageSettings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector)?sId.cssSelector:"";
-					style.textContent=`
-						${cssSelector} .__wps_changes a{
-							background:#ffa !important;
-						}
-						${cssSelector} .__wps_changes.hlc a,
-						${cssSelector} .__wps_changes.hlc a .__wps_changes{
-							background:#00feff !important;
-							color:#000 !important;
-						}
-						${cssSelector} .__wps_changes{
-							background:#ffe900 !important;
-							color:#000 !important;
-							border:0 !important;
-							padding:0 !important;
-							margin:0 !important;
-							opacity:1 !important;
-							overflow:visible !important;
-							outline:none !important;
-						}
-						${cssSelector} .__wps_changes a,
-						${cssSelector} a .__wps_changes{
-							color:#006abc !important;
-						}
-						${cssSelector} .__wps_changes:hover a,
-						${cssSelector} a .__wps_changes:hover{
-							color:#00f !important;
-							background:#ffe100 !important;
-						}
-						${cssSelector} .__wps_changes.hlc{
-							background-color:#00feff !important;
-							color:#000 !important;
-						}
-					`;
+				let cssSelector=(!pageSettings.highlightOutsideChanges&&sId.paritialMode&&sId.cssSelector&&!sId.saveOnlyPart)?sId.cssSelector:"";
+				if(sId.saveOnlyPart&&sId.settings.highlightOutsideChanges===false)cssSelector=sId.cssSelector;
+				style.textContent=`
+					${cssSelector} .__wps_changes a{
+						background:#ffa !important;
+					}
+					${cssSelector} .__wps_changes.hlc a,
+					${cssSelector} .__wps_changes.hlc a .__wps_changes{
+						background:#00feff !important;
+						color:#000 !important;
+					}
+					${cssSelector} .__wps_changes{
+						background:#ffe900 !important;
+						color:#000 !important;
+						border:0 !important;
+						padding:0 !important;
+						margin:0 !important;
+						opacity:1 !important;
+						overflow:visible !important;
+						outline:none !important;
+					}
+					${cssSelector} .__wps_changes a,
+					${cssSelector} a .__wps_changes{
+						color:#006abc !important;
+					}
+					${cssSelector} .__wps_changes:hover a,
+					${cssSelector} a .__wps_changes:hover{
+						color:#00f !important;
+						background:#ffe100 !important;
+					}
+					${cssSelector} .__wps_changes.hlc{
+						background-color:#00feff !important;
+						color:#000 !important;
+					}
+				`;
 				doc.head.appendChild(style);
 				toggleNextPrev(pageSettings.showNextPrev,pageSettings.scrollToFirstChange);
 				if(pageSettings.scrollbarMarkers){
@@ -297,11 +298,15 @@ function load(type){
 			if(doc.head)doc.head.insertBefore(base,doc.head.firstElementChild);
 		}
 		base.target="_top";
+		if(doc.head){
+			const metaRefresh=doc.head.querySelector("meta[http-equiv=refresh]");
+			if(metaRefresh)metaRefresh.remove();
+		}
 		iframe.contentDocument.documentElement.remove();
 		iframe.contentDocument.appendChild(doc.documentElement);
 
 		let selectedElement;
-		if(sId.paritialMode&&sId.cssSelector&&(type==="light"||type==="newHtml"||type==="oldHtml")&&sId.saveOnlyPart!==true){
+		if(sId.paritialMode&&sId.cssSelector&&(type==="light"||type==="newHtml"||type==="oldHtml")&&sId.saveOnlyPart!==true&&sId.deleteScripts!==true){
 			selectedElement=iframe.contentDocument.querySelector(sId.cssSelector);
 			if(!selectedElement){
 				let notification=document.getElementById("messageBar");
@@ -337,6 +342,8 @@ function load(type){
 			document.getElementById("xtext").textContent=i18n("numberOfChanges",filteredChanges.length);
 		}
 		document.getElementById("versionTime").title=i18n("lastScan",lastScan)+"\u000d"+i18n("newVersion")+": "+newTime+"\u000d"+i18n("oldVersion")+": "+oldTime;
+		document.getElementById("title").textContent=sId.title;
+		document.title=sId.title;
 	},err=>{
 		console.error(err);
 	});
@@ -374,6 +381,7 @@ function run(m){
 		}
 	}
 	if(m.changeTheme)document.documentElement.className=m.changeTheme;
+	if(m.reload&&m.reloadId===localId)load(viewMode);
 }
 
 function translate(){

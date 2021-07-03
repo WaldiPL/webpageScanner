@@ -308,50 +308,13 @@ function translate(){
 	document.getElementById("saveOnlyPartLabel").textContent=i18n("saveOnlyPart");
 }
 
-let inspected;
 function inspect(){
-	if(onEmptyTab||onViewTab){
-		let wpsURL=document.getElementById("urlInput").value;
-		if(wpsURL.startsWith("http")){
-			browser.tabs.create({url:wpsURL}).then(tab=>{
-				browser.tabs.executeScript(tab.id,{
-					file: "/inspect.js",
-					runAt:"document_end"
-				}).then(()=>{
-					browser.tabs.sendMessage(tab.id,{
-						"initInspect":true,
-						"inspectMode":"onEmptyTab",
-						"dialogTabId":thisTabId
-					}).then(()=>{},err=>{
-						console.warn(err);
-					});
-				},err=>{
-					console.error(err);
-					browser.tabs.sendMessage(tab.id,{
-						"initInspect":true,
-						"inspectMode":"onEmptyTab",
-						"dialogTabId":thisTabId
-					}).then(()=>{},err=>{
-						console.warn(err);
-					});
-				});
-				browser.tabs.insertCSS(tab.id,{
-					file: "/inspect.css",
-					runAt:"document_end"
-				}).then(()=>{},err=>{
-					console.error(err);
-				});
-			  
-			});
-		}
-	}else{
+	let wpsURL=document.getElementById("urlInput").value;
+	if(wpsURL.startsWith("http")){
 		browser.runtime.sendMessage({
 			"inspectTab":true,
-			"fadeOut":true,
-			"again":inspected
-		}).then(()=>{
-			inspected=true;
-		},err=>{
+			"inspectUrl":wpsURL,
+		}).then(()=>{},err=>{
 			console.warn(err);
 		});
 	}
@@ -360,10 +323,7 @@ function inspect(){
 browser.runtime.onMessage.addListener(run);
 function run(m,s){
 	if(m.changeSelector){
-		document.getElementById("cssSelectorInput").value=m.selector;
-	}
-	if(m.unhideWpsPopup){
-		document.body.removeAttribute("class");
+		document.getElementById("cssSelectorInput").value=m.selector.replace(/＋/g,"+");
 	}
 	if(m.fadeOut){
 		document.body.className="fade";

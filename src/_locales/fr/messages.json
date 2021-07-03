@@ -341,6 +341,9 @@
   "exportBtn": {
     "message": "Exporter les pages vers le dossier de marque-pages"
   },
+  "exporting": {
+    "message": "Exportation - $1"
+  },
   "exportOK": {
     "message": "Exportation des pages vers le dossier de marque-pages terminée (Web Pages Scanner)"
   },
@@ -592,5 +595,26 @@
   },
   "defaultSaveOnlyPart":{
     "message": "Par défaut, sauvegarder uniquement l'élément sélectionné"
+  },
+  "dropHere":{
+    "message": "Déposez ici pour ajouter à la liste de scan"
+  },
+  "h3sort": {
+    "message": "Tri"
+  },
+  "sort": {
+    "message": "Trier"
+  },
+  "descDate": {
+    "message": "Du plus récent"
+  },
+  "ascDate": {
+    "message": "Du plus ancien"
+  },
+  "az": {
+    "message": "De A à Z"
+  },
+  "za": {
+    "message": "De Z à A"
   }
 }

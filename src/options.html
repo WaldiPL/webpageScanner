@@ -6,6 +6,9 @@
 		<link rel="stylesheet" href="options.css"/>
 	</head>
 	<body class="none">
+		<header>
+			<h1 id="extensionName"></h1>
+		</header>
 		<nav>
 			<a id="optionsA" href="#options"></a>
 			<a id="managementA" href="#management"></a>
@@ -235,7 +238,15 @@
 			</div>
 			<h4 id="restoreError" class="none errorBox"></h4>
 			<h4 id="restoreOk" class="none successBox"></h4>
-			
+			<h3 id="h3sort"></h3>
+			<div class="row">
+				<select id="sortMode">
+					<option value="asc"></option>
+					<option value="desc"></option>
+					<option value="az"></option>
+					<option value="za"></option>
+				</select><button id="sortButton"></button>
+			</div>
 			<h3 id="thImport"></h3>
 			<span id="permission"></span><button id="grantPermission" class="none"></button><button id="revokePermission" class="none"></button>
 			<div id="ieGroup" class="none">

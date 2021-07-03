@@ -38,8 +38,13 @@ function favicon64(url,mode){
 }
 
 function nativeFavicon(url){
-	let letter2=url.split("/")[2].split("."),
+	let letter,letter2;
+	if(url.startsWith("http")){
+		letter2=url.split("/")[2].split("."),
 		letter=letter2[letter2.length-2][0].toUpperCase();
+	}else{
+		letter=url[0];
+	}
 	let bgColors=["#0a84ff","#008ea4","#ed00b5","#058b00","#a47f00","#ff0039","#9400ff","#a44900","#363959","#737373"];
 	
 	let canvas=document.createElement("canvas"),

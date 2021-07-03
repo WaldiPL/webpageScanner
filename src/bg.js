@@ -53,7 +53,7 @@ function handleInstalled(details) {
 				init();
 				if(!details.temporary){
 					browser.tabs.create({
-						url:"options.html#changelog",
+						url:`${extURL}options.html#changelog`,
 						active:true
 					});
 				}
@@ -69,7 +69,7 @@ function handleInstalled(details) {
 			browser.storage.local.set({settings}).then(()=>{
 				if(!details.temporary&&settings.changelog){
 					browser.tabs.create({
-						url:"options.html#changelog",
+						url:`${extURL}options.html#changelog`,
 						active:true
 					});
 				}
@@ -102,7 +102,7 @@ browser.runtime.onUpdateAvailable.addListener(()=>{
 	browser.storage.local.get("settings").then(result=>{
 		if(result.settings.warnBeforeUpdating){
 			browser.tabs.create({
-				url:"options.html?update#management",
+				url:`${extURL}options.html?update#management`,
 				active:true
 			});
 		}
@@ -115,7 +115,7 @@ browser.notifications.onClicked.addListener(e=>{
 	switch(e){
 		case "webpagesScannerScanned":
 			getSettings("autoOpen").then(s=>{
-				if(s){openSite();}
+				if(!s){openSite();}
 			});
 			break;
 		case "webpagesScannerDuplicates":
@@ -170,7 +170,7 @@ let delayCurrentId,
 
 browser.runtime.onMessage.addListener(run);
 function run(m,s,r){
-	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScripts,m.deleteComments,m.ignoreHrefs,m.charset,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes,m.saveOnlyPart);
+	if(m.addThis)rqstAdd(m.url,m.title,m.favicon,m.mode,m.freq,m.addBookmark,m.cssSelector,m.ignoreNumbers,m.deleteScripts,m.deleteComments,m.ignoreHrefs,m.charset,m.pageSettings,m.ignoreStyles,m.ignoreAllAttributes,m.saveOnlyPart,m.folder);
 	if(m.scanSites)scanSites(m.force);
 	if(m.openSites)openSite();
 	if(m.addToContextMenu!==undefined)showContext(m.addToContextMenu);
@@ -197,56 +197,58 @@ function run(m,s,r){
 		});
 	}
 	if(m.inspectTab){
-		if(m.again){
-			browser.tabs.sendMessage(s.tab.id,{
-				"initInspect":true,
-				"inspectMode":"onPageTab",
-				"fadeOut":true
-			}).then(()=>{},err=>{
-				console.warn(err);
-			});
-			browser.tabs.executeScript(s.tab.id,{
-				code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
-			}).then(()=>{},err=>{
-				console.error(err);
-			});
-		}else{
-			browser.tabs.executeScript(s.tab.id,{
-				file: "/inspect.js",
-				runAt:"document_end"
+		browser.tabs.create({url:`${extURL}inspectView.html`}).then(tab=>{
+			browser.tabs.executeScript(tab.id,{
+				file: "/inspectView.js",
+				runAt:"document_start"
 			}).then(()=>{
-				browser.tabs.sendMessage(s.tab.id,{
-					"initInspect":true,
-					"inspectMode":"onPageTab",
-					"fadeOut":true
-				});
-				browser.tabs.executeScript(s.tab.id,{
-					code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
-				}).then(()=>{},err=>{
-					console.error(err);
-				});
-			},err=>{
-				console.error(err);
-				browser.tabs.sendMessage(s.tab.id,{
-					"initInspect":true,
-					"inspectMode":"onPageTab",
-					"fadeOut":true
+				browser.tabs.sendMessage(tab.id,{
+					"inspectUrl":m.inspectUrl,
+					"loadXHR":true,
+					"dialogTabId":s.tab.id,
 				}).then(()=>{},err=>{
 					console.warn(err);
 				});
-				browser.tabs.executeScript(s.tab.id,{
-					code:`document.getElementById("__wps_pageSettings").style.visibility="hidden";`
+			},err=>{
+				console.error(err);
+				browser.tabs.sendMessage(tab.id,{
+					"inspectUrl":m.inspectUrl,
+					"loadXHR":true,
+					"dialogTabId":s.tab.id,
 				}).then(()=>{},err=>{
-					console.error(err);
+					console.warn(err);
 				});
 			});
-			browser.tabs.insertCSS(s.tab.id,{
-				file: "/inspect.css",
-				runAt:"document_end"
+		},err=>{
+			console.warn(err);
+		});
+	}
+	if(m.inspectMe){
+		browser.tabs.executeScript(s.tab.id,{
+			file: "/inspect.js",
+			runAt:"document_end"
+		}).then(()=>{
+			browser.tabs.sendMessage(s.tab.id,{
+				"initInspect":true,
+				"dialogTabId":m.dialogTabId
 			}).then(()=>{},err=>{
-				console.error(err);
+				console.warn(err);
 			});
-		}
+		},err=>{
+			console.error(err);
+			browser.tabs.sendMessage(s.tab.id,{
+				"initInspect":true,
+				"dialogTabId":m.dialogTabId
+			}).then(()=>{},err=>{
+				console.warn(err);
+			});
+		});
+		browser.tabs.insertCSS(s.tab.id,{
+			file: "/inspect.css",
+			runAt:"document_end"
+		}).then(()=>{},err=>{
+			console.error(err);
+		});
 	}
 	if(m.returnToDialogTab){
 		browser.tabs.remove(s.tab.id).then(()=>{
@@ -272,7 +274,7 @@ function run(m,s,r){
 	if(m.byBG){
 		browser.tabs.sendMessage(s.tab.id,m).then(()=>{},err=>{console.warn(err);});
 	}
-	if(m.openViewPage){browser.tabs.create({url:"/view.html?"+m.viewId});}
+	if(m.openViewPage){browser.tabs.create({url:`${extURL}view.html?${m.viewId}`});}
 }
 
 function showContext(e){
@@ -312,7 +314,7 @@ function openSitesDelay(openWindow){
 			});
 		}else if(lastWindowId>=0){
 			browser.tabs.create({
-				url:"view.html?"+delayLinksId[delayCurrentId],
+				url:`${extURL}view.html?${delayLinksId[delayCurrentId]}`,
 				active:false,
 				windowId:lastWindowId
 			}).then(tab=>{
@@ -323,7 +325,7 @@ function openSitesDelay(openWindow){
 			});
 		}else{
 			browser.tabs.create({
-				url:"view.html?"+delayLinksId[delayCurrentId],
+				url:`${extURL}view.html?${delayLinksId[delayCurrentId]}`,
 				active:false
 			}).then(tab=>{
 				delayCurrentId++;
@@ -375,13 +377,13 @@ function showPopup(mode="add",editId){
 			browser.tabs.query({currentWindow:true,active:true}).then(tabs=>{
 				const tab=tabs[0];
 				if(tab.url.startsWith("http")){
-					browser.tabs.create({url:`${browser.extension.getURL("")}dialog.html?onEmptyTab&add&tabId=${tab.id}`});
+					browser.tabs.create({url:`${extURL}dialog.html?onEmptyTab&add&tabId=${tab.id}`});
 				}else{
-					browser.tabs.create({url:`${browser.extension.getURL("")}dialog.html?onEmptyTab&add`});
+					browser.tabs.create({url:`${extURL}dialog.html?onEmptyTab&add`});
 				}
 			});
 		}else{
-			browser.tabs.create({url:`${browser.extension.getURL("")}dialog.html?onEmptyTab&edit&editId=${editId}`});
+			browser.tabs.create({url:`${extURL}dialog.html?onEmptyTab&edit&editId=${editId}`});
 		}
 	});
 }
@@ -436,7 +438,9 @@ function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignor
 			browser.runtime.sendMessage({
 				"statusbar":true,
 				"statusbarArg":i18n("savedWebpage",sites[id].title),
-				"listSite":true
+				"listSite":true,
+				"reload":true,
+				"reloadId":id,
 			}).then(()=>{},err=>{
 				console.warn(err);
 			});

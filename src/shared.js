@@ -1,9 +1,9 @@
 "use strict";
 
-const extURL=browser.extension.getURL("");
+const extURL=browser.runtime.getURL("");
 let duplicates=[];
 
-function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=false,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart){
+function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=false,ignoreNumbers,deleteScripts,deleteComments,ignoreHrefs,charset,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart,folder="root"){
 	if(!url)return;
 	if(!title)title=url;
 	getSettings().then(s=>{
@@ -78,10 +78,16 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				Object.assign(site,length_md5(html_data,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
 			}else{
 				let parser=new DOMParser(),
-					doc=parser.parseFromString(html_data,"text/html"),
+					doc=parser.parseFromString(this.responseText,"text/html"),
 					selectedElement=doc.querySelector(cssSelector);
 				if(selectedElement){
 					let partHTML=selectedElement.outerHTML;
+					if(deleteScripts===true){
+						partHTML=partHTML.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
+					}
+					if(deleteComments===true){
+						partHTML=partHTML.replace(/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->)(.|\n))*-->/gi,"");
+					}
 					Object.assign(site,length_md5(partHTML,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
 					if(saveOnlyPart){
 						html_data=partHTML;
@@ -103,7 +109,15 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				oldHtml:"",
 				html:	html_data
 			};
-			sort[sort.length]=[`item${sites.length-1}`,"root","item","",false];
+			const newSort=[`item${sites.length-1}`,folder,"item","",false];
+			if(folder==="root"){
+				sort.push(newSort);
+			}else{
+				const spliceIndex=sort.findIndex(e=>{
+					return e[0]===folder;
+				})+1;
+				sort.splice(spliceIndex,0,newSort);
+			}
 			await browser.storage.local.set({sites,changes,sort});
 			browser.runtime.sendMessage({
 				"statusbar":true,
@@ -261,10 +275,16 @@ function scanPage(local,id,sitesLength,extraTime=false){
 					scanned=length_md5(html_data,local.ignoreNumbers,local.ignoreHrefs,local.ignoreStyles,local.ignoreAllAttributes);
 				}else{
 					let parser=new DOMParser(),
-						doc=parser.parseFromString(html_data,"text/html"),
+						doc=parser.parseFromString(this.responseText,"text/html"),
 						selectedElement=doc.querySelector(local.cssSelector);
 					if(selectedElement){
 						let partHTML=selectedElement.outerHTML;
+						if(local.deleteScripts===true){
+							partHTML=partHTML.replace(/< *script\b[^<]*(?:(?!< *\/ *script *>)<[^<]*)*< *\/[ ]*script *>/gi,"");
+						}
+						if(local.deleteComments===true){
+							partHTML=partHTML.replace(/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->)(.|\n))*-->/gi,"");
+						}
 						scanned=length_md5(partHTML,local.ignoreNumbers,local.ignoreHrefs,local.ignoreStyles,local.ignoreAllAttributes);
 						if(local.saveOnlyPart){
 							html_data=partHTML;
@@ -655,7 +675,7 @@ function length_md5(html,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttribu
 
 function openDuplicates(){
 	duplicates.forEach(id=>{
-		browser.tabs.create({url:"view.html?"+id});
+		browser.tabs.create({url:`${extURL}view.html?${id}`});
 	});
 	duplicates=[];
 }

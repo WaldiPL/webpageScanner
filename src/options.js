@@ -50,7 +50,7 @@
 	});
 	document.getElementById("import").addEventListener("click",importFolder);
 	document.getElementById("export").addEventListener("click",exportFolder);
-	document.getElementById("importContinue").addEventListener("click",e=>{e.preventDefault();importFinish(document.getElementById("folderList").value);});
+	document.getElementById("importContinue").addEventListener("click",e=>{e.preventDefault();importingStart(document.getElementById("folderList").value);});
 	document.getElementById("folderList").addEventListener("change",importBookmarksList);
 	document.getElementById("deleteDuplicates").addEventListener("click",deleteDuplicates);
 	document.getElementById("deleteBroken").addEventListener("click",deleteBroken);
@@ -94,6 +94,7 @@
 			});
 	});
 	document.getElementById("updateNow").addEventListener("click",()=>{browser.runtime.reload();});
+	document.getElementById("sortButton").addEventListener("click",()=>{sortBy(document.getElementById("sortMode").value);});
 })();
 
 function saveOptions(){
@@ -310,7 +311,6 @@ function translate(){
 	document.getElementById("importAlertP").textContent=i18n("importAlertP");
 	document.getElementById("importContinue").textContent=i18n("continue");
 	document.getElementById("export").textContent=i18n("exportBtn");
-	document.getElementById("exportOK").textContent=i18n("exportOK");
 	document.getElementById("h2management").textContent=i18n("management");
 	document.getElementById("h3management").textContent=i18n("general");
 	document.getElementById("deleteDuplicates").textContent=i18n("deleteDuplicates");
@@ -364,6 +364,14 @@ function translate(){
 	document.getElementById("updateAlertP").textContent=i18n("updateAlertP");
 	document.getElementById("updateNow").textContent=i18n("updateNow");
 	document.getElementById("labelDefaultSaveOnlyPart").textContent=i18n("defaultSaveOnlyPart");
+	document.getElementById("extensionName").textContent=i18n("extensionName");
+	document.getElementById("h3sort").textContent=i18n("h3sort");
+	document.getElementById("sortButton").textContent=i18n("sort");
+	let sortMode=document.getElementById("sortMode").options;
+		sortMode[0].text=i18n("ascDate");
+		sortMode[1].text=i18n("descDate");
+		sortMode[2].text=i18n("az");
+		sortMode[3].text=i18n("za");
 
 	document.body.removeAttribute("class");
 }
@@ -422,53 +430,68 @@ function restoreBackup(){
 	});
 }
 
-function importFolder(e){
+async function importFolder(e){
 	e.preventDefault();
+	const rootFolders=await browser.bookmarks.get(["menu________","toolbar_____","unfiled_____","mobile______"]);
 	let folderName=document.getElementById("importFolder").value.trim()||i18n("extensionName"),
 		folders=0,
 		folderNum=0,
 		folderList=document.getElementById("folderList");
-		folderList.textContent="";
-		document.getElementById("bookmarksList").textContent="";
-	browser.bookmarks.search({title:folderName}).then(q=>{
-		let empty=document.createElement("option");
-			empty.hidden=true;
-			folderList.add(empty); 
-		q.forEach((v,i)=>{
-			if(v.type==="folder"){
-				folders++;
-				let option=document.createElement("option");
-				option.text=`${folderName} [${i}]`;
-				option.value=v.id;
-				folderList.add(option);
-				folderNum=i;
-			}	
-		});
-		switch(folders){
-			case 0:
-				document.getElementById("importOK").classList.add("none");
-				document.getElementById("importAlert").classList.add("none");
-				document.getElementById("importAlert2").classList.add("none");
-				document.getElementById("importError").classList.remove("none");
-				document.getElementById("importError").textContent=i18n("importError",folderName);
-				break;
-			case 1:
-				importFinish(q[folderNum].id);
-				break;
-			default:
-				document.getElementById("importError").classList.add("none");
-				document.getElementById("importOK").classList.add("none");
-				document.getElementById("importAlert2").classList.add("none");
-				document.getElementById("importAlert").classList.remove("none");
-		}
-		document.getElementById("management").scrollIntoView(false);
-	});
+	folderList.textContent="";
+	document.getElementById("bookmarksList").textContent="";
+
+	switch (folderName){
+		case rootFolders[0].title:
+			importingStart("menu________");
+			break;
+		case rootFolders[1].title:
+			importingStart("toolbar_____");
+			break;
+		case rootFolders[2].title:
+			importingStart("unfiled_____");
+			break;
+		case rootFolders[3].title:
+			importingStart("mobile______");
+			break;
+		default:
+			browser.bookmarks.search({title:folderName}).then(q=>{
+				let empty=document.createElement("option");
+				empty.hidden=true;
+				folderList.add(empty); 
+				q.forEach((v,i)=>{
+					if(v.type==="folder"){
+						folders++;
+						let option=document.createElement("option");
+						option.text=`${folderName} [${i}]`;
+						option.value=v.id;
+						folderList.add(option);
+						folderNum=i;
+					}	
+				});
+				switch(folders){
+					case 0:
+						document.getElementById("importOK").classList.add("none");
+						document.getElementById("importAlert").classList.add("none");
+						document.getElementById("importAlert2").classList.add("none");
+						document.getElementById("importError").classList.remove("none");
+						document.getElementById("importError").textContent=i18n("importError",folderName);
+						break;
+					case 1:
+						importingStart(q[folderNum].id);
+						break;
+					default:
+						document.getElementById("importError").classList.add("none");
+						document.getElementById("importOK").classList.add("none");
+						document.getElementById("importAlert2").classList.add("none");
+						document.getElementById("importAlert").classList.remove("none");
+				}
+				document.getElementById("management").scrollIntoView(false);
+			});
+	}
 }
 
 let bookmarksToAdd=[],
-	bookmarksLength,
 	bookmarksNotAdded,
-	bookmarksFolderId,
 	bookmarkSecondTry=false;
 
 browser.runtime.onMessage.addListener(run);
@@ -476,84 +499,143 @@ function run(m){
 	if(m.nextBookmark){
 		let bookmarkId=m.nextBookmark;
 		if(m.errorBookmark)bookmarksNotAdded.push(bookmarksToAdd[bookmarkId-1]);
-		if(bookmarkId<bookmarksLength){
+		if(bookmarkId<bookmarksToAdd.length){
 			browser.runtime.sendMessage({
 				"addThis":true,
 				"url":bookmarksToAdd[bookmarkId].url,
 				"title":bookmarksToAdd[bookmarkId].title,
+				"folder":bookmarksToAdd[bookmarkId].folder,
 				"addBookmark":bookmarkId
 			}).then(()=>{},err=>{
 				console.warn(err);
 			});
-			document.getElementById("importOK").textContent=i18n("importing",[bookmarkId+1,bookmarksLength,bookmarksToAdd[bookmarkId].title]);
+			document.getElementById("importOK").textContent=i18n("importing",[bookmarkId+1,bookmarksToAdd.length,bookmarksToAdd[bookmarkId].title]);
 		}else{
+			document.getElementById("importOK").textContent=i18n("checking");
 			if(bookmarksNotAdded.length){
 				if(bookmarkSecondTry){
-					importCheck(bookmarksNotAdded);
+					importFailedList();
 				}else{
 					bookmarkSecondTry=true;
-					importFinish(bookmarksFolderId);
+					bookmarksToAdd=bookmarksNotAdded;
+					bookmarksNotAdded=[];
+					browser.runtime.sendMessage({
+						"addThis":true,
+						"url":bookmarksToAdd[0].url,
+						"title":bookmarksToAdd[0].title,
+						"folder":bookmarksToAdd[0].folder||undefined,
+						"addBookmark":0
+					}).then(()=>{},err=>{
+						console.warn(err);
+					});
+					document.getElementById("importOK").textContent=i18n("importing",[1,bookmarksToAdd.length,bookmarksToAdd[0].title]);
 				}
 			}else{
-				bookmarkSecondTry=false;
 				document.getElementById("importOK").textContent=i18n("importOK");
 			}
 		}
 	}
 }
 
-function importFinish(folderId){
-	bookmarksFolderId=folderId;
+function createFolders(folders){
+	browser.storage.local.get('sort').then(result=>{
+		let sort=result.sort;
+		folders.forEach(e=>{
+			sort.push([e[1],"root","folder",e[0],false]);
+		});
+		browser.storage.local.set({sort}).then(()=>{},err=>{console.error(err);});
+	},err=>{
+		console.error(err);
+	});
+}
+
+function importingStart(folderId){
+	bookmarkSecondTry=false;
 	bookmarksNotAdded=[];
 	document.getElementById("importError").classList.add("none");
 	document.getElementById("importAlert").classList.add("none");
 	document.getElementById("importAlert2").classList.add("none");
-	browser.bookmarks.getChildren(folderId).then(bookmarks=>{
-		let urlList=[],
-			folderList=[];
-		bookmarks=bookmarks.filter(b=>{return b.type==="bookmark";});
-		browser.storage.local.get("sites").then(result=>{
-			let sites=result.sites;
-			urlList=sites.map(v=>{
-				return v.url;
-			});
-			folderList=bookmarks.map(v=>{
-				return {url:v.url,title:v.title||v.url};
-			});
-			bookmarksToAdd=folderList.filter(v=>{
-				return urlList.indexOf(v.url)<0;
-			});
-			if(bookmarksToAdd.length){
-				bookmarksLength=bookmarksToAdd.length;
-				browser.runtime.sendMessage({
-					"addThis":true,
-					"url":bookmarksToAdd[0].url,
-					"title":bookmarksToAdd[0].title,
-					"addBookmark":0}
-				).then(()=>{},err=>{
-					console.warn(err);
-				});
-				document.getElementById("importOK").textContent=i18n("importing",[1,bookmarksLength,bookmarksToAdd[0].title]);
-				document.getElementById("importOK").classList.remove("none");
-			}else if(bookmarks.length){
-				document.getElementById("importOK").textContent=i18n("importOK");
-				document.getElementById("importOK").classList.remove("none");
-			}else{
-				document.getElementById("importError").textContent=i18n("emptyFolder");
-				document.getElementById("importError").classList.remove("none");
+	browser.bookmarks.getSubTree(folderId).then(bookmarksTree=>{
+		let sortFolders=[];
+		let bookmarks=bookmarksTree[0].children.map((e,i)=>{
+			if(e.type==="bookmark"){
+				return e;
+			}else if(e.type==="folder"){
+				let sortFolderId=`folder${new Date().getTime()+i}`;
+				let flat=flatBookmarks(e,sortFolderId);
+				sortFolders.push([e.title,sortFolderId]);
+				return flat;
 			}
-			document.getElementById("management").scrollIntoView(false);
-		},err=>{
-			console.error(err);
 		});
+		if(bookmarks.length){
+			if(sortFolders.length){
+				createFolders(sortFolders);
+			}
+			let urlList=[],
+				listFolder=[];
+			browser.storage.local.get("sites").then(result=>{
+				let sites=result.sites;
+				urlList=sites.map(v=>{
+					return v.url;
+				});
+				listFolder=bookmarks.flat().map(v=>{
+					return {url:v.url,title:v.title||v.url,folder:v.parent};
+				});
+				bookmarksToAdd=listFolder.filter(v=>{
+					return urlList.indexOf(v.url)<0;
+				});
+				if(bookmarksToAdd.length){
+					browser.runtime.sendMessage({
+						"addThis":true,
+						"url":bookmarksToAdd[0].url,
+						"title":bookmarksToAdd[0].title,
+						"folder":bookmarksToAdd[0].folder||undefined,
+						"addBookmark":0
+					}).then(()=>{},err=>{
+						console.warn(err);
+					});
+					document.getElementById("importOK").textContent=i18n("importing",[1,bookmarksToAdd.length,bookmarksToAdd[0].title]);
+					document.getElementById("importOK").classList.remove("none");
+				}else{
+					document.getElementById("importOK").textContent=i18n("importOK");
+					document.getElementById("importOK").classList.remove("none");
+				}
+				document.getElementById("management").scrollIntoView(false);
+			},err=>{
+				console.error(err);
+			});
+		}else{
+			document.getElementById("importError").textContent=i18n("emptyFolder");
+			document.getElementById("importError").classList.remove("none");
+		}
 	});
+}
+
+function flatBookmarks(folder,parent="root"){
+	let arr=[];
+	folder.children.forEach(e=>{
+		if(e.type==="bookmark"){
+			e.parent=parent;
+			arr.push(e);
+		}else if(e.type==="folder"){
+			let flat=flatBookmarks(e,parent);
+			arr.push(flat);
+		}
+	});
+	return arr.flat(Infinity);
 }
 
 function importBookmarksList(e){
 	browser.bookmarks.getChildren(e.target.value).then(bookmarks=>{
 		let ul=document.getElementById("bookmarksList");
 		document.getElementById("bookmarksList").textContent="";
-		bookmarks=bookmarks.filter(b=>{return b.type==="bookmark";});
+		bookmarks=bookmarks.map(e=>{
+			if(e.type==="bookmark"){
+				return e;
+			}else if(e.type==="folder"){
+				return e.title;
+			}
+		});
 		if(!bookmarks.length){
 			document.getElementById("importContinue").classList.add("none");
 			document.getElementById("bookmarksList").textContent=i18n("emptyFolder");
@@ -561,20 +643,24 @@ function importBookmarksList(e){
 			document.getElementById("importContinue").classList.remove("none");
 			for(let i=0;(i<bookmarks.length&&i<10);i++){
 				let li=document.createElement("li");
-				li.appendChild(document.createTextNode(bookmarks[i].title||bookmarks[i].url));
-				  ul.appendChild(li);
+				if(typeof bookmarks[i]==="string"){
+					li.appendChild(document.createTextNode("📁 "+bookmarks[i]));
+				}else{
+					li.appendChild(document.createTextNode(bookmarks[i].title||bookmarks[i].url));
+				}
+				ul.appendChild(li);
 			}
 		}
 	});
 }
 
-function importCheck(notAdded){
+function importFailedList(){
 	document.getElementById("importOK").textContent=i18n("importOK");
-	document.getElementById("importAlert2H4").textContent=i18n("importAlert2H4",notAdded.length);
+	document.getElementById("importAlert2H4").textContent=i18n("importAlert2H4",bookmarksNotAdded.length);
 	document.getElementById("importAlert2").classList.remove("none");
 	let ul=document.getElementById("notAdded");
 	document.getElementById("notAdded").textContent="";
-	notAdded.forEach(v=>{
+	bookmarksNotAdded.forEach(v=>{
 		let li=document.createElement("li"),
 			a=document.createElement("a");
 		a.appendChild(document.createTextNode(v.title));
@@ -618,24 +704,68 @@ function exportFolder(e){
 }
 
 function exportAddBookmarks(folderId){
-	browser.storage.local.get("sites").then(result=>{
-		let sites=result.sites,
-			folderList=[];
-		browser.bookmarks.getChildren(folderId).then(bookmarks=>{
-			bookmarks.forEach(v=>{
-				folderList.push(v.url);
-			});
-			sites.forEach(v=>{
-				if(folderList.indexOf(v.url)<0){
-					browser.bookmarks.create({
-						parentId:folderId,
-						title:v.title,
-						url:v.url,
-						index:0
-					});
+	browser.storage.local.get(['sites','sort']).then(result=>{
+		let {sites,sort}=result,
+			bookmarksList=[],
+			bookmarksFolders=[]; 
+		browser.bookmarks.getSubTree(folderId).then(async bookmarksTree=>{
+			bookmarksTree[0].children.forEach(b=>{
+				if(b.type==="folder"){
+					bookmarksFolders.push([b.title,b.id]);
 				}
 			});
+			let bookmarks=flatBookmarks(bookmarksTree[0]);
+			bookmarks.forEach(v=>{
+				bookmarksList.push(v.url);
+			});
 			document.getElementById("exportOK").classList.remove("none");
+			for(const e of sort){
+				if(e[2]==="folder"){
+					document.getElementById("exportOK").textContent=i18n("exporting",e[3]);
+					let folderIndex=bookmarksFolders.findIndex(f=>{
+						return f[0]===e[3];
+					});
+					if(folderIndex>=0&&bookmarksFolders[folderIndex][2]===undefined){
+						bookmarksFolders[folderIndex][2]=e[0];
+					}else{
+						if(folderIndex>=0){
+							folderIndex=bookmarksFolders.findIndex(f=>{
+								return (f[0]===e[3]&&f[2]===undefined);
+							});
+						}
+						if(folderIndex>=0){
+							bookmarksFolders[folderIndex][2]=e[0];
+						}else{
+							let newFolder=await browser.bookmarks.create({
+								parentId:folderId,
+								title:e[3],
+								type:"folder"
+							});
+							bookmarksFolders.push([e[3],newFolder.id,e[0]]);
+						}
+					}
+				}else{
+					let siteId=e[0].substring(4)*1;
+					let site=sites[siteId];
+					document.getElementById("exportOK").textContent=i18n("exporting",site.title);
+					if(bookmarksList.indexOf(site.url)<0){
+						let subFolder;
+						if(e[1]==="root"){
+							subFolder=folderId;
+						}else{
+							subFolder=bookmarksFolders.find(f=>{
+								return f[2]===e[1];
+							})[1];
+						}
+						await browser.bookmarks.create({
+							parentId:subFolder,
+							title:site.title,
+							url:site.url
+						});
+					}
+				}
+			}
+			document.getElementById("exportOK").textContent=i18n("exportOK");
 			document.getElementById("management").scrollIntoView(false);
 		});
 	},err=>{
@@ -852,4 +982,99 @@ function updateShortcut(){
 	}catch(err){
 		console.error(err);
 	}
+}
+
+function sortBy(mode){
+	browser.storage.local.get(["sort","sites"]).then(({sites,sort})=>{
+		let folders=sort.filter(value=>{
+			return value[2]==="folder";
+		});
+		let items=[],
+			sorted=[];
+		switch(mode){
+			case "az":
+				folders.sort((a,b)=>{
+					return a[3].toLowerCase()>b[3].toLowerCase();
+				});
+				folders.push(["root"]);
+				folders.forEach((e,i)=>{
+					items[i]=sort.filter(value=>{
+						return (value[1]===e[0]&&value[2]==="item");
+					});
+					items[i].sort((a,b)=>{
+						return sites[a[0].substring(4)*1].title.toLowerCase()>sites[b[0].substring(4)*1].title.toLowerCase();
+					});
+				});
+				folders.pop();
+				folders.forEach((e,i)=>{
+					sorted.push(e);
+					sorted=sorted.concat(items[i]);
+				});
+				sorted=sorted.concat(items[items.length-1]);
+				break;
+			case "za":
+				folders.sort((a,b)=>{
+					return a[3].toLowerCase()<b[3].toLowerCase();
+				});
+				folders.push(["root"]);
+				folders.forEach((e,i)=>{
+					items[i]=sort.filter(value=>{
+						return (value[1]===e[0]&&value[2]==="item");
+					});
+					items[i].sort((a,b)=>{
+						return sites[a[0].substring(4)*1].title.toLowerCase()<sites[b[0].substring(4)*1].title.toLowerCase();
+					});
+				});
+				folders.pop();
+				folders.forEach((e,i)=>{
+					sorted.push(e);
+					sorted=sorted.concat(items[i]);
+				});
+				sorted=sorted.concat(items[items.length-1]);
+				break;
+			case "asc":
+				folders.sort((a,b)=>{
+					return a[0].substring(6)*1>b[0].substring(6)*1;
+				});
+				folders.push(["root"]);
+				folders.forEach((e,i)=>{
+					items[i]=sort.filter(value=>{
+						return (value[1]===e[0]&&value[2]==="item");
+					});
+					items[i].sort((a,b)=>{
+						return a[0].substring(4)*1>b[0].substring(4)*1;
+					});
+				});
+				folders.pop();
+				folders.forEach((e,i)=>{
+					sorted.push(e);
+					sorted=sorted.concat(items[i]);
+				});
+				sorted=sorted.concat(items[items.length-1]);
+				break;
+			case "desc":
+				folders.sort((a,b)=>{
+					return a[0].substring(6)*1<b[0].substring(6)*1;
+				});
+				folders.push(["root"]);
+				folders.forEach((e,i)=>{
+					items[i]=sort.filter(value=>{
+						return (value[1]===e[0]&&value[2]==="item");
+					});
+					items[i].sort((a,b)=>{
+						return a[0].substring(4)*1<b[0].substring(4)*1;
+					});
+				});
+				folders.pop();
+				folders.forEach((e,i)=>{
+					sorted.push(e);
+					sorted=sorted.concat(items[i]);
+				});
+				sorted=sorted.concat(items[items.length-1]);
+				break;
+		}
+		browser.storage.local.set({sort:sorted}).then(e=>{
+			browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
+		});
+	});
 }

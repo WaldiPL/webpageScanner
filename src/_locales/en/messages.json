@@ -341,6 +341,9 @@
   "exportBtn": {
     "message": "Export pages to the bookmark folder"
   },
+  "exporting": {
+    "message": "Exporting - $1"
+  },
   "exportOK": {
     "message": "Completed export pages to the bookmark folder (Web Pages Scanner)"
   },
@@ -592,5 +595,26 @@
   },
   "defaultSaveOnlyPart":{
     "message": "By default, save only the selected element"
+  },
+  "dropHere":{
+    "message": "Drop here to add to the scan list"
+  },
+  "h3sort": {
+    "message": "Sorting"
+  },
+  "sort": {
+    "message": "Sort"
+  },
+  "descDate": {
+    "message": "By newest"
+  },
+  "ascDate": {
+    "message": "By oldest"
+  },
+  "az": {
+    "message": "From A to Z"
+  },
+  "za": {
+    "message": "From Z to A"
   }
 }

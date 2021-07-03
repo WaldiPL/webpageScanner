@@ -1,6 +1,6 @@
 "use strict";
 
-let inspectMode,overlay,dialogTabId;
+let overlay,dialogTabId;
 
 function init(){
 	overlay=document.getElementById("__wps_inspectOverlay");
@@ -44,7 +44,6 @@ function showDialog(e){
 			let popup=document.createElement("wps-popup");
 				popup.id="__wps_inspectDialog";
 				popup.setAttribute("selector",uniqueSelector(e));
-				popup.setAttribute("inspectMode",inspectMode);
 				popup.setAttribute("dialogTabId",dialogTabId);
 				popup.setAttribute("mode","inspect");
 				document.documentElement.appendChild(popup);
@@ -58,19 +57,22 @@ function uniqueSelector(e){
 	let selector="",
 		cu=e,
 		noID=true;
-	if(e.tagName==="HTML"){
-		selector=`HTML`;
+	if(e.tagName==="HTML"||e.tagName==="BODY"){
+		selector=e.tagName;
 	}else{
 		while(cu.parentElement&&noID){
 			if(cu.id){
 				noID=false;
 				selector=`> #${cu.id} ${selector}`;
+			}else if(cu.tagName==="BODY"){
+				noID=false;
+				selector=`> BODY ${selector}`;
 			}else{
 				let nth=1;
 				if(cu.previousElementSibling){
 					let prev=cu;
 					if(cu.previousElementSibling.id){
-						selector=`> #${cu.previousElementSibling.id} + ${cu.tagName} ${selector}`;
+						selector=`> #${cu.previousElementSibling.id} ＋ ${cu.tagName} ${selector}`;
 						noID=false;
 					}else{
 						while(prev.previousElementSibling){
@@ -97,7 +99,6 @@ function i18n(e,s1){
 browser.runtime.onMessage.addListener(run);
 function run(m,s){
 	if(m.initInspect){
-		inspectMode=m.inspectMode;
 		dialogTabId=m.dialogTabId;
 		init();
 	}
@@ -110,9 +111,6 @@ function run(m,s){
 		}
 		if(m.removeInspectDialog){
 			document.getElementById("__wps_inspectDialog").remove();
-		}
-		if(m.removeOverlay){
-			overlay.remove();
 		}
 		if(m.yellowOverlay){
 			overlay.style.backgroundColor="#ffe900";

@@ -1,11 +1,10 @@
 "use strict";
 
-let inspectMode,dialogTabId;
+let dialogTabId;
 
 (async function(){
 	const result=browser.storage.local.get("settings");
 	const urlParams=new URLSearchParams(window.location.search+window.location.hash);
-	inspectMode=urlParams.get("inspectMode");
 	dialogTabId=urlParams.get("dialogTabId")*1;
 	document.getElementById("selectorInput").value=urlParams.get("selector");
 	document.getElementById("selectorInput").placeholder=i18n("selectorCSS");
@@ -30,20 +29,7 @@ let inspectMode,dialogTabId;
 })();
 
 function cancel(){
-	if(inspectMode==="onEmptyTab"){
-		browser.runtime.sendMessage({"closeTab":true}).then(()=>{},err=>{console.warn(err);});
-	}else{
-		browser.runtime.sendMessage({
-			"byBG":true,
-			"toInspect":true,
-			"removeEvent":true,
-			"removeInspectDialog":true,
-			"removeOverlay":true,
-			"unhideWpsPopup":true
-		}).then(()=>{},err=>{
-			console.warn(err);
-		});
-	}
+	browser.runtime.sendMessage({"closeTab":true}).then(()=>{},err=>{console.warn(err);});
 }
 
 function retry(){
@@ -60,27 +46,13 @@ function retry(){
 
 function ok(){
 	let cssSelector=document.getElementById("selectorInput").value;
-	if(inspectMode==="onPageTab"){
-		browser.runtime.sendMessage({
-			"byBG":true,
-			"changeSelector":true,
-			"selector":cssSelector,
-			"toInspect":true,
-			"removeInspectDialog":true,
-			"removeOverlay":true,
-			"unhideWpsPopup":true
-		}).then(()=>{},err=>{
-			console.warn(err);
-		});
-	}else if(inspectMode==="onEmptyTab"){
-		browser.runtime.sendMessage({
-			"returnToDialogTab":true,
-			"cssSelector":cssSelector,
-			"dialogTabId":dialogTabId
-		}).then(()=>{},err=>{
-			console.warn(err);
-		});
-	}
+	browser.runtime.sendMessage({
+		"returnToDialogTab":true,
+		"cssSelector":cssSelector,
+		"dialogTabId":dialogTabId
+	}).then(()=>{},err=>{
+		console.warn(err);
+	});
 }
 	
 function i18n(e){

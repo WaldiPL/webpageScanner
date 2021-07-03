@@ -49,6 +49,7 @@
 	--scrollbar-track:auto;
 	--folder-icon-opened:url("icons/folder-opened.svg#l");
 	--folder-icon-closed:url("icons/folder-closed.svg#l");
+	--overlay-background:#f5f6f7cc;
 }
 
 .dark:root {
@@ -102,6 +103,7 @@
 	--scrollbar-track:#3c3c3d;
 	--folder-icon-opened:url("icons/folder-opened.svg#d");
 	--folder-icon-closed:url("icons/folder-closed.svg#d");
+	--overlay-background:#323234cc;
 }
 
 html{
@@ -744,4 +746,27 @@ input[type="checkbox"]:checked {
 input[type="checkbox"]:hover:not(:disabled),
 input[type="checkbox"]:focus:not(:disabled){
 	border-color:var(--input-focus);
+}
+
+#dropOverlay{
+	background-color:var(--overlay-background);
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	z-index:2;
+	font-size:20px;
+	text-align:center;
+	display:grid;
+}
+
+#dropArea{
+	background-color:var(--overlay-background);
+	border:4px dashed var(--text-color);
+	padding:8px;
+	margin:6px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
 }

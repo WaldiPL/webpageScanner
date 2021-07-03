@@ -9,6 +9,10 @@ function generateChangelog(){
 	changelogGenerated=true;
 
 	let changelog=`[
+	{"version":"2.1.0",
+		"changes":["Fixed problems with partial scanning","#60","Fixed not working notification","Improved import and export of folders","#63","#64","Added possibility to drag and drop bookmarks, folders, links and web pages","#65","Added German language (thanks to Omnibrain007)","#68","Added possibility to sort pages","#45","Minor changes","#59","Fixed bugs"],
+		"changesPL":["Naprawiono problemy ze skanowaniem częściowym","#60","#69","Naprawiono niedziałające powiadomienie","Poprawiono importowanie i eksportowanie folderów","#63","#64","Dodano możliwość przeciągania i upuszczania zakładek, folderów, odnośników i stron","#65","Dodano język niemiecki (dzięki Omnibrain007)","#68","Dodano możliwość sortowania stron","#45","Drobne zmiany","#59","Naprawiono błędy"]
+	},
 	{"version":"2.0.1",
 		"changes":["Added possibility to save only a selected element of a page in the database","Fixed bug","#58"],
 		"changesPL":["Dodano możliwość zapisywania w bazie danych tylko wybranego elementu strony","Naprawiono błąd","#58"]

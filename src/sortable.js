@@ -3,7 +3,8 @@
 const list=document.getElementById("lista"),
 	  nav=document.getElementById("navPanel"),
 	  searchBar=document.getElementById("searchBar"),
-	  dragIndicator=document.getElementById("dragIndicator");
+	  dragIndicator=document.getElementById("dragIndicator"),
+	  dropOverlay=document.getElementById("dropOverlay");
 
 let startY,
 	enter,
@@ -13,6 +14,11 @@ let startY,
 	hlFolder;
 
 (function(){
+	document.addEventListener('drop',dropBookmark);
+	document.addEventListener('dragenter',dragBookmark);
+	document.addEventListener('dragexit',removeOverlay);
+	document.addEventListener('dragend',removeOverlay);
+	document.addEventListener('dragover',dragOver);
 	list.addEventListener('drop',drop);
 	list.addEventListener('dragover',dragOver);
 	list.addEventListener('dragenter',dragEnter);
@@ -28,9 +34,51 @@ let startY,
 	searchBar.addEventListener('dragend',dragEnd);
 })();
 
+function dragBookmark(e){
+	if(!bookmarksToAdd.length&&e.dataTransfer.getData("text/x-wps")!=="true"){
+		document.getElementById("dropArea").textContent=i18n("dropHere");
+		const dragData=e.dataTransfer.types.includes("text/x-moz-place")||e.dataTransfer.types.includes("text/x-moz-url");
+		if(dragData){
+			dropOverlay.classList.remove("none");
+		}
+	}
+}
+
+function removeOverlay(){
+	dropOverlay.classList.add("none");
+}
+
+function dropBookmark(e){
+	if(!bookmarksToAdd.length&&e.dataTransfer.getData("text/x-wps")!=="true"){
+		const dragData=e.dataTransfer.getData("text/x-moz-place"),
+			  dragURL=e.dataTransfer.getData("text/x-moz-url");
+		if(dragData){
+			const data=JSON.parse(dragData);
+			if(data.type==="text/x-moz-place"&&data.uri.split("://").length>1){
+				browser.runtime.sendMessage({"addThis":true,url:data.uri,title:data.title});
+			}else if(data.type==="text/x-moz-place"&&data.concreteGuid){
+				importingStart(data.concreteGuid);
+			}else if(data.type==="text/x-moz-place-container"){
+				importingStart(data.itemGuid);
+			}
+		}else if(dragURL){
+			const data=dragURL.split(/\n/);
+			browser.runtime.sendMessage({"addThis":true,url:data[0],title:data[1]});
+		}
+	}
+	removeOverlay();
+}
+
 function dragStart(e){
 	startY=e.clientY;
-	e.dataTransfer.setData('text',[]);
+	e.dataTransfer.setData('text/x-wps',"true");
+	if(e.target.tagName==="LI"){
+		e.dataTransfer.setData('text/x-moz-url',`${extURL}view.html?${e.target.id.substring(4)}
+${e.target.textContent}`);
+		e.dataTransfer.setData('text/plain',`${extURL}view.html?${e.target.id.substring(4)}`);
+	}else{
+		e.dataTransfer.setData('text/plain',e.target.firstElementChild.textContent);
+	}
 	dragIndicator.style.top=0;
 	dragIndicator.removeAttribute("class");
 	dragged=e.target;

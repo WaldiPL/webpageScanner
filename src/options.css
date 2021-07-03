@@ -22,10 +22,35 @@ section:not(:target){
 	display:none;
 }
 
+header{
+	position:fixed;
+	top:8px;
+	left:30px;
+	min-width:193px;
+	max-width:216px;
+	height:52px;
+	background-color:#fff;
+	display:flex;
+	align-items:center;
+	padding:0 8px 0 48px;
+	background-image:url("/icons/icon.svg");
+	background-size:32px;
+	background-repeat:no-repeat;
+	background-position:8px;
+	box-sizing:border-box;
+	border:1px solid #f2f2f3;
+	border-radius:4px;
+	box-shadow:#0c0c0d1a 0px 1px 4px 0px;
+	transition:box-shadow 150ms;
+}
+
+header h1{
+	line-height:18px;
+}
+
 nav{
 	grid-area:nav;
 	padding-top:70px;
-	position:fixed;
 	background-color:#f9f9fa;
 	height:100%;
 	box-sizing:border-box;
@@ -89,6 +114,13 @@ nav a{
 		width:0 !important;
 		padding-right:0 !important;
 	}
+	header{
+		min-width:52px;
+		padding:0;
+	}
+	header h1{
+		display:none;
+	}
 }
 
 nav a.active{
@@ -133,6 +165,13 @@ section{
 	overflow:auto;
 }
 
+h1{
+	font-size:18px;
+	font-weight:400;
+	font-style:italic;
+	margin:0;
+}
+
 h2{
 	font-size:22px;
 	font-weight:300;
@@ -170,8 +209,7 @@ input[type="checkbox"]:hover:not(:disabled),input[type="checkbox"]:focus:not(:di
 }
 
 button{
-	padding-left: 20px;
-	padding-right: 20px;
+	padding:5px 20px 6px 20px;
 	min-width: 100px;
 	margin: 0;
 	-moz-appearance: none;
@@ -182,6 +220,7 @@ button{
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	font-size:13px;
 	box-sizing:border-box;
+	vertical-align:middle;
 }
 
 button:hover,select:hover,#fileInput:hover,button:focus,select:focus{
@@ -212,10 +251,10 @@ label{
 }
 
 select {
-	margin: 0 8px;
+	margin:0 8px;
 	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
 	font-size:13px;
-	padding:3px 20px 4px 10px;
+	padding:5px 20px 6px 10px;
 	-moz-appearance: none;
 	min-height: 30px;
 	min-width: 100px;
@@ -228,8 +267,13 @@ select {
 	vertical-align:middle;
 }
 
+select:first-child{
+	margin-left:0;
+}
+
 input[type="range"]{
-	vertical-align:middle;
+	vertical-align:-6px;
+	margin:0 8px;
 }
 
 input[type="number"],input[type="text"]{
@@ -320,11 +364,11 @@ article:hover{
 	font-size:13px;
 	cursor:context-menu;
 	overflow:hidden;
-	vertical-align:top;
+	vertical-align:middle;
 }
 
 #fileText{
-	padding:0 20px;
+	padding:7px 20px 6px;
 	vertical-align:middle;
 }
 
