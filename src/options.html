@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="icon" type="image/svg-xml" href="icons/icon2.svg">
+		<link rel="stylesheet" href="inputs.css"/>
 		<link rel="stylesheet" href="options.css"/>
 	</head>
 	<body class="none">
@@ -50,6 +51,7 @@
 				><select id="theme">
 					<option value="light"></option>
 					<option value="dark"></option>
+					<option value="auto"></option>
 				</select>
 			</div>
 			<div class="row">
@@ -143,10 +145,14 @@
 					<option value="notification.opus">)</option>
 					<option value="notification2.opus"></option>
 					<option value=""></option>
-				</select><button id="playSound"></button>
+				</select><button id="playSound">&#9654;</button>
 			</div>
 			<div class="row none" id="rowExternalSound">
-				<input type="text" id="externalSound">
+				<input type="text" id="externalSound"
+				><span class="fileInput"
+					><input type="file" id="audioFile" accept=".mp3,.wav"/
+					><span id="audioFileText"></span>
+				</span>
 			</div>
 			<h3 id="h3defaultValues"></h3>
 			<div class="row">
@@ -226,7 +232,7 @@
 			</div>
 			<div class="row">
 				<button id="backup"></button
-				><span id="fileInput"
+				><span class="fileInput"
 					><input type="file" id="file" accept=".json,.js"/
 					><span id="fileText"></span>
 				</span>
@@ -280,11 +286,11 @@
 			<h2 id="h2support"></h2>
 			<article>
 				<h3 id="h3bugReport"></h3>
-				<p><span id="spanBugReport"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank" class="extLink">GitHub</a>.</p>
+				<p><span id="spanBugReport"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank">GitHub</a>.</p>
 			</article>
 			<article>
 				<h3 id="h3translation"></h3>
-				<p><span id="spanTranslation1"></span> <a href="_locales/en/messages.json" target="_blank"><span id="spanTranslation2"></span></a> <span id="spanTranslation3"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank" class="extLink">GitHub</a>.</p>
+				<p><span id="spanTranslation1"></span> <a href="_locales/en/messages.json" target="_blank"><span id="spanTranslation2"></span></a> <span id="spanTranslation3"></span> <a href="https://github.com/WaldiPL/webpageScanner/issues/new" target="_blank">GitHub</a>.</p>
 			</article>
 			<article>
 				<h3 id="h3share"></h3>

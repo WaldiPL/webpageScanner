@@ -14,7 +14,7 @@ function handleInstalled(details) {
 		"requestTime":10000,
 		"diffOld":false,
 		"popupList":false,
-		"theme":"light",
+		"theme":"auto",
 		"showNextPrev":true,
 		"scrollToFirstChange":true,
 		"skipMinorChanges":true,

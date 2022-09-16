@@ -7,7 +7,7 @@ let prevContext;
 	if(!document.getElementById("scanSites"))return;
 	const result=browser.storage.local.get('settings');
 	const {settings}=await result;
-	if(settings.theme==="dark")document.documentElement.className="dark";
+	document.documentElement.className=settings.theme?settings.theme:"auto";
 	if(settings.search){
 		document.documentElement.dataset.search=true;
 		document.getElementById("searchBar").classList.remove("none");
@@ -99,7 +99,7 @@ function context(e){
 			let sInput=document.createElement('img');
 				sInput.className="scanFolder";
 				sInput.id=`scanFolder${id}`;
-				sInput.src="icons/scan2.svg";
+				sInput.src="icons/scan.svg";
 				sInput.title=i18n("scanWebpage");
 				sInput.draggable=false;
 				sInput.addEventListener('click',()=>{
@@ -136,7 +136,7 @@ function context(e){
 				sInput.className="scanPage";
 				sInput.id=`scanitem${id}`;
 				sInput.type="image";
-				sInput.src="icons/scan2.svg";
+				sInput.src="icons/scan.svg";
 				sInput.title=i18n("scanWebpage");
 				sInput.addEventListener('click',()=>{
 					browser.runtime.sendMessage({
@@ -659,8 +659,8 @@ function translate(){
 	document.getElementById("options").title=i18n("options");
 	document.getElementById("deleteWebpage").textContent=i18n("deleteWebpage");
 	document.getElementById("editFolder").textContent=i18n("editFolder");
-	document.getElementById("nFolder").textContent=i18n("name");
-	document.getElementById("nFolderA").textContent=i18n("name");
+	document.getElementById("nameFolder").placeholder=i18n("name");
+	document.getElementById("nameFolderA").placeholder=i18n("name");
 	document.getElementById("addCancelF").textContent=i18n("cancel");
 	document.getElementById("editCancelF").textContent=i18n("cancel");
 	document.getElementById("editSaveF").textContent=i18n("save");

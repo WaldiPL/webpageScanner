@@ -1,4 +1,4 @@
-.light:root{
+:root{
 	--text-color:#0c0c0d;
 	--border-color:#ccc;
 	--background-color:#f5f6f7;
@@ -21,6 +21,7 @@
 	--dropdown:url("icons/dropdown.svg#d");
 	--arrow:url("icons/arrow.svg#d");
 	--close:url("icons/close.svg#d");
+	--open:url("icons/open.svg");
 
 	--invert:invert(0);
 	--brightness:brightness(1.0);
@@ -50,10 +51,44 @@
 	--dropdown:url("icons/dropdown.svg#l");
 	--arrow:url("icons/arrow.svg#l");
 	--close:url("icons/close.svg#l");
+	--open:url("icons/open.svg#l");
 
 	--invert:invert(1);
 	--brightness:brightness(1.5);
 	--shadow-color:#333;
+}
+
+
+@media (prefers-color-scheme: dark) {
+	.auto:root {
+	--text-color:#f9f9fa;
+	--border-color:#0c0c0d;
+	--background-color:#323234;
+	--time-color:#444;
+
+	--neutral-color:#f9f9fa;
+	--neutral-background:#474749;
+	--neutral-hover:#5a5a5c;
+	--neutral-active:#6e6e70;
+
+	--negative-color:#f9f9fa;
+	--negative-background:#d70022;
+	--negative-hover:#ff0039;
+	--negative-active:#a4000f;
+
+	--ghost-hover:#474749;
+	--ghost-active:#5a5a5c;
+
+	--icon:url("icons/icon.svg#w");
+	--dropdown:url("icons/dropdown.svg#l");
+	--arrow:url("icons/arrow.svg#l");
+	--close:url("icons/close.svg#l");
+	--open:url("icons/open.svg#l");
+
+	--invert:invert(1);
+	--brightness:brightness(1.5);
+	--shadow-color:#333;
+}
 }
 
 html,
@@ -168,7 +203,7 @@ button{
 }
 
 #currentIcon{
-	background-image:url("icons/extLink.svg");
+	background-image:var(--open);
 	background-repeat:no-repeat;
 	background-position:center center;
 	display:block;
@@ -361,7 +396,7 @@ h2{
 	height:20px;
 	width:20px;
 	background-image:var(--close);
-	background-size:18px;
+	background-size:16px;
 	background-repeat:no-repeat;
 	background-position:50%;
 	float:right;

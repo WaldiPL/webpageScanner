@@ -1,6 +1,9 @@
 "use strict";
 
 (function(){
+	browser.storage.local.get('settings').then(e=>{
+		document.documentElement.className=e.settings.theme?e.settings.theme:"auto";
+	});
 	let section=window.location.hash;
 	if(!section)window.location.hash="#options";
 	else changeActive(section.substr(1));
@@ -46,6 +49,7 @@
 		browser.runtime.sendMessage({"addToContextMenu":e.target.checked}).then(()=>{},err=>{console.warn(err);});
 	});
 	document.getElementById("theme").addEventListener("change",e=>{
+		document.documentElement.className=e.target.value;
 		browser.runtime.sendMessage({"changeTheme":e.target.value}).then(()=>{},err=>{console.warn(err);});
 	});
 	document.getElementById("import").addEventListener("click",importFolder);
@@ -95,6 +99,7 @@
 	});
 	document.getElementById("updateNow").addEventListener("click",()=>{browser.runtime.reload();});
 	document.getElementById("sortButton").addEventListener("click",()=>{sortBy(document.getElementById("sortMode").value);});
+	document.getElementById("audioFile").addEventListener("change",audioFileSelect);
 })();
 
 function saveOptions(){
@@ -165,7 +170,7 @@ function restoreOptions(){
 		document.getElementById("requestTime").value=parseInt(s.requestTime/1000);
 		document.getElementById("diffOld").checked=s.diffOld;
 		document.getElementById("popupList").checked=s.popupList;
-		document.getElementById("theme").value=s.theme?s.theme:"light";
+		document.getElementById("theme").value=s.theme?s.theme:"auto";
 		document.getElementById("showNextPrev").checked=s.showNextPrev;
 		document.getElementById("scrollToFirstChange").checked=s.scrollToFirstChange;
 		document.getElementById("skipMinorChanges").checked=s.skipMinorChanges;
@@ -278,6 +283,7 @@ function translate(){
 	let theme=document.getElementById("theme").options;
 		theme[0].text=i18n("lightTheme");
 		theme[1].text=i18n("darkTheme");
+		theme[2].text=i18n("autoTheme");
 	document.getElementById("h3pageView").textContent=i18n("h3PageView");
 	document.getElementById("labelShowNextPrev").textContent=i18n("showNextPrev");
 	document.getElementById("labelScrollToFirstChange").textContent=i18n("scrollToFirstChange");
@@ -372,6 +378,7 @@ function translate(){
 		sortMode[1].text=i18n("descDate");
 		sortMode[2].text=i18n("az");
 		sortMode[3].text=i18n("za");
+	document.getElementById("audioFileText").textContent=i18n("chooseFile");
 
 	document.body.removeAttribute("class");
 }
@@ -1077,4 +1084,24 @@ function sortBy(mode){
 			browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
 		});
 	});
+}
+
+function audioFileSelect(e){
+	e.stopPropagation();
+	let file=e.target.files[0];
+	if(file.type.split("/")[0]==="audio"){
+		let reader=new FileReader();
+		reader.onload=function(event){
+			try{
+				document.getElementById("externalSound").value=event.target.result;
+				saveOptions();
+			}catch(e){
+				console.warn(e);
+			}
+		};
+		reader.onerror=function(event){
+			console.error(event);
+		};
+		reader.readAsDataURL(file);
+	}
 }

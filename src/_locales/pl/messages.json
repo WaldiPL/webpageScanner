@@ -103,7 +103,7 @@
     "message": "Edytuj folder"
   },
   "name": {
-    "message": "Nazwa:"
+    "message": "Nazwa"
   },
   "deleteFolder": {
     "message": "Czy chcesz usunąć ten folder?"
@@ -220,6 +220,9 @@
   },
   "darkTheme": {
     "message": "Ciemny"
+  },
+  "autoTheme": {
+    "message": "Automatyczny"
   },
   "backup": {
     "message": "Utwórz kopię zapasową"
@@ -616,5 +619,8 @@
   },
   "za": {
     "message": "Od Z do A"
+  },
+  "chooseFile": {
+    "message": "Wybierz plik"
   }
 }

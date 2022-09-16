@@ -1,61 +1,33 @@
-.light:root{
-	--text-color:#0c0c0d;
-	--border-color:#ccc;
-	--background-color:#f9f9fa;
-	--titlebar-background:#f1f1f1;
-
-	--neutral-color:#0c0c0d;
-	--neutral-background:#0c0c0d1a;
-	--neutral-hover:#0c0c0d33;
-	--neutral-active:#0c0c0d4d;
-
-	--positive-color:#fff;
-	--positive-background:#0060df;
-	--positive-hover:#003eaa;
-	--positive-active:#002275;
-
-	--negative-color:#fff;
-	--negative-background:#ff0039;
-	--negative-hover:#d70022;
-	--negative-active:#a4000f;
-
-	--input-color:#0c0c0d;
-	--input-border:#0c0c0d33;
-	--input-border-hover:#0c0c0d4d;
-	--input-background:#fff;
-	--input-focus:#0a84ff;
-
+:root{
+	--text-color:#15141a;
+	--border-color:#d7d7db;
+	--background-color:#fff;
+	--titlebar-background:#fff;
 	--icon:url("icons/icon.svg");
+	--overlay-background:#00000080;
+	--select:url("icons/select.svg#l");
 }
 
 .dark:root {
-	--text-color:#f9f9fa;
-	--border-color:#0c0c0d;
-	--background-color:#323234;
-	--titlebar-background:#2a2a2e;
-
-	--neutral-color:#f9f9fa;
-	--neutral-background:#474749;
-	--neutral-hover:#5a5a5c;
-	--neutral-active:#6e6e70;
-
-	--positive-color:#f9f9fa;
-	--positive-background:#0060df;
-	--positive-hover:#0a84ff;
-	--positive-active:#003eaa;
-
-	--negative-color:#fff;
-	--negative-background:#ff0039;
-	--negative-hover:#d70022;
-	--negative-active:#a4000f;
-
-	--input-color:#f9f9fa;
-	--input-border:#262627;
-	--input-border-hover:#0c0c0dcc;
-	--input-background:#474749;
-	--input-focus:#0a84ff;
-
+	--text-color:#fbfbfe;
+	--border-color:#676670;
+	--background-color:#1c1b22;
+	--titlebar-background:#42414d;
 	--icon:url("icons/icon.svg#w");
+	--overlay-background:#000c;
+	--select:url("icons/select.svg#d");
+}
+
+@media (prefers-color-scheme: dark) {
+.auto:root {
+	--text-color:#fbfbfe;
+	--border-color:#676670;
+	--background-color:#1c1b22;
+	--titlebar-background:#42414d;
+	--icon:url("icons/icon.svg#w");
+	--overlay-background:#000c;
+	--select:url("icons/select.svg#d");
+}
 }
 
 *:-moz-focusring{
@@ -86,83 +58,15 @@ h1{
 }
 
 button{
-	min-width: 80px;
-	min-height: 32px;
-	border-radius:2px;
-	cursor:pointer;
-	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
-	font-size:13px;
 	margin:0 0 0 8px;
-	padding:0 20px;
-	box-sizing:border-box;
-	border:none;
-}
-
-button:focus{
-	box-shadow: 0 0 0 1px #0a84ff inset,
-				0 0 0 1px #0a84ff,
-				0 0 0 4px rgba(10, 132, 255, 0.3);
-}
-
-.neutral{
-	background-color: var(--neutral-background) !important;
-	color:var(--neutral-color) !important;
-}
-.neutral:hover{
-	background-color: var(--neutral-hover) !important;
-}
-.neutral:active{
-	background-color: var(--neutral-active) !important;
-}
-
-.positive{
-	background-color:var(--positive-background) !important;
-	color:var(--positive-color) !important;
-}
-.positive:hover{
-	background-color:var(--positive-hover) !important;
-}
-.positive:active{
-	background-color:var(--positive-active) !important;
-}
-
-.negative{
-	background-color:var(--negative-background) !important;
-	color:var(--negative-color) !important;
-}
-.negative:hover{
-	background-color:var(--negative-hover) !important;
-}
-.negative:active{
-	background-color:var(--negative-active) !important;
 }
 
 input[type="text"]{
-	box-sizing:border-box;
 	margin:0;
-	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
-	font-size:13px;
-	color:var(--text-color);
-	padding:5px 8px;
-	-moz-appearance:none;
-	min-height:30px;
-	border:1px solid var(--input-border);
-	border-radius:2px;
-	background-color:var(--input-background);
-	vertical-align:middle;
-}
-
-input[type="text"]:hover{
-	border-color:var(--input-border-hover);
-}
-
-input[type="text"]:focus{
-	border-color:var(--input-focus);
-	box-shadow:0 0 0 1px #0a84ff,0 0 0 4px #0a84ff4d;
 }
 
 #retryBtn{
-	background-image:url("icons/select.svg");
+	background-image:var(--select);
 	background-repeat:no-repeat;
 	background-position:8px;
 	padding-left:32px;	
@@ -171,8 +75,8 @@ input[type="text"]:focus{
 #inspectDialog{
 	background:var(--background-color);
 	border:1px solid var(--border-color);
-	border-radius:4px;
-	box-shadow:0 0 0 2000px #000c;
+	border-radius:8px;
+	box-shadow:0 0 0 2000px var(--overlay-background);
 	padding:0 20px 20px 20px;
 	position:fixed;
 	box-sizing:border-box;
@@ -204,6 +108,7 @@ input[type="text"]:focus{
 	margin:0px -20px;
 	width:calc(100% + 38px);
 	text-align:center;
+	border-radius: 8px 8px 0 0;
 }
 
 .fade{

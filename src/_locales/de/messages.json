@@ -103,7 +103,7 @@
     "message": "Ordner ändern"
   },
   "name": {
-    "message": "Name:"
+    "message": "Name"
   },
   "deleteFolder": {
     "message": "Diesen Ordner endgültig löschen?"
@@ -220,6 +220,9 @@
   },
   "darkTheme": {
     "message": "Dunkel"
+  },
+  "autoTheme": {
+    "message": "Automatisches"
   },
   "backup": {
     "message": "Sicherung erstellen"
@@ -616,5 +619,8 @@
   },
   "za": {
     "message": "Von Z bis A"
+  },
+  "chooseFile": {
+    "message": "Datei auswählen"
   }
 }

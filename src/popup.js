@@ -11,7 +11,7 @@
 	const activeAlarm=browser.alarms.get("openSitesDelay");
 	const badgeText=browser.browserAction.getBadgeText({});
 	const {settings}=await result;
-	if(settings.theme==="dark")document.documentElement.className="dark";
+	document.documentElement.className=settings.theme?settings.theme:"auto";
 	let openSitesBtn=document.getElementById("openSites");
 	if(await badgeText&&!(await activeAlarm)){
 		openSitesBtn.textContent=i18n("openWebpage");

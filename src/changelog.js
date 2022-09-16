@@ -9,6 +9,10 @@ function generateChangelog(){
 	changelogGenerated=true;
 
 	let changelog=`[
+	{"version":"2.1.2",
+		"changes":["Added the possibility to select a file as notification sound","Updated appearance and icons to Proton style","Added dark theme for options","Added automatic theme","Minor changes"],
+		"changesPL":["Dodano możliwość wybrania pliku jako dźwięku powiadomienia","Zaktualizowano wygląd i ikony do stylu Proton","Dodano ciemny motyw opcji","Dodano motyw automatyczny","Drobne zmiany"]
+	},
 	{"version":"2.1.0",
 		"changes":["Fixed problems with partial scanning","#60","Fixed not working notification","Improved import and export of folders","#63","#64","Added possibility to drag and drop bookmarks, folders, links and web pages","#65","Added German language (thanks to Omnibrain007)","#68","Added possibility to sort pages","#45","Minor changes","#59","Fixed bugs"],
 		"changesPL":["Naprawiono problemy ze skanowaniem częściowym","#60","#69","Naprawiono niedziałające powiadomienie","Poprawiono importowanie i eksportowanie folderów","#63","#64","Dodano możliwość przeciągania i upuszczania zakładek, folderów, odnośników i stron","#65","Dodano język niemiecki (dzięki Omnibrain007)","#68","Dodano możliwość sortowania stron","#45","Drobne zmiany","#59","Naprawiono błędy"]
@@ -236,7 +240,6 @@ function generateChangelog(){
 			}else{
 				let git=document.createElement("a");
 					git.target="_blank";
-					git.className="extLink";
 					git.href="https://github.com/WaldiPL/webpageScanner/issues/"+c.substring(1);
 					git.textContent=c;
 				ul.lastElementChild.append(" ",git);

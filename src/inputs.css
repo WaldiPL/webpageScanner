@@ -1,0 +1,270 @@
+:root{
+	--input-text-color:#15141a;
+	--input-text-background:#fff;
+	--input-border:#15141a69;
+	--input-background:#cfcfd854;
+	--input-background-hover:#cfcfd8a8;
+	--input-background-active:#cfcfd8;
+	--accent-text:#fbfbfe;
+	--accent-color:#0061e0;
+	--accent-hover:#0250bb;
+	--accent-active:#053e94;
+	--checkbox-svg:url("icons/checked.svg#d");
+	--radio-svg:url("icons/radio.svg#d");
+	--neutral-background:#cfcfd854;
+	--neutral-hover:#cfcfd8a8;
+	--neutral-active:#cfcfd8;
+	--dropdown:url("icons/dropdown.svg#d");
+	--negative-color:#fff;
+	--negative-background:#ff0039;
+	--negative-hover:#d70022;
+	--negative-active:#a4000f;
+}
+
+.dark:root{
+	--input-text-color:#fbfbfe;
+	--input-text-background:#23222b;
+	--input-border:#fbfbfe69;
+	--input-background:#2b2a33;
+	--input-background-hover:#52525e;
+	--input-background-active:#5b5b66;
+	--accent-text:#2b2a33;
+	--accent-color:#0df;
+	--accent-hover:#80ebff;
+	--accent-active:#aaf2ff;
+	--checkbox-svg:url("icons/checked.svg#l");
+	--radio-svg:url("icons/radio.svg#l");
+	--neutral-background:#2b2a33;
+	--neutral-hover:#52525e;
+	--neutral-active:#5b5b66;
+	--dropdown:url("icons/dropdown.svg#l");
+	--negative-color:#fff;
+	--negative-background:#ff0039;
+	--negative-hover:#d70022;
+	--negative-active:#a4000f;
+}
+
+@media (prefers-color-scheme: dark) {
+.auto:root{
+	--input-text-color:#fbfbfe;
+	--input-text-background:#23222b;
+	--input-border:#fbfbfe69;
+	--input-background:#2b2a33;
+	--input-background-hover:#52525e;
+	--input-background-active:#5b5b66;
+	--accent-text:#2b2a33;
+	--accent-color:#0df;
+	--accent-hover:#80ebff;
+	--accent-active:#aaf2ff;
+	--checkbox-svg:url("icons/checked.svg#l");
+	--radio-svg:url("icons/radio.svg#l");
+	--neutral-background:#2b2a33;
+	--neutral-hover:#52525e;
+	--neutral-active:#5b5b66;
+	--dropdown:url("icons/dropdown.svg#l");
+	--negative-color:#fff;
+	--negative-background:#ff0039;
+	--negative-hover:#d70022;
+	--negative-active:#a4000f;
+}
+}
+
+input[type="checkbox"],
+input[type="radio"]{
+	-moz-appearance:none;
+	width:16px;
+	height:16px;
+	border:1px solid var(--input-border);
+	margin:2px 6px 2px 2px;
+	background-color:var(--input-background);
+	background-position:center center;
+	background-repeat:no-repeat;
+	vertical-align:text-top;
+	box-sizing:border-box;
+}
+
+input[type="checkbox"]{
+	border-radius: 2px;
+}
+
+input[type="radio"]{
+	border-radius:50%;
+}
+
+input[type="checkbox"]:checked{
+	background-image:var(--checkbox-svg);
+	background-color:var(--accent-color);
+	border-color:transparent;
+}
+
+input[type="radio"]:checked{
+	background-image:var(--radio-svg);
+	background-color:var(--accent-color);
+	border-color:transparent;
+}
+
+input[type="checkbox"]:hover:not(:disabled):not(:checked),
+input[type="radio"]:hover:not(:disabled):not(:checked){
+	background-color:var(--input-background-hover);
+}
+
+input[type="checkbox"]:active:not(:disabled):not(:checked),
+input[type="radio"]:active:not(:disabled):not(:checked){
+	background-color:var(--input-background-active);
+}
+
+input[type="checkbox"]:checked:hover:not(:disabled),
+input[type="radio"]:checked:hover:not(:disabled){
+	background-color:var(--accent-hover);
+}
+
+input[type="checkbox"]:checked:active:not(:disabled),
+input[type="radio"]:checked:active:not(:disabled){
+	background-color:var(--accent-active);
+}
+
+input[type="number"],
+input[type="text"]{
+	-moz-appearance:none;
+	box-sizing:border-box;
+	margin:2px 8px;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
+	font-size:13px;
+	padding:7px;
+	min-height:33px;
+	color:var(--input-text-color);
+	border:1px solid var(--input-border);
+	border-radius:4px;
+	background-color:var(--input-text-background);
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus{
+	border-color:transparent;
+	outline:2px solid var(--accent-color);
+	outline-offset:-1px;
+}
+
+button,
+select{
+	-moz-appearance:none;
+	box-sizing:border-box;
+	margin:0 4px;
+	font-family:Segoe UI,Tahoma,Helvetica Neue,Lucida Grande,Ubuntu,sans-serif;
+	font-size:13px;
+	font-weight:600;
+	padding:7px 15px;
+	min-height:33px;
+	min-width:80px;
+	border:1px solid transparent;
+	border-radius:4px;
+	background-color:var(--neutral-background);
+	color:var(--input-text-color);
+}
+
+select{
+	margin:2px 8px;
+	padding:7px 25px 7px 15px;
+	background-image:var(--dropdown);
+	background-repeat:no-repeat;
+	background-position:right 14px center;
+}
+
+.fileInput{
+	box-sizing:border-box;
+	margin:0 4px;
+	font-size:13px;
+	font-weight:600;
+	padding:0;
+	height:33px;
+	display:inline-block;
+	border:1px solid transparent;
+	border-radius:4px;
+	background-color:var(--neutral-background);
+	overflow:hidden;
+	vertical-align:-11px;
+}
+
+button:hover,
+select:hover,
+.fileInput:hover{
+	background-color:var(--neutral-hover);
+}
+
+button:active,
+select:active,
+select:focus,
+.fileInput:active{
+	background-color:var(--neutral-active);
+}
+
+input[type="range"]{
+	vertical-align:-6px;
+	margin:0 8px;
+}
+
+button:focus-visible,
+select:focus-visible,
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible,
+input[type="range"]:focus-visible{
+	outline:2px solid var(--accent-color);
+	outline-offset:2px;
+}
+
+.positive{
+	background-color:var(--accent-color) !important;
+	color:var(--accent-text) !important;
+}
+
+.positive:hover{
+	background-color:var(--accent-hover) !important;
+}
+
+.positive:active{
+	background-color:var(--accent-active) !important;
+}
+
+.negative{
+	background-color:var(--negative-background) !important;
+	color:var(--negative-color) !important;
+}
+
+.negative:hover{
+	background-color:var(--negative-hover) !important;
+}
+
+.negative:active{
+	background-color:var(--negative-active) !important;
+}
+
+.neutral{
+	background-color: var(--neutral-background) !important;
+	color:var(--neutral-color) !important;
+}
+
+.neutral:hover{
+	background-color: var(--neutral-hover) !important;
+}
+
+.neutral:active{
+	background-color: var(--neutral-active) !important;
+}
+
+.ghost{
+	background-color:transparent !important;
+	border-radius:4px;
+}
+
+.ghost:hover{
+	background-color:var(--neutral-background) !important;
+}
+
+.ghost:active{
+	background-color:var(--neutral-hover) !important;
+}
+
+.ghost:focus-visible{
+	outline:2px solid var(--accent-color);
+	outline-offset:-2px;
+}

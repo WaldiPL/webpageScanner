@@ -10,6 +10,7 @@ let localId,
 const extURL=browser.runtime.getURL("");
 
 (function(){
+		console.time("Foo");
 	const urlString=window.location.search;
 	localId=parseInt(urlString.substr(1));
 	iframe=document.createElement("iframe");
@@ -20,7 +21,7 @@ const extURL=browser.runtime.getURL("");
 			settings=result.settings;
 		let site=sites[localId];
 
-		if(settings.theme==="dark")document.documentElement.className="dark";
+		document.documentElement.className=settings.theme?settings.theme:"auto";
 		document.getElementById("title").textContent=site.title;
 		if(settings.hideHeader)toggleHeader(true);
 		document.getElementById("viewMode").value=settings.defaultView;
@@ -344,6 +345,7 @@ function load(type){
 		document.getElementById("versionTime").title=i18n("lastScan",lastScan)+"\u000d"+i18n("newVersion")+": "+newTime+"\u000d"+i18n("oldVersion")+": "+oldTime;
 		document.getElementById("title").textContent=sId.title;
 		document.title=sId.title;
+				console.timeEnd("Foo");
 	},err=>{
 		console.error(err);
 	});

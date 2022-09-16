@@ -103,7 +103,7 @@
     "message": "Modifier le dossier"
   },
   "name": {
-    "message": "Nom :"
+    "message": "Nom"
   },
   "deleteFolder": {
     "message": "Voulez-vous supprimer ce dossier ?"
@@ -220,6 +220,9 @@
   },
   "darkTheme": {
     "message": "Sombre"
+  },
+  "autoTheme": {
+    "message": "Automatique"
   },
   "backup": {
     "message": "Créer une sauvegarde"
@@ -616,5 +619,8 @@
   },
   "za": {
     "message": "De Z à A"
+  },
+  "chooseFile": {
+    "message": "Choisir un fichier"
   }
 }

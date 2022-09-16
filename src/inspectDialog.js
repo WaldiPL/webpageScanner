@@ -22,9 +22,7 @@ let dialogTabId;
 		okBtn.addEventListener("click",ok);
 
 	const {settings}=await result;
-	if(settings.theme==="dark"){
-		document.documentElement.className="dark";
-	}	
+	document.documentElement.className=settings.theme?settings.theme:"auto";
 	document.body.removeAttribute("class");
 })();
 
