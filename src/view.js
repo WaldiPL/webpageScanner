@@ -5,30 +5,23 @@ let localId,
 	prevHighlighted,
 	filteredChanges,
 	viewMode,
-	iframe;
+	iframe,
+	uniqId;
 	
 const extURL=browser.runtime.getURL("");
 
 (function(){
-		console.time("Foo");
 	const urlString=window.location.search;
 	localId=parseInt(urlString.substr(1));
 	iframe=document.createElement("iframe");
 	iframe.id="__wps_iframe";
 	document.getElementById("content").appendChild(iframe);
-	browser.storage.local.get(["sites","settings"]).then(result=>{
-		let sites=result.sites,
-			settings=result.settings;
-		let site=sites[localId];
-
+	browser.storage.local.get("settings").then(result=>{
+		let settings=result.settings;
 		document.documentElement.className=settings.theme?settings.theme:"auto";
-		document.getElementById("title").textContent=site.title;
 		if(settings.hideHeader)toggleHeader(true);
 		document.getElementById("viewMode").value=settings.defaultView;
 		document.getElementById("header").removeAttribute("class");
-		document.title=site.title;
-		document.getElementById("favicon").href=site.favicon;
-		document.getElementById("current").href=site.url;
 	},err=>{
 		console.error(err);
 	});
@@ -80,24 +73,17 @@ function toggleNextPrev(show,autoScroll){
 }
 
 function showDelete(){
-	browser.storage.local.get('sites').then(result=>{
-		const sites=result.sites;
-		document.getElementById("deleteOk").addEventListener("click",deleteSite);
-		document.getElementById("deletePopup").classList.remove("fade");
-		document.getElementById("deleteTitle").textContent=sites[localId].title;
-	},err=>{
-		console.error(err);
-	});
+	document.getElementById("deleteOk").addEventListener("click",deleteSite);
+	document.getElementById("deletePopup").classList.remove("fade");
+	document.getElementById("deleteTitle").textContent=document.title;
 }
 
 function deleteSite(){
-	browser.storage.local.get(['sites','changes','sort']).then(result=>{
+	browser.storage.local.get(['sites','sort']).then(result=>{
 		let sites=result.sites,
-			changes=result.changes,
 			sort=result.sort,
 			sSort;
 		sites.splice(localId,1);
-		changes.splice(localId,1);
 		if(sort){
 			sort.forEach((value,i)=>{
 				const id=parseInt(value[0].substr(4));
@@ -106,7 +92,8 @@ function deleteSite(){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites,changes,sort}).then(()=>{
+		browser.storage.local.set({sites,sort}).then(async()=>{
+			await deleteChanges(uniqId);
 			browser.runtime.sendMessage({
 				"listSite":true,
 				"deletedSite":true,
@@ -146,12 +133,11 @@ function partHtml(html,selectorCss){
 }
 
 function load(type){
-	browser.storage.local.get(['sites','changes','settings']).then(result=>{
+	browser.storage.local.get(['sites','settings']).then(async result=>{
 		const sites=result.sites,
-			  changes=result.changes,
 			  settings=result.settings,
 			  sId=sites[localId],
-			  cId=changes[localId],
+			  cId=await getChanges(sId.uniq),
 			  newHtml=cId.html,
 			  oldHtml=cId?cId.oldHtml:"",
 			  diffStringX=settings.diffOld?diffString2old:diffString2;
@@ -173,6 +159,11 @@ function load(type){
 			}
 		});
 		type=type||pageSettings.defaultView;
+		uniqId=sId.uniq;
+		document.getElementById("favicon").href=sId.favicon;
+		document.getElementById("current").href=sId.url;
+		document.getElementById("title").textContent=sId.title;
+		document.title=sId.title;
 
 		let diffString;
 		if((type==="raw"||type==="news"||type==="deleted")&&sId.paritialMode&&sId.cssSelector&&!pageSettings.highlightOutsideChanges){
@@ -343,9 +334,6 @@ function load(type){
 			document.getElementById("xtext").textContent=i18n("numberOfChanges",filteredChanges.length);
 		}
 		document.getElementById("versionTime").title=i18n("lastScan",lastScan)+"\u000d"+i18n("newVersion")+": "+newTime+"\u000d"+i18n("oldVersion")+": "+oldTime;
-		document.getElementById("title").textContent=sId.title;
-		document.title=sId.title;
-				console.timeEnd("Foo");
 	},err=>{
 		console.error(err);
 	});
@@ -427,8 +415,11 @@ function toggleScrollbarMarkers(show){
 		let canvas=document.getElementById("__wps_scrollbarMarkers");
 		if(!canvas){
 			canvas=document.createElement("canvas");
-			canvas.width=16;
+			canvas.width=1;
 			canvas.id="__wps_scrollbarMarkers";
+			canvas.style.width=window.innerWidth-iframe.contentDocument.body.scrollWidth+"px";
+			if(window.navigator.appVersion.includes("Windows"))
+				canvas.style.padding="16px 0";
 			document.body.appendChild(canvas);
 		}
 		const ctx=canvas.getContext('2d');
@@ -439,7 +430,7 @@ function toggleScrollbarMarkers(show){
 		  const elm=e.getBoundingClientRect();
 		  const top=elm.top+iframe.contentWindow.scrollY;
 		  const height=elm.height;
-		  ctx.fillRect(0,top,16,height);
+		  ctx.fillRect(0,top,1,height);
 		});
 	}else{
 		if(document.getElementById("__wps_scrollbarMarkers")){

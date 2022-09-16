@@ -9,9 +9,9 @@ function generateChangelog(){
 	changelogGenerated=true;
 
 	let changelog=`[
-	{"version":"2.1.2",
-		"changes":["Added the possibility to select a file as notification sound","Updated appearance and icons to Proton style","Added dark theme for options","Added automatic theme","Minor changes"],
-		"changesPL":["Dodano możliwość wybrania pliku jako dźwięku powiadomienia","Zaktualizowano wygląd i ikony do stylu Proton","Dodano ciemny motyw opcji","Dodano motyw automatyczny","Drobne zmiany"]
+	{"version":"2.1.5",
+		"changes":["Moved part of the database to indexedDB","Speeded up page loading and extension performance","Added the possibility to select a file as notification sound","Updated appearance and icons to Proton style","Added dark theme for options","Added automatic theme","Minor changes","Fixed bugs"],
+		"changesPL":["Przeniesiono część bazy danych do indexedDB","Przyśpieszono ładowanie stron i działanie rozszerzenia","Dodano możliwość wybrania pliku jako dźwięku powiadomienia","Zaktualizowano wygląd i ikony do stylu Proton","Dodano ciemny motyw opcji","Dodano motyw automatyczny","Drobne zmiany","Naprawiono błędy"]
 	},
 	{"version":"2.1.0",
 		"changes":["Fixed problems with partial scanning","#60","Fixed not working notification","Improved import and export of folders","#63","#64","Added possibility to drag and drop bookmarks, folders, links and web pages","#65","Added German language (thanks to Omnibrain007)","#68","Added possibility to sort pages","#45","Minor changes","#59","Fixed bugs"],

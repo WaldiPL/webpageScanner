@@ -41,15 +41,19 @@ function handleInstalled(details) {
 		"warnBeforeUpdating":true,
 	};
 	if(details.reason==="install"){
-		browser.storage.local.get(['sites','settings']).then(result=>{
-			const db={};
+		browser.storage.local.get(['sites','settings','dbVersion']).then(result=>{
+			const storage={};
 			if(result.sites===undefined){
-				Object.assign(db,{sites:[],changes:[],sort:[]});
+				Object.assign(storage,{sites:[],sort:[]});
 			}
 			if(result.settings===undefined){
-				Object.assign(db,{settings:defaultSettings});
+				Object.assign(storage,{settings:defaultSettings});
 			}
-			browser.storage.local.set(db).then(()=>{
+			if(result.dbVersion===undefined){
+				Object.assign(storage,{dbVersion:1});
+			}
+			browser.storage.local.set(storage).then(async ()=>{
+				if(!db)await getDB();
 				init();
 				if(!details.temporary){
 					browser.tabs.create({
@@ -125,11 +129,13 @@ browser.notifications.onClicked.addListener(e=>{
 });
 
 (function(){
-	browser.storage.local.get(['sites','sort','settings']).then(result=>{
+	browser.storage.local.get(['sites','sort','settings','dbVersion']).then(result=>{
 		if(result.sites===undefined||result.settings===undefined){
 			handleInstalled({reason:"install"});
-		}else{
+		}else if(result.dbVersion===1){
 			init();
+		}else{
+			convertDb();
 		}
 		if(result.sort===undefined&&result.sites!==undefined){
 			let sort=[];
@@ -150,8 +156,7 @@ function init(){
 		showContext(result.settings.addToContextMenu);
 		let period=result.settings.period?result.settings.period:60;
 		if(!result.settings.paused){
-			browser.alarms.create("webpageScanner",{periodInMinutes:period+1});
-			browser.alarms.create("webpageScanner2",{delayInMinutes:1});
+			browser.alarms.create("webpageScanner",{delayInMinutes:1,periodInMinutes:period+1});
 		}
 	},err=>{
 		console.error(err);
@@ -159,7 +164,7 @@ function init(){
 }
 
 browser.alarms.onAlarm.addListener(alarm=>{
-	if(alarm.name==="webpageScanner"||alarm.name==="webpageScanner2")scanSites();
+	if(alarm.name==="webpageScanner")scanSites();
 	else if(alarm.name==="openSitesDelay")openSitesDelay();
 });
 
@@ -174,7 +179,7 @@ function run(m,s,r){
 	if(m.scanSites)scanSites(m.force);
 	if(m.openSites)openSite();
 	if(m.addToContextMenu!==undefined)showContext(m.addToContextMenu);
-	if(m.period)browser.alarms.create("webpageScanner",{periodInMinutes:m.period});
+	if(m.period)browser.alarms.create("webpageScanner",{delayInMinutes:1,periodInMinutes:m.period});
 	if(m.openSitesDelay){delayCurrentId=0;delayTime=m.openSitesDelay;delayLinksId=m.linksId;lastWindowId=-1;openSitesDelay(m.openWindow);}
 	if(m.closeTab){browser.tabs.remove(s.tab.id);}
 	if(m.scanPagesById){scanPagesById(m.idArray);}
@@ -275,6 +280,12 @@ function run(m,s,r){
 		browser.tabs.sendMessage(s.tab.id,m).then(()=>{},err=>{console.warn(err);});
 	}
 	if(m.openViewPage){browser.tabs.create({url:`${extURL}view.html?${m.viewId}`});}
+	if(m.convertDB){convertDb(true);}
+	if(m.getChanges){return getChanges(m.index);}
+	if(m.getAllChanges){return getAllChanges();}
+	if(m.setChanges){return setChanges(m.record);}
+	if(m.deleteChanges){return deleteChanges(m.index);}
+	if(m.clearChanges){return clearChanges();}
 }
 
 function showContext(e){
@@ -391,6 +402,7 @@ function showPopup(mode="add",editId){
 function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignoreHrefs,deleteScripts,deleteComments,pageSettings,ignoreStyles,ignoreAllAttributes,saveOnlyPart){
 	browser.storage.local.get("sites").then(async result=>{
 		let sites=result.sites;
+		const uniqId=sites[id].uniq;
 		let obj={
 			url,
 			title,
@@ -416,8 +428,8 @@ function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignor
 			ignoreAllAttributes:sites[id].ignoreAllAttributes,
 		};
 		if(old.paritialMode!==obj.paritialMode||old.cssSelector!==obj.cssSelector||old.ignoreNumbers!==ignoreNumbers||old.ignoreHrefs!==ignoreHrefs||old.ignoreStyles!==ignoreStyles||old.ignoreAllAttributes!==ignoreAllAttributes){
-			const {changes}=await browser.storage.local.get("changes");
-			const html_data=changes[id].html;
+			const idb=await getChanges(uniqId);
+			const html_data=idb.html;
 			if(cssSelector===false){
 				Object.assign(obj,length_md5(html_data,ignoreNumbers,ignoreHrefs,ignoreStyles,ignoreAllAttributes));
 			}else{
@@ -449,5 +461,34 @@ function editSite(id,url,title,mode,freq,charset,cssSelector,ignoreNumbers,ignor
 		});
 	},err=>{
 		console.error(err);
+	});
+}
+
+async function convertDb(e){
+	if(!db)await getDB();
+	browser.storage.local.get(["sites","changes"]).then(async result=>{
+		const {sites,changes}=result;
+		sites.forEach((site,i)=>{
+			if(!site.uniq)site.uniq=uniqueId();
+		});
+		await browser.storage.local.set({sites});
+		const tx=db.transaction(["changes"],"readwrite");
+		const store=tx.objectStore("changes");
+		tx.oncomplete=(e)=>{
+			browser.storage.local.set({dbVersion:1}).then(()=>{
+				browser.storage.local.remove("changes");
+				if(!e)init();
+				browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
+			},err=>{
+				console.error(err);
+			});
+		};
+		tx.onerror=(e)=>{
+			console.error(e.target.error);
+		};
+		sites.forEach((site,i)=>{
+			changes[i].uniq=site.uniq;
+			store.add(changes[i]);
+		});
 	});
 }

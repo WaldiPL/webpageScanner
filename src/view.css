@@ -422,8 +422,7 @@ h2{
 	bottom:0;
 	right:0px;
 	height:calc(100% - 61px);
-	width:16px;
-	padding:16px 0;
+	padding:0;
 	pointer-events:none;
 	box-sizing:border-box;
 	opacity:.6;

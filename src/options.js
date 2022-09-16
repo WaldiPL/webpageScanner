@@ -227,7 +227,8 @@ function restoreOptions(){
 
 function createBackup(e){
 	e.preventDefault();
-	browser.storage.local.get().then(result=>{
+	browser.storage.local.get().then(async result=>{
+		result.changes=await getAllChanges();
 		let a=document.createElement("a");
 		document.body.appendChild(a);
 		let json=JSON.stringify(result),
@@ -426,15 +427,32 @@ function handleFileSelect(e){
 }
 
 function restoreBackup(){
-	browser.storage.local.set({sites:uploaded.sites,changes:uploaded.changes,sort:uploaded.sort}).then(()=>{
-		document.getElementById("restoreAlert").classList.add("none");
-		document.getElementById("restoreOk").classList.remove("none");
-		browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
-	},err=>{
-		document.getElementById("restoreAlert").classList.add("none");
-		document.getElementById("restoreError").classList.remove("none");
-		console.error(err);
-	});
+	if(uploaded.dbVersion===1){
+		browser.storage.local.set({sites:uploaded.sites,sort:uploaded.sort,dbVersion:uploaded.dbVersion}).then(async ()=>{
+			document.getElementById("restoreAlert").classList.add("none");
+			document.getElementById("restoreOk").classList.remove("none");
+			await clearChanges();
+			uploaded.changes.forEach(async e=>{
+				await setChanges(e);
+			});
+			browser.runtime.sendMessage({"listSite":true}).then(()=>{},err=>{console.warn(err);});
+		},err=>{
+			document.getElementById("restoreAlert").classList.add("none");
+			document.getElementById("restoreError").classList.remove("none");
+			console.error(err);
+		});
+	}else{
+		browser.storage.local.set({sites:uploaded.sites,changes:uploaded.changes,sort:uploaded.sort,dbVersion:0}).then(async ()=>{
+			document.getElementById("restoreAlert").classList.add("none");
+			document.getElementById("restoreOk").classList.remove("none");
+			await clearChanges();
+			browser.runtime.sendMessage({"listSite":true,"convertDB":true}).then(()=>{},err=>{console.warn(err);});
+		},err=>{
+			document.getElementById("restoreAlert").classList.add("none");
+			document.getElementById("restoreError").classList.remove("none");
+			console.error(err);
+		});
+	}
 }
 
 async function importFolder(e){
@@ -873,13 +891,12 @@ function deleteBrokenConfirm(e){
 
 function deleteSite(j,mode){
 	let e=mode==="duplicates"?duplicatedSites[j][0]:brokenSites[j][0];
-	browser.storage.local.get(['sites','changes','sort']).then(result=>{
+	browser.storage.local.get(['sites','sort']).then(result=>{
 		let sites=result.sites,
-			changes=result.changes,
 			sort=result.sort,
-			sSort;
+			sSort,
+			uniqId=sites[e].uniq;
 		sites.splice(e,1);
-		changes.splice(e,1);
 		if(sort){
 			sort.forEach((value,i)=>{
 				const id=parseInt(value[0].substr(4));
@@ -888,7 +905,7 @@ function deleteSite(j,mode){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites,changes,sort}).then(()=>{
+		browser.storage.local.set({sites,sort}).then(()=>{
 			browser.runtime.sendMessage({
 				"deletedSite":true,
 				"id":e,
@@ -896,6 +913,7 @@ function deleteSite(j,mode){
 			}).then(()=>{},err=>{
 				console.warn(err);
 			});
+			deleteChanges(uniqId);
 			if(mode==="duplicates"){
 				if(j+1<duplicatedSites.length)
 					deleteSite(j+1,mode);

@@ -33,7 +33,7 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 		xhr.timeout=s.requestTime;
 		xhr.overrideMimeType('text/html; charset='+charset);
 		xhr.onload=async function(){
-			const result=browser.storage.local.get(['sites','changes','sort']);
+			const result=browser.storage.local.get(['sites','sort']);
 			const contentType=this.getResponseHeader("Content-Type").split(/; *charset=/i);
 
 			let html_data=this.responseText;
@@ -71,6 +71,7 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				ignoreStyles:ignoreStyles,
 				ignoreAllAttributes:ignoreAllAttributes,
 				saveOnlyPart:saveOnlyPart,
+				uniq:uniqueId(),
 			};
 			Object.assign(site,{settings:pageSettings});
 
@@ -103,12 +104,14 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				}
 			}
 
-			const {sites,changes,sort}=await result;
+			const {sites,sort}=await result;
 			sites[sites.length]=site;
-			changes[changes.length]={
+			const changes={
+				uniq:site.uniq,
 				oldHtml:"",
-				html:	html_data
+				html:html_data
 			};
+			await setChanges(changes);
 			const newSort=[`item${sites.length-1}`,folder,"item","",false];
 			if(folder==="root"){
 				sort.push(newSort);
@@ -118,7 +121,7 @@ function rqstAdd(url,title,icon=false,mode,freq,bookmarkId=false,cssSelector=fal
 				})+1;
 				sort.splice(spliceIndex,0,newSort);
 			}
-			await browser.storage.local.set({sites,changes,sort});
+			await browser.storage.local.set({sites,sort});
 			browser.runtime.sendMessage({
 				"statusbar":true,
 				"statusbarArg":i18n("addedWebpage",title),
@@ -324,9 +327,9 @@ function scanPage(local,id,sitesLength,extraTime=false){
 							htmlReplaced=htmlReplaced.replace(/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->)(.|\n))*-->/gi,"");
 						}
 						scanned=length_md5(htmlReplaced,local.ignoreNumbers,local.ignoreHrefs,local.ignoreStyles,local.ignoreAllAttributes);
-						changesArray[id]=[htmlReplaced,scanned.md5,scanned.length];
+						changesArray[id]=[htmlReplaced,scanned.md5,scanned.length,local.uniq];
 					}else{
-						changesArray[id]=[html_data,scanned.md5,scanned.length];
+						changesArray[id]=[html_data,scanned.md5,scanned.length,local.uniq];
 					}
 				}else{
 					timesArray[id]=true;
@@ -466,17 +469,21 @@ function deltaTime(oldDate,oldTime){
 }
 
 async function updateBase(){
-	const {sites,changes,settings}=await browser.storage.local.get(['sites','changes','settings']);
+	const {sites,settings}=await browser.storage.local.get(['sites','settings']);
 	let currentTime={
 		date:date(),
 		time:time(),
 		broken:0
 	};
+	const allChanges=await getAllChanges();
 	changesArray.forEach((value,id)=>{
-		changes[id]={
-			oldHtml:changes[id].html,
-			html:	value[0]
-		};
+		const idb=allChanges.find(e=>{return e.uniq===value[3]});
+		let changes={
+			uniq:idb.uniq,
+			oldHtml:idb.html,
+			html:value[0]
+		}
+		setChanges(changes);
 		let obj={
 			date:	date(),
 			time:	time(),
@@ -504,7 +511,7 @@ async function updateBase(){
 	brokenArray.forEach((value,id)=>{
 		Object.assign(sites[id],{broken:value});
 	});
-	await browser.storage.local.set({sites,changes});
+	await browser.storage.local.set({sites});
 }
 
 function openSite(){
@@ -678,4 +685,8 @@ function openDuplicates(){
 		browser.tabs.create({url:`${extURL}view.html?${id}`});
 	});
 	duplicates=[];
+}
+
+function uniqueId(){
+  return "changes-"+Date.now().toString(16)+Math.random().toString(16).substr(2);
 }

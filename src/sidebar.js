@@ -5,8 +5,8 @@ let prevContext;
 
 (async function(){
 	if(!document.getElementById("scanSites"))return;
-	const result=browser.storage.local.get('settings');
-	const {settings}=await result;
+	const result=browser.storage.local.get(['settings','dbVersion']);
+	const {settings,dbVersion}=await result;
 	document.documentElement.className=settings.theme?settings.theme:"auto";
 	if(settings.search){
 		document.documentElement.dataset.search=true;
@@ -19,7 +19,7 @@ let prevContext;
 			browser.runtime.sendMessage({"openSites":true}).then(()=>{},err=>{console.warn(err);});
 		});
 	}
-	listSite();
+	if(dbVersion===1)listSite();
 	translate();
 	document.getElementById("scanSites").addEventListener("click",scanSites);
 	document.getElementById("showAdd").addEventListener("click",showAdd);
@@ -229,7 +229,7 @@ function listSite(send){
 		const sites=result.sites,
 			  sort=result.sort,
 			  list=document.getElementById("lista");
-		let lastFolder;
+		let lastFolder,sitesOnList=0;
 		sort.forEach((value,i)=>{
 			if(value[2]==="item"){
 				let id=parseInt(value[0].substr(4));
@@ -269,6 +269,7 @@ function listSite(send){
 				}else{
 					lastFolder.appendChild(iLi);
 				}
+				sitesOnList++;
 			}else{
 				let iUl=document.createElement('ul');
 					iUl.id=value[0];
@@ -308,12 +309,36 @@ function listSite(send){
 				lastFolder=iUl;
 			}
 		});
+		if(sites.length>sitesOnList)repairSort(sites.length);
 		document.body.classList.remove("none");
 		if(!bookmarksToAdd.length)dropOverlay.classList.add("none");
 	},err=>{
 		console.error(err);
 	});
 	}
+}
+
+function repairSort(sitesLength){
+	browser.storage.local.get("sort").then(result=>{
+		let {sort}=result;
+		let currentSort=sort.filter(e=>{
+			return e[2]==="item";
+		}).map(e=>{
+			return parseInt(e[0].substr(4));
+		});
+		for(let i=0;i<sitesLength;i++){
+			if(!currentSort.includes(i)){
+				sort.push(["item"+i,"root","item","",false]);
+			}
+		}
+		browser.storage.local.set({sort}).then(()=>{
+			listSite(true);
+		},err=>{
+			console.error(err);
+		});
+	},err=>{
+		console.error(err);
+	});
 }
 
 function openItem(e,id){
@@ -474,14 +499,13 @@ function showDelete(e){
 
 function deleteSite(e){
 	document.getElementById("deletingSite").classList.add("hidden");
-	browser.storage.local.get(['sites','changes','sort']).then(result=>{
+	browser.storage.local.get(['sites','sort']).then(result=>{
 		let sites=result.sites,
-			changes=result.changes,
 			sort=result.sort,
-			sSort;
+			sSort,
+			uniqId=sites[e].uniq;
 		statusbar(i18n("deletedWebpage",sites[e].title));
 		sites.splice(e,1);
-		changes.splice(e,1);
 		if(sort){
 			sort.forEach((value,i)=>{
 				const id=parseInt(value[0].substr(4));
@@ -490,7 +514,7 @@ function deleteSite(e){
 			});
 			sort.splice(sSort,1);
 		}
-		browser.storage.local.set({sites,changes,sort}).then(()=>{
+		browser.storage.local.set({sites,sort}).then(()=>{
 			listSite(true);
 			browser.runtime.sendMessage({
 				"deletedSite":true,
@@ -498,6 +522,7 @@ function deleteSite(e){
 			}).then(()=>{},err=>{
 				console.warn(err);
 			});
+			deleteChanges(uniqId);
 		},err=>{
 			console.error(err);
 		});
